@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>nase</title>
+  <title>nase.me</title>
   
   
   <link href="https://holipay.github.io/atom.xml" rel="self"/>
@@ -10,7 +10,7 @@
   <id>https://holipay.github.io/</id>
   
   <author>
-    <name>nase me</name>
+    <name>nase.me</name>
     
   </author>
   
