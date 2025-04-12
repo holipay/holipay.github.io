@@ -6,6 +6,7 @@ NexT.boot.registerEvents = function() {
 
   NexT.utils.registerScrollPercent();
   NexT.utils.registerCanIUseTag();
+  NexT.utils.updateFooterPosition();
 
   // Mobile top menu bar.
   document.querySelector('.site-nav-toggle .toggle').addEventListener('click', event => {
@@ -26,7 +27,7 @@ NexT.boot.registerEvents = function() {
     const tHash = location.hash;
     if (tHash !== '' && !tHash.match(/%\S{2}/)) {
       const target = document.querySelector(`.tabs ul.nav-tabs li a[href="${tHash}"]`);
-      target && target.click();
+      target?.click();
     }
   });
 
@@ -64,8 +65,8 @@ NexT.boot.motion = function() {
   if (CONFIG.motion.enable) {
     NexT.motion.integrator
       .add(NexT.motion.middleWares.header)
-      .add(NexT.motion.middleWares.postList)
       .add(NexT.motion.middleWares.sidebar)
+      .add(NexT.motion.middleWares.postList)
       .add(NexT.motion.middleWares.footer)
       .bootstrap();
   }
