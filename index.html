@@ -1,965 +1,729 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>纳思 - 每日聚合全球金融、社科前沿、科技资讯</title>
+<meta name="description" content="纳思：海纳百思。每日自动聚合全球金融、社科前沿、科技资讯的多元思考。">
+<meta name="keywords" content="纳思,新闻,资讯,RSS,金融,社科,科技,小米">
+<meta name="author" content="NASE.ME">
+<meta name="robots" content="index, follow">
+<link rel="alternate" type="application/rss+xml" title="纳思 - 全球金融 RSS" href="https://nase.me/feed-finance.xml">
+<link rel="alternate" type="application/rss+xml" title="纳思 - 社科前沿 RSS" href="https://nase.me/feed-social-science.xml">
+<link rel="alternate" type="application/rss+xml" title="纳思 - 小米资讯 RSS" href="https://nase.me/feed.xml">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>">
+<link rel="preconnect" href="https://nase.me" crossorigin>
+<link rel="preload" as="fetch" href="data/xiaomi/index.json" crossorigin>
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+<meta property="og:type" content="website">
+<meta property="og:title" content="纳思 - 海纳百思">
+<meta property="og:description" content="每日自动聚合全球金融、社科前沿、科技资讯">
+<meta property="og:url" content="https://nase.me/">
 
-<link rel="stylesheet" href="/css/main.css">
+<style>
+:root {
+  --bg: #f0f2f5;
+  --card-bg: #fff;
+  --text: #1a1a2e;
+  --text-secondary: #555;
+  --text-muted: #999;
+  --accent: #ff6b2b;
+  --accent-hover: #e85d20;
+  --accent-light: #fff5f0;
+  --accent-glow: rgba(255,107,43,.15);
+  --border: #e8e8e8;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
+  --shadow: 0 2px 8px rgba(0,0,0,.06);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.08);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,.1);
+  --badge-bg: #f5f5f5;
+  --toolbar-bg: rgba(255,255,255,.85);
+  --glass: rgba(255,255,255,.7);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 100px;
+  --transition: .2s cubic-bezier(.4,0,.2,1);
+  --spring: .35s cubic-bezier(.34,1.56,.64,1);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0f14;
+    --card-bg: #1a1a24;
+    --text: #e8e8f0;
+    --text-secondary: #a0a0b8;
+    --text-muted: #666680;
+    --accent: #ff7b3a;
+    --accent-hover: #ff9258;
+    --accent-light: #2a1a10;
+    --accent-glow: rgba(255,123,58,.12);
+    --border: #2a2a3a;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.2);
+    --shadow: 0 2px 8px rgba(0,0,0,.25);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.3);
+    --shadow-hover: 0 4px 16px rgba(0,0,0,.35);
+    --badge-bg: #2a2a3a;
+    --toolbar-bg: rgba(26,26,36,.9);
+    --glass: rgba(26,26,36,.75);
+  }
+}
 
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans SC",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar{width:6px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"holipay.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js" defer></script>
+/* ===== Toolbar (Glass) ===== */
+.toolbar{
+  background:var(--toolbar-bg);
+  backdrop-filter:blur(16px) saturate(1.4);
+  -webkit-backdrop-filter:blur(16px) saturate(1.4);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+  will-change:transform;
+}
+.toolbar-inner{max-width:1200px;margin:0 auto;padding:12px 20px}
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="nase.me">
-<meta property="og:url" content="https://holipay.github.io/index.html">
-<meta property="og:site_name" content="nase.me">
-<meta property="og:locale">
-<meta property="article:author" content="nase.me">
-<meta name="twitter:card" content="summary">
+/* Row 1 */
+.toolbar-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{
+  display:flex;align-items:center;gap:8px;
+  font-size:17px;font-weight:800;
+  background:linear-gradient(135deg,var(--accent),#ff3d7f);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;white-space:nowrap;letter-spacing:-.3px;
+}
+.brand-icon{font-size:22px;-webkit-text-fill-color:initial}
+.topic-tabs{display:flex;gap:8px;flex:1;flex-wrap:wrap}
+.topic-tab{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:6px 16px;background:transparent;
+  border:1.5px solid var(--border);border-radius:var(--radius-pill);
+  font-size:13px;font-weight:500;color:var(--text-secondary);
+  cursor:pointer;transition:all var(--transition);
+  position:relative;overflow:hidden;
+}
+.topic-tab::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--accent),#ff3d7f);
+  opacity:0;transition:opacity var(--transition);
+}
+.topic-tab.active{
+  color:#fff;border-color:transparent;
+  box-shadow:0 2px 12px var(--accent-glow);
+}
+.topic-tab.active::before{opacity:1}
+.topic-tab span{position:relative;z-index:1}
+.topic-tab:hover:not(.active){border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
 
+.rss-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:6px 14px;
+  background:var(--accent-light);border:1.5px solid transparent;
+  border-radius:var(--radius-pill);font-size:12px;font-weight:600;
+  color:var(--accent);cursor:pointer;
+  transition:all var(--transition);text-decoration:none;white-space:nowrap;
+}
+.rss-btn:hover{background:var(--accent);color:#fff;box-shadow:0 2px 12px var(--accent-glow)}
+.rss-btn svg{flex-shrink:0}
+.rss-tooltip{position:relative}
+.rss-tooltip .rss-popup{
+  display:none;position:absolute;top:calc(100% + 8px);right:0;
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px 16px;
+  box-shadow:var(--shadow-lg);z-index:200;
+  white-space:nowrap;font-size:12px;
+  animation:fadeSlideUp .2s ease;
+}
+.rss-tooltip .rss-popup code{
+  display:block;margin-top:6px;color:var(--accent);
+  word-break:break-all;max-width:320px;white-space:normal;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;
+  background:var(--bg);padding:6px 8px;border-radius:6px;
+}
+.rss-tooltip:hover .rss-popup{display:block}
 
-<link rel="canonical" href="https://holipay.github.io/">
+/* Row 2 */
+.toolbar-bottom{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.filters{display:flex;gap:6px;flex:1;flex-wrap:wrap;padding:2px 0;min-width:0}
+.filter-btn{
+  white-space:nowrap;padding:5px 14px;
+  background:transparent;border-radius:var(--radius-pill);
+  font-size:12px;font-weight:500;color:var(--text-secondary);
+  border:1.5px solid var(--border);cursor:pointer;
+  transition:all var(--transition);
+}
+.filter-btn.active{
+  background:linear-gradient(135deg,var(--accent),#ff3d7f);
+  color:#fff;border-color:transparent;
+  box-shadow:0 2px 8px var(--accent-glow);
+}
+.filter-btn:hover:not(.active){border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+.toolbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.search-bar{position:relative;width:160px;flex-shrink:0}
+.search-bar input{
+  width:100%;padding:5px 10px 5px 30px;
+  border:1.5px solid var(--border);border-radius:var(--radius-pill);
+  font-size:12px;background:var(--bg);color:var(--text);
+  outline:none;transition:all var(--transition);
+}
+.search-bar input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow);background:var(--card-bg);width:220px}
+.search-bar input::placeholder{color:var(--text-muted)}
+.search-bar svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--text-muted);transition:color var(--transition)}
+.search-bar input:focus + svg,.search-bar:focus-within svg{color:var(--accent)}
+.search-count{font-size:10px;color:var(--text-muted);white-space:nowrap;padding:2px 6px;background:var(--bg);border-radius:var(--radius-sm);font-weight:500}
 
+/* Date nav */
+.nav{display:flex;gap:6px;align-items:center;padding:12px 0;flex-wrap:wrap}
+.nav a{
+  white-space:nowrap;padding:5px 14px;
+  background:var(--card-bg);border-radius:var(--radius-pill);
+  font-size:12px;font-weight:500;color:var(--text-secondary);
+  text-decoration:none;border:1.5px solid var(--border);
+  transition:all var(--transition);
+}
+.nav a:hover{border-color:var(--accent);color:var(--accent)}
+.nav a.active{
+  background:linear-gradient(135deg,var(--accent),#ff3d7f);
+  color:#fff;border-color:transparent;
+  box-shadow:0 2px 8px var(--accent-glow);
+}
+.nav-more{position:relative;display:inline-block}
+.nav-more-btn{
+  padding:5px 12px;background:var(--card-bg);
+  border-radius:var(--radius-pill);font-size:12px;font-weight:500;
+  color:var(--text-secondary);border:1.5px solid var(--border);
+  cursor:pointer;transition:all var(--transition);
+  display:inline-flex;align-items:center;gap:4px;
+}
+.nav-more-btn:hover{border-color:var(--accent);color:var(--accent)}
+.nav-dropdown{
+  display:none;position:absolute;top:calc(100% + 6px);left:0;
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow-lg);
+  z-index:200;min-width:140px;max-height:260px;overflow-y:auto;
+  animation:fadeSlideUp .15s ease;
+}
+.nav-dropdown a{
+  display:block;padding:8px 16px;font-size:12px;
+  color:var(--text-secondary);text-decoration:none;
+  border-bottom:1px solid var(--border);transition:all .15s;
+  border-radius:0;border:none;
+}
+.nav-dropdown a:last-child{border-bottom:none}
+.nav-dropdown a:hover{background:var(--accent-light);color:var(--accent)}
+.nav-dropdown a.active{color:var(--accent);font-weight:700}
+.nav-more:hover .nav-dropdown{display:block}
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-Hans","comments":"","permalink":"","path":"index.html","title":""}</script>
+/* Layout */
+.container{max-width:1200px;margin:0 auto;padding:16px 20px}
 
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>nase.me</title>
-  
+/* Cards */
+.cards-grid{columns:2;column-gap:20px}
+.cards-full{columns:1}
+.card{
+  background:var(--card-bg);border-radius:var(--radius);
+  padding:20px;box-shadow:var(--shadow-sm);
+  border:1px solid var(--border);
+  break-inside:avoid;margin-bottom:16px;
+  transition:all var(--transition);
+  contain:layout style;
+}
+.card:hover{box-shadow:var(--shadow-hover);transform:translateY(-1px)}
+.card h3{
+  font-size:15px;font-weight:700;margin:0 0 12px;
+  display:flex;align-items:center;gap:8px;
+  padding-bottom:10px;border-bottom:1px solid var(--border);
+}
+.card h3 .count{
+  font-size:11px;font-weight:500;color:var(--text-muted);
+  background:var(--bg);padding:2px 8px;border-radius:var(--radius-sm);
+  margin-left:auto;
+}
+.news-list{list-style:none;padding:0}
+.news-list.news-grid{columns:2;column-gap:16px}
+.news-list.news-grid .news-item{break-inside:avoid}
+.news-item{
+  padding:8px 0;border-bottom:1px solid transparent;
+  transition:all var(--transition);
+}
+.news-item:last-child{border-bottom:none}
+.news-item:not(:last-child){border-bottom-color:var(--border)}
+.news-item a{
+  color:var(--text);text-decoration:none;font-size:13.5px;
+  transition:color var(--transition);line-height:1.6;
+  display:inline;
+}
+.news-item a:hover{color:var(--accent)}
+.news-item a:visited{color:var(--text-muted)}
+.news-subtitle{font-size:11px;color:var(--text-muted);margin-top:2px;font-style:italic;opacity:.8}
+.source-tag{
+  display:inline-flex;align-items:center;
+  background:var(--badge-bg);color:var(--text-muted);
+  font-size:10px;font-weight:500;
+  padding:2px 8px;border-radius:var(--radius-sm);
+  white-space:nowrap;margin-left:6px;vertical-align:middle;
+}
 
+/* Empty state */
+.empty{text-align:center;padding:64px 20px;color:var(--text-muted)}
+.empty-icon{font-size:48px;margin-bottom:16px;opacity:.6}
+.empty p{font-size:14px}
 
+/* Footer */
+.footer{
+  text-align:center;padding:24px 20px;
+  color:var(--text-muted);font-size:11px;
+  border-top:1px solid var(--border);margin-top:20px;
+}
+.footer a{color:var(--accent);text-decoration:none;font-weight:500}
+.footer a:hover{text-decoration:underline}
 
+/* Back to top */
+.back-top{
+  position:fixed;bottom:24px;right:24px;
+  width:40px;height:40px;border-radius:50%;
+  background:var(--accent);color:#fff;
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px var(--accent-glow);
+  opacity:0;transform:translateY(12px);
+  transition:all .3s ease;pointer-events:none;z-index:50;
+}
+.back-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+.back-top:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--accent-glow)}
 
+/* Skeleton loading */
+.skeleton{animation:pulse 1.5s ease-in-out infinite}
+.skeleton-card{
+  background:var(--card-bg);border-radius:var(--radius);
+  padding:20px;margin-bottom:16px;border:1px solid var(--border);
+}
+.skeleton-line{
+  height:14px;background:var(--border);border-radius:6px;
+  margin-bottom:10px;
+}
+.skeleton-line.short{width:60%}
+.skeleton-line.medium{width:80%}
+.skeleton-line.title{width:45%;height:18px;margin-bottom:16px}
 
+/* Animations */
+@keyframes fadeSlideUp{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes pulse{
+  0%,100%{opacity:1}
+  50%{opacity:.5}
+}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.card{animation:cardIn .35s ease both}
+.card:nth-child(2){animation-delay:.05s}
+.card:nth-child(3){animation-delay:.1s}
+.card:nth-child(4){animation-delay:.12s}
+.card:nth-child(5){animation-delay:.15s}
+.card:nth-child(6){animation-delay:.18s}
 
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
-<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
-
-  
-
-
-
-
-
-
-  
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
+/* Responsive */
+@media (max-width:768px){
+  .cards-grid{columns:1}
+  .news-list.news-grid{columns:1}
+  .toolbar-top{gap:8px}
+  .rss-btn .rss-label{display:none}
+  .toolbar-right{order:10;width:100%;justify-content:flex-end}
+  .search-bar{width:140px}
+  .search-bar input:focus{width:180px}
+  .toolbar-inner{padding:10px 14px}
+  .container{padding:12px 14px}
+  .brand{font-size:15px}
+}
+@media (max-width:480px){
+  .topic-tab{padding:5px 12px;font-size:12px}
+  .nav a{padding:4px 10px;font-size:11px}
+}
+</style>
 </head>
+<body>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <h1 class="site-title">nase.me</h1>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
-</header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-overview-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">nase.me</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">28</span>
-          <span class="site-state-item-name">posts</span>
+<!-- Toolbar -->
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <div class="toolbar-top">
+      <div class="brand"><span class="brand-icon">📰</span> 纳思</div>
+      <div class="topic-tabs" id="topicTabs"></div>
+      <div class="rss-tooltip">
+        <a class="rss-btn" href="#" id="rssLink" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+          <span class="rss-label">RSS</span>
         </a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
-        <span class="site-state-item-count">2</span>
-        <span class="site-state-item-name">tags</span></a>
-      </div>
-  </nav>
-</div>
-
+        <div class="rss-popup">
+          <div style="display:flex;align-items:center;gap:8px">
+            <code id="rss-url"></code>
+            <button class="copy-btn" onclick="copyRSS()" style="background:var(--accent);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;white-space:nowrap;font-weight:600;transition:all var(--transition)">复制</button>
+          </div>
         </div>
       </div>
     </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://holipay.github.io/2026/04/06/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF%EF%BC%882026-4-6%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="nase.me">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="nase.me">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | nase.me">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/04/06/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF%EF%BC%882026-4-6%EF%BC%89/" class="post-title-link" itemprop="url">近期形势（2026.4.6）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2026-04-06 14:54:11 / Modified: 15:25:40" itemprop="dateCreated datePublished" datetime="2026-04-06T14:54:11+08:00">2026-04-06</time>
-    </span>
-
-  
-</div>
-
+    <div class="toolbar-bottom">
+      <div class="filters" id="filters"></div>
+      <div class="toolbar-right">
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="搜索..." oninput="debouncedSearch()" aria-label="搜索新闻">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>军事</strong></p>
-<p>中东战乱。美国以色列轰炸伊朗，杀死伊朗最高领袖等国家高层领导人。伊朗予以还击轰炸以色列和美军在中东的基地，封锁霍尔木斯海峡，对过往船只征收过路费。双方逐渐升级到轰炸民生设施。美军不断集结，美国总统特朗普对伊朗发出最后通牒。</p>
-<p>中东战局影响了俄罗斯和乌克兰战争。美国无法从中东抽身，威胁退出“北约”组织。欧洲内部对援助乌克兰出现分歧。俄罗斯占据了战场的更多的主动权，完全控制了卢甘斯克州全境。</p>
-<p>军控体系崩塌。美俄《新削减战略武器条约》到期失效，全球核风险上升。</p>
-<p><strong>政治</strong> 日本自民党在众议院选举大胜，首相高市早苗推动修宪与扩军。</p>
-<p><strong>经济</strong> 中东战争引发全球能源价格上涨。</p>
-
-      
+        <span id="searchCount" class="search-count"></span>
+      </div>
     </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://holipay.github.io/2026/01/10/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF%EF%BC%882026-1-10%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="nase.me">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="nase.me">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | nase.me">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/01/10/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF%EF%BC%882026-1-10%EF%BC%89/" class="post-title-link" itemprop="url">近期形势（2026.1.10）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2026-01-10 09:21:36 / Modified: 10:07:29" itemprop="dateCreated datePublished" datetime="2026-01-10T09:21:36+08:00">2026-01-10</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>中国大规模围绕台湾岛实弹军演</strong><br>
-从2025年12月29日开始，中国人民解放军东部战区组织陆军、海军、空军、火箭军等兵力，位台湾海峡、台岛北部、台岛西南、台岛东南、台岛以东，组织“正义使命-2025”演习，重点演练海空战备警巡、夺取综合制权、要港要域封控、外线立体慑阻等科目，舰机多向抵近台岛，诸军兵种联合突击，旨在检验战区部队联合作战实战能力。</p>
-<p><strong>美国发动军事行动绑架委内瑞拉总统</strong><br>
-当地时间2026年1月3日凌晨2时左右，美军对委内瑞拉首都加拉加斯发动军事打击，随后美军三角洲特种部队与FBI特工联合行动，在一处军营住所中将熟睡的马杜罗及其夫人弗洛雷斯从卧室拖出并逮捕。三个多小时后（美东时间凌晨4:21），美国总统特朗普通过社交媒体宣布已成功抓获马杜罗夫妇并带离委内瑞拉。美国司法部长邦迪随后表示，马杜罗将被押送至纽约曼哈顿联邦法院接受贩毒等刑事指控。</p>
-<p><strong>伊朗国内爆发大规模动乱</strong><br>
-伊朗的政治与社会矛盾突出，政教合一体制困境让国内政治改革举步维艰，最高领袖与总统的权力架构下，造成特权集团阻碍关键改革，群众对政府信任度彻底崩塌。一个国家的政治走向，不仅受到国内各政治势力的影响，还与地缘政治格局、国际经济形势紧密相连 。伊朗在巴以冲突、俄乌冲突中的立场，以及美国制裁等外部因素，都在不断塑造着伊朗的政治生态。</p>
-<p><strong>中国加强两用物项对日本出口管制</strong><br>
-2026年1月6日，中国商务部发布公告，决定加强两用物项对日本出口管制，禁止所有两用物项对日本军事用户、军事用途，以及一切有助于提升日本军事实力的其他最终用户用途出口。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://xkzj.mofcom.gov.cn/tzgg/art/2026/art_a775cdf7657842f691b721fd4f0490fb.html">商务部公告2026年第1号 关于加强两用物项对日本出口管制的公告</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://holipay.github.io/2026/01/02/2025%E5%B9%B4%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="nase.me">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="nase.me">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | nase.me">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/01/02/2025%E5%B9%B4%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">2025年总结</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2026-01-02 09:48:39 / Modified: 09:53:24" itemprop="dateCreated datePublished" datetime="2026-01-02T09:48:39+08:00">2026-01-02</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>特朗普当选美国总统后，与世界尤其是中国进行第二次的经济对抗，各自从贸易、关税、科技、稀土原材料等方面各自出招，几个回合之后逐渐缓和。</p>
-<p>美国股市一直维持在高位，中国房地产在有序下行。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://holipay.github.io/2025/11/23/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF-2025-11-23/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="nase.me">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="nase.me">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | nase.me">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/11/23/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF-2025-11-23/" class="post-title-link" itemprop="url">近期形势(2025.11.23)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2025-11-23 09:06:31 / Modified: 10:49:53" itemprop="dateCreated datePublished" datetime="2025-11-23T09:06:31+08:00">2025-11-23</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>中美贸易战暂停1年</strong></p>
-<p>10月30日，通过中美两国领导人在釜山会晤<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
-<p>美东时间11月10日，美国商务部产业与安全局在《联邦纪事》上发布公告，宣布于2025年11月10日至2026年11月9日暂停实施出口管制穿透性规则，即在此期间，被列入美国出口管制“实体清单”等制裁清单的企业，其持股超过50%的关联企业将不会因穿透性规则被追加同等出口管制制裁。</p>
-<p>11月18日和19日，中荷双方政府部门在北京就安世半导体问题举行了两轮面对面磋商。11月19日，荷兰政府宣布暂停由其经济事务与气候政策部部长卡雷曼斯（Vincent Karremans）签署的针对Nexperia公司的行政干预令。商务部新闻发言人称，中方对荷方主动暂停行政令表示欢迎，认为这是向妥善解决问题的正确方向迈出的第一步，但距离解决全球半导体产供链动荡和混乱的根源“撤销行政令”还有差距。同时，在荷经济部推动下的企业法庭剥夺闻泰科技对荷兰安世控制权的错误裁决，仍是阻碍问题解决的关键所在，希望荷方继续展现与中方真诚合作的意愿，真正提出建设性解决问题的方案。双方同意应取消行政干预，支持和推动企业通过协商依法解决内部纠纷，既保护投资者的合法权益，也为恢复全球半导体产供链安全与稳定创造更有利的条件。</p>
-<p><strong>中日关系恶化</strong></p>
-<p>日本新任首相高市早苗11月7日在众议院预算委员会对“台湾应急”的回应中提到，如果中国试图以武力控制台湾，日本可能会采取军事回应。</p>
-<p>“今月7日、高市総理が国会で、台湾有事について 「戦艦を使って武力行使を伴うのであれば、存立危機事態になり得る」と答弁しました。”</p>
-<p>2025年11月13日，外交部副部长孙卫东奉示召见日本驻华大使金杉宪治，就日本首相高市早苗涉华错误言行提出严正交涉。11月14日，驻日本大使吴江浩奉示约见日本外务事务次官船越健裕，就高市早苗涉华错误言行提出严正交涉。中国外交部于14日呼吁民众暂时避免赴日旅行，文化旅游部也于16日晚发出警告，要求大家避免前往日本。</p>
-<p>日本外务省亚洲和大洋洲局局长金井正明于18日在北京与中华人民共和国外交部亚洲局局长刘金松举行了局长级磋商。金井预计将在会上解释，首相的答复不会改变日本在1972年《日中联合声明》中表达的立场，该声明承认中华人民共和国为中国唯一合法政府。 然而，似乎不会对中方撤回回应请求作出回应。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
-<p>11月21日，中国常驻联合国代表傅聪致函联合国秘书长古特雷斯，就日本首相高市早苗涉华错误言行阐明中国政府立场。如日方胆敢武力介入台海局势，将构成侵略行为，中方将坚决行使《联合国宪章》和国际法赋予的自卫权，坚定捍卫国家主权和领土完整。作为二战战败国，日方必须深刻反省历史罪责，恪守对于台湾问题做出的政治承诺，立即停止挑衅越线，收回错误言论。</p>
-<p>“高市的言论表明，日本不尊重将中国定位为崛起强国的权力平衡重大转变，且日本怀有可能威胁中国崛起的军事野心。 在中国政府眼中，情况确实如此”。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
-<p><strong>美国提出俄乌战争的和平方案</strong><br>
-泽连斯基收到美国提出的旨在结束俄乌战争的计划草案<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>。美国总统特朗普给乌克兰总统泽连斯基一个建议的最后期限，要求他在感恩节当天回应该计划。一些美国议员批评特朗普政府提出的旨在结束俄乌战争的28点和平方案，称该框架似乎偏向莫斯科。</p>
-<p>乌克兰总统泽连斯基21日发表视频讲话，称乌克兰正面临“非常艰难的选择”，但他不会“背叛”国家。他在当天讲话中表示，乌克兰正承受前所未有的压力，面临艰难选择：要么失去尊严，要么失去一个关键伙伴；要么接受“困难”的28点新计划，要么面临最严酷的冬季及随之而来的危险。德国声明称，领导人一致认为，任何影响欧盟、欧洲国家或北约的计划“都需要欧洲伙伴的批准或盟友之间的共识”。</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.gov.cn/yaowen/liebiao/202510/content_7046408.htm">习近平同美国总统特朗普在釜山举行会晤</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://news.yahoo.co.jp/articles/1e74568309cad86aa98df8a37c50ffa49010eb15">日中、高市首相の答弁巡り協議　局長級、主張対立し緊張高まる</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.cnn.co.jp/world/35240769.html">高市首相に向けられる中国の激怒、背景にある本当の理由とは</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.cbsnews.com/news/trump-administration-proposed-28-point-russia-ukraine-peace-plan/">Here’s what’s in the Trump administration’s proposed 28-point Russia-Ukraine peace plan</a> <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://holipay.github.io/2025/10/19/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF-2025-10-19/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="nase.me">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="nase.me">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | nase.me">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/10/19/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF-2025-10-19/" class="post-title-link" itemprop="url">近期形势(2025.10.19)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2025-10-19 08:20:32 / Modified: 09:38:31" itemprop="dateCreated datePublished" datetime="2025-10-19T08:20:32+08:00">2025-10-19</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>经济</strong> 近期中美经济摩擦逐渐升级，双方加大在关税、港口船舶、稀土、半导体和农产品等方面的角力。需要引起注意的是，随着中美这次的较量对全球经济的影响不断加深，很可能出现双方难以妥协并逐渐导致政治决裂和加剧东西方经济分裂的趋势。对于赢了美苏冷战的美国来说，中美新冷战的结局不会是他们所想象的那样。美国的衰退无可避免。</p>
-<p><strong>军事</strong> 中东出现和平的曙光，美国继续调停俄罗斯和乌克兰的战争。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://holipay.github.io/2025/09/13/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF%EF%BC%882025-9-13%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="nase.me">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="nase.me">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | nase.me">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/09/13/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF%EF%BC%882025-9-13%EF%BC%89/" class="post-title-link" itemprop="url">近期形势（2025-9-13）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2025-09-13 05:09:52" itemprop="dateCreated datePublished" datetime="2025-09-13T05:09:52+08:00">2025-09-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2025-10-19 08:27:14" itemprop="dateModified" datetime="2025-10-19T08:27:14+08:00">2025-10-19</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>经济</strong> 美股现在的上涨形势很吓人，10日甲骨文（oracle）公司的股价当天上涨幅度将近36%，单日市值增长高达 2470 亿美元。特斯拉这2天的股价增长幅度超过13%，市值增长1600亿美元。可以比较一下国内企业的市值，同期腾讯总市值约合7600亿美元。美股总市值与美国GDP的比值已经超过了200%。作为对比，国内A股与中国GDP的比值不到90%。美股已经处于最后疯狂的阶段，随时有崩盘的风险。美联储即将降息对美股的影响有待评估，更重要的是失业率和通货膨胀，以及巨额债务。</p>
-<p><strong>军事</strong> 中国9月3日大阅兵之后，中美两国防长进行了通话；航母福建舰即将服役。以色列近期军事动作频频，继续进攻加沙、轰炸在卡塔尔谈判的哈马斯代表团，还袭击了叙利亚、黎巴嫩、也门等其他国家。俄乌方面，波兰指责俄罗斯无人机对波兰发动袭击。</p>
-<p><strong>其他</strong> 法国大罢工，美国总统特朗普政治盟友查理·柯克 （Charlie Kirk）被枪杀，美国政治体系正在崩溃。印尼和尼泊尔动乱，以及美国准备联合欧洲对中印进行经济制裁等。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://holipay.github.io/2025/08/02/%E5%AF%B9%E7%BE%8E%E5%9B%BD%E7%BB%8F%E6%B5%8E%E7%9A%84%E5%B1%95%E6%9C%9B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="nase.me">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="nase.me">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | nase.me">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/08/02/%E5%AF%B9%E7%BE%8E%E5%9B%BD%E7%BB%8F%E6%B5%8E%E7%9A%84%E5%B1%95%E6%9C%9B/" class="post-title-link" itemprop="url">对美国经济的展望</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2025-08-02 18:40:02" itemprop="dateCreated datePublished" datetime="2025-08-02T18:40:02+08:00">2025-08-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2025-08-17 19:04:48" itemprop="dateModified" datetime="2025-08-17T19:04:48+08:00">2025-08-17</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>特朗普向全球加征关税取得了初步的成果。在制造业难以回流美国的情况下，关税战对美国经济来讲吉凶未卜。当美国人逐步勒紧裤带过苦日子，缺少强劲消费能力的美国很难指望消化中国等国家生产出来的大量产品。目前美国股市尚处于高位，世界各国流入美国的资金没有出现流出的迹象。不过，如果9月美联储宣布降息，息差缩小会降低资金留着美国的意愿。以前美联储通过加息吸收了欧洲和亚洲等外国资金流向美国，促进了美国经济的增长并推高了美股，如果美国经济没有重大危机发生，从经济的长远角度考虑，美联储应当顶住政治压力，不应该提前释放降息的货币手段。降息对美股泡沫是火上浇油，降息不利于外国资金留着美股，另外，降息不利于美国在经济方面对中国保持压力。换一种说法，可能美联储认为高利率对美国国内经济的影响要小于对抗中国的经济战，反正大家都对美国的制造业不抱希望嘛。但是，从美国减少债务的角度来分析，（1）美联储在压力之下的降息；（2）通过关税战增加美国政府的关税收入，无论关税是由哪方出钱；（3）效率部削减开支的措施等。这些措施的确是能够降低美国债务水平的。在美债重压之下，很可能管不了股市之类的。何况，欧洲受到俄乌战争等地缘政治的影响，中国的房地产危机尚未消除经济面临通缩的危险（目前才开始逐步培育国内的消费市场，远水难解近渴），因此很多的国外资金目前宁愿留着美国而不去中国或欧洲，只要特朗普政府着手解决好债务等经济问题，不要乱折腾，美国经济还有一段好日子过。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://holipay.github.io/2025/07/15/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF%EF%BC%882025-7-15%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="nase.me">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="nase.me">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | nase.me">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/07/15/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF%EF%BC%882025-7-15%EF%BC%89/" class="post-title-link" itemprop="url">近期形势（2025-7-15）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2025-07-15 20:37:20 / Modified: 21:35:33" itemprop="dateCreated datePublished" datetime="2025-07-15T20:37:20+08:00">2025-07-15</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>经济</strong> 国家统计局数据显示，2025年上半年，国内生产总值超66万亿元，同比增长5.3%。上半年内需对GDP增长的贡献率为68.8%，其中最终消费支出贡献率为52%，是增长的主动力。</p>
-<p>2025年7月4日，美国总统唐纳德·特朗普（Donald J. Trump）正式签署了《美丽大法案》（The One Big Beautiful Bill）。法案的通过标志着美国政治和经济政策的重大转向，其长期影响包括可能加剧社会不平等、增加国债、以及对环保和新能源产业的负面影响。</p>
-<p>7月12日，美国总统特朗普在社交媒体平台“真实社交”上发布致墨西哥和欧盟的信件，宣布自2025年8月1日起，美国将对来自墨西哥和欧盟的输美产品征收30%的关税。另外，特朗普先后致信20多个国家领导人，称将从8月1日起对这些国家征收新关税。</p>
-<p>美国多轮对华半导体限制措施，近期均已出现松动。例如美国政府已批准英伟达H20芯片销往中国等。</p>
-<p><strong>军事</strong> 美国转变态度，通过北约重新向乌克兰提供武器。特朗普宣布将对俄罗斯征收100%关税。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://holipay.github.io/2025/06/14/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF%EF%BC%882025-6-14%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="nase.me">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="nase.me">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | nase.me">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/14/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF%EF%BC%882025-6-14%EF%BC%89/" class="post-title-link" itemprop="url">近期形势（2025.6.14）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2025-06-14 09:13:40 / Modified: 12:09:52" itemprop="dateCreated datePublished" datetime="2025-06-14T09:13:40+08:00">2025-06-14</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>军事</strong> 6月1日，乌克兰用无人机秘密发动对俄罗斯战略轰炸机的突袭，并声称成功损毁或击伤41架俄方战略飞机，包括Tu-95和Tu-22M3轰炸机。此次军事行动使得俄乌冲突将进入一个更加危险、不可控的阶段。</p>
-<p>当地时间6月13日凌晨，以色列对伊朗发动袭击。以空军对伊朗境内数十个与核计划和其他军事设施相关的目标发动空袭，袭击同时造成伊朗多名指挥官和科学家死亡。</p>
-<p><strong>经济</strong> 当地时间6月9日至10日，中美经贸中方牵头人、国务院副总理何立峰与美方牵头人、美国财政部长贝森特及商务部长卢特尼克、贸易代表格里尔在英国伦敦举行中美经贸磋商机制首次会议。双方进行了坦诚、深入的对话，就各自关心的经贸议题深入交换意见，就落实两国元首6月5日通话重要共识和巩固日内瓦经贸会谈成果的措施框架达成原则一致。磋商的重要议题涉及关税、稀土和芯片。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://holipay.github.io/2025/05/13/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF%EF%BC%882025-5-13%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="nase.me">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="nase.me">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | nase.me">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/05/13/%E8%BF%91%E6%9C%9F%E5%BD%A2%E5%8A%BF%EF%BC%882025-5-13%EF%BC%89/" class="post-title-link" itemprop="url">近期形势（2025.5.13）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2025-05-13 10:22:33 / Modified: 10:45:13" itemprop="dateCreated datePublished" datetime="2025-05-13T10:22:33+08:00">2025-05-13</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>军事</strong> 　2025年5月7日凌晨，印度对巴基斯坦境内及巴控克什米尔地区发动代号为“朱砂行动”的军事打击，宣称针对“恐怖主义基础设施”。巴基斯坦随即展开反击，巴基斯坦三军协同启动代号为“铜墙铁壁”的军事行动回应，巴方采购的中方武器大获全胜。印度和巴基斯坦5月10日分别宣布，双方约定在当天下午实现全面停火。</p>
-<p>俄罗斯和乌克兰即将在土耳其进行停战对话。以色列和加沙之间的冲突没有停止，在哈马斯方面是否一名人质后，双方即将进行谈判。</p>
-<p><strong>经济</strong> 2025年5月12日，中美发布日内瓦经贸会谈联合声明，关税战暂时休战。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2026</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">nase.me</span>
   </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+</div>
+
+<div class="container">
+  <div class="nav" id="nav"></div>
+  <div id="content">
+    <div class="skeleton-card skeleton"><div class="skeleton-line title"></div><div class="skeleton-line"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div>
+    <div class="skeleton-card skeleton"><div class="skeleton-line title"></div><div class="skeleton-line"></div><div class="skeleton-line medium"></div></div>
   </div>
+</div>
 
-    </div>
-  </footer>
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到顶部">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
 
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
+<div class="footer">
+  纳思 · 海纳百思 · 数据来源于公开网络 · 新闻版权归原作者/来源所有
+</div>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+<script>
+const TOPICS = [
+  { id: 'finance', name: '全球金融', icon: '💹', dataFile: 'data/finance.json', feedFile: 'feed-finance.xml' },
+  { id: 'social-science', name: '社科前沿', icon: '🎓', dataFile: 'data/social-science.json', feedFile: 'feed-social-science.xml' },
+  { id: 'xiaomi', name: '小米资讯', icon: '📱', dataFile: 'data/xiaomi.json', feedFile: 'feed.xml' },
+];
 
+let currentTopic = TOPICS[0];
+let allData = [];
+let currentDateIdx = 0;
+let activeCategory = 'all';
+let searchQuery = '';
+
+// ===== Topic switching =====
+function switchTopic(topicId) {
+  currentTopic = TOPICS.find(t => t.id === topicId) || TOPICS[0];
+  activeCategory = 'all';
+  searchQuery = '';
+  $searchInput.value = '';
+  $searchCount.textContent = '';
+
+  document.querySelectorAll('.topic-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.dataset.topic === topicId);
+  });
+
+  const feedUrl = 'https://nase.me/' + currentTopic.feedFile;
+  $rssUrl.textContent = feedUrl;
+  $rssLink.href = feedUrl;
+
+  showSkeleton();
+  loadData();
+}
+
+function buildTopicTabs() {
+  $topicTabs.innerHTML = TOPICS.map(t =>
+    `<button class="topic-tab ${t.id === currentTopic.id ? 'active' : ''}" data-topic="${t.id}" onclick="switchTopic('${t.id}')"><span>${t.icon} ${t.name}</span></button>`
+  ).join('');
+}
+
+function showSkeleton() {
+  $content.innerHTML = `
+    <div class="skeleton-card skeleton"><div class="skeleton-line title"></div><div class="skeleton-line"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div>
+    <div class="skeleton-card skeleton"><div class="skeleton-line title"></div><div class="skeleton-line"></div><div class="skeleton-line medium"></div></div>
+  `;
+}
+
+// ===== Data loading =====
+async function loadData() {
+  try {
+    const dataDir = currentTopic.dataFile.replace('.json', '');
+    const indexRes = await fetch(`${dataDir}/index.json`);
+    if (!indexRes.ok) throw new Error('no index');
+    const index = await indexRes.json();
+    window._splitIndex = index;
+
+    const firstDate = index.days[0]?.date;
+    if (!firstDate) throw new Error('empty index');
+
+    // 索引到了，立即构建日期导航（不等首日数据）
+    window._splitSelectedIdx = 0;
+    buildDateNav();
+
+    // 加载首日数据
+    const dayRes = await fetch(`${dataDir}/${firstDate}.json`);
+    if (!dayRes.ok) throw new Error('day load failed');
+    allData = [await dayRes.json()];
+    currentDateIdx = 0;
+    buildFilters(); renderContent();
+  } catch {
+    window._splitIndex = null;
+    try {
+      const res = await fetch(currentTopic.dataFile);
+      if (!res.ok) throw new Error();
+      allData = await res.json();
+      currentDateIdx = 0;
+      buildDateNav(); buildFilters(); renderContent();
+    } catch {
+      allData = [];
+      $nav.innerHTML = '';
+      $stats.innerHTML = '';
+      $filters.innerHTML = '';
+      $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据，每日 9:00 自动更新</p></div>';
+    }
+  }
+}
+
+async function loadDayFromSplit(date) {
+  if (!date || !window._splitIndex) return;
+  const dataDir = currentTopic.dataFile.replace('.json', '');
+  try {
+    const res = await fetch(`${dataDir}/${date}.json`);
+    if (!res.ok) throw new Error();
+    allData = [await res.json()];
+    window._splitSelectedIdx = window._splitIndex.days.findIndex(d => d.date === date);
+    currentDateIdx = 0;
+    buildFilters(); renderContent();
+  } catch {
+    $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>加载失败</p></div>';
+  }
+}
+
+// ===== Copy RSS =====
+function copyRSS() {
+  navigator.clipboard.writeText($rssUrl.textContent).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    const orig = btn.textContent;
+    btn.textContent = '✓ 已复制';
+    btn.style.background = '#10b981';
+    setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1500);
+  });
+}
+
+// ===== Search =====
+let _searchTimer = null;
+function debouncedSearch() {
+  clearTimeout(_searchTimer);
+  _searchTimer = setTimeout(onSearch, 200);
+}
+function onSearch() {
+  searchQuery = $searchInput.value.trim().toLowerCase();
+  renderContent();
+}
+
+// ===== Category filter =====
+function setCategory(cat) {
+  activeCategory = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  renderContent();
+}
+
+// ===== Date navigation =====
+function showDate(idx) {
+  if (window._splitIndex) {
+    // 拆分模式：idx 是索引中的日期下标
+    const date = window._splitIndex.days[idx]?.date;
+    if (date) {
+      activeCategory = 'all'; searchQuery = '';
+      $searchInput.value = '';
+      $searchCount.textContent = '';
+      loadDayFromSplit(date);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  } else {
+    // 旧模式
+    currentDateIdx = idx;
+    activeCategory = 'all'; searchQuery = '';
+    $searchInput.value = '';
+    $searchCount.textContent = '';
+    buildDateNav(); buildFilters(); renderContent();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function buildDateNav() {
+  const nav = $nav;
+  nav.innerHTML = '';
+
+  // 拆分模式：从索引读取日期列表
+  const dates = window._splitIndex
+    ? window._splitIndex.days.map(d => d.date)
+    : allData.map(d => d.date);
+
+  const currentIdx = window._splitIndex
+    ? (window._splitSelectedIdx ?? 0)
+    : currentDateIdx;
+
+  const RECENT = 5;
+  const recentDates = dates.slice(0, RECENT);
+  const olderDates = dates.slice(RECENT);
+
+  recentDates.forEach((dateStr, i) => {
+    const a = document.createElement('a');
+    a.href = '#'; a.textContent = dateStr;
+    if (i === currentIdx) a.className = 'active';
+    a.onclick = e => { e.preventDefault(); showDate(i); };
+    nav.appendChild(a);
+  });
+
+  if (olderDates.length > 0) {
+    const more = document.createElement('div');
+    more.className = 'nav-more';
+    const btn = document.createElement('button');
+    btn.className = 'nav-more-btn';
+    const isOlderActive = currentIdx >= RECENT;
+    btn.innerHTML = isOlderActive ? `${dates[currentIdx]} ▾` : '更早 ▾';
+    if (isOlderActive) btn.style.borderColor = 'var(--accent)';
+    more.appendChild(btn);
+    const dropdown = document.createElement('div');
+    dropdown.className = 'nav-dropdown';
+    olderDates.forEach((dateStr, i) => {
+      const a = document.createElement('a');
+      a.href = '#'; a.textContent = dateStr;
+      if (RECENT + i === currentIdx) a.className = 'active';
+      a.onclick = e => { e.preventDefault(); showDate(RECENT + i); };
+      dropdown.appendChild(a);
+    });
+    more.appendChild(dropdown);
+    nav.appendChild(more);
+  }
+}
+
+// ===== Filters =====
+function buildFilters() {
+  const el = $filters;
+  const day = allData[currentDateIdx];
+  if (!day) { el.innerHTML = ''; return; }
+  el.innerHTML = `<button class="filter-btn active" data-cat="all" onclick="setCategory('all')">全部</button>` +
+    day.sections.map(s => `<button class="filter-btn" data-cat="${s.title}" onclick="setCategory('${s.title}')">${s.icon} ${s.title}</button>`).join('');
+  activeCategory = 'all';
+}
+
+// ===== Render =====
+function renderContent() {
+  const day = allData[currentDateIdx];
+  if (!day) {
+    $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据</p></div>';
+    $searchCount.textContent = '';
+    return;
+  }
+
+  let sections = day.sections;
+  if (activeCategory !== 'all') sections = sections.filter(s => s.title === activeCategory);
+  if (searchQuery) {
+    sections = sections.map(s => ({
+      ...s,
+      items: s.items.filter(r => {
+        const title = (typeof r === 'string' ? r : r.title || '').toLowerCase();
+        const source = (typeof r === 'object' && r.source || '').toLowerCase();
+        return title.includes(searchQuery) || source.includes(searchQuery);
+      })
+    })).filter(s => s.items.length > 0);
+  }
+
+  if (!sections.length) {
+    const emptyMsg = searchQuery ? `未找到「${esc(searchQuery)}」相关的新闻` : '该分类暂无新闻';
+    $content.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><p>${emptyMsg}</p></div>`;
+    $searchCount.textContent = '';
+    return;
+  }
+
+  let total = 0;
+  const single = activeCategory !== 'all';
+  let html = `<div class="${single ? 'cards-full' : 'cards-grid'}">`;
+  sections.forEach((s, si) => {
+    total += s.items.length;
+    const lc = single ? 'news-list news-grid' : 'news-list';
+    html += `<div class="card" style="animation-delay:${si * .04}s"><h3>${s.icon} ${s.title} <span class="count">${s.items.length} 条</span></h3><ul class="${lc}">`;
+    s.items.forEach(raw => {
+      const item = typeof raw === 'string' ? { title: raw, link: '', source: '', titleEN: '' } : raw;
+      const link = item.link
+        ? `<a href="${esc(item.link)}" target="_blank" rel="noopener noreferrer">${highlightMatch(item.title)}</a>`
+        : `<span>${highlightMatch(item.title)}</span>`;
+      const src = item.source ? `<span class="source-tag">${esc(item.source)}</span>` : '';
+      html += `<li class="news-item"><div>${link}${src}</div></li>`;
+    });
+    html += `</ul></div>`;
+  });
+  html += '</div>';
+  $content.innerHTML = html;
+  $searchCount.textContent = searchQuery ? `${total} 条结果` : '';
+}
+
+// ===== Helpers =====
+const _escEl = document.createElement('div');
+function esc(s) { _escEl.textContent = s; return _escEl.innerHTML; }
+
+// ===== DOM refs (cached) =====
+const $ = id => document.getElementById(id);
+const $content = $('content');
+const $nav = $('nav');
+const $filters = $('filters');
+const $searchInput = $('searchInput');
+const $searchCount = $('searchCount');
+const $rssUrl = $('rss-url');
+const $rssLink = $('rssLink');
+const $topicTabs = $('topicTabs');
+
+function highlightMatch(text) {
+  if (!searchQuery) return esc(text);
+  const escaped = esc(text);
+  const regex = new RegExp(`(${searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  return escaped.replace(regex, '<mark style="background:var(--accent-glow);color:var(--accent);padding:0 2px;border-radius:2px">$1</mark>');
+}
+
+// ===== Back to top =====
+const backTop = $('backTop');
+window.addEventListener('scroll', () => {
+  backTop.classList.toggle('visible', window.scrollY > 400);
+}, { passive: true });
+
+// ===== Keyboard shortcuts =====
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    $searchInput.focus();
+  }
+  if (e.key === 'Escape') {
+    const input = $searchInput;
+    if (document.activeElement === input) {
+      input.value = ''; input.blur();
+      searchQuery = '';
+      $searchCount.textContent = '';
+      renderContent();
+    }
+  }
+  if (document.activeElement.tagName !== 'INPUT') {
+    const maxIdx = window._splitIndex ? window._splitIndex.days.length - 1 : allData.length - 1;
+    const curIdx = window._splitIndex ? (window._splitSelectedIdx ?? 0) : currentDateIdx;
+    if (e.key === 'ArrowLeft' && curIdx < maxIdx) { showDate(curIdx + 1); }
+    if (e.key === 'ArrowRight' && curIdx > 0) { showDate(curIdx - 1); }
+  }
+});
+
+// ===== Init =====
+buildTopicTabs();
+const feedUrl = 'https://holipay.github.io/xiaomi-daily-news/' + currentTopic.feedFile;
+$rssUrl.textContent = feedUrl;
+$rssLink.href = feedUrl;
+loadData();
+</script>
 </body>
 </html>

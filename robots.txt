@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Sitemap: https://holipay.github.io/xiaomi-daily-news/sitemap.xml
+
+# RSS feed
+Allow: /feed.xml
+Allow: /news.json
