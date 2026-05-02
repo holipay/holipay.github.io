@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>社科前沿</title>
+  <link>https://nase.me/</link>
+  <description>每日自动聚合社科前沿资讯</description>
+  <language>zh-cn</language>
+  <lastBuildDate>Thu, 01 Jan 2025 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://nase.me/feed-social-science.xml" rel="self" type="application/rss+xml"/>
+</channel>
+</rss>
