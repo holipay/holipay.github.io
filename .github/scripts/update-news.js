@@ -528,7 +528,7 @@ async function processTopic(topic) {
 
   // 6. 写入 RSS（原子写入）
   const feedPath = path.join(ROOT, topic.feedFile);
-  const siteUrl = `https://holipay.github.io/xiaomi-daily-news/`;
+  const siteUrl = `https://nase.me/`;
   atomicWrite(feedPath, buildFeedXml(existing, siteUrl));
   console.log(`📝 已更新 ${topic.feedFile}`);
 }
