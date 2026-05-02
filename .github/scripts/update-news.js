@@ -368,7 +368,7 @@ function normalizeItem(item) {
   return { title: item.title || '', link: item.link || '', source: item.source || '', titleEN: item.titleEN || '' };
 }
 
-function buildFeedXml(allDays, siteUrl) {
+function buildFeedXml(allDays, siteUrl, feedFile) {
   let items = '';
 
   for (const day of allDays.slice(0, 7)) {
@@ -404,7 +404,7 @@ function buildFeedXml(allDays, siteUrl) {
   <description>自动整理的新闻资讯，每日更新</description>
   <language>zh-cn</language>
   <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-  <atom:link href="${siteUrl}feed.xml" rel="self" type="application/rss+xml"/>
+  <atom:link href="${siteUrl}${feedFile}" rel="self" type="application/rss+xml"/>
 ${items}</channel>
 </rss>`;
 }
@@ -529,7 +529,7 @@ async function processTopic(topic) {
   // 6. 写入 RSS（原子写入）
   const feedPath = path.join(ROOT, topic.feedFile);
   const siteUrl = `https://nase.me/`;
-  atomicWrite(feedPath, buildFeedXml(existing, siteUrl));
+  atomicWrite(feedPath, buildFeedXml(existing, siteUrl, topic.feedFile));
   console.log(`📝 已更新 ${topic.feedFile}`);
 }
 

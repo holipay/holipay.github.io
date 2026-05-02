@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
-Sitemap: https://nase.me/sitemap.xml
 
-# RSS feed
-Allow: /feed.xml
-Allow: /news.json
+# RSS feeds
+Allow: /feed-xiaomi.xml
+Allow: /feed-finance.xml
+Allow: /feed-social-science.xml
