@@ -29,7 +29,7 @@ const ROOT = path.resolve(__dirname, '../..');
 const SCRIPTS_DIR = __dirname;
 const CACHE_FILE = path.join(SCRIPTS_DIR, 'translations-cache.json');
 const TOPICS_FILE = path.join(SCRIPTS_DIR, 'topics.json');
-const MAX_DAYS = 30;
+const MAX_DAYS = 365;
 const TRANSLATE_CONCURRENCY = 3;
 const MAX_RETRIES = 1;
 
