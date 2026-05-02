@@ -8,6 +8,7 @@
 <meta name="keywords" content="纳思,新闻,资讯,RSS,金融,社科,科技,小米">
 <meta name="author" content="NASE.ME">
 <meta name="robots" content="index, follow">
+<link rel="alternate" type="application/rss+xml" title="纳思 - 全部资讯 RSS" href="https://nase.me/feed.xml">
 <link rel="alternate" type="application/rss+xml" title="纳思 - 全球金融 RSS" href="https://nase.me/feed-finance.xml">
 <link rel="alternate" type="application/rss+xml" title="纳思 - 社科前沿 RSS" href="https://nase.me/feed-social-science.xml">
 <link rel="alternate" type="application/rss+xml" title="纳思 - 小米资讯 RSS" href="https://nase.me/feed-xiaomi.xml">
@@ -555,10 +556,6 @@ function switchTopic(topicId) {
     tab.classList.toggle('active', tab.dataset.topic === topicId);
   });
 
-  const feedUrl = 'https://nase.me/' + currentTopic.feedFile;
-  $rssUrl.textContent = feedUrl;
-  $rssLink.href = feedUrl;
-
   $sidebarLeft.classList.remove('open');
   $sidebarOverlay.classList.remove('show');
 
@@ -822,9 +819,8 @@ document.addEventListener('keydown', e => {
 
 // ===== Init =====
 buildTopicTabs();
-const feedUrl = 'https://nase.me/' + currentTopic.feedFile;
-$rssUrl.textContent = feedUrl;
-$rssLink.href = feedUrl;
+$rssUrl.textContent = 'https://nase.me/feed.xml';
+$rssLink.href = 'https://nase.me/feed.xml';
 loadData();
 </script>
 </body>

@@ -409,6 +409,59 @@ ${items}</channel>
 </rss>`;
 }
 
+// ==================== 合并 Feed 生成 ====================
+function buildMergedFeedXml(allTopicData, siteUrl) {
+  // 收集所有条目，带上日期和主题信息
+  const allItems = [];
+
+  for (const { topic, days } of allTopicData) {
+    for (const day of days) {
+      const pubDate = new Date(day.date + 'T09:00:00+08:00').toUTCString();
+      for (const section of day.sections) {
+        for (const raw of section.items) {
+          const news = normalizeItem(raw);
+          allItems.push({
+            title: `${topic.icon} ${section.icon} ${news.title}`,
+            link: news.link || siteUrl,
+            description: news.titleEN
+              ? `[${news.source}] ${news.title} (${news.titleEN})`
+              : news.source ? `[${news.source}] ${news.title}]` : news.title,
+            category: `${topic.name} - ${section.title}`,
+            pubDate,
+            guid: `${day.date}-${topic.id}-${news.title.slice(0, 40)}`,
+            sortKey: day.date + '-' + (news.title || ''),
+          });
+        }
+      }
+    }
+  }
+
+  // 按日期降序排列
+  allItems.sort((a, b) => b.sortKey.localeCompare(a.sortKey));
+
+  const items = allItems.map(item => `  <item>
+    <title>${escapeXml(item.title)}</title>
+    <link>${escapeXml(item.link)}</link>
+    <guid isPermaLink="false">${escapeXml(item.guid)}</guid>
+    <pubDate>${item.pubDate}</pubDate>
+    <description>${escapeXml(item.description)}</description>
+    <category>${escapeXml(item.category)}</category>
+  </item>
+`).join('');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>纳思 - 海纳百思</title>
+  <link>${siteUrl}</link>
+  <description>每日自动聚合全球金融、社科前沿、科技资讯</description>
+  <language>zh-cn</language>
+  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+  <atom:link href="${siteUrl}feed.xml" rel="self" type="application/rss+xml"/>
+${items}</channel>
+</rss>`;
+}
+
 // ==================== 原子写入 ====================
 function atomicWrite(filePath, data) {
   const tmp = filePath + '.tmp';
@@ -550,8 +603,38 @@ async function main() {
 
   console.log(`📋 共 ${topics.length} 个主题: ${topics.map(t => t.name).join(', ')}`);
 
+  // 收集所有主题数据用于合并 feed
+  const allTopicData = [];
+
   for (const topic of topics) {
     await processTopic(topic);
+
+    // 读取已生成的数据用于合并 feed
+    try {
+      const dataDir = path.join(ROOT, topic.dataDir);
+      const indexPath = path.join(dataDir, 'index.json');
+      if (fs.existsSync(indexPath)) {
+        const index = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
+        const days = [];
+        for (const dayInfo of index.days) {
+          const dayFile = path.join(dataDir, `${dayInfo.date}.json`);
+          if (fs.existsSync(dayFile)) {
+            days.push(JSON.parse(fs.readFileSync(dayFile, 'utf-8')));
+          }
+        }
+        allTopicData.push({ topic, days });
+      }
+    } catch (e) {
+      console.warn(`⚠️ 跳过合并 feed 的 ${topic.name}:`, e.message);
+    }
+  }
+
+  // 生成合并 feed.xml
+  if (allTopicData.length > 0) {
+    const siteUrl = 'https://nase.me/';
+    const mergedFeed = buildMergedFeedXml(allTopicData, siteUrl);
+    atomicWrite(path.join(ROOT, 'feed.xml'), mergedFeed);
+    console.log('📝 已更新 feed.xml (合并)');
   }
 
   saveCache();
