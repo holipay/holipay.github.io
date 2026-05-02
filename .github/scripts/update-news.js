@@ -30,6 +30,7 @@ const SCRIPTS_DIR = __dirname;
 const CACHE_FILE = path.join(SCRIPTS_DIR, 'translations-cache.json');
 const TOPICS_FILE = path.join(SCRIPTS_DIR, 'topics.json');
 const MAX_DAYS = 365;
+const FEED_MAX_DAYS = 3;
 const TRANSLATE_CONCURRENCY = 3;
 const MAX_RETRIES = 1;
 
@@ -371,7 +372,7 @@ function normalizeItem(item) {
 function buildFeedXml(allDays, siteUrl, feedFile) {
   let items = '';
 
-  for (const day of allDays.slice(0, 7)) {
+  for (const day of allDays.slice(0, FEED_MAX_DAYS)) {
     const dayDate = new Date(day.date + 'T01:00:00+08:00');
     const pubDate = dayDate.toUTCString();
 
@@ -415,7 +416,7 @@ function buildMergedFeedXml(allTopicData, siteUrl) {
   const allItems = [];
 
   for (const { topic, days } of allTopicData) {
-    for (const day of days) {
+    for (const day of days.slice(0, FEED_MAX_DAYS)) {
       const pubDate = new Date(day.date + 'T09:00:00+08:00').toUTCString();
       for (const section of day.sections) {
         for (const raw of section.items) {
