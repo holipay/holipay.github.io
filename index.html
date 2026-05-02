@@ -37,13 +37,14 @@
   --shadow-lg: 0 8px 24px rgba(0,0,0,.08);
   --shadow-hover: 0 4px 16px rgba(0,0,0,.1);
   --badge-bg: #f5f5f5;
-  --toolbar-bg: rgba(255,255,255,.85);
+  --sidebar-bg: #fff;
   --glass: rgba(255,255,255,.7);
   --radius: 12px;
   --radius-sm: 8px;
   --radius-pill: 100px;
   --transition: .2s cubic-bezier(.4,0,.2,1);
   --spring: .35s cubic-bezier(.34,1.56,.64,1);
+  --sidebar-w: 260px;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -62,7 +63,7 @@
     --shadow-lg: 0 8px 24px rgba(0,0,0,.3);
     --shadow-hover: 0 4px 16px rgba(0,0,0,.35);
     --badge-bg: #2a2a3a;
-    --toolbar-bg: rgba(26,26,36,.9);
+    --sidebar-bg: #1a1a24;
     --glass: rgba(26,26,36,.75);
   }
 }
@@ -82,35 +83,39 @@ body{
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
 
-/* ===== Toolbar (Glass) ===== */
-.toolbar{
-  background:var(--toolbar-bg);
-  backdrop-filter:blur(16px) saturate(1.4);
-  -webkit-backdrop-filter:blur(16px) saturate(1.4);
-  border-bottom:1px solid var(--border);
-  position:sticky;top:0;z-index:100;
-  will-change:transform;
+/* ===== Sidebar ===== */
+.sidebar{
+  position:fixed;top:0;left:0;bottom:0;
+  width:var(--sidebar-w);
+  background:var(--sidebar-bg);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  z-index:100;
+  overflow-y:auto;overflow-x:hidden;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
 }
-.toolbar-inner{max-width:1200px;margin:0 auto;padding:12px 20px}
+.sidebar-inner{padding:16px;flex:1;display:flex;flex-direction:column;gap:16px}
 
-/* Row 1 */
-.toolbar-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+/* Brand */
 .brand{
   display:flex;align-items:center;gap:8px;
-  font-size:17px;font-weight:800;
+  font-size:18px;font-weight:800;
   background:linear-gradient(135deg,var(--accent),#ff3d7f);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   background-clip:text;white-space:nowrap;letter-spacing:-.3px;
+  padding-bottom:12px;border-bottom:1px solid var(--border);
 }
 .brand-icon{font-size:22px;-webkit-text-fill-color:initial}
-.topic-tabs{display:flex;gap:8px;flex:1;flex-wrap:wrap}
+
+/* Topic tabs (vertical in sidebar) */
+.topic-tabs{display:flex;flex-direction:column;gap:6px}
 .topic-tab{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:6px 16px;background:transparent;
-  border:1.5px solid var(--border);border-radius:var(--radius-pill);
+  display:flex;align-items:center;gap:8px;
+  padding:8px 14px;background:transparent;
+  border:1.5px solid var(--border);border-radius:var(--radius-sm);
   font-size:13px;font-weight:500;color:var(--text-secondary);
   cursor:pointer;transition:all var(--transition);
-  position:relative;overflow:hidden;
+  position:relative;overflow:hidden;width:100%;text-align:left;
 }
 .topic-tab::before{
   content:'';position:absolute;inset:0;
@@ -125,42 +130,63 @@ body{
 .topic-tab span{position:relative;z-index:1}
 .topic-tab:hover:not(.active){border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
 
-.rss-btn{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:6px 14px;
-  background:var(--accent-light);border:1.5px solid transparent;
-  border-radius:var(--radius-pill);font-size:12px;font-weight:600;
-  color:var(--accent);cursor:pointer;
-  transition:all var(--transition);text-decoration:none;white-space:nowrap;
+/* Section labels */
+.sidebar-label{
+  font-size:11px;font-weight:600;color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:.5px;
+  margin-top:4px;
 }
-.rss-btn:hover{background:var(--accent);color:#fff;box-shadow:0 2px 12px var(--accent-glow)}
-.rss-btn svg{flex-shrink:0}
-.rss-tooltip{position:relative}
-.rss-tooltip .rss-popup{
-  display:none;position:absolute;top:calc(100% + 8px);right:0;
-  background:var(--card-bg);border:1px solid var(--border);
-  border-radius:var(--radius);padding:12px 16px;
-  box-shadow:var(--shadow-lg);z-index:200;
-  white-space:nowrap;font-size:12px;
-  animation:fadeSlideUp .2s ease;
-}
-.rss-tooltip .rss-popup code{
-  display:block;margin-top:6px;color:var(--accent);
-  word-break:break-all;max-width:320px;white-space:normal;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;
-  background:var(--bg);padding:6px 8px;border-radius:6px;
-}
-.rss-tooltip:hover .rss-popup{display:block}
 
-/* Row 2 */
-.toolbar-bottom{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
-.filters{display:flex;gap:6px;flex:1;flex-wrap:wrap;padding:2px 0;min-width:0}
-.filter-btn{
-  white-space:nowrap;padding:5px 14px;
-  background:transparent;border-radius:var(--radius-pill);
+/* Date nav (vertical in sidebar) */
+.date-nav{display:flex;flex-direction:column;gap:4px}
+.date-nav a{
+  padding:6px 12px;
+  background:transparent;border-radius:var(--radius-sm);
   font-size:12px;font-weight:500;color:var(--text-secondary);
-  border:1.5px solid var(--border);cursor:pointer;
-  transition:all var(--transition);
+  text-decoration:none;border:1.5px solid transparent;
+  transition:all var(--transition);display:block;
+}
+.date-nav a:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+.date-nav a.active{
+  background:linear-gradient(135deg,var(--accent),#ff3d7f);
+  color:#fff;border-color:transparent;
+  box-shadow:0 2px 8px var(--accent-glow);
+}
+.nav-more{position:relative}
+.nav-more-btn{
+  width:100%;padding:6px 12px;background:transparent;
+  border-radius:var(--radius-sm);font-size:12px;font-weight:500;
+  color:var(--text-secondary);border:1.5px solid var(--border);
+  cursor:pointer;transition:all var(--transition);
+  display:flex;align-items:center;gap:4px;text-align:left;
+}
+.nav-more-btn:hover{border-color:var(--accent);color:var(--accent)}
+.nav-dropdown{
+  display:none;margin-top:4px;
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--card-bg);box-shadow:var(--shadow);
+  max-height:200px;overflow-y:auto;
+  animation:fadeSlideUp .15s ease;
+}
+.nav-dropdown a{
+  display:block;padding:6px 12px;font-size:12px;
+  color:var(--text-secondary);text-decoration:none;
+  border-bottom:1px solid var(--border);transition:all .15s;
+}
+.nav-dropdown a:last-child{border-bottom:none}
+.nav-dropdown a:hover{background:var(--accent-light);color:var(--accent)}
+.nav-dropdown a.active{color:var(--accent);font-weight:700}
+.nav-more:hover .nav-dropdown{display:block}
+
+/* Filters (vertical in sidebar) */
+.filter-list{display:flex;flex-direction:column;gap:4px}
+.filter-btn{
+  padding:6px 12px;
+  background:transparent;border-radius:var(--radius-sm);
+  font-size:12px;font-weight:500;color:var(--text-secondary);
+  border:1.5px solid transparent;cursor:pointer;
+  transition:all var(--transition);text-align:left;
+  display:flex;align-items:center;gap:6px;
 }
 .filter-btn.active{
   background:linear-gradient(135deg,var(--accent),#ff3d7f);
@@ -168,71 +194,140 @@ body{
   box-shadow:0 2px 8px var(--accent-glow);
 }
 .filter-btn:hover:not(.active){border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
-.toolbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.search-bar{position:relative;width:160px;flex-shrink:0}
+
+/* Search bar (sidebar) */
+.search-bar{position:relative;width:100%}
 .search-bar input{
-  width:100%;padding:5px 10px 5px 30px;
-  border:1.5px solid var(--border);border-radius:var(--radius-pill);
+  width:100%;padding:7px 12px 7px 32px;
+  border:1.5px solid var(--border);border-radius:var(--radius-sm);
   font-size:12px;background:var(--bg);color:var(--text);
   outline:none;transition:all var(--transition);
 }
-.search-bar input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow);background:var(--card-bg);width:220px}
+.search-bar input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow);background:var(--card-bg)}
 .search-bar input::placeholder{color:var(--text-muted)}
-.search-bar svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--text-muted);transition:color var(--transition)}
+.search-bar svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);transition:color var(--transition)}
 .search-bar input:focus + svg,.search-bar:focus-within svg{color:var(--accent)}
-.search-count{font-size:10px;color:var(--text-muted);white-space:nowrap;padding:2px 6px;background:var(--bg);border-radius:var(--radius-sm);font-weight:500}
+.search-count{font-size:10px;color:var(--text-muted);white-space:nowrap;padding:2px 6px;background:var(--bg);border-radius:var(--radius-sm);font-weight:500;margin-top:4px;display:inline-block}
 
-/* Date nav */
-.nav{display:flex;gap:6px;align-items:center;padding:12px 0;flex-wrap:wrap}
-.nav a{
-  white-space:nowrap;padding:5px 14px;
+/* RSS (sidebar) */
+.rss-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;
+  background:var(--accent-light);border:1.5px solid transparent;
+  border-radius:var(--radius-sm);font-size:12px;font-weight:600;
+  color:var(--accent);cursor:pointer;
+  transition:all var(--transition);text-decoration:none;white-space:nowrap;width:100%;justify-content:center;
+}
+.rss-btn:hover{background:var(--accent);color:#fff;box-shadow:0 2px 12px var(--accent-glow)}
+.rss-btn svg{flex-shrink:0}
+.rss-tooltip{position:relative}
+.rss-tooltip .rss-popup{
+  display:none;position:absolute;top:calc(100% + 8px);left:0;right:0;
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px 16px;
+  box-shadow:var(--shadow-lg);z-index:200;
+  font-size:12px;
+  animation:fadeSlideUp .2s ease;
+}
+.rss-tooltip .rss-popup code{
+  display:block;margin-top:6px;color:var(--accent);
+  word-break:break-all;white-space:normal;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;
+  background:var(--bg);padding:6px 8px;border-radius:6px;
+}
+.rss-tooltip:hover .rss-popup{display:block}
+
+/* ===== Mobile header (shown <768px) ===== */
+.mobile-header{
+  display:none;
+  position:sticky;top:0;z-index:100;
+  background:var(--sidebar-bg);
+  border-bottom:1px solid var(--border);
+  padding:10px 16px;
+  align-items:center;gap:10px;
+}
+.mobile-brand{
+  display:flex;align-items:center;gap:6px;
+  font-size:16px;font-weight:800;
+  background:linear-gradient(135deg,var(--accent),#ff3d7f);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.mobile-brand .brand-icon{-webkit-text-fill-color:initial;font-size:18px}
+.hamburger{
+  width:36px;height:36px;
+  background:var(--card-bg);border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all var(--transition);flex-shrink:0;
+}
+.hamburger:hover{border-color:var(--accent);color:var(--accent)}
+.mobile-search{flex:1;position:relative}
+.mobile-search input{
+  width:100%;padding:7px 12px 7px 32px;
+  border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  font-size:13px;background:var(--bg);color:var(--text);
+  outline:none;
+}
+.mobile-search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.mobile-search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted)}
+.mobile-topic-tabs{
+  display:flex;gap:6px;overflow-x:auto;padding:0 16px 10px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.mobile-topic-tabs::-webkit-scrollbar{display:none}
+.mobile-topic-tabs .topic-tab{
+  flex-shrink:0;padding:5px 14px;font-size:12px;
+  border-radius:var(--radius-pill);width:auto;
+}
+.mobile-filter-bar{
+  display:flex;gap:6px;overflow-x:auto;padding:0 16px 10px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.mobile-filter-bar::-webkit-scrollbar{display:none}
+.mobile-filter-bar .filter-btn{
+  flex-shrink:0;padding:4px 12px;border-radius:var(--radius-pill);
+  font-size:11px;width:auto;
+}
+.mobile-date-bar{
+  display:flex;gap:6px;overflow-x:auto;padding:0 16px 10px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.mobile-date-bar::-webkit-scrollbar{display:none}
+.mobile-date-bar a{
+  flex-shrink:0;padding:4px 12px;
   background:var(--card-bg);border-radius:var(--radius-pill);
-  font-size:12px;font-weight:500;color:var(--text-secondary);
+  font-size:11px;font-weight:500;color:var(--text-secondary);
   text-decoration:none;border:1.5px solid var(--border);
   transition:all var(--transition);
 }
-.nav a:hover{border-color:var(--accent);color:var(--accent)}
-.nav a.active{
+.mobile-date-bar a:hover{border-color:var(--accent);color:var(--accent)}
+.mobile-date-bar a.active{
   background:linear-gradient(135deg,var(--accent),#ff3d7f);
   color:#fff;border-color:transparent;
-  box-shadow:0 2px 8px var(--accent-glow);
 }
-.nav-more{position:relative;display:inline-block}
-.nav-more-btn{
-  padding:5px 12px;background:var(--card-bg);
-  border-radius:var(--radius-pill);font-size:12px;font-weight:500;
-  color:var(--text-secondary);border:1.5px solid var(--border);
-  cursor:pointer;transition:all var(--transition);
-  display:inline-flex;align-items:center;gap:4px;
-}
-.nav-more-btn:hover{border-color:var(--accent);color:var(--accent)}
-.nav-dropdown{
-  display:none;position:absolute;top:calc(100% + 6px);left:0;
-  background:var(--card-bg);border:1px solid var(--border);
-  border-radius:var(--radius);box-shadow:var(--shadow-lg);
-  z-index:200;min-width:140px;max-height:260px;overflow-y:auto;
-  animation:fadeSlideUp .15s ease;
-}
-.nav-dropdown a{
-  display:block;padding:8px 16px;font-size:12px;
-  color:var(--text-secondary);text-decoration:none;
-  border-bottom:1px solid var(--border);transition:all .15s;
-  border-radius:0;border:none;
-}
-.nav-dropdown a:last-child{border-bottom:none}
-.nav-dropdown a:hover{background:var(--accent-light);color:var(--accent)}
-.nav-dropdown a.active{color:var(--accent);font-weight:700}
-.nav-more:hover .nav-dropdown{display:block}
 
-/* Layout */
-.container{max-width:1200px;margin:0 auto;padding:16px 20px}
+/* Overlay for mobile sidebar */
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.4);z-index:99;
+  backdrop-filter:blur(2px);
+}
+.sidebar-overlay.show{display:block}
+
+/* ===== Main content ===== */
+.main{
+  margin-left:var(--sidebar-w);
+  min-height:100vh;
+}
+.container{max-width:960px;margin:0 auto;padding:16px 24px}
 
 /* Cards */
 .cards-grid{columns:2;column-gap:20px}
 .cards-full{columns:1}
 .card{
   background:var(--card-bg);border-radius:var(--radius);
-  padding:20px;box-shadow:var(--shadow-sm);
+  padding:16px;box-shadow:var(--shadow-sm);
   border:1px solid var(--border);
   break-inside:avoid;margin-bottom:16px;
   transition:all var(--transition);
@@ -240,9 +335,9 @@ body{
 }
 .card:hover{box-shadow:var(--shadow-hover);transform:translateY(-1px)}
 .card h3{
-  font-size:15px;font-weight:700;margin:0 0 12px;
+  font-size:15px;font-weight:700;margin:0 0 10px;
   display:flex;align-items:center;gap:8px;
-  padding-bottom:10px;border-bottom:1px solid var(--border);
+  padding-bottom:8px;border-bottom:1px solid var(--border);
 }
 .card h3 .count{
   font-size:11px;font-weight:500;color:var(--text-muted);
@@ -265,7 +360,6 @@ body{
 }
 .news-item a:hover{color:var(--accent)}
 .news-item a:visited{color:var(--text-muted)}
-.news-subtitle{font-size:11px;color:var(--text-muted);margin-top:2px;font-style:italic;opacity:.8}
 .source-tag{
   display:inline-flex;align-items:center;
   background:var(--badge-bg);color:var(--text-muted);
@@ -306,7 +400,7 @@ body{
 .skeleton{animation:pulse 1.5s ease-in-out infinite}
 .skeleton-card{
   background:var(--card-bg);border-radius:var(--radius);
-  padding:20px;margin-bottom:16px;border:1px solid var(--border);
+  padding:16px;margin-bottom:16px;border:1px solid var(--border);
 }
 .skeleton-line{
   height:14px;background:var(--border);border-radius:6px;
@@ -336,74 +430,117 @@ body{
 .card:nth-child(5){animation-delay:.15s}
 .card:nth-child(6){animation-delay:.18s}
 
-/* Responsive */
+/* ===== Responsive: mobile ===== */
 @media (max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .mobile-header{display:flex}
+  .main{margin-left:0}
+  .container{padding:12px 14px}
   .cards-grid{columns:1}
   .news-list.news-grid{columns:1}
-  .toolbar-top{gap:8px}
   .rss-btn .rss-label{display:none}
-  .toolbar-right{order:10;width:100%;justify-content:flex-end}
-  .search-bar{width:140px}
-  .search-bar input:focus{width:180px}
-  .toolbar-inner{padding:10px 14px}
-  .container{padding:12px 14px}
-  .brand{font-size:15px}
 }
 @media (max-width:480px){
-  .topic-tab{padding:5px 12px;font-size:12px}
-  .nav a{padding:4px 10px;font-size:11px}
+  .mobile-topic-tabs .topic-tab{padding:4px 10px;font-size:11px}
+  .mobile-filter-bar .filter-btn{padding:3px 10px;font-size:10px}
+  .mobile-date-bar a{padding:3px 10px;font-size:10px}
 }
 </style>
 </head>
 <body>
 
-<!-- Toolbar -->
-<div class="toolbar">
-  <div class="toolbar-inner">
-    <div class="toolbar-top">
-      <div class="brand"><span class="brand-icon">📰</span> 纳思</div>
-      <div class="topic-tabs" id="topicTabs"></div>
-      <div class="rss-tooltip">
+<!-- Mobile header -->
+<div class="mobile-header">
+  <button class="hamburger" id="hamburger" aria-label="菜单">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="mobile-brand"><span class="brand-icon">📰</span> 纳思</div>
+  <div class="mobile-search">
+    <input type="text" id="mobileSearchInput" placeholder="搜索..." oninput="debouncedSearch()" aria-label="搜索新闻">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+  </div>
+  <div class="rss-tooltip">
+    <a class="rss-btn" href="#" id="mobileRssLink" target="_blank" style="padding:6px 10px;width:auto">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+    </a>
+    <div class="rss-popup">
+      <div style="display:flex;align-items:center;gap:8px">
+        <code id="mobile-rss-url"></code>
+        <button class="copy-btn" onclick="copyRSS()" style="background:var(--accent);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;white-space:nowrap;font-weight:600">复制</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mobile-topic-tabs" id="mobileTopicTabs"></div>
+<div class="mobile-filter-bar" id="mobileFilterBar"></div>
+<div class="mobile-date-bar" id="mobileDateBar"></div>
+
+<!-- Sidebar overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner">
+    <div class="brand"><span class="brand-icon">📰</span> 纳思</div>
+
+    <div>
+      <div class="sidebar-label">资讯分类</div>
+      <div class="topic-tabs" id="topicTabs" style="margin-top:8px"></div>
+    </div>
+
+    <div>
+      <div class="sidebar-label">日期</div>
+      <div class="date-nav" id="dateNav" style="margin-top:8px"></div>
+    </div>
+
+    <div>
+      <div class="sidebar-label">筛选</div>
+      <div class="filter-list" id="filters" style="margin-top:8px"></div>
+    </div>
+
+    <div>
+      <div class="sidebar-label">搜索</div>
+      <div class="search-bar" style="margin-top:8px">
+        <input type="text" id="searchInput" placeholder="搜索新闻..." oninput="debouncedSearch()" aria-label="搜索新闻">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </div>
+      <span id="searchCount" class="search-count"></span>
+    </div>
+
+    <div style="margin-top:auto;padding-top:12px;border-top:1px solid var(--border)">
+      <div class="rss-tooltip" style="width:100%">
         <a class="rss-btn" href="#" id="rssLink" target="_blank">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
-          <span class="rss-label">RSS</span>
+          <span class="rss-label">RSS 订阅</span>
         </a>
         <div class="rss-popup">
           <div style="display:flex;align-items:center;gap:8px">
             <code id="rss-url"></code>
-            <button class="copy-btn" onclick="copyRSS()" style="background:var(--accent);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;white-space:nowrap;font-weight:600;transition:all var(--transition)">复制</button>
+            <button class="copy-btn" onclick="copyRSS()" style="background:var(--accent);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;white-space:nowrap;font-weight:600">复制</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="toolbar-bottom">
-      <div class="filters" id="filters"></div>
-      <div class="toolbar-right">
-        <div class="search-bar">
-          <input type="text" id="searchInput" placeholder="搜索..." oninput="debouncedSearch()" aria-label="搜索新闻">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        </div>
-        <span id="searchCount" class="search-count"></span>
-      </div>
+  </div>
+</aside>
+
+<!-- Main content -->
+<main class="main">
+  <div class="container">
+    <div id="content">
+      <div class="skeleton-card skeleton"><div class="skeleton-line title"></div><div class="skeleton-line"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div>
+      <div class="skeleton-card skeleton"><div class="skeleton-line title"></div><div class="skeleton-line"></div><div class="skeleton-line medium"></div></div>
     </div>
   </div>
-</div>
-
-<div class="container">
-  <div class="nav" id="nav"></div>
-  <div id="content">
-    <div class="skeleton-card skeleton"><div class="skeleton-line title"></div><div class="skeleton-line"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div>
-    <div class="skeleton-card skeleton"><div class="skeleton-line title"></div><div class="skeleton-line"></div><div class="skeleton-line medium"></div></div>
+  <div class="footer">
+    纳思 · 海纳百思 · 数据来源于公开网络 · 新闻版权归原作者/来源所有
   </div>
-</div>
+</main>
 
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到顶部">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m18 15-6-6-6 6"/></svg>
 </button>
-
-<div class="footer">
-  纳思 · 海纳百思 · 数据来源于公开网络 · 新闻版权归原作者/来源所有
-</div>
 
 <script>
 const TOPICS = [
@@ -418,12 +555,42 @@ let currentDateIdx = 0;
 let activeCategory = 'all';
 let searchQuery = '';
 
+// ===== DOM refs =====
+const $ = id => document.getElementById(id);
+const $content = $('content');
+const $dateNav = $('dateNav');
+const $filters = $('filters');
+const $searchInput = $('searchInput');
+const $mobileSearchInput = $('mobileSearchInput');
+const $searchCount = $('searchCount');
+const $rssUrl = $('rss-url');
+const $rssLink = $('rssLink');
+const $topicTabs = $('topicTabs');
+const $mobileTopicTabs = $('mobileTopicTabs');
+const $mobileFilterBar = $('mobileFilterBar');
+const $mobileDateBar = $('mobileDateBar');
+const $sidebar = $('sidebar');
+const $sidebarOverlay = $('sidebarOverlay');
+const $hamburger = $('hamburger');
+const $mobileRssLink = $('mobileRssLink');
+
+// ===== Mobile sidebar toggle =====
+$hamburger.addEventListener('click', () => {
+  $sidebar.classList.toggle('open');
+  $sidebarOverlay.classList.toggle('show');
+});
+$sidebarOverlay.addEventListener('click', () => {
+  $sidebar.classList.remove('open');
+  $sidebarOverlay.classList.remove('show');
+});
+
 // ===== Topic switching =====
 function switchTopic(topicId) {
   currentTopic = TOPICS.find(t => t.id === topicId) || TOPICS[0];
   activeCategory = 'all';
   searchQuery = '';
   $searchInput.value = '';
+  $mobileSearchInput.value = '';
   $searchCount.textContent = '';
 
   document.querySelectorAll('.topic-tab').forEach(tab => {
@@ -432,16 +599,24 @@ function switchTopic(topicId) {
 
   const feedUrl = 'https://nase.me/' + currentTopic.feedFile;
   $rssUrl.textContent = feedUrl;
+  $('mobile-rss-url').textContent = feedUrl;
   $rssLink.href = feedUrl;
+  $mobileRssLink.href = feedUrl;
+
+  // Close mobile sidebar
+  $sidebar.classList.remove('open');
+  $sidebarOverlay.classList.remove('show');
 
   showSkeleton();
   loadData();
 }
 
 function buildTopicTabs() {
-  $topicTabs.innerHTML = TOPICS.map(t =>
+  const tabHtml = TOPICS.map(t =>
     `<button class="topic-tab ${t.id === currentTopic.id ? 'active' : ''}" data-topic="${t.id}" onclick="switchTopic('${t.id}')"><span>${t.icon} ${t.name}</span></button>`
   ).join('');
+  $topicTabs.innerHTML = tabHtml;
+  $mobileTopicTabs.innerHTML = tabHtml;
 }
 
 function showSkeleton() {
@@ -463,11 +638,9 @@ async function loadData() {
     const firstDate = index.days[0]?.date;
     if (!firstDate) throw new Error('empty index');
 
-    // 索引到了，立即构建日期导航（不等首日数据）
     window._splitSelectedIdx = 0;
     buildDateNav();
 
-    // 加载首日数据
     const dayRes = await fetch(`${dataDir}/${firstDate}.json`);
     if (!dayRes.ok) throw new Error('day load failed');
     allData = [await dayRes.json()];
@@ -483,9 +656,10 @@ async function loadData() {
       buildDateNav(); buildFilters(); renderContent();
     } catch {
       allData = [];
-      $nav.innerHTML = '';
-      $stats.innerHTML = '';
+      $dateNav.innerHTML = '';
+      $mobileDateBar.innerHTML = '';
       $filters.innerHTML = '';
+      $mobileFilterBar.innerHTML = '';
       $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据，每日 9:00 自动更新</p></div>';
     }
   }
@@ -508,12 +682,13 @@ async function loadDayFromSplit(date) {
 
 // ===== Copy RSS =====
 function copyRSS() {
-  navigator.clipboard.writeText($rssUrl.textContent).then(() => {
-    const btn = document.querySelector('.copy-btn');
-    const orig = btn.textContent;
-    btn.textContent = '✓ 已复制';
-    btn.style.background = '#10b981';
-    setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1500);
+  navigator.clipboard.writeText($rssUrl.textContent || $('mobile-rss-url').textContent).then(() => {
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      const orig = btn.textContent;
+      btn.textContent = '✓ 已复制';
+      btn.style.background = '#10b981';
+      setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1500);
+    });
   });
 }
 
@@ -524,7 +699,12 @@ function debouncedSearch() {
   _searchTimer = setTimeout(onSearch, 200);
 }
 function onSearch() {
-  searchQuery = $searchInput.value.trim().toLowerCase();
+  // Sync search inputs
+  const val = document.activeElement === $mobileSearchInput
+    ? $mobileSearchInput.value : $searchInput.value;
+  searchQuery = val.trim().toLowerCase();
+  $searchInput.value = val;
+  $mobileSearchInput.value = val;
   renderContent();
 }
 
@@ -538,20 +718,20 @@ function setCategory(cat) {
 // ===== Date navigation =====
 function showDate(idx) {
   if (window._splitIndex) {
-    // 拆分模式：idx 是索引中的日期下标
     const date = window._splitIndex.days[idx]?.date;
     if (date) {
       activeCategory = 'all'; searchQuery = '';
       $searchInput.value = '';
+      $mobileSearchInput.value = '';
       $searchCount.textContent = '';
       loadDayFromSplit(date);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   } else {
-    // 旧模式
     currentDateIdx = idx;
     activeCategory = 'all'; searchQuery = '';
     $searchInput.value = '';
+    $mobileSearchInput.value = '';
     $searchCount.textContent = '';
     buildDateNav(); buildFilters(); renderContent();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -559,10 +739,6 @@ function showDate(idx) {
 }
 
 function buildDateNav() {
-  const nav = $nav;
-  nav.innerHTML = '';
-
-  // 拆分模式：从索引读取日期列表
   const dates = window._splitIndex
     ? window._splitIndex.days.map(d => d.date)
     : allData.map(d => d.date);
@@ -571,48 +747,44 @@ function buildDateNav() {
     ? (window._splitSelectedIdx ?? 0)
     : currentDateIdx;
 
+  // Sidebar date nav (show recent 5 + dropdown)
   const RECENT = 5;
   const recentDates = dates.slice(0, RECENT);
   const olderDates = dates.slice(RECENT);
 
+  let sidebarHtml = '';
   recentDates.forEach((dateStr, i) => {
-    const a = document.createElement('a');
-    a.href = '#'; a.textContent = dateStr;
-    if (i === currentIdx) a.className = 'active';
-    a.onclick = e => { e.preventDefault(); showDate(i); };
-    nav.appendChild(a);
+    sidebarHtml += `<a href="#" class="${i === currentIdx ? 'active' : ''}" onclick="event.preventDefault();showDate(${i})">${dateStr}</a>`;
   });
 
   if (olderDates.length > 0) {
-    const more = document.createElement('div');
-    more.className = 'nav-more';
-    const btn = document.createElement('button');
-    btn.className = 'nav-more-btn';
     const isOlderActive = currentIdx >= RECENT;
-    btn.innerHTML = isOlderActive ? `${dates[currentIdx]} ▾` : '更早 ▾';
-    if (isOlderActive) btn.style.borderColor = 'var(--accent)';
-    more.appendChild(btn);
-    const dropdown = document.createElement('div');
-    dropdown.className = 'nav-dropdown';
-    olderDates.forEach((dateStr, i) => {
-      const a = document.createElement('a');
-      a.href = '#'; a.textContent = dateStr;
-      if (RECENT + i === currentIdx) a.className = 'active';
-      a.onclick = e => { e.preventDefault(); showDate(RECENT + i); };
-      dropdown.appendChild(a);
-    });
-    more.appendChild(dropdown);
-    nav.appendChild(more);
+    sidebarHtml += `<div class="nav-more">
+      <button class="nav-more-btn">${isOlderActive ? dates[currentIdx] + ' ▾' : '更早 ▾'}</button>
+      <div class="nav-dropdown">
+        ${olderDates.map((dateStr, i) => `<a href="#" class="${RECENT + i === currentIdx ? 'active' : ''}" onclick="event.preventDefault();showDate(${RECENT + i})">${dateStr}</a>`).join('')}
+      </div>
+    </div>`;
   }
+  $dateNav.innerHTML = sidebarHtml;
+
+  // Mobile date bar (show all recent dates)
+  let mobileHtml = '';
+  dates.slice(0, 14).forEach((dateStr, i) => {
+    mobileHtml += `<a href="#" class="${i === currentIdx ? 'active' : ''}" onclick="event.preventDefault();showDate(${i})">${dateStr}</a>`;
+  });
+  $mobileDateBar.innerHTML = mobileHtml;
 }
 
 // ===== Filters =====
 function buildFilters() {
-  const el = $filters;
   const day = allData[currentDateIdx];
-  if (!day) { el.innerHTML = ''; return; }
-  el.innerHTML = `<button class="filter-btn active" data-cat="all" onclick="setCategory('all')">全部</button>` +
+  if (!day) { $filters.innerHTML = ''; $mobileFilterBar.innerHTML = ''; return; }
+
+  const filterHtml = `<button class="filter-btn active" data-cat="all" onclick="setCategory('all')">全部</button>` +
     day.sections.map(s => `<button class="filter-btn" data-cat="${s.title}" onclick="setCategory('${s.title}')">${s.icon} ${s.title}</button>`).join('');
+  $filters.innerHTML = filterHtml;
+  $mobileFilterBar.innerHTML = filterHtml;
   activeCategory = 'all';
 }
 
@@ -671,17 +843,6 @@ function renderContent() {
 const _escEl = document.createElement('div');
 function esc(s) { _escEl.textContent = s; return _escEl.innerHTML; }
 
-// ===== DOM refs (cached) =====
-const $ = id => document.getElementById(id);
-const $content = $('content');
-const $nav = $('nav');
-const $filters = $('filters');
-const $searchInput = $('searchInput');
-const $searchCount = $('searchCount');
-const $rssUrl = $('rss-url');
-const $rssLink = $('rssLink');
-const $topicTabs = $('topicTabs');
-
 function highlightMatch(text) {
   if (!searchQuery) return esc(text);
   const escaped = esc(text);
@@ -699,16 +860,19 @@ window.addEventListener('scroll', () => {
 document.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
-    $searchInput.focus();
+    (window.innerWidth <= 768 ? $mobileSearchInput : $searchInput).focus();
   }
   if (e.key === 'Escape') {
-    const input = $searchInput;
-    if (document.activeElement === input) {
-      input.value = ''; input.blur();
+    if (document.activeElement === $searchInput || document.activeElement === $mobileSearchInput) {
+      $searchInput.value = ''; $mobileSearchInput.value = '';
+      document.activeElement.blur();
       searchQuery = '';
       $searchCount.textContent = '';
       renderContent();
     }
+    // Close mobile sidebar
+    $sidebar.classList.remove('open');
+    $sidebarOverlay.classList.remove('show');
   }
   if (document.activeElement.tagName !== 'INPUT') {
     const maxIdx = window._splitIndex ? window._splitIndex.days.length - 1 : allData.length - 1;
@@ -722,7 +886,9 @@ document.addEventListener('keydown', e => {
 buildTopicTabs();
 const feedUrl = 'https://nase.me/' + currentTopic.feedFile;
 $rssUrl.textContent = feedUrl;
+$('mobile-rss-url').textContent = feedUrl;
 $rssLink.href = feedUrl;
+$mobileRssLink.href = feedUrl;
 loadData();
 </script>
 </body>
