@@ -1,46 +1,56 @@
-# 📰 小米每日资讯
+# 📰 纳思 — 海纳百思
 
-每日自动整理小米相关新闻，按分类呈现，支持 RSS 订阅。
+每日自动聚合全球金融、社科前沿、科技资讯的多元思考。
 
-🔗 **在线访问**：https://holipay.github.io/xiaomi-daily-news/
+🔗 **在线访问**：https://nase.me
 
-📡 **RSS 订阅**：https://holipay.github.io/xiaomi-daily-news/feed.xml
+## 📡 RSS 订阅
 
-## 功能
+| 主题 | RSS |
+|------|-----|
+| 📱 小米资讯 | [feed.xml](https://nase.me/feed.xml) |
+| 💹 全球金融 | [feed-finance.xml](https://nase.me/feed-finance.xml) |
 
-- 🤖 每日 9:00（北京时间）自动抓取更新
-- 📂 智能分类：小米汽车、AI/大模型、手机市场、IoT/生态链、公司动态
-- 🔗 每条新闻保留原文链接，点击直达
-- 🏷️ 标注新闻来源（Google News、36氪、IT之家、新浪科技）
-- 🔍 支持标题搜索
-- 🌙 自动适配深色模式
-- 📡 标准 RSS 2.0 feed，每条新闻独立 item
-- 📱 移动端友好
+## 内容板块
+
+### 📱 小米资讯
+自动抓取并分类小米相关新闻，每日约 200 条：
+- 🚗 小米汽车
+- 🤖 AI / 大模型
+- 📱 手机市场
+- 📊 公司动态
+- 🏠 IoT / 生态链
+
+### 💹 全球金融
+聚合全球财经资讯，每日约 500 条：
+- 📈 股市与市场
+- 💰 宏观经济
+- 🏦 央行与利率
+- 🛢️ 大宗商品与能源
+- 🖥️ 科技与企业
+- 🌍 国际财经
+
+### 🎓 社科前沿
+覆盖社会科学各领域，每日约 270 条：
+- 👥 社会与人口
+- 🏛️ 政治与治理
+- 💰 经济与金融
+- 🤖 科技与研究
+- 🏥 健康与公共卫生
+- 📚 教育与媒体
+- ⚖️ 法律与伦理
 
 ## 数据来源
 
-### 中文源
-| 来源 | 类型 | 说明 |
-|------|------|------|
-| Google News | RSS | 搜索"小米"关键词 |
-| 36氪 | API | 搜索接口 |
-| IT之家 | RSS | 全站 RSS 过滤小米相关 |
-| 新浪科技 | API | 滚动新闻接口 |
+**中文源**：Google News、36氪、IT之家、新浪科技
 
-### 英文源
-| 来源 | 类型 | 说明 |
-|------|------|------|
-| Google News EN | RSS | 英文搜索 Xiaomi |
-| GSMArena | RSS | 手机评测，过滤小米相关 |
-| Android Authority | RSS | 安卓资讯，过滤小米相关 |
-| Gizchina | RSS | 中国科技英文媒体 |
-| Gizmochina | RSS | 中国科技英文媒体 |
+**英文源**：Google News EN、GSMArena、Android Authority、Gizchina、Gizmochina 等
 
 ## 技术栈
 
 - 纯静态 HTML（零依赖，无框架）
-- Node.js 脚本抓取 + 分类
-- GitHub Actions 定时任务
+- Node.js 脚本抓取、翻译、分类
+- GitHub Actions 每日定时任务
 - GitHub Pages 托管
 
 ## 自动更新
