@@ -38,13 +38,12 @@
   --shadow-hover: 0 4px 16px rgba(0,0,0,.1);
   --badge-bg: #f5f5f5;
   --sidebar-bg: #fff;
-  --glass: rgba(255,255,255,.7);
   --radius: 12px;
   --radius-sm: 8px;
   --radius-pill: 100px;
   --transition: .2s cubic-bezier(.4,0,.2,1);
-  --spring: .35s cubic-bezier(.34,1.56,.64,1);
-  --sidebar-w: 260px;
+  --sidebar-w: 200px;
+  --rightbar-w: 220px;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -64,7 +63,6 @@
     --shadow-hover: 0 4px 16px rgba(0,0,0,.35);
     --badge-bg: #2a2a3a;
     --sidebar-bg: #1a1a24;
-    --glass: rgba(26,26,36,.75);
   }
 }
 
@@ -77,26 +75,27 @@ body{
   overflow-x:hidden;
 }
 
-/* ===== Scrollbar ===== */
 ::-webkit-scrollbar{width:6px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
 
-/* ===== Sidebar ===== */
-.sidebar{
-  position:fixed;top:0;left:0;bottom:0;
-  width:var(--sidebar-w);
+/* ===== Layout ===== */
+.layout{
+  display:flex;min-height:100vh;
+}
+
+/* ===== Left sidebar ===== */
+.sidebar-left{
+  position:sticky;top:0;height:100vh;
+  width:var(--sidebar-w);flex-shrink:0;
   background:var(--sidebar-bg);
   border-right:1px solid var(--border);
-  display:flex;flex-direction:column;
-  z-index:100;
   overflow-y:auto;overflow-x:hidden;
-  transition:transform .3s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;
 }
-.sidebar-inner{padding:16px;flex:1;display:flex;flex-direction:column;gap:16px}
+.sidebar-left-inner{padding:16px 14px;flex:1;display:flex;flex-direction:column;gap:14px}
 
-/* Brand */
 .brand{
   display:flex;align-items:center;gap:8px;
   font-size:18px;font-weight:800;
@@ -107,40 +106,16 @@ body{
 }
 .brand-icon{font-size:22px;-webkit-text-fill-color:initial}
 
-/* Topic tabs (vertical in sidebar) */
-.topic-tabs{display:flex;flex-direction:column;gap:6px}
-.topic-tab{
-  display:flex;align-items:center;gap:8px;
-  padding:8px 14px;background:transparent;
-  border:1.5px solid var(--border);border-radius:var(--radius-sm);
-  font-size:13px;font-weight:500;color:var(--text-secondary);
-  cursor:pointer;transition:all var(--transition);
-  position:relative;overflow:hidden;width:100%;text-align:left;
-}
-.topic-tab::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,var(--accent),#ff3d7f);
-  opacity:0;transition:opacity var(--transition);
-}
-.topic-tab.active{
-  color:#fff;border-color:transparent;
-  box-shadow:0 2px 12px var(--accent-glow);
-}
-.topic-tab.active::before{opacity:1}
-.topic-tab span{position:relative;z-index:1}
-.topic-tab:hover:not(.active){border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
-
-/* Section labels */
 .sidebar-label{
-  font-size:11px;font-weight:600;color:var(--text-muted);
+  font-size:10px;font-weight:600;color:var(--text-muted);
   text-transform:uppercase;letter-spacing:.5px;
-  margin-top:4px;
+  margin-bottom:6px;
 }
 
-/* Date nav (vertical in sidebar) */
-.date-nav{display:flex;flex-direction:column;gap:4px}
+/* Date nav */
+.date-nav{display:flex;flex-direction:column;gap:3px}
 .date-nav a{
-  padding:6px 12px;
+  padding:5px 10px;
   background:transparent;border-radius:var(--radius-sm);
   font-size:12px;font-weight:500;color:var(--text-secondary);
   text-decoration:none;border:1.5px solid transparent;
@@ -154,7 +129,7 @@ body{
 }
 .nav-more{position:relative}
 .nav-more-btn{
-  width:100%;padding:6px 12px;background:transparent;
+  width:100%;padding:5px 10px;background:transparent;
   border-radius:var(--radius-sm);font-size:12px;font-weight:500;
   color:var(--text-secondary);border:1.5px solid var(--border);
   cursor:pointer;transition:all var(--transition);
@@ -162,14 +137,14 @@ body{
 }
 .nav-more-btn:hover{border-color:var(--accent);color:var(--accent)}
 .nav-dropdown{
-  display:none;margin-top:4px;
+  display:none;margin-top:3px;
   border:1px solid var(--border);border-radius:var(--radius-sm);
   background:var(--card-bg);box-shadow:var(--shadow);
   max-height:200px;overflow-y:auto;
   animation:fadeSlideUp .15s ease;
 }
 .nav-dropdown a{
-  display:block;padding:6px 12px;font-size:12px;
+  display:block;padding:5px 10px;font-size:11px;
   color:var(--text-secondary);text-decoration:none;
   border-bottom:1px solid var(--border);transition:all .15s;
 }
@@ -178,15 +153,86 @@ body{
 .nav-dropdown a.active{color:var(--accent);font-weight:700}
 .nav-more:hover .nav-dropdown{display:block}
 
-/* Filters (vertical in sidebar) */
-.filter-list{display:flex;flex-direction:column;gap:4px}
+/* RSS */
+.rss-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 12px;
+  background:var(--accent-light);border:1.5px solid transparent;
+  border-radius:var(--radius-sm);font-size:12px;font-weight:600;
+  color:var(--accent);cursor:pointer;
+  transition:all var(--transition);text-decoration:none;white-space:nowrap;
+  justify-content:center;width:100%;
+}
+.rss-btn:hover{background:var(--accent);color:#fff;box-shadow:0 2px 12px var(--accent-glow)}
+.rss-tooltip{position:relative}
+.rss-tooltip .rss-popup{
+  display:none;position:absolute;top:calc(100% + 8px);left:0;right:0;
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:10px 12px;
+  box-shadow:var(--shadow-lg);z-index:200;font-size:11px;
+  animation:fadeSlideUp .2s ease;
+}
+.rss-tooltip .rss-popup code{
+  display:block;margin-top:4px;color:var(--accent);
+  word-break:break-all;white-space:normal;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;
+  background:var(--bg);padding:4px 6px;border-radius:4px;
+}
+.rss-tooltip:hover .rss-popup{display:block}
+
+/* Topic tabs */
+.topic-tabs{display:flex;flex-direction:column;gap:4px}
+.topic-tab{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 12px;background:transparent;
+  border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  font-size:12px;font-weight:500;color:var(--text-secondary);
+  cursor:pointer;transition:all var(--transition);
+  position:relative;overflow:hidden;width:100%;text-align:left;
+}
+.topic-tab::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--accent),#ff3d7f);
+  opacity:0;transition:opacity var(--transition);
+}
+.topic-tab.active{color:#fff;border-color:transparent;box-shadow:0 2px 12px var(--accent-glow)}
+.topic-tab.active::before{opacity:1}
+.topic-tab span{position:relative;z-index:1}
+.topic-tab:hover:not(.active){border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+
+/* ===== Right sidebar ===== */
+.sidebar-right{
+  position:sticky;top:0;height:100vh;
+  width:var(--rightbar-w);flex-shrink:0;
+  background:var(--sidebar-bg);
+  border-left:1px solid var(--border);
+  overflow-y:auto;overflow-x:hidden;
+}
+.sidebar-right-inner{padding:16px 14px;display:flex;flex-direction:column;gap:14px}
+
+/* Search */
+.search-bar{position:relative;width:100%}
+.search-bar input{
+  width:100%;padding:7px 10px 7px 30px;
+  border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  font-size:12px;background:var(--bg);color:var(--text);
+  outline:none;transition:all var(--transition);
+}
+.search-bar input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow);background:var(--card-bg)}
+.search-bar input::placeholder{color:var(--text-muted)}
+.search-bar svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--text-muted);transition:color var(--transition)}
+.search-bar input:focus + svg,.search-bar:focus-within svg{color:var(--accent)}
+.search-count{font-size:10px;color:var(--text-muted);white-space:nowrap;padding:2px 6px;background:var(--bg);border-radius:var(--radius-sm);font-weight:500;display:inline-block;margin-top:4px}
+
+/* Filters */
+.filter-list{display:flex;flex-direction:column;gap:3px}
 .filter-btn{
   padding:6px 12px;
   background:transparent;border-radius:var(--radius-sm);
   font-size:12px;font-weight:500;color:var(--text-secondary);
   border:1.5px solid transparent;cursor:pointer;
   transition:all var(--transition);text-align:left;
-  display:flex;align-items:center;gap:6px;
+  display:flex;align-items:center;gap:5px;
 }
 .filter-btn.active{
   background:linear-gradient(135deg,var(--accent),#ff3d7f);
@@ -195,56 +241,106 @@ body{
 }
 .filter-btn:hover:not(.active){border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
 
-/* Search bar (sidebar) */
-.search-bar{position:relative;width:100%}
-.search-bar input{
-  width:100%;padding:7px 12px 7px 32px;
-  border:1.5px solid var(--border);border-radius:var(--radius-sm);
-  font-size:12px;background:var(--bg);color:var(--text);
-  outline:none;transition:all var(--transition);
+/* ===== Main content ===== */
+.main{
+  flex:1;min-width:0;
+  padding:16px 24px;
 }
-.search-bar input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow);background:var(--card-bg)}
-.search-bar input::placeholder{color:var(--text-muted)}
-.search-bar svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);transition:color var(--transition)}
-.search-bar input:focus + svg,.search-bar:focus-within svg{color:var(--accent)}
-.search-count{font-size:10px;color:var(--text-muted);white-space:nowrap;padding:2px 6px;background:var(--bg);border-radius:var(--radius-sm);font-weight:500;margin-top:4px;display:inline-block}
 
-/* RSS (sidebar) */
-.rss-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:7px 14px;
-  background:var(--accent-light);border:1.5px solid transparent;
-  border-radius:var(--radius-sm);font-size:12px;font-weight:600;
-  color:var(--accent);cursor:pointer;
-  transition:all var(--transition);text-decoration:none;white-space:nowrap;width:100%;justify-content:center;
+.card{
+  background:var(--card-bg);border-radius:var(--radius);
+  padding:16px;box-shadow:var(--shadow-sm);
+  border:1px solid var(--border);
+  margin-bottom:16px;
+  transition:all var(--transition);
 }
-.rss-btn:hover{background:var(--accent);color:#fff;box-shadow:0 2px 12px var(--accent-glow)}
-.rss-btn svg{flex-shrink:0}
-.rss-tooltip{position:relative}
-.rss-tooltip .rss-popup{
-  display:none;position:absolute;top:calc(100% + 8px);left:0;right:0;
-  background:var(--card-bg);border:1px solid var(--border);
-  border-radius:var(--radius);padding:12px 16px;
-  box-shadow:var(--shadow-lg);z-index:200;
-  font-size:12px;
-  animation:fadeSlideUp .2s ease;
+.card:hover{box-shadow:var(--shadow-hover);transform:translateY(-1px)}
+.card h3{
+  font-size:15px;font-weight:700;margin:0 0 10px;
+  display:flex;align-items:center;gap:8px;
+  padding-bottom:8px;border-bottom:1px solid var(--border);
 }
-.rss-tooltip .rss-popup code{
-  display:block;margin-top:6px;color:var(--accent);
-  word-break:break-all;white-space:normal;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;
-  background:var(--bg);padding:6px 8px;border-radius:6px;
+.card h3 .count{
+  font-size:11px;font-weight:500;color:var(--text-muted);
+  background:var(--bg);padding:2px 8px;border-radius:var(--radius-sm);
+  margin-left:auto;
 }
-.rss-tooltip:hover .rss-popup{display:block}
+.news-list{list-style:none;padding:0}
+.news-item{
+  padding:8px 0;border-bottom:1px solid transparent;
+  transition:all var(--transition);
+}
+.news-item:last-child{border-bottom:none}
+.news-item:not(:last-child){border-bottom-color:var(--border)}
+.news-item a{
+  color:var(--text);text-decoration:none;font-size:13.5px;
+  transition:color var(--transition);line-height:1.6;
+}
+.news-item a:hover{color:var(--accent)}
+.news-item a:visited{color:var(--text-muted)}
+.source-tag{
+  display:inline-flex;align-items:center;
+  background:var(--badge-bg);color:var(--text-muted);
+  font-size:10px;font-weight:500;
+  padding:2px 8px;border-radius:var(--radius-sm);
+  white-space:nowrap;margin-left:6px;vertical-align:middle;
+}
 
-/* ===== Mobile header (shown <768px) ===== */
+/* Empty state */
+.empty{text-align:center;padding:64px 20px;color:var(--text-muted)}
+.empty-icon{font-size:48px;margin-bottom:16px;opacity:.6}
+.empty p{font-size:14px}
+
+/* Footer */
+.footer{
+  text-align:center;padding:20px;
+  color:var(--text-muted);font-size:11px;
+  border-top:1px solid var(--border);margin-top:12px;
+}
+.footer a{color:var(--accent);text-decoration:none;font-weight:500}
+.footer a:hover{text-decoration:underline}
+
+/* Back to top */
+.back-top{
+  position:fixed;bottom:24px;right:24px;
+  width:40px;height:40px;border-radius:50%;
+  background:var(--accent);color:#fff;
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px var(--accent-glow);
+  opacity:0;transform:translateY(12px);
+  transition:all .3s ease;pointer-events:none;z-index:50;
+}
+.back-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+.back-top:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--accent-glow)}
+
+/* Skeleton */
+.skeleton{animation:pulse 1.5s ease-in-out infinite}
+.skeleton-card{
+  background:var(--card-bg);border-radius:var(--radius);
+  padding:16px;margin-bottom:16px;border:1px solid var(--border);
+}
+.skeleton-line{height:14px;background:var(--border);border-radius:6px;margin-bottom:10px}
+.skeleton-line.short{width:60%}
+.skeleton-line.medium{width:80%}
+.skeleton-line.title{width:45%;height:18px;margin-bottom:16px}
+
+/* Animations */
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:cardIn .35s ease both}
+.card:nth-child(2){animation-delay:.05s}
+.card:nth-child(3){animation-delay:.1s}
+.card:nth-child(4){animation-delay:.12s}
+.card:nth-child(5){animation-delay:.15s}
+.card:nth-child(6){animation-delay:.18s}
+
+/* ===== Mobile header ===== */
 .mobile-header{
-  display:none;
-  position:sticky;top:0;z-index:100;
-  background:var(--sidebar-bg);
-  border-bottom:1px solid var(--border);
-  padding:10px 16px;
-  align-items:center;gap:10px;
+  display:none;position:sticky;top:0;z-index:100;
+  background:var(--sidebar-bg);border-bottom:1px solid var(--border);
+  padding:10px 14px;align-items:center;gap:8px;
 }
 .mobile-brand{
   display:flex;align-items:center;gap:6px;
@@ -264,187 +360,59 @@ body{
 .hamburger:hover{border-color:var(--accent);color:var(--accent)}
 .mobile-search{flex:1;position:relative}
 .mobile-search input{
-  width:100%;padding:7px 12px 7px 32px;
+  width:100%;padding:7px 12px 7px 30px;
   border:1.5px solid var(--border);border-radius:var(--radius-sm);
-  font-size:13px;background:var(--bg);color:var(--text);
-  outline:none;
+  font-size:13px;background:var(--bg);color:var(--text);outline:none;
 }
 .mobile-search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
-.mobile-search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted)}
-.mobile-topic-tabs{
-  display:flex;gap:6px;overflow-x:auto;padding:0 16px 10px;
+.mobile-search svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--text-muted)}
+
+.mobile-bar{
+  display:none;gap:6px;overflow-x:auto;padding:8px 14px;
+  border-bottom:1px solid var(--border);background:var(--sidebar-bg);
   -webkit-overflow-scrolling:touch;scrollbar-width:none;
 }
-.mobile-topic-tabs::-webkit-scrollbar{display:none}
-.mobile-topic-tabs .topic-tab{
-  flex-shrink:0;padding:5px 14px;font-size:12px;
-  border-radius:var(--radius-pill);width:auto;
-}
-.mobile-filter-bar{
-  display:flex;gap:6px;overflow-x:auto;padding:0 16px 10px;
-  -webkit-overflow-scrolling:touch;scrollbar-width:none;
-}
-.mobile-filter-bar::-webkit-scrollbar{display:none}
-.mobile-filter-bar .filter-btn{
-  flex-shrink:0;padding:4px 12px;border-radius:var(--radius-pill);
-  font-size:11px;width:auto;
-}
-.mobile-date-bar{
-  display:flex;gap:6px;overflow-x:auto;padding:0 16px 10px;
-  -webkit-overflow-scrolling:touch;scrollbar-width:none;
-}
-.mobile-date-bar::-webkit-scrollbar{display:none}
-.mobile-date-bar a{
+.mobile-bar::-webkit-scrollbar{display:none}
+.mobile-bar .topic-tab,
+.mobile-bar .filter-btn{flex-shrink:0;padding:4px 12px;font-size:11px;border-radius:var(--radius-pill);width:auto}
+.mobile-bar a{
   flex-shrink:0;padding:4px 12px;
   background:var(--card-bg);border-radius:var(--radius-pill);
   font-size:11px;font-weight:500;color:var(--text-secondary);
   text-decoration:none;border:1.5px solid var(--border);
   transition:all var(--transition);
 }
-.mobile-date-bar a:hover{border-color:var(--accent);color:var(--accent)}
-.mobile-date-bar a.active{
+.mobile-bar a:hover{border-color:var(--accent);color:var(--accent)}
+.mobile-bar a.active{
   background:linear-gradient(135deg,var(--accent),#ff3d7f);
   color:#fff;border-color:transparent;
 }
 
-/* Overlay for mobile sidebar */
 .sidebar-overlay{
   display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,.4);z-index:99;
-  backdrop-filter:blur(2px);
+  background:rgba(0,0,0,.4);z-index:99;backdrop-filter:blur(2px);
 }
 .sidebar-overlay.show{display:block}
 
-/* ===== Main content ===== */
-.main{
-  margin-left:var(--sidebar-w);
-  min-height:100vh;
+/* ===== Responsive ===== */
+@media (max-width:1024px){
+  .sidebar-right{display:none}
+  .mobile-bar.right-bar{display:flex}
+  :root{--rightbar-w:0}
 }
-.container{max-width:960px;margin:0 auto;padding:16px 24px}
-
-/* Cards */
-.cards-grid{columns:2;column-gap:20px}
-.cards-full{columns:1}
-.card{
-  background:var(--card-bg);border-radius:var(--radius);
-  padding:16px;box-shadow:var(--shadow-sm);
-  border:1px solid var(--border);
-  break-inside:avoid;margin-bottom:16px;
-  transition:all var(--transition);
-  contain:layout style;
-}
-.card:hover{box-shadow:var(--shadow-hover);transform:translateY(-1px)}
-.card h3{
-  font-size:15px;font-weight:700;margin:0 0 10px;
-  display:flex;align-items:center;gap:8px;
-  padding-bottom:8px;border-bottom:1px solid var(--border);
-}
-.card h3 .count{
-  font-size:11px;font-weight:500;color:var(--text-muted);
-  background:var(--bg);padding:2px 8px;border-radius:var(--radius-sm);
-  margin-left:auto;
-}
-.news-list{list-style:none;padding:0}
-.news-list.news-grid{columns:2;column-gap:16px}
-.news-list.news-grid .news-item{break-inside:avoid}
-.news-item{
-  padding:8px 0;border-bottom:1px solid transparent;
-  transition:all var(--transition);
-}
-.news-item:last-child{border-bottom:none}
-.news-item:not(:last-child){border-bottom-color:var(--border)}
-.news-item a{
-  color:var(--text);text-decoration:none;font-size:13.5px;
-  transition:color var(--transition);line-height:1.6;
-  display:inline;
-}
-.news-item a:hover{color:var(--accent)}
-.news-item a:visited{color:var(--text-muted)}
-.source-tag{
-  display:inline-flex;align-items:center;
-  background:var(--badge-bg);color:var(--text-muted);
-  font-size:10px;font-weight:500;
-  padding:2px 8px;border-radius:var(--radius-sm);
-  white-space:nowrap;margin-left:6px;vertical-align:middle;
-}
-
-/* Empty state */
-.empty{text-align:center;padding:64px 20px;color:var(--text-muted)}
-.empty-icon{font-size:48px;margin-bottom:16px;opacity:.6}
-.empty p{font-size:14px}
-
-/* Footer */
-.footer{
-  text-align:center;padding:24px 20px;
-  color:var(--text-muted);font-size:11px;
-  border-top:1px solid var(--border);margin-top:20px;
-}
-.footer a{color:var(--accent);text-decoration:none;font-weight:500}
-.footer a:hover{text-decoration:underline}
-
-/* Back to top */
-.back-top{
-  position:fixed;bottom:24px;right:24px;
-  width:40px;height:40px;border-radius:50%;
-  background:var(--accent);color:#fff;
-  border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 16px var(--accent-glow);
-  opacity:0;transform:translateY(12px);
-  transition:all .3s ease;pointer-events:none;z-index:50;
-}
-.back-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
-.back-top:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--accent-glow)}
-
-/* Skeleton loading */
-.skeleton{animation:pulse 1.5s ease-in-out infinite}
-.skeleton-card{
-  background:var(--card-bg);border-radius:var(--radius);
-  padding:16px;margin-bottom:16px;border:1px solid var(--border);
-}
-.skeleton-line{
-  height:14px;background:var(--border);border-radius:6px;
-  margin-bottom:10px;
-}
-.skeleton-line.short{width:60%}
-.skeleton-line.medium{width:80%}
-.skeleton-line.title{width:45%;height:18px;margin-bottom:16px}
-
-/* Animations */
-@keyframes fadeSlideUp{
-  from{opacity:0;transform:translateY(6px)}
-  to{opacity:1;transform:translateY(0)}
-}
-@keyframes pulse{
-  0%,100%{opacity:1}
-  50%{opacity:.5}
-}
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(12px)}
-  to{opacity:1;transform:translateY(0)}
-}
-.card{animation:cardIn .35s ease both}
-.card:nth-child(2){animation-delay:.05s}
-.card:nth-child(3){animation-delay:.1s}
-.card:nth-child(4){animation-delay:.12s}
-.card:nth-child(5){animation-delay:.15s}
-.card:nth-child(6){animation-delay:.18s}
-
-/* ===== Responsive: mobile ===== */
 @media (max-width:768px){
-  .sidebar{transform:translateX(-100%)}
-  .sidebar.open{transform:translateX(0)}
+  .sidebar-left{transform:translateX(-100%);position:fixed;z-index:100}
+  .sidebar-left.open{transform:translateX(0)}
   .mobile-header{display:flex}
-  .main{margin-left:0}
-  .container{padding:12px 14px}
-  .cards-grid{columns:1}
-  .news-list.news-grid{columns:1}
-  .rss-btn .rss-label{display:none}
+  .mobile-bar.top-bar{display:flex}
+  .layout{flex-direction:column}
+  .main{padding:12px 14px}
+  .sidebar-overlay.show{display:block}
 }
 @media (max-width:480px){
-  .mobile-topic-tabs .topic-tab{padding:4px 10px;font-size:11px}
-  .mobile-filter-bar .filter-btn{padding:3px 10px;font-size:10px}
-  .mobile-date-bar a{padding:3px 10px;font-size:10px}
+  .mobile-bar .topic-tab{padding:3px 10px;font-size:10px}
+  .mobile-bar .filter-btn{padding:3px 10px;font-size:10px}
+  .mobile-bar a{padding:3px 10px;font-size:10px}
 }
 </style>
 </head>
@@ -460,83 +428,75 @@ body{
     <input type="text" id="mobileSearchInput" placeholder="搜索..." oninput="debouncedSearch()" aria-label="搜索新闻">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
   </div>
-  <div class="rss-tooltip">
-    <a class="rss-btn" href="#" id="mobileRssLink" target="_blank" style="padding:6px 10px;width:auto">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
-    </a>
-    <div class="rss-popup">
-      <div style="display:flex;align-items:center;gap:8px">
-        <code id="mobile-rss-url"></code>
-        <button class="copy-btn" onclick="copyRSS()" style="background:var(--accent);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;white-space:nowrap;font-weight:600">复制</button>
-      </div>
-    </div>
-  </div>
 </div>
-<div class="mobile-topic-tabs" id="mobileTopicTabs"></div>
-<div class="mobile-filter-bar" id="mobileFilterBar"></div>
-<div class="mobile-date-bar" id="mobileDateBar"></div>
+<div class="mobile-bar top-bar" id="mobileTopicBar"></div>
+<div class="mobile-bar right-bar" id="mobileFilterBar"></div>
 
-<!-- Sidebar overlay -->
+<!-- Overlay -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<!-- Sidebar -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-inner">
-    <div class="brand"><span class="brand-icon">📰</span> 纳思</div>
+<div class="layout">
+  <!-- Left sidebar -->
+  <aside class="sidebar-left" id="sidebarLeft">
+    <div class="sidebar-left-inner">
+      <div class="brand"><span class="brand-icon">📰</span> 纳思</div>
 
-    <div>
-      <div class="sidebar-label">资讯分类</div>
-      <div class="topic-tabs" id="topicTabs" style="margin-top:8px"></div>
-    </div>
-
-    <div>
-      <div class="sidebar-label">日期</div>
-      <div class="date-nav" id="dateNav" style="margin-top:8px"></div>
-    </div>
-
-    <div>
-      <div class="sidebar-label">筛选</div>
-      <div class="filter-list" id="filters" style="margin-top:8px"></div>
-    </div>
-
-    <div>
-      <div class="sidebar-label">搜索</div>
-      <div class="search-bar" style="margin-top:8px">
-        <input type="text" id="searchInput" placeholder="搜索新闻..." oninput="debouncedSearch()" aria-label="搜索新闻">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <div>
+        <div class="sidebar-label">资讯分类</div>
+        <div class="topic-tabs" id="topicTabs"></div>
       </div>
-      <span id="searchCount" class="search-count"></span>
-    </div>
 
-    <div style="margin-top:auto;padding-top:12px;border-top:1px solid var(--border)">
-      <div class="rss-tooltip" style="width:100%">
-        <a class="rss-btn" href="#" id="rssLink" target="_blank">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
-          <span class="rss-label">RSS 订阅</span>
-        </a>
-        <div class="rss-popup">
-          <div style="display:flex;align-items:center;gap:8px">
-            <code id="rss-url"></code>
-            <button class="copy-btn" onclick="copyRSS()" style="background:var(--accent);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;white-space:nowrap;font-weight:600">复制</button>
+      <div>
+        <div class="sidebar-label">日期</div>
+        <div class="date-nav" id="dateNav"></div>
+      </div>
+
+      <div style="margin-top:auto;padding-top:12px;border-top:1px solid var(--border)">
+        <div class="rss-tooltip" style="width:100%">
+          <a class="rss-btn" href="#" id="rssLink" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+            <span class="rss-label">RSS 订阅</span>
+          </a>
+          <div class="rss-popup">
+            <div style="display:flex;align-items:center;gap:8px">
+              <code id="rss-url"></code>
+              <button class="copy-btn" onclick="copyRSS()" style="background:var(--accent);color:#fff;border:none;padding:3px 8px;border-radius:4px;font-size:10px;cursor:pointer;white-space:nowrap;font-weight:600">复制</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</aside>
+  </aside>
 
-<!-- Main content -->
-<main class="main">
-  <div class="container">
+  <!-- Main content -->
+  <main class="main">
     <div id="content">
       <div class="skeleton-card skeleton"><div class="skeleton-line title"></div><div class="skeleton-line"></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div></div>
       <div class="skeleton-card skeleton"><div class="skeleton-line title"></div><div class="skeleton-line"></div><div class="skeleton-line medium"></div></div>
     </div>
-  </div>
-  <div class="footer">
-    纳思 · 海纳百思 · 数据来源于公开网络 · 新闻版权归原作者/来源所有
-  </div>
-</main>
+    <div class="footer">
+      纳思 · 海纳百思 · 数据来源于公开网络 · 新闻版权归原作者/来源所有
+    </div>
+  </main>
+
+  <!-- Right sidebar -->
+  <aside class="sidebar-right" id="sidebarRight">
+    <div class="sidebar-right-inner">
+      <div>
+        <div class="sidebar-label">搜索</div>
+        <div class="search-bar" style="margin-top:6px">
+          <input type="text" id="searchInput" placeholder="搜索新闻..." oninput="debouncedSearch()" aria-label="搜索新闻">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <span id="searchCount" class="search-count"></span>
+      </div>
+      <div>
+        <div class="sidebar-label">筛选</div>
+        <div class="filter-list" id="filters" style="margin-top:6px"></div>
+      </div>
+    </div>
+  </aside>
+</div>
 
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到顶部">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m18 15-6-6-6 6"/></svg>
@@ -566,21 +526,19 @@ const $searchCount = $('searchCount');
 const $rssUrl = $('rss-url');
 const $rssLink = $('rssLink');
 const $topicTabs = $('topicTabs');
-const $mobileTopicTabs = $('mobileTopicTabs');
+const $mobileTopicBar = $('mobileTopicBar');
 const $mobileFilterBar = $('mobileFilterBar');
-const $mobileDateBar = $('mobileDateBar');
-const $sidebar = $('sidebar');
+const $sidebarLeft = $('sidebarLeft');
 const $sidebarOverlay = $('sidebarOverlay');
 const $hamburger = $('hamburger');
-const $mobileRssLink = $('mobileRssLink');
 
 // ===== Mobile sidebar toggle =====
 $hamburger.addEventListener('click', () => {
-  $sidebar.classList.toggle('open');
+  $sidebarLeft.classList.toggle('open');
   $sidebarOverlay.classList.toggle('show');
 });
 $sidebarOverlay.addEventListener('click', () => {
-  $sidebar.classList.remove('open');
+  $sidebarLeft.classList.remove('open');
   $sidebarOverlay.classList.remove('show');
 });
 
@@ -599,12 +557,9 @@ function switchTopic(topicId) {
 
   const feedUrl = 'https://nase.me/' + currentTopic.feedFile;
   $rssUrl.textContent = feedUrl;
-  $('mobile-rss-url').textContent = feedUrl;
   $rssLink.href = feedUrl;
-  $mobileRssLink.href = feedUrl;
 
-  // Close mobile sidebar
-  $sidebar.classList.remove('open');
+  $sidebarLeft.classList.remove('open');
   $sidebarOverlay.classList.remove('show');
 
   showSkeleton();
@@ -616,7 +571,7 @@ function buildTopicTabs() {
     `<button class="topic-tab ${t.id === currentTopic.id ? 'active' : ''}" data-topic="${t.id}" onclick="switchTopic('${t.id}')"><span>${t.icon} ${t.name}</span></button>`
   ).join('');
   $topicTabs.innerHTML = tabHtml;
-  $mobileTopicTabs.innerHTML = tabHtml;
+  $mobileTopicBar.innerHTML = tabHtml;
 }
 
 function showSkeleton() {
@@ -657,7 +612,6 @@ async function loadData() {
     } catch {
       allData = [];
       $dateNav.innerHTML = '';
-      $mobileDateBar.innerHTML = '';
       $filters.innerHTML = '';
       $mobileFilterBar.innerHTML = '';
       $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据，每日 9:00 自动更新</p></div>';
@@ -682,10 +636,10 @@ async function loadDayFromSplit(date) {
 
 // ===== Copy RSS =====
 function copyRSS() {
-  navigator.clipboard.writeText($rssUrl.textContent || $('mobile-rss-url').textContent).then(() => {
+  navigator.clipboard.writeText($rssUrl.textContent).then(() => {
     document.querySelectorAll('.copy-btn').forEach(btn => {
       const orig = btn.textContent;
-      btn.textContent = '✓ 已复制';
+      btn.textContent = '✓';
       btn.style.background = '#10b981';
       setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1500);
     });
@@ -699,7 +653,6 @@ function debouncedSearch() {
   _searchTimer = setTimeout(onSearch, 200);
 }
 function onSearch() {
-  // Sync search inputs
   const val = document.activeElement === $mobileSearchInput
     ? $mobileSearchInput.value : $searchInput.value;
   searchQuery = val.trim().toLowerCase();
@@ -721,8 +674,7 @@ function showDate(idx) {
     const date = window._splitIndex.days[idx]?.date;
     if (date) {
       activeCategory = 'all'; searchQuery = '';
-      $searchInput.value = '';
-      $mobileSearchInput.value = '';
+      $searchInput.value = ''; $mobileSearchInput.value = '';
       $searchCount.textContent = '';
       loadDayFromSplit(date);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -730,8 +682,7 @@ function showDate(idx) {
   } else {
     currentDateIdx = idx;
     activeCategory = 'all'; searchQuery = '';
-    $searchInput.value = '';
-    $mobileSearchInput.value = '';
+    $searchInput.value = ''; $mobileSearchInput.value = '';
     $searchCount.textContent = '';
     buildDateNav(); buildFilters(); renderContent();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -747,7 +698,7 @@ function buildDateNav() {
     ? (window._splitSelectedIdx ?? 0)
     : currentDateIdx;
 
-  // Sidebar date nav (show recent 5 + dropdown)
+  // Sidebar date nav
   const RECENT = 5;
   const recentDates = dates.slice(0, RECENT);
   const olderDates = dates.slice(RECENT);
@@ -756,7 +707,6 @@ function buildDateNav() {
   recentDates.forEach((dateStr, i) => {
     sidebarHtml += `<a href="#" class="${i === currentIdx ? 'active' : ''}" onclick="event.preventDefault();showDate(${i})">${dateStr}</a>`;
   });
-
   if (olderDates.length > 0) {
     const isOlderActive = currentIdx >= RECENT;
     sidebarHtml += `<div class="nav-more">
@@ -767,13 +717,6 @@ function buildDateNav() {
     </div>`;
   }
   $dateNav.innerHTML = sidebarHtml;
-
-  // Mobile date bar (show all recent dates)
-  let mobileHtml = '';
-  dates.slice(0, 14).forEach((dateStr, i) => {
-    mobileHtml += `<a href="#" class="${i === currentIdx ? 'active' : ''}" onclick="event.preventDefault();showDate(${i})">${dateStr}</a>`;
-  });
-  $mobileDateBar.innerHTML = mobileHtml;
 }
 
 // ===== Filters =====
@@ -818,12 +761,10 @@ function renderContent() {
   }
 
   let total = 0;
-  const single = activeCategory !== 'all';
-  let html = `<div class="${single ? 'cards-full' : 'cards-grid'}">`;
+  let html = '';
   sections.forEach((s, si) => {
     total += s.items.length;
-    const lc = single ? 'news-list news-grid' : 'news-list';
-    html += `<div class="card" style="animation-delay:${si * .04}s"><h3>${s.icon} ${s.title} <span class="count">${s.items.length} 条</span></h3><ul class="${lc}">`;
+    html += `<div class="card" style="animation-delay:${si * .04}s"><h3>${s.icon} ${s.title} <span class="count">${s.items.length} 条</span></h3><ul class="news-list">`;
     s.items.forEach(raw => {
       const item = typeof raw === 'string' ? { title: raw, link: '', source: '', titleEN: '' } : raw;
       const link = item.link
@@ -834,7 +775,6 @@ function renderContent() {
     });
     html += `</ul></div>`;
   });
-  html += '</div>';
   $content.innerHTML = html;
   $searchCount.textContent = searchQuery ? `${total} 条结果` : '';
 }
@@ -866,12 +806,10 @@ document.addEventListener('keydown', e => {
     if (document.activeElement === $searchInput || document.activeElement === $mobileSearchInput) {
       $searchInput.value = ''; $mobileSearchInput.value = '';
       document.activeElement.blur();
-      searchQuery = '';
-      $searchCount.textContent = '';
+      searchQuery = ''; $searchCount.textContent = '';
       renderContent();
     }
-    // Close mobile sidebar
-    $sidebar.classList.remove('open');
+    $sidebarLeft.classList.remove('open');
     $sidebarOverlay.classList.remove('show');
   }
   if (document.activeElement.tagName !== 'INPUT') {
@@ -886,9 +824,7 @@ document.addEventListener('keydown', e => {
 buildTopicTabs();
 const feedUrl = 'https://nase.me/' + currentTopic.feedFile;
 $rssUrl.textContent = feedUrl;
-$('mobile-rss-url').textContent = feedUrl;
 $rssLink.href = feedUrl;
-$mobileRssLink.href = feedUrl;
 loadData();
 </script>
 </body>
