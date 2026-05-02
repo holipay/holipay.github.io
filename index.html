@@ -10,7 +10,7 @@
 <meta name="robots" content="index, follow">
 <link rel="alternate" type="application/rss+xml" title="纳思 - 全球金融 RSS" href="https://nase.me/feed-finance.xml">
 <link rel="alternate" type="application/rss+xml" title="纳思 - 社科前沿 RSS" href="https://nase.me/feed-social-science.xml">
-<link rel="alternate" type="application/rss+xml" title="纳思 - 小米资讯 RSS" href="https://nase.me/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="纳思 - 小米资讯 RSS" href="https://nase.me/feed-xiaomi.xml">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>">
 <link rel="preconnect" href="https://nase.me" crossorigin>
 <link rel="preload" as="fetch" href="data/xiaomi/index.json" crossorigin>
@@ -506,7 +506,7 @@ body{
 const TOPICS = [
   { id: 'finance', name: '全球金融', icon: '💹', dataFile: 'data/finance.json', feedFile: 'feed-finance.xml' },
   { id: 'social-science', name: '社科前沿', icon: '🎓', dataFile: 'data/social-science.json', feedFile: 'feed-social-science.xml' },
-  { id: 'xiaomi', name: '小米资讯', icon: '📱', dataFile: 'data/xiaomi.json', feedFile: 'feed.xml' },
+  { id: 'xiaomi', name: '小米资讯', icon: '📱', dataFile: 'data/xiaomi.json', feedFile: 'feed-xiaomi.xml' },
 ];
 
 let currentTopic = TOPICS[0];

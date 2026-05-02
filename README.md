@@ -8,7 +8,7 @@
 
 | 主题 | RSS |
 |------|-----|
-| 📱 小米资讯 | [feed.xml](https://nase.me/feed.xml) |
+| 📱 小米资讯 | [feed-xiaomi.xml](https://nase.me/feed-xiaomi.xml) |
 | 💹 全球金融 | [feed-finance.xml](https://nase.me/feed-finance.xml) |
 
 ## 内容板块
