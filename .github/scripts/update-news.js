@@ -30,7 +30,8 @@ const SCRIPTS_DIR = __dirname;
 const CACHE_FILE = path.join(SCRIPTS_DIR, 'translations-cache.json');
 const TOPICS_FILE = path.join(SCRIPTS_DIR, 'topics.json');
 const MAX_DAYS = 365;
-const FEED_MAX_DAYS = 3;
+const FEED_MAX_DAYS = 14;
+const FEED_MAX_ITEMS = 500;
 const TRANSLATE_CONCURRENCY = 3;
 const MAX_RETRIES = 1;
 
@@ -416,7 +417,10 @@ function buildMergedFeedXml(allTopicData, siteUrl) {
   // 按日期降序排列
   allItems.sort((a, b) => b.sortKey.localeCompare(a.sortKey));
 
-  const items = allItems.map(item => `  <item>
+  // 限制 feed 条目数，防止文件过大
+  const limitedItems = allItems.slice(0, FEED_MAX_ITEMS);
+
+  const items = limitedItems.map(item => `  <item>
     <title>${escapeXml(item.title)}</title>
     <link>${escapeXml(item.link)}</link>
     <guid isPermaLink="false">${escapeXml(item.guid)}</guid>
