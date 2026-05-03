@@ -2,8 +2,44 @@
   "topic": "xiaomi",
   "name": "小米资讯",
   "icon": "📱",
-  "updatedAt": "2026-05-02T07:31:53.193Z",
+  "updatedAt": "2026-05-03T04:38:35.392Z",
   "days": [
+    {
+      "date": "2026-05-03",
+      "totalItems": 214,
+      "categories": [
+        {
+          "icon": "🤖",
+          "title": "AI / 大模型",
+          "count": 21
+        },
+        {
+          "icon": "📱",
+          "title": "手机市场",
+          "count": 60
+        },
+        {
+          "icon": "🚗",
+          "title": "小米汽车",
+          "count": 72
+        },
+        {
+          "icon": "🏠",
+          "title": "IoT / 生态链",
+          "count": 3
+        },
+        {
+          "icon": "📊",
+          "title": "公司动态",
+          "count": 10
+        },
+        {
+          "icon": "📰",
+          "title": "其他资讯",
+          "count": 48
+        }
+      ]
+    },
     {
       "date": "2026-05-02",
       "totalItems": 203,

@@ -2,8 +2,69 @@
   "topic": "social-science",
   "name": "社科前沿",
   "icon": "🎓",
-  "updatedAt": "2026-05-02T07:31:21.619Z",
+  "updatedAt": "2026-05-03T04:38:28.003Z",
   "days": [
+    {
+      "date": "2026-05-03",
+      "totalItems": 270,
+      "categories": [
+        {
+          "icon": "💰",
+          "title": "经济与金融",
+          "count": 43
+        },
+        {
+          "icon": "👥",
+          "title": "社会与人口",
+          "count": 106
+        },
+        {
+          "icon": "🤖",
+          "title": "科技与研究",
+          "count": 15
+        },
+        {
+          "icon": "🏛️",
+          "title": "政治与治理",
+          "count": 59
+        },
+        {
+          "icon": "🌍",
+          "title": "环境与能源",
+          "count": 4
+        },
+        {
+          "icon": "📖",
+          "title": "其他研究",
+          "count": 17
+        },
+        {
+          "icon": "🧠",
+          "title": "心理学与认知",
+          "count": 6
+        },
+        {
+          "icon": "🏥",
+          "title": "健康与公共卫生",
+          "count": 10
+        },
+        {
+          "icon": "📚",
+          "title": "教育与媒体",
+          "count": 5
+        },
+        {
+          "icon": "📜",
+          "title": "历史与文化",
+          "count": 3
+        },
+        {
+          "icon": "⚖️",
+          "title": "法律与伦理",
+          "count": 2
+        }
+      ]
+    },
     {
       "date": "2026-05-02",
       "totalItems": 270,
