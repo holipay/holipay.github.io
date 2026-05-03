@@ -54,7 +54,7 @@
 
 ## 自动更新
 
-每天北京时间 9:00 通过 GitHub Actions 自动运行，也可在 Actions 页面手动触发。
+每 3 天北京时间 8:00 通过 GitHub Actions 自动运行，也可在 Actions 页面手动触发。
 
 ## License
 
