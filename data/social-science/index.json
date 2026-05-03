@@ -2,7 +2,7 @@
   "topic": "social-science",
   "name": "社科前沿",
   "icon": "🎓",
-  "updatedAt": "2026-05-03T04:38:28.003Z",
+  "updatedAt": "2026-05-03T08:48:56.368Z",
   "days": [
     {
       "date": "2026-05-03",
@@ -11,22 +11,22 @@
         {
           "icon": "💰",
           "title": "经济与金融",
-          "count": 43
+          "count": 39
         },
         {
           "icon": "👥",
           "title": "社会与人口",
-          "count": 106
+          "count": 113
         },
         {
           "icon": "🤖",
           "title": "科技与研究",
-          "count": 15
+          "count": 13
         },
         {
           "icon": "🏛️",
           "title": "政治与治理",
-          "count": 59
+          "count": 61
         },
         {
           "icon": "🌍",
@@ -36,22 +36,22 @@
         {
           "icon": "📖",
           "title": "其他研究",
-          "count": 17
+          "count": 15
         },
         {
           "icon": "🧠",
           "title": "心理学与认知",
-          "count": 6
+          "count": 5
         },
         {
           "icon": "🏥",
           "title": "健康与公共卫生",
-          "count": 10
+          "count": 9
         },
         {
           "icon": "📚",
           "title": "教育与媒体",
-          "count": 5
+          "count": 6
         },
         {
           "icon": "📜",

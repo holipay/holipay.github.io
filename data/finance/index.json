@@ -2,46 +2,46 @@
   "topic": "finance",
   "name": "全球金融",
   "icon": "💹",
-  "updatedAt": "2026-05-03T04:38:25.116Z",
+  "updatedAt": "2026-05-03T08:48:52.835Z",
   "days": [
     {
       "date": "2026-05-03",
-      "totalItems": 500,
+      "totalItems": 496,
       "categories": [
         {
           "icon": "🖥️",
           "title": "科技与企业",
-          "count": 91
+          "count": 87
         },
         {
           "icon": "📈",
           "title": "股市与市场",
-          "count": 135
-        },
-        {
-          "icon": "📰",
-          "title": "其他财经",
-          "count": 151
+          "count": 134
         },
         {
           "icon": "💰",
           "title": "宏观经济",
-          "count": 42
+          "count": 39
+        },
+        {
+          "icon": "📰",
+          "title": "其他财经",
+          "count": 150
         },
         {
           "icon": "🏦",
           "title": "央行与利率",
-          "count": 25
+          "count": 27
         },
         {
           "icon": "🛢️",
           "title": "大宗商品与能源",
-          "count": 35
+          "count": 40
         },
         {
           "icon": "🌍",
           "title": "国际财经",
-          "count": 21
+          "count": 19
         }
       ]
     },
