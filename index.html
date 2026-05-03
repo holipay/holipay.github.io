@@ -718,11 +718,14 @@ function buildFilters() {
   const day = allData[currentDateIdx];
   if (!day) { $filters.innerHTML = ''; $mobileFilterBar.innerHTML = ''; return; }
 
-  const filterHtml = `<button class="filter-btn active" data-cat="all" onclick="setCategory('all')">全部</button>` +
-    day.sections.map(s => `<button class="filter-btn" data-cat="${s.title}" onclick="setCategory('${s.title}')">${s.icon} ${s.title}</button>`).join('');
+  // 默认选中第一个分类，而非"全部"
+  const firstCat = day.sections[0]?.title || 'all';
+  if (activeCategory === 'all') activeCategory = firstCat;
+
+  const filterHtml = `<button class="filter-btn ${activeCategory === 'all' ? 'active' : ''}" data-cat="all" onclick="setCategory('all')">全部</button>` +
+    day.sections.map(s => `<button class="filter-btn ${s.title === activeCategory ? 'active' : ''}" data-cat="${s.title}" onclick="setCategory('${s.title}')">${s.icon} ${s.title}</button>`).join('');
   $filters.innerHTML = filterHtml;
   $mobileFilterBar.innerHTML = filterHtml;
-  activeCategory = 'all';
 }
 
 // ===== Render =====
