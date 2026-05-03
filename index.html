@@ -3,18 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>纳思 - 每日聚合全球金融、社科前沿、科技资讯</title>
-<meta name="description" content="纳思：海纳百思。每日自动聚合全球金融、社科前沿、科技资讯的多元思考。">
-<meta name="keywords" content="纳思,新闻,资讯,RSS,金融,社科,科技,小米">
+<title>nase.me - 每日聚合全球金融、社科前沿、科技资讯</title>
+<meta name="description" content="nase.me 每日自动聚合全球金融、社科前沿、科技资讯的多元思考。">
+<meta name="keywords" content="nase.me,新闻,资讯,RSS,金融,社科,科技,小米">
 <meta name="author" content="NASE.ME">
 <meta name="robots" content="index, follow">
-<link rel="alternate" type="application/rss+xml" title="纳思 - 全部资讯 RSS" href="https://nase.me/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="nase.me - 全球金融 RSS" href="https://nase.me/feed-finance.xml">
+<link rel="alternate" type="application/rss+xml" title="nase.me - 社科前沿 RSS" href="https://nase.me/feed-social-science.xml">
+<link rel="alternate" type="application/rss+xml" title="nase.me - 小米资讯 RSS" href="https://nase.me/feed-xiaomi.xml">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>">
 <link rel="preconnect" href="https://nase.me" crossorigin>
+// ===== 预加载提示：默认 topic 的今天 + index =====
 <link rel="preload" as="fetch" href="data/finance/index.json" crossorigin>
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="纳思 - 海纳百思">
+<meta property="og:title" content="nase.me - 每日聚合全球金融、社科前沿、科技资讯">
 <meta property="og:description" content="每日自动聚合全球金融、社科前沿、科技资讯">
 <meta property="og:url" content="https://nase.me/">
 
@@ -95,14 +98,12 @@ body{
 .sidebar-left-inner{padding:16px 14px;flex:1;display:flex;flex-direction:column;gap:14px}
 
 .brand{
-  display:flex;align-items:center;gap:8px;
   font-size:18px;font-weight:800;
   background:linear-gradient(135deg,var(--accent),#1e40af);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   background-clip:text;white-space:nowrap;letter-spacing:-.3px;
   padding-bottom:12px;border-bottom:1px solid var(--border);
 }
-.brand-icon{font-size:22px;-webkit-text-fill-color:initial}
 
 .sidebar-label{
   font-size:10px;font-weight:600;color:var(--text-muted);
@@ -341,13 +342,11 @@ body{
   padding:10px 14px;align-items:center;gap:8px;
 }
 .mobile-brand{
-  display:flex;align-items:center;gap:6px;
   font-size:16px;font-weight:800;
   background:linear-gradient(135deg,var(--accent),#1e40af);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
+  background-clip:text;white-space:nowrap;letter-spacing:-.3px;
 }
-.mobile-brand .brand-icon{-webkit-text-fill-color:initial;font-size:18px}
 .hamburger{
   width:36px;height:36px;
   background:var(--card-bg);border:1.5px solid var(--border);
@@ -421,7 +420,7 @@ body{
   <button class="hamburger" id="hamburger" aria-label="菜单">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
-  <div class="mobile-brand"><span class="brand-icon">📰</span> 纳思</div>
+  <div class="mobile-brand">nase.me</div>
   <div class="mobile-search">
     <input type="text" id="mobileSearchInput" placeholder="搜索..." oninput="debouncedSearch()" aria-label="搜索新闻">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -437,7 +436,7 @@ body{
   <!-- Left sidebar -->
   <aside class="sidebar-left" id="sidebarLeft">
     <div class="sidebar-left-inner">
-      <div class="brand"><span class="brand-icon">📰</span> 纳思</div>
+      <div class="brand">nase.me</div>
 
       <div>
         <div class="sidebar-label">资讯分类</div>
@@ -473,7 +472,7 @@ body{
       <div class="skeleton-card skeleton"><div class="skeleton-line title"></div><div class="skeleton-line"></div><div class="skeleton-line medium"></div></div>
     </div>
     <div class="footer">
-      纳思 · 海纳百思 · 数据来源于公开网络 · 新闻版权归原作者/来源所有
+      nase.me · 数据来源于公开网络 · 新闻版权归原作者/来源所有
     </div>
   </main>
 
@@ -512,6 +511,11 @@ let allData = [];
 let currentDateIdx = 0;
 let activeCategory = 'all';
 let searchQuery = '';
+
+// ===== Cache =====
+// topicId → { index, dayData: Map<date, json> }
+const topicCache = new Map();
+const _prefetching = new Set();
 
 // ===== DOM refs =====
 const $ = id => document.getElementById(id);
@@ -553,6 +557,11 @@ function switchTopic(topicId) {
     tab.classList.toggle('active', tab.dataset.topic === topicId);
   });
 
+  // 更新 RSS 链接
+  const feedUrl = `https://nase.me/feed-${currentTopic.id}.xml`;
+  $rssUrl.textContent = feedUrl;
+  $rssLink.href = feedUrl;
+
   $sidebarLeft.classList.remove('open');
   $sidebarOverlay.classList.remove('show');
 
@@ -562,7 +571,7 @@ function switchTopic(topicId) {
 
 function buildTopicTabs() {
   const tabHtml = TOPICS.map(t =>
-    `<button class="topic-tab ${t.id === currentTopic.id ? 'active' : ''}" data-topic="${t.id}" onclick="switchTopic('${t.id}')"><span>${t.icon} ${t.name}</span></button>`
+    `<button class="topic-tab ${t.id === currentTopic.id ? 'active' : ''}" data-topic="${t.id}" onclick="switchTopic('${t.id}')" onmouseenter="prefetchTopic('${t.id}')"><span>${t.icon} ${t.name}</span></button>`
   ).join('');
   $topicTabs.innerHTML = tabHtml;
   $mobileTopicBar.innerHTML = tabHtml;
@@ -575,51 +584,209 @@ function showSkeleton() {
   `;
 }
 
-// ===== Data loading =====
-async function loadData() {
+// ===== 日期工具 =====
+function getTodayStr() {
+  return new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Shanghai' });
+}
+
+function getAdjacentDate(dateStr, offset) {
+  const d = new Date(dateStr + 'T00:00:00+08:00');
+  d.setDate(d.getDate() + offset);
+  return d.toLocaleDateString('sv-SE', { timeZone: 'Asia/Shanghai' });
+}
+
+// ===== Prefetch =====
+async function prefetchTopic(topicId) {
+  if (_prefetching.has(topicId) || topicCache.has(topicId)) return;
+  _prefetching.add(topicId);
+  const topic = TOPICS.find(t => t.id === topicId);
+  if (!topic) return;
+  const dataDir = topic.dataFile.replace('.json', '');
   try {
-    const dataDir = currentTopic.dataFile.replace('.json', '');
-    const indexRes = await fetch(`${dataDir}/index.json`);
-    if (!indexRes.ok) throw new Error('no index');
-    const index = await indexRes.json();
-    window._splitIndex = index;
+    const cached = { index: null, dayData: new Map() };
+    topicCache.set(topicId, cached);
 
-    const firstDate = index.days[0]?.date;
-    if (!firstDate) throw new Error('empty index');
+    // 并行：猜日期 + index.json
+    const today = getTodayStr();
+    const indexPromise = fetch(`${dataDir}/index.json`);
+    const todayPromise = fetch(`${dataDir}/${today}.json`);
 
-    window._splitSelectedIdx = 0;
-    buildDateNav();
-
-    const dayRes = await fetch(`${dataDir}/${firstDate}.json`);
-    if (!dayRes.ok) throw new Error('day load failed');
-    allData = [await dayRes.json()];
-    currentDateIdx = 0;
-    buildFilters(); renderContent();
-  } catch {
-    window._splitIndex = null;
     try {
-      const res = await fetch(currentTopic.dataFile);
-      if (!res.ok) throw new Error();
-      allData = await res.json();
-      currentDateIdx = 0;
-      buildDateNav(); buildFilters(); renderContent();
-    } catch {
-      allData = [];
-      $dateNav.innerHTML = '';
-      $filters.innerHTML = '';
-      $mobileFilterBar.innerHTML = '';
-      $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据，每日 9:00 自动更新</p></div>';
+      const todayRes = await todayPromise;
+      if (todayRes.ok) cached.dayData.set(today, await todayRes.json());
+    } catch {}
+
+    try {
+      const indexRes = await indexPromise;
+      if (indexRes.ok) cached.index = await indexRes.json();
+    } catch {}
+
+    // index 加载后补最新一天
+    if (cached.index?.days?.[0]?.date && !cached.dayData.has(cached.index.days[0].date)) {
+      const firstDate = cached.index.days[0].date;
+      const dayRes = await fetch(`${dataDir}/${firstDate}.json`);
+      if (dayRes.ok) cached.dayData.set(firstDate, await dayRes.json());
     }
+  } catch {} finally {
+    _prefetching.delete(topicId);
+  }
+}
+
+async function preloadOtherTopics() {
+  for (const topic of TOPICS) {
+    if (topic.id === currentTopic.id) continue;
+    if (topicCache.has(topic.id)) continue;
+    await prefetchTopic(topic.id);
+  }
+}
+
+// ===== 并行加载：内容优先，index 后补 =====
+async function loadData() {
+  const dataDir = currentTopic.dataFile.replace('.json', '');
+  const cacheKey = currentTopic.id;
+  let cached = topicCache.get(cacheKey);
+
+  try {
+    // 1. 有缓存 → 直接走缓存快速路径
+    if (cached?.index) {
+      window._splitIndex = cached.index;
+      const firstDate = cached.index.days[0]?.date;
+      if (!firstDate) throw new Error('empty index');
+      window._splitSelectedIdx = 0;
+      buildDateNav();
+
+      let dayJson;
+      if (cached.dayData.has(firstDate)) {
+        dayJson = cached.dayData.get(firstDate);
+      } else {
+        const dayRes = await fetch(`${dataDir}/${firstDate}.json`);
+        if (!dayRes.ok) throw new Error('day load failed');
+        dayJson = await dayRes.json();
+        cached.dayData.set(firstDate, dayJson);
+      }
+      allData = [dayJson];
+      currentDateIdx = 0;
+      buildFilters(); renderContent();
+      preloadOtherTopics();
+      return;
+    }
+
+    // 2. 无缓存 → 并行：猜日期直接拉内容 + 拉 index.json
+    if (!cached) cached = { index: null, dayData: new Map() };
+    topicCache.set(cacheKey, cached);
+
+    const today = getTodayStr();
+    const yesterday = getAdjacentDate(today, -1);
+
+    // 并行发起 3 个请求
+    const todayPromise = fetch(`${dataDir}/${today}.json`);
+    const indexPromise = fetch(`${dataDir}/index.json`);
+    const yesterdayPromise = fetch(`${dataDir}/${yesterday}.json`);
+
+    // 2a. 先等今天的数据 → 立即渲染
+    let rendered = false;
+    try {
+      const todayRes = await todayPromise;
+      if (todayRes.ok) {
+        const todayJson = await todayRes.json();
+        cached.dayData.set(today, todayJson);
+        allData = [todayJson];
+        currentDateIdx = 0;
+        rendered = true;
+      }
+    } catch {}
+
+    // 今天没数据？试昨天
+    if (!rendered) {
+      try {
+        const ydRes = await yesterdayPromise;
+        if (ydRes.ok) {
+          const ydJson = await ydRes.json();
+          cached.dayData.set(yesterday, ydJson);
+          allData = [ydJson];
+          currentDateIdx = 0;
+          rendered = true;
+        }
+      } catch {}
+    }
+
+    // 2b. 等 index.json → 补全日期导航
+    try {
+      const indexRes = await indexPromise;
+      if (indexRes.ok) {
+        const index = await indexRes.json();
+        cached.index = index;
+        window._splitIndex = index;
+
+        // 如果渲染的是昨天，找到它在 index 里的位置
+        const firstDate = index.days[0]?.date;
+        if (rendered) {
+          const todayInIndex = index.days.findIndex(d => d.date === today);
+          const ydInIndex = index.days.findIndex(d => d.date === yesterday);
+          window._splitSelectedIdx = todayInIndex >= 0 ? todayInIndex : (ydInIndex >= 0 ? ydInIndex : 0);
+        }
+
+        // 补缓存：把 index 里最新一天的数据也存进去（如果还没存）
+        if (firstDate && !cached.dayData.has(firstDate)) {
+          const dayRes = await fetch(`${dataDir}/${firstDate}.json`);
+          if (dayRes.ok) cached.dayData.set(firstDate, await dayRes.json());
+        }
+
+        buildDateNav();
+      }
+    } catch {}
+
+    if (rendered) {
+      buildFilters(); renderContent();
+      preloadOtherTopics();
+      return;
+    }
+
+    // 3. 猜日期也失败 → 降级走旧的大 JSON
+    throw new Error('date guess failed');
+
+  } catch {
+    // 降级：加载整个大 JSON 文件
+    window._splitIndex = null;
+    const fullKey = currentTopic.id + ':full';
+    let fullData = topicCache.get(fullKey);
+    if (!fullData) {
+      try {
+        const res = await fetch(currentTopic.dataFile);
+        if (!res.ok) throw new Error();
+        fullData = await res.json();
+        topicCache.set(fullKey, fullData);
+      } catch {
+        allData = [];
+        $dateNav.innerHTML = '';
+        $filters.innerHTML = '';
+        $mobileFilterBar.innerHTML = '';
+        $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据，每日 9:00 自动更新</p></div>';
+        return;
+      }
+    }
+    allData = fullData;
+    currentDateIdx = 0;
+    buildDateNav(); buildFilters(); renderContent();
+    preloadOtherTopics();
   }
 }
 
 async function loadDayFromSplit(date) {
   if (!date || !window._splitIndex) return;
   const dataDir = currentTopic.dataFile.replace('.json', '');
+  const cached = topicCache.get(currentTopic.id);
   try {
-    const res = await fetch(`${dataDir}/${date}.json`);
-    if (!res.ok) throw new Error();
-    allData = [await res.json()];
+    let dayJson;
+    if (cached?.dayData?.has(date)) {
+      dayJson = cached.dayData.get(date);
+    } else {
+      const res = await fetch(`${dataDir}/${date}.json`);
+      if (!res.ok) throw new Error();
+      dayJson = await res.json();
+      if (cached?.dayData) cached.dayData.set(date, dayJson);
+    }
+    allData = [dayJson];
     window._splitSelectedIdx = window._splitIndex.days.findIndex(d => d.date === date);
     currentDateIdx = 0;
     buildFilters(); renderContent();
@@ -819,8 +986,8 @@ document.addEventListener('keydown', e => {
 
 // ===== Init =====
 buildTopicTabs();
-$rssUrl.textContent = 'https://nase.me/feed.xml';
-$rssLink.href = 'https://nase.me/feed.xml';
+$rssUrl.textContent = 'https://nase.me/feed-finance.xml';
+$rssLink.href = 'https://nase.me/feed-finance.xml';
 loadData();
 </script>
 </body>

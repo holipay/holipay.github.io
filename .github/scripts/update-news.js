@@ -1,22 +1,16 @@
 /**
- * 通用新闻聚合引擎 v3.0
- * 读取 topics.json 配置，为每个主题抓取、翻译、分类、输出
+ * 通用新闻聚合引擎 v3.1
  *
- * 翻译方案：多源容错翻译 + 本地缓存
- *   1. 本地翻译缓存（translations-cache.json），避免重复调用
- *   2. 主翻译源：MyMemory（免费，无需 key）
- *   3. 备用翻译源：Google Translate 网页接口（免费，非官方）
- *   4. 翻译失败时保留英文原文
+ * v3.1 变更：
+ *   - 支持 --topic=xxx 参数，仅更新指定主题
+ *   - 每个 topic 生成独立 feed 文件（feed-{id}.xml），不再合并
+ *   - 移除合并 feed 逻辑
  *
- * v3.0 优化：
- *   - 翻译并发池（默认 3 并发），大幅提速
- *   - gzip 传输压缩支持
- *   - 去重 key 加长 + source 维度
- *   - 分类预处理关键词小写
- *   - 原子文件写入
- *   - fetchUrl 循环重定向检测
- *   - fetchSource 自动重试（5xx/timeout）
- *   - 翻译 try-catch 保护
+ * 用法：
+ *   node update-news.js                  # 更新全部主题
+ *   node update-news.js --topic=finance  # 仅更新金融
+ *   node update-news.js --topic=xiaomi   # 仅更新小米
+ *   node update-news.js --topic=social-science  # 仅更新社科
  */
 
 const https = require('https');
@@ -34,6 +28,9 @@ const FEED_MAX_DAYS = 14;
 const FEED_MAX_ITEMS = 500;
 const TRANSLATE_CONCURRENCY = 3;
 const MAX_RETRIES = 1;
+
+// ==================== 命令行参数 ====================
+const FILTER_TOPIC = process.argv.find(a => a.startsWith('--topic='))?.split('=')[1] || null;
 
 // ==================== HTTP 请求 ====================
 function fetchUrl(url, maxRedirects = 3, _visited = new Set()) {
@@ -124,7 +121,6 @@ function saveCache() {
 function cacheKey(text) {
   const t = text.trim();
   if (t.length <= 80) return t.toLowerCase();
-  // 取前 80 + 后 20 字符，减少碰撞
   return (t.slice(0, 80) + t.slice(-20)).toLowerCase();
 }
 
@@ -190,7 +186,6 @@ async function translateItems(items) {
   let newTranslated = 0;
   let failed = 0;
 
-  // 并发翻译池
   const queue = [...items];
   const running = new Set();
 
@@ -206,7 +201,6 @@ async function translateItems(items) {
         const zh = await translateENtoZH(item.title);
         const translatedOk = zh !== item.title;
         if (!translatedOk) failed++;
-        // 始终保留英文原文用于分类
         results.push({ ...item, title: zh, titleEN: item.title });
       } catch {
         failed++;
@@ -217,7 +211,6 @@ async function translateItems(items) {
     }
   }
 
-  // 启动并发池
   while (queue.length > 0 || running.size > 0) {
     while (queue.length > 0 && running.size < TRANSLATE_CONCURRENCY) {
       const item = queue.shift();
@@ -235,7 +228,6 @@ async function translateItems(items) {
 function parseRssItems(xml, filterRegex) {
   const items = [];
 
-  // RSS 2.0: <item>
   const rssMatches = xml.matchAll(/<item>[\s\S]*?<\/item>/g);
   for (const m of rssMatches) {
     const block = m[0];
@@ -250,7 +242,6 @@ function parseRssItems(xml, filterRegex) {
     }
   }
 
-  // Atom: <entry>
   if (items.length === 0) {
     const atomMatches = xml.matchAll(/<entry>[\s\S]*?<\/entry>/g);
     for (const m of atomMatches) {
@@ -321,7 +312,6 @@ function preprocessCategories(categories) {
 }
 
 function classify(item, processedCats, defaultCat) {
-  // 用英文原文匹配关键词（翻译前的标题更精准）
   const titleEN = (typeof item === 'string' ? '' : item.titleEN || '').toLowerCase();
   const title = (typeof item === 'string' ? item : item.title || '').toLowerCase();
   const matchTarget = titleEN || title;
@@ -333,9 +323,9 @@ function classify(item, processedCats, defaultCat) {
 
 function normalizeTitle(title) {
   return (title || '')
-    .replace(/^[💹🎓📱📰🛢️📈🏦💰🖥️🌍🤖🧠👥🏛️📖⚙️🏥📚⚖️🚗🏠📊💹🎓📱📰🛢️📈🏦💰🖥️🌍🤖🧠👥🏛️📖⚙️🏥📚⚖️🚗🏠📊]+/gu, '') // 去emoji
-    .replace(/^[\s\-–—·|：:]+/, '')          // 去前导标点
-    .replace(/\s*[-–—]\s*(Reuters|Bloomberg|WSJ|CNBC|Financial Times|FT|BBC|CNN|NBER|36氪|IT之家|新浪财经|观察者|爱范儿|Sohu|东方财富|凤凰网科技|投资者商业日报|华尔街日报)\s*$/i, '') // 去来源后缀
+    .replace(/^[💹🎓📱📰🛢️📈🏦💰🖥️🌍🤖🧠👥🏛️📖⚙️🏥📚⚖️🚗🏠📊💹🎓📱📰🛢️📈🏦💰🖥️🌍🤖🧠👥🏛️📖⚙️🏥📚⚖️🚗🏠📊]+/gu, '')
+    .replace(/^[\s\-–—·|：:]+/, '')
+    .replace(/\s*[-–—]\s*(Reuters|Bloomberg|WSJ|CNBC|Financial Times|FT|BBC|CNN|NBER|36氪|IT之家|新浪财经|观察者|爱范儿|Sohu|东方财富|凤凰网科技|投资者商业日报|华尔街日报)\s*$/i, '')
     .replace(/\s+/g, ' ')
     .trim()
     .toLowerCase();
@@ -344,11 +334,9 @@ function normalizeTitle(title) {
 function dedup(items) {
   const seen = new Set();
   return items.filter(item => {
-    // 1. URL 相同直接去重
     if (item.link && seen.has('url:' + item.link)) return false;
     if (item.link) seen.add('url:' + item.link);
 
-    // 2. 优先用英文原文（titleEN）做 key，更稳定；否则用标准化后的中文标题
     const raw = item.titleEN || item.title || '';
     const norm = normalizeTitle(raw).slice(0, 80);
     if (!norm) return true;
@@ -387,37 +375,31 @@ function normalizeItem(item) {
   return { title: item.title || '', link: item.link || '', source: item.source || '', titleEN: item.titleEN || '' };
 }
 
-// ==================== 合并 Feed 生成 ====================
-function buildMergedFeedXml(allTopicData, siteUrl) {
-  // 收集所有条目，带上日期和主题信息
+// ==================== 单主题 Feed 生成 ====================
+function buildTopicFeedXml(topic, days, siteUrl) {
   const allItems = [];
 
-  for (const { topic, days } of allTopicData) {
-    for (const day of days.slice(0, FEED_MAX_DAYS)) {
-      const pubDate = new Date(day.date + 'T09:00:00+08:00').toUTCString();
-      for (const section of day.sections) {
-        for (const raw of section.items) {
-          const news = normalizeItem(raw);
-          allItems.push({
-            title: `${topic.icon} ${section.icon} ${news.title}`,
-            link: news.link || siteUrl,
-            description: news.titleEN
-              ? `[${news.source}] ${news.title} (${news.titleEN})`
-              : news.source ? `[${news.source}] ${news.title}]` : news.title,
-            category: `${topic.name} - ${section.title}`,
-            pubDate,
-            guid: `${day.date}-${topic.id}-${news.title.slice(0, 40)}`,
-            sortKey: day.date + '-' + (news.title || ''),
-          });
-        }
+  for (const day of days.slice(0, FEED_MAX_DAYS)) {
+    const pubDate = new Date(day.date + 'T09:00:00+08:00').toUTCString();
+    for (const section of day.sections) {
+      for (const raw of section.items) {
+        const news = normalizeItem(raw);
+        allItems.push({
+          title: `${section.icon} ${news.title}`,
+          link: news.link || siteUrl,
+          description: news.titleEN
+            ? `[${news.source}] ${news.title} (${news.titleEN})`
+            : news.source ? `[${news.source}] ${news.title}` : news.title,
+          category: section.title,
+          pubDate,
+          guid: `${day.date}-${topic.id}-${news.title.slice(0, 40)}`,
+          sortKey: day.date + '-' + (news.title || ''),
+        });
       }
     }
   }
 
-  // 按日期降序排列
   allItems.sort((a, b) => b.sortKey.localeCompare(a.sortKey));
-
-  // 限制 feed 条目数，防止文件过大
   const limitedItems = allItems.slice(0, FEED_MAX_ITEMS);
 
   const items = limitedItems.map(item => `  <item>
@@ -433,12 +415,12 @@ function buildMergedFeedXml(allTopicData, siteUrl) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-  <title>纳思 - 海纳百思</title>
+  <title>${escapeXml(topic.icon + ' ' + topic.name)} - nase.me</title>
   <link>${siteUrl}</link>
-  <description>每日自动聚合全球金融、社科前沿、科技资讯</description>
+  <description>${escapeXml(topic.name)}资讯聚合 - nase.me</description>
   <language>zh-cn</language>
   <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-  <atom:link href="${siteUrl}feed.xml" rel="self" type="application/rss+xml"/>
+  <atom:link href="${siteUrl}feed-${topic.id}.xml" rel="self" type="application/rss+xml"/>
 ${items}</channel>
 </rss>`;
 }
@@ -461,7 +443,6 @@ async function processTopic(topic) {
   // 1. 抓取所有源
   const results = await Promise.allSettled(topic.sources.map(s => fetchSource(s)));
 
-  // 预建源语言映射
   const sourceLangMap = {};
   for (const s of topic.sources) sourceLangMap[s.name] = s.lang;
 
@@ -497,7 +478,7 @@ async function processTopic(topic) {
   // 4. 分类
   const sections = groupByCategory(allItems, topic.categories, topic.defaultCategory);
 
-  // 5. 写入数据文件（原子写入）
+  // 5. 写入数据文件
   const dataPath = path.join(ROOT, topic.dataFile);
   const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Shanghai' });
   let existing = [];
@@ -512,16 +493,14 @@ async function processTopic(topic) {
   atomicWrite(dataPath, JSON.stringify(existing, null, 2));
   console.log(`📝 已更新 ${topic.dataFile} (${existing.length} 天数据)`);
 
-  // 5b. 写入按日期拆分的文件（新格式）
+  // 5b. 写入按日期拆分的文件
   if (topic.dataDir) {
     const dataDir = path.join(ROOT, topic.dataDir);
     if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
-    // 写入当天数据文件
     const dayFile = path.join(dataDir, `${today}.json`);
     atomicWrite(dayFile, JSON.stringify({ date: today, sections }, null, 2));
 
-    // 增量更新索引：读取现有索引，插入/更新今天的条目
     let indexData;
     const indexPath = path.join(dataDir, 'index.json');
     try {
@@ -530,7 +509,6 @@ async function processTopic(topic) {
       indexData = { topic: topic.id, name: topic.name, icon: topic.icon, updatedAt: '', days: [] };
     }
 
-    // 构建今天的索引条目
     let totalItems = 0;
     const categories = [];
     for (const sec of sections) {
@@ -539,7 +517,6 @@ async function processTopic(topic) {
     }
     const todayEntry = { date: today, totalItems, categories };
 
-    // 替换或插入
     const existIdx = indexData.days.findIndex(d => d.date === today);
     if (existIdx >= 0) {
       indexData.days[existIdx] = todayEntry;
@@ -551,7 +528,6 @@ async function processTopic(topic) {
 
     atomicWrite(indexPath, JSON.stringify(indexData, null, 2));
 
-    // 清理超出 MAX_DAYS 的旧文件
     const allDayFiles = fs.readdirSync(dataDir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().reverse();
     for (const old of allDayFiles.slice(MAX_DAYS)) {
       fs.unlinkSync(path.join(dataDir, old));
@@ -559,11 +535,18 @@ async function processTopic(topic) {
 
     console.log(`📂 已更新 ${topic.dataDir}/ (${indexData.days.length} 天拆分文件)`);
   }
+
+  // 6. 生成该主题独立的 feed
+  const siteUrl = 'https://nase.me/';
+  const feedXml = buildTopicFeedXml(topic, existing, siteUrl);
+  const feedFile = path.join(ROOT, `feed-${topic.id}.xml`);
+  atomicWrite(feedFile, feedXml);
+  console.log(`📰 已更新 feed-${topic.id}.xml`);
 }
 
 // ==================== 主逻辑 ====================
 async function main() {
-  console.log('🚀 通用新闻聚合引擎 v3.0');
+  console.log('🚀 通用新闻聚合引擎 v3.1');
   console.log(`⏰ ${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}`);
 
   loadCache();
@@ -576,40 +559,21 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`📋 共 ${topics.length} 个主题: ${topics.map(t => t.name).join(', ')}`);
-
-  // 收集所有主题数据用于合并 feed
-  const allTopicData = [];
+  // 按 --topic 参数过滤
+  if (FILTER_TOPIC) {
+    const before = topics.length;
+    topics = topics.filter(t => t.id === FILTER_TOPIC);
+    if (topics.length === 0) {
+      console.error(`❌ 未找到主题: ${FILTER_TOPIC}（可用: ${JSON.stringify(topics.map(t => t.id))}）`);
+      process.exit(1);
+    }
+    console.log(`🎯 仅更新主题: ${FILTER_TOPIC}`);
+  } else {
+    console.log(`📋 共 ${topics.length} 个主题: ${topics.map(t => t.name).join(', ')}`);
+  }
 
   for (const topic of topics) {
     await processTopic(topic);
-
-    // 读取已生成的数据用于合并 feed
-    try {
-      const dataDir = path.join(ROOT, topic.dataDir);
-      const indexPath = path.join(dataDir, 'index.json');
-      if (fs.existsSync(indexPath)) {
-        const index = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
-        const days = [];
-        for (const dayInfo of index.days) {
-          const dayFile = path.join(dataDir, `${dayInfo.date}.json`);
-          if (fs.existsSync(dayFile)) {
-            days.push(JSON.parse(fs.readFileSync(dayFile, 'utf-8')));
-          }
-        }
-        allTopicData.push({ topic, days });
-      }
-    } catch (e) {
-      console.warn(`⚠️ 跳过合并 feed 的 ${topic.name}:`, e.message);
-    }
-  }
-
-  // 生成合并 feed.xml
-  if (allTopicData.length > 0) {
-    const siteUrl = 'https://nase.me/';
-    const mergedFeed = buildMergedFeedXml(allTopicData, siteUrl);
-    atomicWrite(path.join(ROOT, 'feed.xml'), mergedFeed);
-    console.log('📝 已更新 feed.xml (合并)');
   }
 
   saveCache();

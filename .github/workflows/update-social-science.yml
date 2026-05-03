@@ -1,0 +1,39 @@
+name: Update Social Science News
+
+on:
+  schedule:
+    # 每月 1 号 UTC 0:00（北京时间 8:00）
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Fetch social science news
+        env:
+          TZ: Asia/Shanghai
+        run: node .github/scripts/update-news.js --topic=social-science
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/social-science.json data/social-science/ feed-social-science.xml .github/scripts/translations-cache.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🎓 社科前沿更新 $(date +%Y-%m-%d)"
+            git push
+          fi
