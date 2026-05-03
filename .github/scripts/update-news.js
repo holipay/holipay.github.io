@@ -3,8 +3,7 @@
  *
  * v3.1 变更：
  *   - 支持 --topic=xxx 参数，仅更新指定主题
- *   - 每个 topic 生成独立 feed 文件（feed-{id}.xml），不再合并
- *   - 移除合并 feed 逻辑
+ *   - 移除 feed 生成功能
  *
  * 用法：
  *   node update-news.js                  # 更新全部主题
@@ -25,8 +24,6 @@ const CACHE_FILE = path.join(SCRIPTS_DIR, 'translations-cache.json');
 const TOPICS_FILE = path.join(SCRIPTS_DIR, 'topics.json');
 const MAX_DAYS = 365;           // 拆分文件保留天数
 const BIG_JSON_DAYS = 30;       // 大 JSON 文件保留天数（减少 git 增长）
-const FEED_MAX_DAYS = 14;
-const FEED_MAX_ITEMS = 500;
 const TRANSLATE_CONCURRENCY = 3;
 const MAX_RETRIES = 1;
 
@@ -365,67 +362,6 @@ function groupByCategory(items, categories, defaultCat) {
   return Object.values(groups);
 }
 
-// ==================== 输出 ====================
-function escapeXml(str) {
-  if (typeof str !== 'string') str = String(str || '');
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
-function normalizeItem(item) {
-  if (typeof item === 'string') return { title: item, link: '', source: '', titleEN: '' };
-  return { title: item.title || '', link: item.link || '', source: item.source || '', titleEN: item.titleEN || '' };
-}
-
-// ==================== 单主题 Feed 生成 ====================
-function buildTopicFeedXml(topic, days, siteUrl) {
-  const allItems = [];
-
-  for (const day of days.slice(0, FEED_MAX_DAYS)) {
-    const pubDate = new Date(day.date + 'T09:00:00+08:00').toUTCString();
-    for (const section of day.sections) {
-      for (const raw of section.items) {
-        const news = normalizeItem(raw);
-        allItems.push({
-          title: `${section.icon} ${news.title}`,
-          link: news.link || siteUrl,
-          description: news.titleEN
-            ? `[${news.source}] ${news.title} (${news.titleEN})`
-            : news.source ? `[${news.source}] ${news.title}` : news.title,
-          category: section.title,
-          pubDate,
-          guid: `${day.date}-${topic.id}-${news.title.slice(0, 40)}`,
-          sortKey: day.date + '-' + (news.title || ''),
-        });
-      }
-    }
-  }
-
-  allItems.sort((a, b) => b.sortKey.localeCompare(a.sortKey));
-  const limitedItems = allItems.slice(0, FEED_MAX_ITEMS);
-
-  const items = limitedItems.map(item => `  <item>
-    <title>${escapeXml(item.title)}</title>
-    <link>${escapeXml(item.link)}</link>
-    <guid isPermaLink="false">${escapeXml(item.guid)}</guid>
-    <pubDate>${item.pubDate}</pubDate>
-    <description>${escapeXml(item.description)}</description>
-    <category>${escapeXml(item.category)}</category>
-  </item>
-`).join('');
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-<channel>
-  <title>${escapeXml(topic.icon + ' ' + topic.name)} - nase.me</title>
-  <link>${siteUrl}</link>
-  <description>${escapeXml(topic.name)}资讯聚合 - nase.me</description>
-  <language>zh-cn</language>
-  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-  <atom:link href="${siteUrl}feed-${topic.id}.xml" rel="self" type="application/rss+xml"/>
-${items}</channel>
-</rss>`;
-}
-
 // ==================== 原子写入 ====================
 function atomicWrite(filePath, data) {
   const tmp = filePath + '.tmp';
@@ -536,13 +472,6 @@ async function processTopic(topic) {
 
     console.log(`📂 已更新 ${topic.dataDir}/ (${indexData.days.length} 天拆分文件)`);
   }
-
-  // 6. 生成该主题独立的 feed
-  const siteUrl = 'https://nase.me/';
-  const feedXml = buildTopicFeedXml(topic, existing, siteUrl);
-  const feedFile = path.join(ROOT, `feed-${topic.id}.xml`);
-  atomicWrite(feedFile, feedXml);
-  console.log(`📰 已更新 feed-${topic.id}.xml`);
 }
 
 // ==================== 主逻辑 ====================

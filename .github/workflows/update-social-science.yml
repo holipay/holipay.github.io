@@ -30,7 +30,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/social-science.json data/social-science/ feed-social-science.xml .github/scripts/translations-cache.json
+          git add data/social-science.json data/social-science/ .github/scripts/translations-cache.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else

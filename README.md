@@ -4,12 +4,6 @@
 
 🔗 **在线访问**：https://nase.me
 
-## 📡 RSS 订阅
-
-订阅唯一地址：**[https://nase.me/feed.xml](https://nase.me/feed.xml)**
-
-包含全部资讯（全球金融、社科前沿、小米资讯），自动更新。
-
 ## 内容板块
 
 ### 💹 全球金融
