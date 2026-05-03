@@ -240,7 +240,7 @@ body{
 .news-list{list-style:none;padding:0}
 .news-item{
   padding:8px 0;border-bottom:1px solid transparent;
-  transition:all var(--transition);
+  transition:border-bottom-color var(--transition);
 }
 .news-item:last-child{border-bottom:none}
 .news-item:not(:last-child){border-bottom-color:var(--border)}
@@ -462,14 +462,14 @@ const TOPICS = [
 ];
 
 let currentTopic = TOPICS[0];
-let allData = [];
-let currentDateIdx = 0;
+let currentDay = null;          // 当天的 { date, sections }
+let currentDates = [];          // index 中的日期列表
+let currentSelectedIdx = 0;     // 当前选中的日期索引
 let activeCategory = 'all';
 let searchQuery = '';
 
 // ===== Cache =====
-// topicId → { index, dayData: Map<date, json> }
-const topicCache = new Map();
+const topicCache = new Map();   // topicId → { index, dayData: Map<date, json> }
 const _prefetching = new Set();
 
 // ===== DOM refs =====
@@ -581,27 +581,23 @@ async function prefetchTopic(topicId) {
 }
 
 async function preloadOtherTopics() {
-  for (const topic of TOPICS) {
-    if (topic.id === currentTopic.id) continue;
-    if (topicCache.has(topic.id)) continue;
-    await prefetchTopic(topic.id);
-  }
+  const others = TOPICS.filter(t => t.id !== currentTopic.id && !topicCache.has(t.id));
+  await Promise.allSettled(others.map(t => prefetchTopic(t.id)));
 }
 
-// ===== 并行加载：内容优先，index 后补 =====
+// ===== 并行加载 =====
 async function loadData() {
   const dataDir = currentTopic.dataDir;
   const cacheKey = currentTopic.id;
   let cached = topicCache.get(cacheKey);
 
   try {
-    // 1. 有缓存 → 直接走缓存快速路径
+    // 1. 有缓存 → 快速路径
     if (cached?.index) {
-      window._splitIndex = cached.index;
       const firstDate = cached.index.days[0]?.date;
       if (!firstDate) throw new Error('empty index');
-      window._splitSelectedIdx = 0;
-      buildDateNav();
+      currentDates = cached.index.days.map(d => d.date);
+      currentSelectedIdx = 0;
 
       let dayJson;
       if (cached.dayData.has(firstDate)) {
@@ -612,21 +608,19 @@ async function loadData() {
         dayJson = await dayRes.json();
         cached.dayData.set(firstDate, dayJson);
       }
-      allData = [dayJson];
-      currentDateIdx = 0;
-      buildFilters(); renderContent();
+      currentDay = dayJson;
+      buildDateNav(); buildFilters(); renderContent();
       preloadOtherTopics();
       return;
     }
 
-    // 2. 无缓存 → 并行：猜日期直接拉内容 + 拉 index.json
+    // 2. 无缓存 → 并行猜日期 + 拉 index
     if (!cached) cached = { index: null, dayData: new Map() };
     topicCache.set(cacheKey, cached);
 
     const today = getTodayStr();
     const yesterday = getAdjacentDate(today, -1);
 
-    // 并行发起 3 个请求
     const todayPromise = fetch(`${dataDir}/${today}.json`);
     const indexPromise = fetch(`${dataDir}/index.json`);
     const yesterdayPromise = fetch(`${dataDir}/${yesterday}.json`);
@@ -638,8 +632,7 @@ async function loadData() {
       if (todayRes.ok) {
         const todayJson = await todayRes.json();
         cached.dayData.set(today, todayJson);
-        allData = [todayJson];
-        currentDateIdx = 0;
+        currentDay = todayJson;
         rendered = true;
       }
     } catch {}
@@ -651,30 +644,28 @@ async function loadData() {
         if (ydRes.ok) {
           const ydJson = await ydRes.json();
           cached.dayData.set(yesterday, ydJson);
-          allData = [ydJson];
-          currentDateIdx = 0;
+          currentDay = ydJson;
           rendered = true;
         }
       } catch {}
     }
 
-    // 2b. 等 index.json → 补全日期导航
+    // 2b. 等 index → 补全日期导航
     try {
       const indexRes = await indexPromise;
       if (indexRes.ok) {
         const index = await indexRes.json();
         cached.index = index;
-        window._splitIndex = index;
+        currentDates = index.days.map(d => d.date);
 
-        // 如果渲染的是昨天，找到它在 index 里的位置
-        const firstDate = index.days[0]?.date;
         if (rendered) {
-          const todayInIndex = index.days.findIndex(d => d.date === today);
-          const ydInIndex = index.days.findIndex(d => d.date === yesterday);
-          window._splitSelectedIdx = todayInIndex >= 0 ? todayInIndex : (ydInIndex >= 0 ? ydInIndex : 0);
+          const todayIdx = currentDates.indexOf(today);
+          const ydIdx = currentDates.indexOf(yesterday);
+          currentSelectedIdx = todayIdx >= 0 ? todayIdx : (ydIdx >= 0 ? ydIdx : 0);
         }
 
-        // 补缓存：把 index 里最新一天的数据也存进去（如果还没存）
+        // 补缓存
+        const firstDate = currentDates[0];
         if (firstDate && !cached.dayData.has(firstDate)) {
           const dayRes = await fetch(`${dataDir}/${firstDate}.json`);
           if (dayRes.ok) cached.dayData.set(firstDate, await dayRes.json());
@@ -690,24 +681,27 @@ async function loadData() {
       return;
     }
 
-    // 3. 猜日期也失败
-    allData = [];
-    $dateNav.innerHTML = '';
-    $filters.innerHTML = '';
-    $mobileFilterBar.innerHTML = '';
-    $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据，每日 9:00 自动更新</p></div>';
+    // 3. 全部失败
+    currentDay = null;
+    currentDates = [];
+    showEmpty();
 
   } catch {
-    allData = [];
-    $dateNav.innerHTML = '';
-    $filters.innerHTML = '';
-    $mobileFilterBar.innerHTML = '';
-    $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据，每日 9:00 自动更新</p></div>';
+    currentDay = null;
+    currentDates = [];
+    showEmpty();
   }
 }
 
-async function loadDayFromSplit(date) {
-  if (!date || !window._splitIndex) return;
+function showEmpty() {
+  $dateNav.innerHTML = '';
+  $filters.innerHTML = '';
+  $mobileFilterBar.innerHTML = '';
+  $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据，每日 9:00 自动更新</p></div>';
+}
+
+async function loadDay(date) {
+  if (!date) return;
   const dataDir = currentTopic.dataDir;
   const cached = topicCache.get(currentTopic.id);
   try {
@@ -720,9 +714,8 @@ async function loadDayFromSplit(date) {
       dayJson = await res.json();
       if (cached?.dayData) cached.dayData.set(date, dayJson);
     }
-    allData = [dayJson];
-    window._splitSelectedIdx = window._splitIndex.days.findIndex(d => d.date === date);
-    currentDateIdx = 0;
+    currentDay = dayJson;
+    currentSelectedIdx = currentDates.indexOf(date);
     buildFilters(); renderContent();
   } catch {
     $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>加载失败</p></div>';
@@ -753,35 +746,20 @@ function setCategory(cat) {
 
 // ===== Date navigation =====
 function showDate(idx) {
-  if (window._splitIndex) {
-    const date = window._splitIndex.days[idx]?.date;
-    if (date) {
-      activeCategory = 'all'; searchQuery = '';
-      $searchInput.value = ''; $mobileSearchInput.value = '';
-      $searchCount.textContent = '';
-      loadDayFromSplit(date);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  } else {
-    currentDateIdx = idx;
+  const date = currentDates[idx];
+  if (date) {
     activeCategory = 'all'; searchQuery = '';
     $searchInput.value = ''; $mobileSearchInput.value = '';
     $searchCount.textContent = '';
-    buildDateNav(); buildFilters(); renderContent();
+    loadDay(date);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
 function buildDateNav() {
-  const dates = window._splitIndex
-    ? window._splitIndex.days.map(d => d.date)
-    : allData.map(d => d.date);
+  const dates = currentDates;
+  const currentIdx = currentSelectedIdx;
 
-  const currentIdx = window._splitIndex
-    ? (window._splitSelectedIdx ?? 0)
-    : currentDateIdx;
-
-  // Sidebar date nav
   const RECENT = 5;
   const recentDates = dates.slice(0, RECENT);
   const olderDates = dates.slice(RECENT);
@@ -804,38 +782,34 @@ function buildDateNav() {
 
 // ===== Filters =====
 function buildFilters() {
-  const day = allData[currentDateIdx];
-  if (!day) { $filters.innerHTML = ''; $mobileFilterBar.innerHTML = ''; return; }
+  if (!currentDay) { $filters.innerHTML = ''; $mobileFilterBar.innerHTML = ''; return; }
 
-  // 默认选中第一个分类，而非"全部"
-  const firstCat = day.sections[0]?.title || 'all';
+  const firstCat = currentDay.sections[0]?.title || 'all';
   if (activeCategory === 'all') activeCategory = firstCat;
 
   const filterHtml = `<button class="filter-btn ${activeCategory === 'all' ? 'active' : ''}" data-cat="all" onclick="setCategory('all')">全部</button>` +
-    day.sections.map(s => `<button class="filter-btn ${s.title === activeCategory ? 'active' : ''}" data-cat="${s.title}" onclick="setCategory('${s.title}')">${s.icon} ${s.title}</button>`).join('');
+    currentDay.sections.map(s => `<button class="filter-btn ${s.title === activeCategory ? 'active' : ''}" data-cat="${s.title}" onclick="setCategory('${s.title}')">${s.icon} ${s.title}</button>`).join('');
   $filters.innerHTML = filterHtml;
   $mobileFilterBar.innerHTML = filterHtml;
 }
 
 // ===== Render =====
 function renderContent() {
-  const day = allData[currentDateIdx];
-  if (!day) {
+  if (!currentDay) {
     $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据</p></div>';
     $searchCount.textContent = '';
     return;
   }
 
-  let sections = day.sections;
+  let sections = currentDay.sections;
   if (activeCategory !== 'all') sections = sections.filter(s => s.title === activeCategory);
   if (searchQuery) {
     sections = sections.map(s => ({
       ...s,
-      items: s.items.filter(r => {
-        const title = (typeof r === 'string' ? r : r.title || '').toLowerCase();
-        const source = (typeof r === 'object' && r.source || '').toLowerCase();
-        return title.includes(searchQuery) || source.includes(searchQuery);
-      })
+      items: s.items.filter(r =>
+        r.title.toLowerCase().includes(searchQuery) ||
+        (r.source || '').toLowerCase().includes(searchQuery)
+      )
     })).filter(s => s.items.length > 0);
   }
 
@@ -848,11 +822,10 @@ function renderContent() {
 
   let total = 0;
   let html = '';
-  sections.forEach((s, si) => {
+  sections.forEach(s => {
     total += s.items.length;
-    html += `<div class="card" style="animation-delay:${si * .04}s"><h3>${s.icon} ${s.title} <span class="count">${s.items.length} 条</span></h3><ul class="news-list">`;
-    s.items.forEach(raw => {
-      const item = typeof raw === 'string' ? { title: raw, link: '', source: '', titleEN: '' } : raw;
+    html += `<div class="card"><h3>${s.icon} ${s.title} <span class="count">${s.items.length} 条</span></h3><ul class="news-list">`;
+    s.items.forEach(item => {
       const link = item.link
         ? `<a href="${esc(item.link)}" target="_blank" rel="noopener noreferrer">${highlightMatch(item.title)}</a>`
         : `<span>${highlightMatch(item.title)}</span>`;
@@ -899,10 +872,9 @@ document.addEventListener('keydown', e => {
     $sidebarOverlay.classList.remove('show');
   }
   if (document.activeElement.tagName !== 'INPUT') {
-    const maxIdx = window._splitIndex ? window._splitIndex.days.length - 1 : allData.length - 1;
-    const curIdx = window._splitIndex ? (window._splitSelectedIdx ?? 0) : currentDateIdx;
-    if (e.key === 'ArrowLeft' && curIdx < maxIdx) { showDate(curIdx + 1); }
-    if (e.key === 'ArrowRight' && curIdx > 0) { showDate(curIdx - 1); }
+    const maxIdx = currentDates.length - 1;
+    if (e.key === 'ArrowLeft' && currentSelectedIdx < maxIdx) { showDate(currentSelectedIdx + 1); }
+    if (e.key === 'ArrowRight' && currentSelectedIdx > 0) { showDate(currentSelectedIdx - 1); }
   }
 });
 
