@@ -23,7 +23,8 @@ const ROOT = path.resolve(__dirname, '../..');
 const SCRIPTS_DIR = __dirname;
 const CACHE_FILE = path.join(SCRIPTS_DIR, 'translations-cache.json');
 const TOPICS_FILE = path.join(SCRIPTS_DIR, 'topics.json');
-const MAX_DAYS = 365;
+const MAX_DAYS = 365;           // 拆分文件保留天数
+const BIG_JSON_DAYS = 30;       // 大 JSON 文件保留天数（减少 git 增长）
 const FEED_MAX_DAYS = 14;
 const FEED_MAX_ITEMS = 500;
 const TRANSLATE_CONCURRENCY = 3;
@@ -105,7 +106,7 @@ function loadCache() {
 
 function saveCache() {
   try {
-    const cutoff = Date.now() - 90 * 24 * 60 * 60 * 1000;
+    const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
     for (const [key, entry] of Object.entries(translationCache)) {
       if (entry.ts && entry.ts < cutoff) delete translationCache[key];
     }
@@ -488,10 +489,10 @@ async function processTopic(topic) {
 
   existing = existing.filter(d => d.date !== today);
   existing.unshift({ date: today, sections });
-  existing = existing.slice(0, MAX_DAYS);
+  existing = existing.slice(0, BIG_JSON_DAYS);
 
   atomicWrite(dataPath, JSON.stringify(existing, null, 2));
-  console.log(`📝 已更新 ${topic.dataFile} (${existing.length} 天数据)`);
+  console.log(`📝 已更新 ${topic.dataFile} (${existing.length} 天, ≤${BIG_JSON_DAYS}天)`);
 
   // 5b. 写入按日期拆分的文件
   if (topic.dataDir) {
