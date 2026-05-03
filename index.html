@@ -245,12 +245,10 @@ body{
 }
 .news-item:last-child{border-bottom:none}
 .news-item:not(:last-child){border-bottom-color:var(--border)}
-.news-item a{
-  color:var(--text);text-decoration:none;font-size:13.5px;
-  transition:color var(--transition);line-height:1.6;
+.news-item a,.news-item span{
+  color:var(--text);font-size:13.5px;
+  line-height:1.6;
 }
-.news-item a:hover{color:var(--accent)}
-.news-item a:visited{color:var(--text-muted)}
 .source-tag{
   display:inline-flex;align-items:center;
   background:var(--badge-bg);color:var(--text-muted);
@@ -830,11 +828,8 @@ function renderContent() {
     const hasMore = s.items.length > ITEMS_PER_SECTION;
     html += `<div class="card"><h3>${s.icon} ${s.title} <span class="count">${s.items.length} 条</span></h3><ul class="news-list">`;
     visible.forEach(item => {
-      const link = item.link
-        ? `<a href="${esc(item.link)}" target="_blank" rel="noopener noreferrer">${highlightMatch(item.title)}</a>`
-        : `<span>${highlightMatch(item.title)}</span>`;
       const src = item.source ? `<span class="source-tag">${esc(item.source)}</span>` : '';
-      html += `<li class="news-item"><div>${link}${src}</div></li>`;
+      html += `<li class="news-item"><div>${highlightMatch(item.title)}${src}</div></li>`;
     });
     html += `</ul>`;
     if (hasMore) {
@@ -852,11 +847,8 @@ function showMore(btn, sectionTitle) {
   const ul = btn.previousElementSibling;
   let html = '';
   section.items.slice(ITEMS_PER_SECTION).forEach(item => {
-    const link = item.link
-      ? `<a href="${esc(item.link)}" target="_blank" rel="noopener noreferrer">${highlightMatch(item.title)}</a>`
-      : `<span>${highlightMatch(item.title)}</span>`;
     const src = item.source ? `<span class="source-tag">${esc(item.source)}</span>` : '';
-    html += `<li class="news-item"><div>${link}${src}</div></li>`;
+    html += `<li class="news-item"><div>${highlightMatch(item.title)}${src}</div></li>`;
   });
   ul.insertAdjacentHTML('beforeend', html);
   btn.remove();

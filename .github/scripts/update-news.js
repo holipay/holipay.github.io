@@ -421,10 +421,10 @@ async function processTopic(topic) {
   if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
   const dayFile = path.join(dataDir, `${today}.json`);
-  // 写入时剔除 titleEN（仅脚本内部用于去重/分类，前端不需要）
+  // 写入时剔除 titleEN 和 link（脚本内部保留用于去重，前端不需要）
   const leanSections = sections.map(s => ({
     ...s,
-    items: s.items.map(({ titleEN, ...rest }) => rest),
+    items: s.items.map(({ titleEN, link, ...rest }) => rest),
   }));
   atomicWrite(dayFile, JSON.stringify({ date: today, sections: leanSections }, null, 2));
 
