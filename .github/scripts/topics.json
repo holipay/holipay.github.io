@@ -5,7 +5,6 @@
     "icon": "💹",
     "dataFile": "data/finance.json",
     "dataDir": "data/finance",
-    "feedFile": "feed-finance.xml",
     "defaultCategory": {
       "icon": "📰",
       "title": "其他财经"
@@ -445,7 +444,6 @@
     "icon": "🎓",
     "dataFile": "data/social-science.json",
     "dataDir": "data/social-science",
-    "feedFile": "feed-social-science.xml",
     "defaultCategory": {
       "icon": "📖",
       "title": "其他研究"
@@ -1162,7 +1160,6 @@
     "icon": "📱",
     "dataFile": "data/xiaomi.json",
     "dataDir": "data/xiaomi",
-    "feedFile": "feed-xiaomi.xml",
     "defaultCategory": {
       "icon": "📰",
       "title": "其他资讯"

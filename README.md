@@ -6,12 +6,9 @@
 
 ## 📡 RSS 订阅
 
-| 主题 | RSS |
-|------|-----|
-| 🌐 全部资讯 | [feed.xml](https://nase.me/feed.xml) |
-| 📱 小米资讯 | [feed-xiaomi.xml](https://nase.me/feed-xiaomi.xml) |
-| 💹 全球金融 | [feed-finance.xml](https://nase.me/feed-finance.xml) |
-| 🎓 社科前沿 | [feed-social-science.xml](https://nase.me/feed-social-science.xml) |
+订阅唯一地址：**[https://nase.me/feed.xml](https://nase.me/feed.xml)**
+
+包含全部资讯（全球金融、社科前沿、小米资讯），每日自动更新。
 
 ## 内容板块
 

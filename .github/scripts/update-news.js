@@ -369,47 +369,6 @@ function normalizeItem(item) {
   return { title: item.title || '', link: item.link || '', source: item.source || '', titleEN: item.titleEN || '' };
 }
 
-function buildFeedXml(allDays, siteUrl, feedFile) {
-  let items = '';
-
-  for (const day of allDays.slice(0, FEED_MAX_DAYS)) {
-    const dayDate = new Date(day.date + 'T01:00:00+08:00');
-    const pubDate = dayDate.toUTCString();
-
-    for (const section of day.sections) {
-      for (const raw of section.items) {
-        const news = normalizeItem(raw);
-        const title = `${section.icon} ${news.title}`;
-        const link = news.link || siteUrl;
-        const desc = news.titleEN
-          ? `[${news.source}] ${news.title} (${news.titleEN})`
-          : news.source ? `[${news.source}] ${news.title}` : news.title;
-        items += `  <item>
-    <title>${escapeXml(title)}</title>
-    <link>${escapeXml(link)}</link>
-    <guid isPermaLink="false">${escapeXml(day.date + '-' + news.title.slice(0, 40))}</guid>
-    <pubDate>${pubDate}</pubDate>
-    <description>${escapeXml(desc)}</description>
-    <category>${escapeXml(section.title)}</category>
-  </item>
-`;
-      }
-    }
-  }
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-<channel>
-  <title>新闻聚合</title>
-  <link>${siteUrl}</link>
-  <description>自动整理的新闻资讯，每日更新</description>
-  <language>zh-cn</language>
-  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-  <atom:link href="${siteUrl}${feedFile}" rel="self" type="application/rss+xml"/>
-${items}</channel>
-</rss>`;
-}
-
 // ==================== 合并 Feed 生成 ====================
 function buildMergedFeedXml(allTopicData, siteUrl) {
   // 收集所有条目，带上日期和主题信息
@@ -579,12 +538,6 @@ async function processTopic(topic) {
 
     console.log(`📂 已更新 ${topic.dataDir}/ (${indexData.days.length} 天拆分文件)`);
   }
-
-  // 6. 写入 RSS（原子写入）
-  const feedPath = path.join(ROOT, topic.feedFile);
-  const siteUrl = `https://nase.me/`;
-  atomicWrite(feedPath, buildFeedXml(existing, siteUrl, topic.feedFile));
-  console.log(`📝 已更新 ${topic.feedFile}`);
 }
 
 // ==================== 主逻辑 ====================
