@@ -330,13 +330,30 @@ function classify(item, processedCats, defaultCat) {
   return defaultCat;
 }
 
+function normalizeTitle(title) {
+  return (title || '')
+    .replace(/^[💹🎓📱📰🛢️📈🏦💰🖥️🌍🤖🧠👥🏛️📖⚙️🏥📚⚖️🚗🏠📊💹🎓📱📰🛢️📈🏦💰🖥️🌍🤖🧠👥🏛️📖⚙️🏥📚⚖️🚗🏠📊]+/gu, '') // 去emoji
+    .replace(/^[\s\-–—·|：:]+/, '')          // 去前导标点
+    .replace(/\s*[-–—]\s*(Reuters|Bloomberg|WSJ|CNBC|Financial Times|FT|BBC|CNN|NBER|36氪|IT之家|新浪财经|观察者|爱范儿|Sohu|东方财富|凤凰网科技|投资者商业日报|华尔街日报)\s*$/i, '') // 去来源后缀
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
 function dedup(items) {
   const seen = new Set();
   return items.filter(item => {
-    // 用前 40 字符 + source 做 key，降低碰撞
-    const key = (item.source || '') + '|' + item.title.slice(0, 40);
-    if (seen.has(key)) return false;
-    seen.add(key);
+    // 1. URL 相同直接去重
+    if (item.link && seen.has('url:' + item.link)) return false;
+    if (item.link) seen.add('url:' + item.link);
+
+    // 2. 优先用英文原文（titleEN）做 key，更稳定；否则用标准化后的中文标题
+    const raw = item.titleEN || item.title || '';
+    const norm = normalizeTitle(raw).slice(0, 80);
+    if (!norm) return true;
+    if (seen.has('t:' + norm)) return false;
+    seen.add('t:' + norm);
+
     return true;
   });
 }
