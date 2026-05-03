@@ -563,7 +563,6 @@ async function prefetchTopic(topicId) {
     const cached = { index: null, dayData: new Map() };
     topicCache.set(topicId, cached);
 
-    // 并行：猜日期 + index.json
     const today = getTodayStr();
     const indexPromise = fetch(`${dataDir}/index.json`);
     const todayPromise = fetch(`${dataDir}/${today}.json`);
@@ -578,7 +577,6 @@ async function prefetchTopic(topicId) {
       if (indexRes.ok) cached.index = await indexRes.json();
     } catch {}
 
-    // index 加载后补最新一天
     if (cached.index?.days?.[0]?.date && !cached.dayData.has(cached.index.days[0].date)) {
       const firstDate = cached.index.days[0].date;
       const dayRes = await fetch(`${dataDir}/${firstDate}.json`);
@@ -587,14 +585,6 @@ async function prefetchTopic(topicId) {
   } catch {} finally {
     _prefetching.delete(topicId);
   }
-}
-
-async function preloadOtherTopics() {
-  // 延迟 3 秒再预加载，避免和首屏抢带宽
-  setTimeout(() => {
-    const others = TOPICS.filter(t => t.id !== currentTopic.id && !topicCache.has(t.id));
-    others.forEach(t => prefetchTopic(t.id));
-  }, 3000);
 }
 
 // ===== 并行加载 =====
@@ -622,7 +612,6 @@ async function loadData() {
       }
       currentDay = dayJson;
       buildDateNav(); buildFilters(); renderContent();
-      preloadOtherTopics();
       return;
     }
 
@@ -689,7 +678,6 @@ async function loadData() {
 
     if (rendered) {
       buildFilters(); renderContent();
-      preloadOtherTopics();
       return;
     }
 
