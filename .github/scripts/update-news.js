@@ -421,7 +421,12 @@ async function processTopic(topic) {
   if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
   const dayFile = path.join(dataDir, `${today}.json`);
-  atomicWrite(dayFile, JSON.stringify({ date: today, sections }, null, 2));
+  // 写入时剔除 titleEN（仅脚本内部用于去重/分类，前端不需要）
+  const leanSections = sections.map(s => ({
+    ...s,
+    items: s.items.map(({ titleEN, ...rest }) => rest),
+  }));
+  atomicWrite(dayFile, JSON.stringify({ date: today, sections: leanSections }, null, 2));
 
   let indexData;
   const indexPath = path.join(dataDir, 'index.json');
