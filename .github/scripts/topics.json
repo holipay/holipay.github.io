@@ -3,7 +3,6 @@
     "id": "finance",
     "name": "全球金融",
     "icon": "💹",
-    "dataFile": "data/finance.json",
     "dataDir": "data/finance",
     "defaultCategory": {
       "icon": "📰",
@@ -442,7 +441,6 @@
     "id": "social-science",
     "name": "社科前沿",
     "icon": "🎓",
-    "dataFile": "data/social-science.json",
     "dataDir": "data/social-science",
     "defaultCategory": {
       "icon": "📖",
@@ -1158,7 +1156,6 @@
     "id": "xiaomi",
     "name": "小米资讯",
     "icon": "📱",
-    "dataFile": "data/xiaomi.json",
     "dataDir": "data/xiaomi",
     "defaultCategory": {
       "icon": "📰",

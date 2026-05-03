@@ -23,7 +23,6 @@ const SCRIPTS_DIR = __dirname;
 const CACHE_FILE = path.join(SCRIPTS_DIR, 'translations-cache.json');
 const TOPICS_FILE = path.join(SCRIPTS_DIR, 'topics.json');
 const MAX_DAYS = 365;           // 拆分文件保留天数
-const BIG_JSON_DAYS = 30;       // 大 JSON 文件保留天数（减少 git 增长）
 const TRANSLATE_CONCURRENCY = 3;
 const MAX_RETRIES = 1;
 
@@ -415,63 +414,48 @@ async function processTopic(topic) {
   // 4. 分类
   const sections = groupByCategory(allItems, topic.categories, topic.defaultCategory);
 
-  // 5. 写入数据文件
-  const dataPath = path.join(ROOT, topic.dataFile);
+  // 5. 写入按日期拆分的文件
+  const dataDir = path.join(ROOT, topic.dataDir);
   const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Shanghai' });
-  let existing = [];
+
+  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+
+  const dayFile = path.join(dataDir, `${today}.json`);
+  atomicWrite(dayFile, JSON.stringify({ date: today, sections }, null, 2));
+
+  let indexData;
+  const indexPath = path.join(dataDir, 'index.json');
   try {
-    existing = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
-  } catch {}
-
-  existing = existing.filter(d => d.date !== today);
-  existing.unshift({ date: today, sections });
-  existing = existing.slice(0, BIG_JSON_DAYS);
-
-  atomicWrite(dataPath, JSON.stringify(existing, null, 2));
-  console.log(`📝 已更新 ${topic.dataFile} (${existing.length} 天, ≤${BIG_JSON_DAYS}天)`);
-
-  // 5b. 写入按日期拆分的文件
-  if (topic.dataDir) {
-    const dataDir = path.join(ROOT, topic.dataDir);
-    if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
-
-    const dayFile = path.join(dataDir, `${today}.json`);
-    atomicWrite(dayFile, JSON.stringify({ date: today, sections }, null, 2));
-
-    let indexData;
-    const indexPath = path.join(dataDir, 'index.json');
-    try {
-      indexData = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
-    } catch {
-      indexData = { topic: topic.id, name: topic.name, icon: topic.icon, updatedAt: '', days: [] };
-    }
-
-    let totalItems = 0;
-    const categories = [];
-    for (const sec of sections) {
-      totalItems += sec.items.length;
-      categories.push({ icon: sec.icon, title: sec.title, count: sec.items.length });
-    }
-    const todayEntry = { date: today, totalItems, categories };
-
-    const existIdx = indexData.days.findIndex(d => d.date === today);
-    if (existIdx >= 0) {
-      indexData.days[existIdx] = todayEntry;
-    } else {
-      indexData.days.unshift(todayEntry);
-    }
-    indexData.days = indexData.days.slice(0, MAX_DAYS);
-    indexData.updatedAt = new Date().toISOString();
-
-    atomicWrite(indexPath, JSON.stringify(indexData, null, 2));
-
-    const allDayFiles = fs.readdirSync(dataDir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().reverse();
-    for (const old of allDayFiles.slice(MAX_DAYS)) {
-      fs.unlinkSync(path.join(dataDir, old));
-    }
-
-    console.log(`📂 已更新 ${topic.dataDir}/ (${indexData.days.length} 天拆分文件)`);
+    indexData = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
+  } catch {
+    indexData = { topic: topic.id, name: topic.name, icon: topic.icon, updatedAt: '', days: [] };
   }
+
+  let totalItems = 0;
+  const categories = [];
+  for (const sec of sections) {
+    totalItems += sec.items.length;
+    categories.push({ icon: sec.icon, title: sec.title, count: sec.items.length });
+  }
+  const todayEntry = { date: today, totalItems, categories };
+
+  const existIdx = indexData.days.findIndex(d => d.date === today);
+  if (existIdx >= 0) {
+    indexData.days[existIdx] = todayEntry;
+  } else {
+    indexData.days.unshift(todayEntry);
+  }
+  indexData.days = indexData.days.slice(0, MAX_DAYS);
+  indexData.updatedAt = new Date().toISOString();
+
+  atomicWrite(indexPath, JSON.stringify(indexData, null, 2));
+
+  const allDayFiles = fs.readdirSync(dataDir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().reverse();
+  for (const old of allDayFiles.slice(MAX_DAYS)) {
+    fs.unlinkSync(path.join(dataDir, old));
+  }
+
+  console.log(`📂 已更新 ${topic.dataDir}/ (${indexData.days.length} 天拆分文件)`);
 }
 
 // ==================== 主逻辑 ====================

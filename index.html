@@ -456,9 +456,9 @@ body{
 
 <script>
 const TOPICS = [
-  { id: 'finance', name: '全球金融', icon: '💹', dataFile: 'data/finance.json' },
-  { id: 'social-science', name: '社科前沿', icon: '🎓', dataFile: 'data/social-science.json' },
-  { id: 'xiaomi', name: '小米资讯', icon: '📱', dataFile: 'data/xiaomi.json' },
+  { id: 'finance', name: '全球金融', icon: '💹', dataDir: 'data/finance' },
+  { id: 'social-science', name: '社科前沿', icon: '🎓', dataDir: 'data/social-science' },
+  { id: 'xiaomi', name: '小米资讯', icon: '📱', dataDir: 'data/xiaomi' },
 ];
 
 let currentTopic = TOPICS[0];
@@ -549,7 +549,7 @@ async function prefetchTopic(topicId) {
   _prefetching.add(topicId);
   const topic = TOPICS.find(t => t.id === topicId);
   if (!topic) return;
-  const dataDir = topic.dataFile.replace('.json', '');
+  const dataDir = topic.dataDir;
   try {
     const cached = { index: null, dayData: new Map() };
     topicCache.set(topicId, cached);
@@ -590,7 +590,7 @@ async function preloadOtherTopics() {
 
 // ===== 并行加载：内容优先，index 后补 =====
 async function loadData() {
-  const dataDir = currentTopic.dataFile.replace('.json', '');
+  const dataDir = currentTopic.dataDir;
   const cacheKey = currentTopic.id;
   let cached = topicCache.get(cacheKey);
 
@@ -690,39 +690,25 @@ async function loadData() {
       return;
     }
 
-    // 3. 猜日期也失败 → 降级走旧的大 JSON
-    throw new Error('date guess failed');
+    // 3. 猜日期也失败
+    allData = [];
+    $dateNav.innerHTML = '';
+    $filters.innerHTML = '';
+    $mobileFilterBar.innerHTML = '';
+    $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据，每日 9:00 自动更新</p></div>';
 
   } catch {
-    // 降级：加载整个大 JSON 文件
-    window._splitIndex = null;
-    const fullKey = currentTopic.id + ':full';
-    let fullData = topicCache.get(fullKey);
-    if (!fullData) {
-      try {
-        const res = await fetch(currentTopic.dataFile);
-        if (!res.ok) throw new Error();
-        fullData = await res.json();
-        topicCache.set(fullKey, fullData);
-      } catch {
-        allData = [];
-        $dateNav.innerHTML = '';
-        $filters.innerHTML = '';
-        $mobileFilterBar.innerHTML = '';
-        $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据，每日 9:00 自动更新</p></div>';
-        return;
-      }
-    }
-    allData = fullData;
-    currentDateIdx = 0;
-    buildDateNav(); buildFilters(); renderContent();
-    preloadOtherTopics();
+    allData = [];
+    $dateNav.innerHTML = '';
+    $filters.innerHTML = '';
+    $mobileFilterBar.innerHTML = '';
+    $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据，每日 9:00 自动更新</p></div>';
   }
 }
 
 async function loadDayFromSplit(date) {
   if (!date || !window._splitIndex) return;
-  const dataDir = currentTopic.dataFile.replace('.json', '');
+  const dataDir = currentTopic.dataDir;
   const cached = topicCache.get(currentTopic.id);
   try {
     let dayJson;
