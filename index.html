@@ -62,6 +62,7 @@
     --badge-bg: #2a2d3a;
     --sidebar-bg: #181b25;
   }
+  .brand-logo [fill="#888"] { fill: #666680; }
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -95,12 +96,10 @@ body{
 .sidebar-left-inner{padding:16px 14px;flex:1;display:flex;flex-direction:column;gap:14px}
 
 .brand{
-  font-size:18px;font-weight:800;
-  background:linear-gradient(135deg,var(--accent),#1e40af);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;white-space:nowrap;letter-spacing:-.3px;
   padding-bottom:12px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
 }
+.brand-logo{display:block;height:auto}
 
 .sidebar-label{
   font-size:10px;font-weight:600;color:var(--text-muted);
@@ -311,10 +310,7 @@ body{
   padding:10px 14px;align-items:center;gap:8px;
 }
 .mobile-brand{
-  font-size:16px;font-weight:800;
-  background:linear-gradient(135deg,var(--accent),#1e40af);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;white-space:nowrap;letter-spacing:-.3px;
+  display:flex;align-items:center;flex-shrink:0;
 }
 .hamburger{
   width:36px;height:36px;
@@ -389,7 +385,26 @@ body{
   <button class="hamburger" id="hamburger" aria-label="菜单">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
-  <div class="mobile-brand">nase.me</div>
+  <div class="mobile-brand">
+    <svg class="brand-logo" viewBox="0 0 200 52" width="140" height="36" aria-label="nase.me">
+      <defs>
+        <linearGradient id="logo-bg-m" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#2563eb"/>
+          <stop offset="100%" stop-color="#1e40af"/>
+        </linearGradient>
+        <linearGradient id="logo-txt-m" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#3b82f6"/>
+          <stop offset="100%" stop-color="#1e40af"/>
+        </linearGradient>
+      </defs>
+      <rect x="2" y="4" width="44" height="44" rx="12" fill="url(#logo-bg-m)"/>
+      <rect x="12" y="16" width="5" height="20" rx="1.5" fill="#fff"/>
+      <rect x="31" y="16" width="5" height="20" rx="1.5" fill="#fff"/>
+      <polygon points="17,16 22,16 36,33 36,36 31,36 17,19" fill="#fff"/>
+      <text x="56" y="38" font-family="system-ui,-apple-system,sans-serif" font-size="32" font-weight="800" fill="url(#logo-txt-m)">nase</text>
+      <text x="148" y="38" font-family="system-ui,-apple-system,sans-serif" font-size="32" font-weight="800" fill="#888">.me</text>
+    </svg>
+  </div>
   <div class="mobile-search">
     <input type="text" id="mobileSearchInput" placeholder="搜索..." oninput="debouncedSearch()" aria-label="搜索新闻">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -405,7 +420,26 @@ body{
   <!-- Left sidebar -->
   <aside class="sidebar-left" id="sidebarLeft">
     <div class="sidebar-left-inner">
-      <div class="brand">nase.me</div>
+      <div class="brand">
+        <svg class="brand-logo" viewBox="0 0 200 52" width="160" height="42" aria-label="nase.me">
+          <defs>
+            <linearGradient id="logo-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#2563eb"/>
+              <stop offset="100%" stop-color="#1e40af"/>
+            </linearGradient>
+            <linearGradient id="logo-txt" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#3b82f6"/>
+              <stop offset="100%" stop-color="#1e40af"/>
+            </linearGradient>
+          </defs>
+          <rect x="2" y="4" width="44" height="44" rx="12" fill="url(#logo-bg)"/>
+          <rect x="12" y="16" width="5" height="20" rx="1.5" fill="#fff"/>
+          <rect x="31" y="16" width="5" height="20" rx="1.5" fill="#fff"/>
+          <polygon points="17,16 22,16 36,33 36,36 31,36 17,19" fill="#fff"/>
+          <text x="56" y="38" font-family="system-ui,-apple-system,sans-serif" font-size="32" font-weight="800" fill="url(#logo-txt)">nase</text>
+          <text x="148" y="38" font-family="system-ui,-apple-system,sans-serif" font-size="32" font-weight="800" fill="#888">.me</text>
+        </svg>
+      </div>
 
       <div>
         <div class="sidebar-label">资讯分类</div>
