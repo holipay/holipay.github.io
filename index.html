@@ -264,6 +264,15 @@ body{
 .empty-icon{font-size:48px;margin-bottom:16px;opacity:.6}
 .empty p{font-size:14px}
 
+/* Show more */
+.show-more-btn{
+  display:block;width:100%;margin-top:8px;padding:8px;
+  background:var(--bg);border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);font-size:12px;font-weight:500;
+  color:var(--accent);cursor:pointer;transition:all var(--transition);
+}
+.show-more-btn:hover{border-color:var(--accent);background:var(--accent-light)}
+
 /* Footer */
 .footer{
   text-align:center;padding:20px;
@@ -581,8 +590,11 @@ async function prefetchTopic(topicId) {
 }
 
 async function preloadOtherTopics() {
-  const others = TOPICS.filter(t => t.id !== currentTopic.id && !topicCache.has(t.id));
-  await Promise.allSettled(others.map(t => prefetchTopic(t.id)));
+  // 延迟 3 秒再预加载，避免和首屏抢带宽
+  setTimeout(() => {
+    const others = TOPICS.filter(t => t.id !== currentTopic.id && !topicCache.has(t.id));
+    others.forEach(t => prefetchTopic(t.id));
+  }, 3000);
 }
 
 // ===== 并行加载 =====
@@ -794,6 +806,8 @@ function buildFilters() {
 }
 
 // ===== Render =====
+const ITEMS_PER_SECTION = 30;
+
 function renderContent() {
   if (!currentDay) {
     $content.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>暂无数据</p></div>';
@@ -824,18 +838,40 @@ function renderContent() {
   let html = '';
   sections.forEach(s => {
     total += s.items.length;
+    const visible = s.items.slice(0, ITEMS_PER_SECTION);
+    const hasMore = s.items.length > ITEMS_PER_SECTION;
     html += `<div class="card"><h3>${s.icon} ${s.title} <span class="count">${s.items.length} 条</span></h3><ul class="news-list">`;
-    s.items.forEach(item => {
+    visible.forEach(item => {
       const link = item.link
         ? `<a href="${esc(item.link)}" target="_blank" rel="noopener noreferrer">${highlightMatch(item.title)}</a>`
         : `<span>${highlightMatch(item.title)}</span>`;
       const src = item.source ? `<span class="source-tag">${esc(item.source)}</span>` : '';
       html += `<li class="news-item"><div>${link}${src}</div></li>`;
     });
-    html += `</ul></div>`;
+    html += `</ul>`;
+    if (hasMore) {
+      html += `<button class="show-more-btn" onclick="showMore(this, '${esc(s.title)}')">展开剩余 ${s.items.length - ITEMS_PER_SECTION} 条</button>`;
+    }
+    html += `</div>`;
   });
   $content.innerHTML = html;
   $searchCount.textContent = searchQuery ? `${total} 条结果` : '';
+}
+
+function showMore(btn, sectionTitle) {
+  const section = currentDay.sections.find(s => s.title === sectionTitle);
+  if (!section) return;
+  const ul = btn.previousElementSibling;
+  let html = '';
+  section.items.slice(ITEMS_PER_SECTION).forEach(item => {
+    const link = item.link
+      ? `<a href="${esc(item.link)}" target="_blank" rel="noopener noreferrer">${highlightMatch(item.title)}</a>`
+      : `<span>${highlightMatch(item.title)}</span>`;
+    const src = item.source ? `<span class="source-tag">${esc(item.source)}</span>` : '';
+    html += `<li class="news-item"><div>${link}${src}</div></li>`;
+  });
+  ul.insertAdjacentHTML('beforeend', html);
+  btn.remove();
 }
 
 // ===== Helpers =====
