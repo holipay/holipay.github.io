@@ -127,7 +127,7 @@ function apiCall(method, urlPath, body) {
   });
 }
 
-async function callDeepSeek(prompt, customSystemPrompt) {
+async function callDeepSeek(prompt, customSystemPrompt, maxTokens) {
   let lastError = null;
 
   const systemContent = customSystemPrompt || [
@@ -149,7 +149,7 @@ async function callDeepSeek(prompt, customSystemPrompt) {
           { role: "user", content: prompt },
         ],
         temperature: 0.8,
-        max_tokens: customSystemPrompt ? 5000 : 2500,
+        max_tokens: maxTokens || (customSystemPrompt ? 5000 : 2500),
       });
 
       if (res.error) {
@@ -1172,6 +1172,58 @@ function buildMonthlyReviewPrompt(analyses, todayNewsData, monthStr) {
     .sort((a, b) => b[1] - a[1]).slice(0, 30)
     .map(([kw, score]) => `${kw}(${Math.round(score)})`).join(", ");
 
+  // ===== 异常检测数据准备 =====
+  const anomalyLines = [];
+
+  // 1. 情绪急转检测
+  for (let i = 1; i < analyses.length; i++) {
+    const prev = analyses[i - 1];
+    const curr = analyses[i];
+    const ps = prev.structured?.sentiment;
+    const cs = curr.structured?.sentiment;
+    if (ps && cs && ps !== cs && ps !== "中性" && cs !== "中性") {
+      anomalyLines.push(`  - 🔄 情绪急转 [${prev.date}→${curr.date}]: ${ps}→${cs}`);
+    }
+  }
+
+  // 2. 关键词异动检测（后半段首次出现且高分）
+  const firstHalf = analyses.slice(0, Math.floor(analyses.length / 2));
+  const secondHalf = analyses.slice(Math.floor(analyses.length / 2));
+  const firstHalfKws = new Set();
+  for (const a of firstHalf) {
+    for (const hk of a.hotKeywords || []) firstHalfKws.add(hk.keyword || hk);
+  }
+  const emergingKws = [];
+  for (const a of secondHalf) {
+    for (const hk of a.hotKeywords || []) {
+      const kw = hk.keyword || hk;
+      const score = typeof hk === "object" ? hk.score : 1;
+      if (!firstHalfKws.has(kw) && score > 5) {
+        emergingKws.push({ keyword: kw, score, date: a.date });
+      }
+    }
+  }
+  const topEmerging = [...new Map(emergingKws.map(e => [e.keyword, e])).values()]
+    .sort((a, b) => b.score - a.score).slice(0, 5);
+  for (const e of topEmerging) {
+    anomalyLines.push(`  - 🔥 新主题涌现 [${e.date}]: ${e.keyword}（热度 ${e.score}）`);
+  }
+
+  // 3. 风险升级检测
+  for (let i = 1; i < analyses.length; i++) {
+    const prev = analyses[i - 1];
+    const curr = analyses[i];
+    const pr = prev.structured?.riskLevel;
+    const cr = curr.structured?.riskLevel;
+    if (pr && cr && pr !== "高" && cr === "高") {
+      anomalyLines.push(`  - ⚠️ 风险升级 [${curr.date}]: ${pr}→高`);
+    }
+  }
+
+  const anomalySection = anomalyLines.length > 0
+    ? anomalyLines.join("\n")
+    : "  （本月未检测到显著异常信号）";
+
   // 今日新闻（如有）
   let todaySection = "";
   if (todayNewsData && todayNewsData.items && todayNewsData.items.length > 0) {
@@ -1193,6 +1245,9 @@ ${dailySummaries}
 
 ## 月度热点词频（加权）
 ${topTopics}
+
+## 本月异常信号
+${anomalySection}
 ${todaySection}
 
 ---
@@ -1218,6 +1273,26 @@ ${todaySection}
 3. **⚠️ 遗漏信号**：有哪些重要事件或趋势是AI分析未能捕捉的？
 4. **📊 整体准确度**：本月分析整体质量如何？哪些视角最有价值？
 5. **💡 改进方向**：未来分析应加强哪些方面？
+
+### 维度三：异常信号深度解读
+
+上面「本月异常信号」列出了系统自动检测到的异常。请对每个异常进行深度分析：
+
+1. **异常原因**：是什么导致了这个异常？背后的驱动因素是什么？
+2. **影响评估**：这个异常对市场/行业/社会的实际影响有多大？
+3. **是噪音还是信号**：这个异常是短期波动还是结构性变化的前兆？
+4. **关联分析**：多个异常之间是否存在内在联系？
+
+### 维度四：月度深度专题
+
+从本月热点关键词中选出最值得关注的 2-3 个主题，进行垂直深度分析：
+
+对每个专题：
+1. **演变脉络**：该主题在本月的时间线发展
+2. **驱动因素**：背后的推动力是什么（政策、技术、市场情绪？）
+3. **关键参与者**：涉及的主要公司、国家、机构
+4. **联动关系**：与其他主题/领域的相互影响
+5. **下月展望**：该主题接下来最可能的走向
 
 请确保分析有深度、有独到见解。自我纠错部分要诚实具体，不回避错误。输出 Markdown 格式。`;
 }
@@ -1255,7 +1330,7 @@ async function runMonthlyReview(dateStr, now) {
     "你必须有独到见解，拒绝套话。自我纠错部分要诚实具体，不要回避错误。",
     "输出纯文本格式，使用 Markdown 标记。",
   ].join("");
-  const rawAnalysis = await callDeepSeek(prompt, monthlySystemPrompt);
+  const rawAnalysis = await callDeepSeek(prompt, monthlySystemPrompt, 8000);
   console.log(`✅ 月度回顾完成 (${rawAnalysis.length} 字)`);
 
   // 解析结构化输出
