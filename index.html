@@ -131,7 +131,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
   </aside>
 </div>
 <script>
-const S={dates:[],date:"",cat:"analysis",cache:new Map(),meta:null,newsPage:{},_loading:false,_pageSize:0};
+const S={dates:[],date:"",cat:"analysis",meta:null,newsPage:{},_loading:false,_pageSize:0};
 const $=id=>document.getElementById(id);
 const main=$("main"),catList=$("catList"),dateText=$("dateText"),prevBtn=$("prevDate"),nextBtn=$("nextDate"),latestTag=$("latestTag");
 const esc=s=>{const d=document.createElement("div");d.textContent=s;return d.innerHTML.replace(/"/g,"&quot;")};
@@ -171,17 +171,50 @@ async function loadNewsCat(file){
   return items;
 }
 
-// Load analysis
-async function loadAnalysis(){
-  if(S.cache.has(S.date))return S.cache.get(S.date);
-  try{const r=await fetchT(`data/news/analysis/${S.date}.json`);const d=await r.json();S.cache.set(S.date,d);return d}catch{return null}
+// [优化1] 分析数据按需加载：先加载摘要（轻量），再按需加载全文
+const analysisSummaryCache=new Map();
+const analysisFullCache=new Map();
+const SUMMARY_CACHE_MAX=16;
+const FULL_CACHE_MAX=8;
+
+function lruGet(map,key){if(map.has(key)){const v=map.get(key);map.delete(key);map.set(key,v);return v}return null}
+function lruSet(map,key,val,max){if(map.has(key))map.delete(key);else if(map.size>=max){const oldest=map.keys().next().value;map.delete(oldest)}map.set(key,val)}
+
+async function loadAnalysisSummary(){
+  const cached=lruGet(analysisSummaryCache,S.date);
+  if(cached)return cached;
+  try{const r=await fetchT(`data/news/analysis/${S.date}.json`);const d=await r.json();lruSet(analysisSummaryCache,S.date,d,SUMMARY_CACHE_MAX);return d}catch{return null}
 }
 
-// Render analysis
-function renderAnalysis(data){
-  if(!data||!data.analysis)return'<div class="empty"><div class="empty-icon">📭</div><p>暂无分析数据</p></div>';
-  const date=data.date||(data.generatedAt?new Date(data.generatedAt).toLocaleDateString("sv-SE",{timeZone:"Asia/Shanghai"}):"");
-  let body=esc(data.analysis);
+async function loadAnalysisFull(){
+  const cached=lruGet(analysisFullCache,S.date);
+  if(cached)return cached;
+  const summary=lruGet(analysisSummaryCache,S.date);
+  if(summary&&summary.analysis){lruSet(analysisFullCache,S.date,summary,FULL_CACHE_MAX);return summary}
+  try{const r=await fetchT(`data/news/analysis/${S.date}.json`);const d=await r.json();lruSet(analysisFullCache,S.date,d,FULL_CACHE_MAX);return d}catch{return null}
+}
+
+// [优化2] 渲染结果 DOM 缓存：切回已浏览日期时直接复用
+const renderedAnalysisCache=new Map();
+const RENDERED_CACHE_MAX=10;
+function renderedGet(date){return lruGet(renderedAnalysisCache,date)}
+function renderedSet(date,html){lruSet(renderedAnalysisCache,date,html,RENDERED_CACHE_MAX)}
+
+// [优化3] 预加载相邻日期分析数据
+function prefetchAdjacentAnalysis(){
+  const idx=S.dates.indexOf(S.date);
+  const toPrefetch=[];
+  if(idx>0)toPrefetch.push(S.dates[idx-1]);
+  if(idx<S.dates.length-1)toPrefetch.push(S.dates[idx+1]);
+  toPrefetch.forEach((d,i)=>{
+    if(analysisSummaryCache.has(d))return;
+    setTimeout(()=>{fetchT(`data/news/analysis/${d}.json`).then(r=>r.json()).then(j=>lruSet(analysisSummaryCache,d,j,SUMMARY_CACHE_MAX)).catch(()=>{})},i*300);
+  });
+}
+
+// Render analysis（支持拆分加载：先渲染结构化数据，再异步填充全文）
+function parseMarkdown(text){
+  let body=esc(text);
   body=body.replace(/^### (.+)$/gm,'<h4>$1</h4>');
   body=body.replace(/^## (.+)$/gm,'<h3>$1</h3>');
   body=body.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>");
@@ -189,6 +222,9 @@ function renderAnalysis(data){
   body=body.replace(/(<li>.*<\/li>\n?)+/g,m=>`<ul>${m}</ul>`);
   body=body.replace(/\n\n/g,"</p><p>");body=`<p>${body}</p>`;
   body=body.replace(/<p>\s*<\/p>/g,"").replace(/<p>\s*(<h[34]>)/g,"$1").replace(/(<\/h[34]>)\s*<\/p>/g,"$1");
+  return body;
+}
+function renderStructuredTags(data){
   const per=data.perspective?` · ${data.perspective}`:"";
   let tags="";const s=data.structured;
   if(s){
@@ -205,6 +241,13 @@ function renderAnalysis(data){
   }
   const hotKw=(data.hotKeywords||[]).slice(0,8);
   const hotHtml=hotKw.length>0?`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)">${hotKw.map(hk=>`<span class="tag" style="background:rgba(239,68,68,.08);color:#ef4444;border-color:rgba(239,68,68,.2)">🔥 ${esc(hk.keyword)} <span style="opacity:.6;margin-left:2px">${hk.score}</span></span>`).join("")}</div>`:"";
+  return{tags,hotHtml,per};
+}
+function renderAnalysis(data){
+  if(!data||!data.analysis)return'<div class="empty"><div class="empty-icon">📭</div><p>暂无分析数据</p></div>';
+  const date=data.date||(data.generatedAt?new Date(data.generatedAt).toLocaleDateString("sv-SE",{timeZone:"Asia/Shanghai"}):"");
+  const{tags,hotHtml,per}=renderStructuredTags(data);
+  const body=parseMarkdown(data.analysis);
   return`<div class="card a-card">
     <div class="a-head"><span class="a-icon">🧠</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span></div>
     ${tags}${hotHtml}<div class="a-body">${body}</div></div>`;
@@ -263,15 +306,33 @@ function setDate(d){
   loadView();
 }
 
-// Load current view
+// Load current view（优化：DOM缓存 → 拆分加载 → 预加载相邻）
 async function loadView(){
   if(S._loading)return;S._loading=true;
-  main.innerHTML='<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
   try{
     if(S.cat==="analysis"){
-      const data=await loadAnalysis();
-      main.innerHTML=renderAnalysis(data);
+      // [优化2] 检查 DOM 缓存，切回已浏览日期直接复用
+      const cachedHtml=renderedGet(S.date);
+      if(cachedHtml){main.innerHTML=cachedHtml;prefetchAdjacentAnalysis();return}
+      // [优化1] 先显示骨架，加载摘要后立即渲染结构化标签，全文异步填充
+      main.innerHTML='<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
+      const data=await loadAnalysisSummary();
+      if(!data||!data.analysis){main.innerHTML=renderAnalysis(data);renderedSet(S.date,main.innerHTML);return}
+      // 立即渲染结构化标签 + 骨架占位
+      const date=data.date||(data.generatedAt?new Date(data.generatedAt).toLocaleDateString("sv-SE",{timeZone:"Asia/Shanghai"}):"");
+      const{tags,hotHtml,per}=renderStructuredTags(data);
+      main.innerHTML=`<div class="card a-card">
+        <div class="a-head"><span class="a-icon">🧠</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span></div>
+        ${tags}${hotHtml}<div class="a-body"><div class="sk"><div class="sk-line"></div><div class="sk-line w80"></div><div class="sk-line w60"></div></div></div></div>`;
+      // 异步加载全文并填充
+      const full=await loadAnalysisFull();
+      const bodyEl=main.querySelector(".a-body");
+      if(full&&full.analysis&&bodyEl){bodyEl.innerHTML=parseMarkdown(full.analysis)}
+      renderedSet(S.date,main.innerHTML);
+      // [优化3] 预加载相邻日期
+      prefetchAdjacentAnalysis();
     }else{
+      main.innerHTML='<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
       const meta=await loadMeta();
       const cat=meta.categories.find(c=>c.file===S.cat);
       if(!cat){main.innerHTML='<div class="empty">分类未找到</div>';return}
