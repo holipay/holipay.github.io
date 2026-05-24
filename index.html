@@ -209,23 +209,20 @@ function prefetchAdjacentAnalysis(){
 
 // ===== Markdown 解析（单遍扫描） =====
 function parseMarkdown(text){
-  // 先转义 HTML，再单遍处理 Markdown
   let body=esc(text);
-  // 单遍替换：## / ### / **bold** / - list
-  body=body.replace(/^(#{2,3}) (.+)$|(\*\*(.+?)\*\*)|^(- (.+))$/gm,(m,h,hT,b,bT,l,lT)=>{
-    if(h==="# ##")return`<h3>${hT}</h3>`;
-    if(h==="# ###")return`<h4>${hT}</h4>`;
-    if(b)return`<strong>${bT}</strong>`;
-    if(l)return`<li>${lT}</li>`;
-    return m;
-  });
+  // 行级：标题和列表项
+  body=body.replace(/^### (.+)$/gm,'<h4>$1</h4>');
+  body=body.replace(/^## (.+)$/gm,'<h3>$1</h3>');
+  body=body.replace(/^- (.+)$/gm,'<li>$1</li>');
+  // 行内：加粗（全局，不限行首）
+  body=body.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
   // 合并连续 <li> 为 <ul>
   body=body.replace(/(<li>.*<\/li>\n?)+/g,m=>`<ul>${m}</ul>`);
   // 段落分割
-  body=body.replace(/\n\n/g,"</p><p>");
+  body=body.replace(/\n\n/g,'</p><p>');
   body=`<p>${body}</p>`;
   // 清理空段落和包裹标题的 <p>
-  body=body.replace(/<p>\s*<\/p>/g,"").replace(/<p>\s*(<h[34]>)/g,"$1").replace(/(<\/h[34]>)\s*<\/p>/g,"$1");
+  body=body.replace(/<p>\s*<\/p>/g,'').replace(/<p>\s*(<h[34]>)/g,'$1').replace(/(<\/h[34]>)\s*<\/p>/g,'$1');
   return body;
 }
 
@@ -400,7 +397,7 @@ function setupEvents(){
       (main.querySelector(".card")||main).appendChild(newBtn);
     }
   };
-  window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(h&&h!==S.date){const idx=S.dates.indexOf(h);if(idx>=0){S.date=h;S.dateIdx=idx;dateText.textContent=h;prevBtn.disabled=idx>=S.dates.length-1;nextBtn.disabled=idx<=0;latestTag.style.display=idx===0?"":"none";loadView()}}});
+  window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(h&&h!==S.date&&S.dates.indexOf(h)>=0)setDate(h)});
   // resize 时重置 pageSize 缓存
   let _resizeTimer;
   window.addEventListener("resize",()=>{clearTimeout(_resizeTimer);_resizeTimer=setTimeout(()=>{S._pageSize=0;_cachedHeight=0},200)},{passive:true});
