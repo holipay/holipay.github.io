@@ -1,0 +1,126 @@
+{
+  "days": [
+    {
+      "date": "2026-05-24",
+      "sentiment": "分化",
+      "riskLevel": "高",
+      "keyThemes": [
+        "旧经济回归",
+        "战争二阶效应",
+        "通胀意外下行",
+        "美国经济优势蒸发",
+        "巴菲特转向看空"
+      ],
+      "sectors": [
+        "制造业/工业",
+        "能源",
+        "人工智能/科技",
+        "零工经济"
+      ],
+      "outlook": "旧经济板块短期占优，科技股面临回调压力，市场将进入经济数据验证阶段，方向选择临近。",
+      "topKeywords": [
+        {
+          "keyword": "雅虎财经",
+          "score": 170,
+          "count": 17
+        },
+        {
+          "keyword": "com",
+          "score": 60,
+          "count": 10
+        },
+        {
+          "keyword": "investopedia",
+          "score": 48,
+          "count": 6
+        },
+        {
+          "keyword": "美国经济",
+          "score": 18,
+          "count": 3
+        },
+        {
+          "keyword": "华盛顿邮报",
+          "score": 16,
+          "count": 2
+        },
+        {
+          "keyword": "为什么",
+          "score": 16,
+          "count": 2
+        },
+        {
+          "keyword": "为什么华尔街",
+          "score": 12,
+          "count": 2
+        }
+      ]
+    }
+  ],
+  "keywordTrends": [
+    {
+      "keyword": "雅虎财经",
+      "avgScore7d": 170,
+      "avgScore30d": 170,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "com",
+      "avgScore7d": 60,
+      "avgScore30d": 60,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "investopedia",
+      "avgScore7d": 48,
+      "avgScore30d": 48,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "美国经济",
+      "avgScore7d": 18,
+      "avgScore30d": 18,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "华盛顿邮报",
+      "avgScore7d": 16,
+      "avgScore30d": 16,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "为什么",
+      "avgScore7d": 16,
+      "avgScore30d": 16,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "为什么华尔街",
+      "avgScore7d": 12,
+      "avgScore30d": 12,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    }
+  ],
+  "signals": [
+    {
+      "date": "2026-05-24",
+      "sentiment": "分化",
+      "riskLevel": "高",
+      "keywordCount": 7
+    }
+  ]
+}

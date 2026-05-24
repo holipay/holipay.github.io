@@ -1,8 +1,733 @@
 {
   "icon": "🖥️",
   "title": "科技与企业",
-  "updatedAt": "2026-05-23T02:09:31.396Z",
+  "updatedAt": "2026-05-24T03:16:02.258Z",
   "items": [
+    {
+      "title": "以色列的经济和金融市场正在蓬勃发展--尽管中东冲突肆虐--CNBC",
+      "source": "Reuters",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "实际上，美国金融业对经济有好处- City Journal",
+      "source": "Reuters",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "沃伦·巴菲特曾经说过，美国经济的“不可思议时期”即将结束。他的预测在2026年会成真吗？ -雅虎财经",
+      "source": "Reuters",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "S&amp;P 493 '揭示了一个截然不同的美国经济-《华盛顿邮报》",
+      "source": "Reuters",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "新冠肺炎疫情引发了第二次大流行：财务焦虑-世界经济论坛",
+      "source": "Reuters",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "俄罗斯入侵乌克兰如何影响全球金融市场？ -经济学观察",
+      "source": "Reuters",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "了解黑天鹅事件：罕见金融危机解释- Investopedia",
+      "source": "Reuters",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "金融部门：主要参与者和经济影响- Investopedia",
+      "source": "Reuters",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "观看零售业的K型经济- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "国际货币基金组织下调法国经济增长预测并警告高度不确定性- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "彭博社将时间点经济数据引入定量研究和策略开发- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "尽管经历了战争，但中国经济仍在上升，经济增长率高于预期- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "战争重现了全球经济的滞胀危险- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "2008年金融危机解释- Investopedia",
+      "source": "Reuters",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "随着战争、人工智能和信用恐惧同时碰撞，市场裂缝扩大- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "标准普尔500指数的战争模式：淘汰赛每周四开始- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "在制造业数据和人工智能反弹的推动下， “旧经济”再次炙手可热- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "战争的二阶效应开始抨击经济- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "美国经济优势蒸发之年- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "伊朗停火未能让全球经济放心-彭博社",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "IEA预测，今年全球电动汽车和混合动力汽车销量将达到汽车市场的30% --英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "由于战争对经济造成压力，土耳其通过了税收大赦-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "中国年度经济计划强调技术推动、市场稳定-彭博社",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "马斯克、SpaceX和莫斯科热的梦想-《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "唐纳德特朗普在白宫内斗后突然推迟人工智能订单-金融时报",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "中国的经济目标在纸面上看起来不错- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "杰米·戴蒙称赞中国“更加始终如一” --英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "三星在最后一刻达成协议，以避免对人工智能财富的罢工-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "雅诗兰黛和普伊格结束合并谈判，打造美容强国-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "随着部长们邀请投标，伦敦交通局对机器人出租车表示担忧-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "在“坦克日”营销失误后，星巴克在韩国遭遇强烈反对-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "BrewDog联合创始人尝试以“第二佳”啤酒品牌卷土重来-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人工智能革命如何推动并购-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "随着伯纳姆开始竞选活动，斯塔默为留在游戏中而战-《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "特技表演者Ayesha Hussain的瓦尔扎扎特指南-- “非洲的好莱坞” --《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "法国航空公司和空中客车公司在2009年里约-巴黎事故中被判犯有过失杀人罪-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人工智能的采用问题-金融时报",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "瑞士巨型电池开发商利用英国技术为人工智能电力热潮提供动力-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人工智能经济正在重写美国梦--蓝领工人有望获胜--CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "罗斯、TJX和沃尔玛揭示了美国经济的真正引擎是如何运作的- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "随着电动汽车和汽油动力汽车失去市场份额，为什么混合动力汽车正在“占据一席之地” - CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "英伟达表示，它已将中国的人工智能芯片市场“在很大程度上让步”给华为- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人工智能经济： AT ＆ T首席执行官John Stankey谈人工智能对公司的影响，劳动力的未来- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "美国在特朗普-习近平会晤后推动其在中国和亚洲的人工智能- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "新加坡新电信将增加支出，因为电信主要关注人工智能服务、数据中心扩张- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "加拿大董事会融合了关于地狱的深奥知识和科学—专辑评论—英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "航空公司正在苦苦挣扎，但中国的“三巨头”面临着比大多数航空公司更艰难的一年- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "贝索斯在CNBC采访中为亿万富翁辩护，夸大人工智能，谈论税收并赞扬特朗普- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "印度电信巨头Bharti Airtel正在加倍投资非洲合资企业，英国电信- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "特朗普推迟签署人工智能行政命令： “我不喜欢某些方面” - CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "分析师 - CNBC：随着人工智能市场规模更大、速度更快，英伟达在竞争中脱颖而出",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "阿联酋表示，将绕过霍尔木兹海峡的新管道已完成近50 ％ - CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "杰夫·贝索斯：我在亚马逊、蓝色起源和普罗米修斯的时间都花在人工智能上- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "特朗普表示，他会“记住”那些没有申请关税退款的公司。无论如何，他们中的许多人都是- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "“蓝点热” ？棘手的现场音乐夏季动态背后的真正原因- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "微软的GitHub有望赢得人工智能编码竞赛。停电妨碍了工作- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "民主党全国委员会公布 2024 年选举尸检报告，党主席猛烈抨击 - CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "CNBC Disruptor 50 ： Saronic首席执行官Dino Mavrookas谈论自主造船- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "上周美国初请失业金人数下降 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "班克斯的市场通过了身份曝光以来的首次重大考验 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "即使市值 5 万亿美元，Nvidia 仍被低估 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人工智能支出预计将在2年内突破1万亿美元($ 1 trillion)。如果Jensen Huang是正确的，那么这个估计就太低了- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人们讨厌失去工作甚至超过高油价的想法-《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "加州州长签署旨在帮助工人的人工智能命令 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "伊朗战争的进程仍然是欧元前景的关键-《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "尽管电动汽车销量强劲，中国蔚来汽车仍出现亏损 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "特朗普因担心过度监管而推迟人工智能命令 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "最高法院放宽对古巴共产主义政权扣押财产的诉讼 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "图尔西·加巴德辞去美国情报局长职务 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "风险投资家John Doerr表示人工智能是有史以来最大的科技“海啸” -《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "美中外交的秘密： “音乐之声” -《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "《国家宝藏》评论：美国思想的表达 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "“After Nations”评论：超越今天的边界-《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "伊朗战争如何帮助乌克兰从问题走向解决方案-《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "工人如何学习？生命周期人力资本积累根源的理论与证据——作者：Xiao Ma、Alejandro Nakab、Daniela Vidart",
+      "source": "NBER",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "医疗创新和种族健康差异：突破性治疗的证据——作者：D. Mark Anderson、Kerwin Kofi Charles、Daniel I. Rees",
+      "source": "NBER",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "旧空间，新空间：创新的商业革命？ ——鲁本·盖塔尼、亚历山大·T·沃利",
+      "source": "NBER",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "复杂的借贷约束和宏观经济动态——作者：Al-Mahdi Ebsim、Chen Lian、Yueran Ma、Pablo Ottonello、Diego J. Perez",
+      "source": "NBER",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "宏观经济预期心理学 -- 作者：Pedro Bordalo、Nicola Gennaioli、Florencio Lopez-de-Silanes、Simon G. Schröder、Andrei Shleifer、Maarten van Rooij",
+      "source": "NBER",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "重视灾害预防：沙漠蝗虫监测和控制 -- 作者：Joséphine Gantois、Anouch Missirian、Evelina Linnros、Anna Tompsett、Amir Jina、Gordon C. McCord、Eyal G. Frank",
+      "source": "NBER",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "气候变化交流中的分歧：来自 IPCC 和媒体的法学硕士证据 — 作者：Sebastian Galiani、Franco Mettola La Giglia、Raul A. Sosa",
+      "source": "NBER",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "政治代表的局限性：来自印度的证据 -- 作者：Veda Narasimhan、Jeffrey Weaver",
+      "source": "NBER",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "信任、金融素养和金融行为：塑造退休保障——作者：Maya Haran Rosen、Annamaria Lusardi、Olivia S. Mitchell",
+      "source": "NBER",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "最需要效率的拟议合并最不可能实现效率——作者：Robert D. Metcalfe、Alexandre B. Sollaci、Chad Syverson",
+      "source": "NBER",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "雅诗兰黛结束与西班牙Puig的收购谈判-《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "约翰的约翰：编织一个隐藏在压抑和羞耻之下的秘密的岛屿故事",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "有目的地衰老：逆转衰弱的惊人科学",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "净移民和庇护申请有所下降——这是最新数据告诉我们的",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "马特·布里廷 (Matt Brittin) 接任 BBC 总干事 – 这位前谷歌高管的科技界经验是否适合这份工作？",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "美国是否准备对古巴采取军事行动？专家问答",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "今天禁止对从手机到拖拉机等所有物品进行 DIY 维修的禁令源于好莱坞对录像的恐惧",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "Looksmaxxing 不仅仅是 TikTok 的趋势，它常常反映出青少年男孩和年轻男性严重的身体形象问题",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "一颗流星在新南威尔士州上空爆炸。天文学家解释它可能来自哪里",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "英联邦作家奖人工智能指控对奖项和短篇小说意味着什么？",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "为什么澳大利亚削减印太地区的新闻服务是软外交的失败",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "法国、德国和欧洲部分地区的极右势力正在崛起。这对乌克兰意味着什么？",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "你会相信人工智能能帮你找到“那个人”吗？约会应用程序押注它可以",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "租金上涨和“死亡税”：为什么预算后的疯狂索赔实际上没有意义",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "特朗普在拉丁裔选民中的支持率跌至第二任期低点，但许多人仍然支持",
+      "source": "Pew Research",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "问答：人工智能和虚假受访者是否会威胁民意调查的未来？",
+      "source": "Pew Research",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "由于批准评级单，特朗普在几个个人特质上失利",
+      "source": "Pew Research",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "美国人仍然批评特朗普政府对伊朗的态度",
+      "source": "Pew Research",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "美国人认为哪些国家在当今世界正在获得和失去影响力？",
+      "source": "Pew Research",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "美国人对特朗普在乌克兰问题上的决策缺乏信心",
+      "source": "Pew Research",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "在许多国家，天主教已经失去了人们对宗教的转变，而在一些国家，新教已经获得了",
+      "source": "Pew Research",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "关于美国夏威夷原住民和太平洋岛民的重要事实",
+      "source": "Pew Research",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "社交媒体和人工智能聊天机器人获取健康信息的用户更有可能说它们方便而不是准确",
+      "source": "Pew Research",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "美国人对税收最为沮丧：感觉一些富人、公司没有支付公平的份额",
+      "source": "Pew Research",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "电动汽车和混合动力车对美国人的吸引力有多大？",
+      "source": "Pew Research",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "伊朗相当于越南，乌克兰相当于韩国",
+      "source": "Foreign Affairs",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "美国已经失去了对中国的影响力",
+      "source": "Foreign Affairs",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "在长达数年的项目中，一半的社会科学研究未能通过复制测试-自然",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "综合实验设计揭示了数十年社会科学研究中隐藏的模式 - 麻省理工斯隆管理学院",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "社会科学研究人员使用人工智能模拟人类受试者-斯坦福报告",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "火车已经离开车站：代理人工智能和社会科学研究的未来-布鲁金斯学会",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "扩大社会科学研究规模 - OpenAI",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "《卫报》对社会科学研究的看法：拥抱不确定性|社论 - 卫报",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人工智能可能会颠覆对社会科学至关重要的在线研究美国科学促进会",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "利用基于法学硕士的代理进行社会科学研究：来自引文网络模拟的见解-自然",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "研究发现，人工智能生成的“参与者”可能会导致社会科学实验误入歧途美国科学促进会",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "暑期项目将本科生与社会科学研究人员配对 - 芝加哥大学新闻",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "预印本声称，近三分之一的社交媒体研究与行业有未公开的联系美国科学促进会",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "比较人类和法学硕士的伦理分析：计算社会科学研究的案例研究 - The Association for the Advancement of Artificial Intelligence",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人工智能聊天机器人正在渗透社会科学调查，并在避免被发现方面做得更好 - Nature",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "社会科学研究所授予人工智能种子基金 - 宾夕法尼亚州立大学",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "案例研究：创新领域的社会研究 - 约翰霍普金斯大学彭博公共卫生学院",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人工智能如何改变研究：论文增多，质量下降，评审系统紧张 - 加州大学伯克利分校",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "即使是诚实的研究结果也可能发生翻转——一种评估社会科学稳健性的新方法 - 伦敦政治经济学院",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "使用开源生成人工智能和机器学习进行主题分析：归纳定性密码本开发的新方法 - Nature",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人工智能正在将研究转变为科学单一文化 - 传播心理学 - Nature",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "了解海洋意味着生活在不确定性中 - 莱顿大学",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "为什么人工智能需要社会科学| LSE 英国政治 - 伦敦政治经济学院",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "2025 年美国人最担心的是什么：查普曼大学的年度调查揭示了最担心的事情及其背后的心理 - Chapman Newsroom",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "《自然》杂志呼吁人工智能时代跨学科信任研究",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "隐喻作为科学传播的跳板：跨学科词汇隐喻使用的大规模研究 - Nature",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "循证社会科学：原因、内容和未来影响 - Nature",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人工智能可以改变社会科学研究 - Penn Today",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "生成式人工智能可以改善社会科学吗？ - 美国国家科学院院刊",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "如何使用社会科学预测平台来撰写发展论文？ - 世界银行博客",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "在线社会科学本科生研究经验的有效性：探索性证据 - 前沿",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "Ateneo 主办社会科学会议，强调研究影响 - 每日论坛报",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人工智能辅助发现社会科学中的定量和形式模型 - Nature",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "刚果民主共和国埃博拉疫情：难以控制的四大原因",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "为什么社会科学现在比以往任何时候都更重要-施普林格自然杂志",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "科学和社会科学小学课程中的气候变化和可持续性-教科文组织",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
     {
       "title": "以色列的经济和金融市场正在蓬勃发展--尽管中东冲突肆虐--CNBC",
       "source": "Reuters",

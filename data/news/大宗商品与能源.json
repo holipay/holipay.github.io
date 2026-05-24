@@ -1,8 +1,193 @@
 {
   "icon": "🛢️",
   "title": "大宗商品与能源",
-  "updatedAt": "2026-05-23T02:09:31.404Z",
+  "updatedAt": "2026-05-24T03:16:02.268Z",
   "items": [
+    {
+      "title": "了解黄金价格背后的动态- Investopedia",
+      "source": "Reuters",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "中国在石油冲击期间罕见地从经济中消耗现金- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "加拿大经济在伊朗战争能源冲击之前略有增长- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "随着伊朗战争搅乱金属市场，铜在2026年上涨- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "普京的石油意外收获不会重振其放缓的战时经济- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "退居高盛后座的马斯克银行家-《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "伊朗战争为中国人民币打开“黄金窗口” --英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "山姆大叔能源自给自足的脆弱数学-金融时报",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "描绘全球经济：伊朗战争第二周石油价格触及100 $ - Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "SpaceX授予高盛吹嘘权--金融时报",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "里夫斯-英国《金融时报》表示，结束石油集团的税收漏洞将为生活成本一揽子计划提供资金",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "电信集团Vi是否走到了尽头？ -英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人工智能时代的巨额能源交易-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "随着伊朗战争震撼能源市场，普京-习近平会谈恢复了停滞不前的俄罗斯天然气管道- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "油价下跌，美伊和平谈判成为焦点- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "狂热分子如何垄断体育收藏品市场- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "富含石油的阿尔伯塔省就是否从加拿大分离举行投票- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "美国扩大储能规模以满足不断增长的电力需求 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "石油期货因美国与伊朗达成协议的希望而下跌 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "能源与公用事业综述：市场讨论 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "美国对伊朗施压的核心是石油之谜 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "Comex Gold本周末下跌0.76% ，至$ 4521.00 -《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人们一直在谈论的石油“需求破坏”是什么？ - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "随着天气前景降温，美国天然气产量下降 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "建筑业增长抵消了农业疲软，迪尔销售额上升 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "欧盟碳边境税是乌克兰日益紧张的根源-《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "Spotify将为艺术家的超级粉丝预留音乐会门票-《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "抽水蓄能的跨期套利和优化运行——作者：Isabel Figuerola-Ferretti、Eduardo S. Schwartz",
+      "source": "NBER",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "钠能否取代锂成为电池的主要成分？",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "古巴需要长期解决能源危机",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "一些技术利用加速的自然过程来捕获碳——但它们能持久地储存碳吗？",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "有记录以来“最严重的能源危机”得以遏制的四个原因——以及为什么痛苦即将来临",
+      "source": "The Conversation",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "许多美国人认为公用事业公司应对他们不断上涨的家庭能源账单负责",
+      "source": "Pew Research",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "美国人对能源问题看法的转变",
+      "source": "Pew Research",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "中国正在挥霍黄金机遇",
+      "source": "Foreign Affairs",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "伊朗能源冲击的赢家和输家",
+      "source": "Foreign Affairs",
+      "date": "2026-05-24"
+    },
+    {
+      "title": "人工智能为科学家提供了动力，但代价是太多平庸的论文-康奈尔纪事报",
+      "source": "Google News Academic",
+      "date": "2026-05-24"
+    },
     {
       "title": "了解黄金价格背后的动态- Investopedia",
       "source": "Reuters",

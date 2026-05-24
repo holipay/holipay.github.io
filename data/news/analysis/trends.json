@@ -1,0 +1,42 @@
+[
+  {
+    "date": "2026-05-24",
+    "keywords": [
+      {
+        "keyword": "雅虎财经",
+        "score": 170,
+        "count": 17
+      },
+      {
+        "keyword": "com",
+        "score": 60,
+        "count": 10
+      },
+      {
+        "keyword": "investopedia",
+        "score": 48,
+        "count": 6
+      },
+      {
+        "keyword": "美国经济",
+        "score": 18,
+        "count": 3
+      },
+      {
+        "keyword": "华盛顿邮报",
+        "score": 16,
+        "count": 2
+      },
+      {
+        "keyword": "为什么",
+        "score": 16,
+        "count": 2
+      },
+      {
+        "keyword": "为什么华尔街",
+        "score": 12,
+        "count": 2
+      }
+    ]
+  }
+]

@@ -1,4 +1,4 @@
-const CACHE_NAME = "nase-20260523";
+const CACHE_NAME = "nase-20260524";
 const STATIC_ASSETS = ["/", "/index.html"];
 const MAX_CACHE_ENTRIES = 50; // Limit cached JSON responses
 
