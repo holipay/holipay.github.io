@@ -516,7 +516,7 @@ function loadExistingTitles(dataDir) {
   try {
     if (!fs.existsSync(dataDir)) return titles;
 
-    // 1. 读取按分类存储的文件
+    // 读取按分类存储的文件（data.json 和旧日期文件已被 migrateToCategoryFiles 清理）
     const catFiles = fs
       .readdirSync(dataDir)
       .filter(
@@ -527,56 +527,15 @@ function loadExistingTitles(dataDir) {
           f !== "index.json" &&
           !/^\d{4}-\d{2}-\d{2}\.json$/.test(f),
       );
-    if (catFiles.length > 0) {
-      for (const file of catFiles) {
-        try {
-          const catData = JSON.parse(
-            fs.readFileSync(path.join(dataDir, file), "utf-8"),
-          );
-          if (catData.items) {
-            for (const item of catData.items) {
-              const norm = normalizeTitle(item.title);
-              if (norm) titles.push(norm);
-            }
-          }
-        } catch {}
-      }
-      return titles;
-    }
-
-    // 2. 回退：读取 data.json
-    const dataFile = path.join(dataDir, "data.json");
-    if (fs.existsSync(dataFile)) {
-      const data = JSON.parse(fs.readFileSync(dataFile, "utf-8"));
-      if (data.sections) {
-        for (const section of data.sections) {
-          for (const item of section.items) {
-            const norm = normalizeTitle(item.title);
-            if (norm) titles.push(norm);
-          }
-        }
-      }
-      return titles;
-    }
-
-    // 3. 回退：扫描旧的按日期拆分的文件
-    const files = fs
-      .readdirSync(dataDir)
-      .filter((f) => /^\d{4}-\d{2}-\d{2}\.json$/.test(f))
-      .sort()
-      .reverse()
-      .slice(0, 30);
-    for (const file of files) {
+    for (const file of catFiles) {
       try {
-        const dayData = JSON.parse(
+        const catData = JSON.parse(
           fs.readFileSync(path.join(dataDir, file), "utf-8"),
         );
-        if (dayData.sections) {
-          for (const section of dayData.sections) {
-            for (const item of section.items) {
-              const norm = normalizeTitle(item.title);
-              if (norm) titles.push(norm);
-            }
+        if (catData.items) {
+          for (const item of catData.items) {
+            const norm = normalizeTitle(item.title);
+            if (norm) titles.push(norm);
           }
         }
       } catch {}
@@ -584,6 +543,7 @@ function loadExistingTitles(dataDir) {
   } catch {}
   return titles;
 }
+
 
 /**
  * 检查是否已按分类存储
@@ -761,38 +721,9 @@ function migrateToCategoryFiles(dataDir, topic) {
 }
 
 /**
- * \u5224\u65AD\u6807\u9898\u662F\u5426\u4E0E\u5386\u53F2\u6761\u76EE\u91CD\u590D\uFF08\u6A21\u7CCA\u5339\u914D\uFF09
- * @param {string} title - \u5F85\u68C0\u67E5\u7684\u6807\u9898
- * @param {string[]} existingTitles - \u5386\u53F2\u6807\u51C6\u5316\u6807\u9898\u6570\u7EC4
- * @param {number} threshold
- * @returns {boolean}
- */
-function isDuplicateOfHistory(
-  title,
-  existingTitles,
-  existingTitlesSet,
-  threshold = SIMILARITY_THRESHOLD,
-) {
-  const norm = normalizeTitle(title);
-  if (!norm) return false;
-  // O(1) exact match
-  if (existingTitlesSet.has(norm)) return true;
-  // Length pre-filter: bigram similarity can't exceed min(a,b)/max(a,b)
-  const nLen = norm.length;
-  for (const et of existingTitles) {
-    const minLen = Math.min(nLen, et.length);
-    const maxLen = Math.max(nLen, et.length);
-    if (maxLen === 0) continue;
-    if (minLen / maxLen < threshold) continue; // impossible to match
-    if (similarity(norm, et) >= threshold) return true;
-  }
-  return false;
-}
-
-/**
- * \u5BF9\u5F53\u524D\u6279\u6B21\u8FDB\u884C\u53BB\u91CD\uFF08URL\u7CBE\u786E\u5339\u914D + \u6807\u9898\u7CBE\u786E\u5339\u914D + \u6A21\u7CCA\u5339\u914D\uFF09
+ * 对当前批次进行去重（URL精确匹配 + 标题精确匹配 + 模糊匹配）
  * @param {Array} items
- * @param {string[]} existingTitles - \u5386\u53F2\u6807\u9898
+ * @param {string[]} existingTitles - 历史标题
  * @returns {Array}
  */
 function dedup(items, existingTitles = []) {
