@@ -77,6 +77,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 .badge-risk-m{background:rgba(107,114,128,.1);color:#6b7280}
 .badge-risk-l{background:rgba(22,163,74,.1);color:#16a34a}
 .tag{display:inline-flex;align-items:center;padding:2px 7px;border-radius:100px;font-size:10px;font-weight:500;background:var(--accent-l);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 20%,transparent)}
+
 .outlook{font-size:12.5px;color:var(--text2);line-height:1.5;padding:8px 12px;background:var(--bg);border-radius:var(--rs);margin-bottom:14px}
 .outlook::before{content:"🔮 "}
 
@@ -224,6 +225,9 @@ function parseMarkdown(text){
 }
 
 // ===== 渲染结构化标签 =====
+function sortByWeight(items,scoreMap){
+  return[...items].sort((a,b)=>(scoreMap.get(b)||0)-(scoreMap.get(a)||0));
+}
 function renderStructuredTags(data){
   const per=data.perspective?` · ${data.perspective}`:"";
   let tags="";const s=data.structured;
@@ -234,8 +238,12 @@ function renderStructuredTags(data){
     const smI={看涨:"📈",看跌:"📉",分化:"🔀"}[sm]||"➡️";
     const rkI={高:"🔴",低:"🟢"}[rk]||"🟡";
     const b=`<span class="badge ${smC}">${smI} ${sm}</span><span class="badge ${rkC}">${rkI} 风险${rk}</span>`;
-    const t=(s.keyThemes||[]).map(x=>`<span class="tag">${esc(x)}</span>`).join("");
-    const sec=(s.sectors||[]).map(x=>`<span class="tag">🏭 ${esc(x)}</span>`).join("");
+    // 用 hotKeywords 分数作为权重排序主题/行业
+    const kwMap=new Map((data.hotKeywords||[]).map(h=>[h.keyword,h.score]));
+    const themes=sortByWeight(s.keyThemes||[],kwMap);
+    const sectors=sortByWeight(s.sectors||[],kwMap);
+    const t=themes.map(x=>`<span class="tag">${esc(x)}</span>`).join("");
+    const sec=sectors.map(x=>`<span class="tag">🏭 ${esc(x)}</span>`).join("");
     const o=s.outlook?`<div class="outlook">${esc(s.outlook)}</div>`:"";
     tags=`<div class="a-tags">${b}${t}${sec}</div>${o}`;
   }
