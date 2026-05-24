@@ -36,7 +36,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 .cat-list{padding:8px 0}
 .cat-item{display:flex;align-items:center;gap:8px;padding:9px 16px;cursor:pointer;transition:background var(--tr);user-select:none;font-size:13px;color:var(--text)}
 .cat-item:hover{background:var(--accent-l)}
-.cat-item.active{background:var(--accent-l);color:var(--accent);font-weight:700;border-right:3px solid var(--accent)}
+.cat-item.active{background:var(--accent-l);color:var(--accent);font-weight:700}
 .cat-icon{font-size:15px;flex-shrink:0;width:20px;text-align:center}
 .cat-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cat-count{font-size:10px;color:var(--text3);background:var(--bg);padding:1px 6px;border-radius:100px;flex-shrink:0}
@@ -54,14 +54,13 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 
 /* Analysis */
-.a-card{background:linear-gradient(135deg,var(--card),color-mix(in srgb,var(--accent) 5%,var(--card)));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--bdr));position:relative;overflow:hidden;content-visibility:auto;contain-intrinsic-size:auto 400px}
-.a-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),#8b5cf6)}
+.a-card{content-visibility:auto;contain-intrinsic-size:auto 400px}
 .a-head{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
 .a-icon{font-size:18px}.a-title{font-size:15px;font-weight:700}
 .a-meta{margin-left:auto;font-size:11px;color:var(--text3);background:var(--bg);padding:2px 8px;border-radius:var(--rs)}
 .a-body{font-size:14px;line-height:1.85;color:var(--text2)}
 .a-body p{margin-bottom:12px}
-.a-body h3{font-size:15px;font-weight:700;color:var(--text);margin:20px 0 10px;padding-left:10px;border-left:3px solid var(--accent)}
+.a-body h3{font-size:15px;font-weight:700;color:var(--text);margin:20px 0 10px}
 .a-body h4{font-size:14px;font-weight:600;color:var(--text);margin:14px 0 8px}
 .a-body strong{color:var(--text);font-weight:600}
 .a-body ul{list-style:none;padding:0;margin:8px 0}
@@ -79,7 +78,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 .badge-risk-m{background:rgba(107,114,128,.1);color:#6b7280}
 .badge-risk-l{background:rgba(22,163,74,.1);color:#16a34a}
 .tag{display:inline-flex;align-items:center;padding:2px 7px;border-radius:100px;font-size:10px;font-weight:500;background:var(--accent-l);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 20%,transparent)}
-.outlook{font-size:12.5px;color:var(--text2);line-height:1.5;padding:8px 12px;background:var(--bg);border-radius:var(--rs);border-left:3px solid var(--accent);margin-bottom:14px}
+.outlook{font-size:12.5px;color:var(--text2);line-height:1.5;padding:8px 12px;background:var(--bg);border-radius:var(--rs);margin-bottom:14px}
 .outlook::before{content:"🔮 "}
 
 /* News list */
@@ -91,7 +90,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 .news-head{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
 .news-head-icon{font-size:18px}.news-head-title{font-size:15px;font-weight:700}
 .news-head-count{margin-left:auto;font-size:11px;color:var(--text3);background:var(--bg);padding:2px 8px;border-radius:var(--rs)}
-.load-more{display:block;width:100%;padding:10px;margin-top:12px;background:var(--accent-l);color:var(--accent);border:1.5px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;transition:all var(--tr);font-family:inherit}
+.load-more{display:block;width:100%;padding:10px;margin-top:12px;background:var(--accent-l);color:var(--accent);border:none;border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;transition:all var(--tr);font-family:inherit}
 .load-more:hover{background:var(--accent);color:#fff}
 .load-more:disabled{opacity:.4;cursor:not-allowed}
 
