@@ -55,8 +55,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 
 /* Analysis */
 .a-card{background:linear-gradient(135deg,var(--card),color-mix(in srgb,var(--accent) 5%,var(--card)));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--bdr));position:relative;overflow:hidden;content-visibility:auto;contain-intrinsic-size:auto 400px}
-.a-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),#8b5cf6,var(--accent));background-size:200% 100%;animation:shimmer 3s linear infinite;will-change:background-position}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.a-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),#8b5cf6)}
 .a-head{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
 .a-icon{font-size:18px}.a-title{font-size:15px;font-weight:700}
 .a-meta{margin-left:auto;font-size:11px;color:var(--text3);background:var(--bg);padding:2px 8px;border-radius:var(--rs)}
@@ -102,7 +101,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
   .sidebar{border-left:none;border-top:1px solid var(--bdr);max-height:40vh}
   .main{padding:16px 14px 32px}
 }
-@media(prefers-reduced-motion:reduce){.sk,.a-card::before{animation:none}.cat-item,.side-date-btn,.load-more{transition:none}}
+@media(prefers-reduced-motion:reduce){.sk{animation:none}.cat-item,.side-date-btn,.load-more{transition:none}}
 </style>
 </head>
 <body>
