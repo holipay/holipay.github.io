@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>新闻聚合 - nase.me</title>
+        <meta name="description" content="nase.me 每日新闻聚合，按分类展示全球金融、科技、社科资讯。" />
+        <meta name="robots" content="index, follow" />
+        <meta name="theme-color" content="#f0f2f5" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#0f1117" media="(prefers-color-scheme: dark)" />
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>" />
+        <link rel="preload" as="fetch" href="data/news/meta.json" crossorigin />
+
+        <style>
+:root{--bg:#f0f2f5;--card-bg:#fff;--text:#1a1a2e;--text-secondary:#555;--text-muted:#999;--accent:#2563eb;--accent-hover:#1d4ed8;--accent-light:#eff6ff;--accent-glow:rgba(37,99,235,.15);--border:#e8e8e8;--shadow-sm:0 1px 2px rgba(0,0,0,.04);--shadow:0 2px 8px rgba(0,0,0,.06);--shadow-hover:0 4px 16px rgba(0,0,0,.1);--radius:12px;--radius-sm:8px;--transition:.2s cubic-bezier(.4,0,.2,1)}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1117;--card-bg:#181b25;--text:#e8e8f0;--text-secondary:#a0a0b8;--text-muted:#666680;--accent:#3b82f6;--accent-hover:#60a5fa;--accent-light:#172554;--accent-glow:rgba(59,130,246,.12);--border:#2a2d3a;--shadow-sm:0 1px 2px rgba(0,0,0,.2);--shadow:0 2px 8px rgba(0,0,0,.25);--shadow-hover:0 4px 16px rgba(0,0,0,.35)}.brand{color:#e8e8f0}}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans SC",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+.main{max-width:860px;margin:0 auto;padding:20px 24px 32px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 0 12px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.brand{font-size:18px;font-weight:800;color:var(--accent);letter-spacing:-.3px}
+.nav-link{font-size:12px;color:var(--accent);text-decoration:none;font-weight:600;padding:4px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);transition:all var(--transition)}
+.nav-link:hover{background:var(--accent-light);border-color:var(--accent)}
+.card{background:var(--card-bg);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);border:1px solid var(--border);margin-bottom:16px;transition:box-shadow var(--transition)}
+.card:hover{box-shadow:var(--shadow-hover)}
+.empty{text-align:center;padding:64px 20px;color:var(--text-muted)}
+.empty-icon{font-size:48px;margin-bottom:16px;opacity:.6}
+.skeleton{animation:pulse 1.5s ease-in-out infinite}
+.skeleton-card{background:var(--card-bg);border-radius:var(--radius);padding:20px;margin-bottom:16px;border:1px solid var(--border)}
+.skeleton-line{height:14px;background:var(--border);border-radius:6px;margin-bottom:10px}
+.skeleton-line.short{width:60%}
+.skeleton-line.medium{width:80%}
+.skeleton-line.title{width:45%;height:18px;margin-bottom:16px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.date-nav{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;padding:8px 16px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius)}
+.date-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:transparent;border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text-secondary);cursor:pointer;transition:all var(--transition)}
+.date-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+.date-btn:disabled{opacity:.3;cursor:not-allowed}
+.date-text{font-size:13px;font-weight:600;color:var(--text);padding:4px 8px;min-width:90px;text-align:center}
+.date-latest{font-size:11px;font-weight:600;color:#16a34a;background:rgba(22,163,74,.1);padding:2px 8px;border-radius:100px}
+.news-summary{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px;font-size:14px;font-weight:600;color:var(--text)}
+.news-summary-count{margin-left:auto;font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-light);padding:2px 10px;border-radius:100px}
+.news-cat{margin-bottom:12px}
+.news-cat-header{display:flex;align-items:center;gap:6px;padding:10px 14px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;user-select:none;transition:all var(--transition)}
+.news-cat-header:hover{border-color:var(--accent);box-shadow:var(--shadow-sm)}
+.news-cat-icon{font-size:15px}
+.news-cat-name{font-size:14px;font-weight:600;color:var(--text)}
+.news-cat-count{font-size:11px;color:var(--text-muted);margin-left:auto}
+.news-cat-chevron{color:var(--text-muted);font-size:11px;transition:transform .2s ease;margin-left:4px}
+.news-cat-chevron.open{transform:rotate(90deg)}
+.news-cat-items{overflow:hidden;transition:max-height .3s ease}
+.news-item{display:flex;align-items:baseline;gap:8px;padding:6px 14px;border-radius:var(--radius-sm);transition:background var(--transition);content-visibility:auto;contain-intrinsic-size:auto 32px}
+.news-item:hover{background:var(--accent-light)}
+.news-item-title{font-size:13px;color:var(--text-secondary);line-height:1.5;flex:1;min-width:0}
+.news-item-title a{color:inherit;text-decoration:none}
+.news-item-title a:hover{color:var(--accent)}
+.news-item-source{font-size:11px;color:var(--text-muted);white-space:nowrap;flex-shrink:0}
+.back-top{position:fixed;bottom:24px;right:24px;width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px var(--accent-glow);opacity:0;pointer-events:none;z-index:50;transition:opacity .2s ease}
+.back-top.visible{opacity:1;pointer-events:auto}
+.footer{text-align:center;padding:16px;color:var(--text-muted);font-size:11px;border-top:1px solid var(--border);margin-top:8px}
+@media(max-width:768px){.main{padding:12px 14px 24px}.topbar{padding:6px 0 10px;margin-bottom:12px}.brand{font-size:16px}.date-nav{gap:6px;padding:8px 12px}.date-text{font-size:12px}.card{padding:16px}.news-item{padding:5px 10px}.news-item-title{font-size:12.5px}.news-cat-header{padding:8px 12px}}
+@media(prefers-reduced-motion:reduce){.skeleton{animation:none}.date-btn,.news-cat-header,.news-item,.back-top{transition:none}.news-cat-items{transition:none}}
+        </style>
+    </head>
+    <body>
+        <main class="main">
+            <div class="topbar">
+                <span class="brand">nase.me</span>
+                <a class="nav-link" href="/">🧠 AI 分析</a>
+            </div>
+            <div id="content">
+                <div class="skeleton-card skeleton">
+                    <div class="skeleton-line title"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                </div>
+            </div>
+            <div class="footer">nase.me · 数据来源于公开网络 · 新闻版权归原作者/来源所有</div>
+        </main>
+        <button class="back-top" id="backTop" aria-label="回到顶部">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m18 15-6-6-6 6"/></svg>
+        </button>
+        <script>
+const state={dates:[],currentDate:"",newsCache:new Map(),metaCache:null,catOpen:new Set(),_loading:false};
+const dom={};
+const utils={_escEl:document.createElement("div"),esc(s){this._escEl.textContent=s;return this._escEl.innerHTML.replace(/"/g,"&quot;")}};
+function safeHref(url){try{const u=new URL(url);if(u.protocol==="http:"||u.protocol==="https:")return url}catch{return""}return""}
+function fetchWithTimeout(url,ms=10000){const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);return fetch(url,{signal:c.signal}).finally(()=>clearTimeout(t))}
+
+async function loadMeta(){if(state.metaCache)return state.metaCache;try{const r=await fetchWithTimeout("data/news/meta.json");state.metaCache=await r.json()}catch{state.metaCache={categories:[]}}return state.metaCache}
+
+async function loadNewsForDate(dateStr){
+  if(state.newsCache.has(dateStr))return state.newsCache.get(dateStr);
+  const meta=await loadMeta();
+  if(!meta.categories||meta.categories.length===0){state.newsCache.set(dateStr,[]);return[]}
+  const results=await Promise.allSettled(meta.categories.map(async(cat)=>{
+    try{
+      const [mainRes,archRes]=await Promise.allSettled([
+        fetchWithTimeout(`data/news/${encodeURIComponent(cat.file)}.json`),
+        fetchWithTimeout(`data/news/${encodeURIComponent(cat.file)}_archive.json`)
+      ]);
+      let items=[];
+      if(mainRes.status==="fulfilled"&&mainRes.value.ok){const d=await mainRes.value.json();items.push(...(d.items||[]));}
+      if(archRes.status==="fulfilled"&&archRes.value.ok){const d=await archRes.value.json();items.push(...(d.items||[]));}
+      const filtered=items.filter(i=>i.date===dateStr);
+      return{icon:cat.icon,title:cat.title,items:filtered}
+    }catch{return{icon:cat.icon,title:cat.title,items:[]}}
+  }));
+  const categories=results.filter(r=>r.status==="fulfilled"&&r.value.items.length>0).map(r=>r.value).sort((a,b)=>b.items.length-a.items.length);
+  state.newsCache.set(dateStr,categories);return categories;
+}
+
+const render={
+  dateNav(){
+    if(state.dates.length===0)return"";
+    const idx=state.dates.indexOf(state.currentDate);
+    return`<div class="date-nav">
+      <button class="date-btn" id="prevDate" ${idx<state.dates.length-1?"":"disabled"} aria-label="前一天"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg></button>
+      <span class="date-text">${state.currentDate}</span>
+      <button class="date-btn" id="nextDate" ${idx>0?"":"disabled"} aria-label="后一天"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      ${idx===0?'<span class="date-latest">最新</span>':""}
+    </div>`;
+  },
+  newsList(categories){
+    if(!categories||categories.length===0)return'<div class="card empty"><div class="empty-icon">📭</div><p>该日期暂无新闻</p></div>';
+    const total=categories.reduce((s,c)=>s+c.items.length,0);
+    const catList=categories.map(cat=>{
+      const isOpen=state.catOpen.has(cat.title);
+      const items=cat.items.map(it=>{
+        const href=it.link?safeHref(it.link):"";
+        const title=href?`<a href="${utils.esc(href)}" target="_blank" rel="noopener">${utils.esc(it.title)}</a>`:utils.esc(it.title);
+        const src=it.source?`<span class="news-item-source">${utils.esc(it.source)}</span>`:"";
+        return`<div class="news-item"><span class="news-item-title">${title}</span>${src}</div>`;
+      }).join("");
+      return`<div class="news-cat">
+        <div class="news-cat-header" data-cat="${utils.esc(cat.title)}">
+          <span class="news-cat-icon">${cat.icon}</span>
+          <span class="news-cat-name">${utils.esc(cat.title)}</span>
+          <span class="news-cat-count">${cat.items.length} 条</span>
+          <span class="news-cat-chevron${isOpen?" open":""}">▶</span>
+        </div>
+        <div class="news-cat-items" style="max-height:${isOpen?cat.items.length*36+10:0}px">${items}</div>
+      </div>`;
+    }).join("");
+    return`<div class="news-summary"><span>📰</span>当日新闻<span class="news-summary-count">${total} 条 · ${categories.length} 个分类</span></div>${catList}`;
+  }
+};
+
+const app={
+  async init(){
+    dom.content=document.getElementById("content");
+    dom.backTop=document.getElementById("backTop");
+    this.setupEvents();
+    const dates=await fetchWithTimeout("data/news/analysis/index.json").then(r=>r.json()).catch(()=>[]);
+    state.dates=dates;
+    const h=location.hash.slice(1);
+    state.currentDate=(h&&state.dates.includes(h))?h:(state.dates[0]||"");
+    await this.loadCurrentDate();
+  },
+  setupEvents(){
+    dom.backTop.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+    window.addEventListener("scroll",()=>{dom.backTop.classList.toggle("visible",window.scrollY>400)},{passive:true});
+    window.addEventListener("hashchange",async()=>{const h=location.hash.slice(1);if(h&&h!==state.currentDate&&state.dates.includes(h)){state.currentDate=h;await this.loadCurrentDate()}});
+    dom.content.addEventListener("click",e=>{
+      if(e.target.closest("#prevDate")){const i=state.dates.indexOf(state.currentDate);if(i<state.dates.length-1){state.currentDate=state.dates[i+1];this.loadCurrentDate()}return}
+      if(e.target.closest("#nextDate")){const i=state.dates.indexOf(state.currentDate);if(i>0){state.currentDate=state.dates[i-1];this.loadCurrentDate()}return}
+      const ch=e.target.closest(".news-cat-header");
+      if(ch){const ct=ch.dataset.cat,items=ch.nextElementSibling,chev=ch.querySelector(".news-cat-chevron");
+        if(state.catOpen.has(ct)){state.catOpen.delete(ct);items.style.maxHeight="0";chev.classList.remove("open")}
+        else{state.catOpen.add(ct);items.style.maxHeight=items.scrollHeight+10+"px";chev.classList.add("open")}
+        return}
+    });
+  },
+  async loadCurrentDate(){
+    if(state._loading)return;state._loading=true;
+    try{
+      if(!state.currentDate){dom.content.innerHTML='<div class="empty"><div class="empty-icon">📭</div><p>暂无数据</p></div>';return}
+      history.replaceState(null,"",`#${state.currentDate}`);
+      dom.content.innerHTML='<div class="skeleton-card skeleton"><div class="skeleton-line title"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>';
+      const cats=await loadNewsForDate(state.currentDate);
+      dom.content.innerHTML=render.dateNav()+render.newsList(cats);
+    }finally{state._loading=false}
+  }
+};
+document.addEventListener("DOMContentLoaded",()=>app.init());
+        </script>
+    </body>
+</html>
