@@ -20,8 +20,8 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 
 /* Layout */
 .layout{display:grid;grid-template-columns:1fr var(--side-w);height:100vh}
-.main{overflow-y:auto;padding:24px 28px 40px;min-width:0}
-.sidebar{border-left:1px solid var(--bdr);background:var(--card);overflow-y:auto;padding:0}
+.main{overflow-y:auto;padding:24px 28px 40px;min-width:0;contain:layout style}
+.sidebar{border-left:1px solid var(--bdr);background:var(--card);overflow-y:auto;padding:0;contain:layout style}
 
 /* Sidebar */
 .side-section{padding:14px 16px;border-bottom:1px solid var(--bdr)}
@@ -42,7 +42,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 .cat-count{font-size:10px;color:var(--text3);background:var(--bg);padding:1px 6px;border-radius:100px;flex-shrink:0}
 
 /* Cards */
-.card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--sh);border:1px solid var(--bdr);margin-bottom:16px}
+.card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--sh);border:1px solid var(--bdr);margin-bottom:16px;content-visibility:auto;contain-intrinsic-size:auto 200px}
 .empty{text-align:center;padding:80px 20px;color:var(--text3)}
 .empty-icon{font-size:48px;margin-bottom:12px;opacity:.6}
 
@@ -54,7 +54,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 
 /* Analysis */
-.a-card{background:linear-gradient(135deg,var(--card),color-mix(in srgb,var(--accent) 5%,var(--card)));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--bdr));position:relative;overflow:hidden}
+.a-card{background:linear-gradient(135deg,var(--card),color-mix(in srgb,var(--accent) 5%,var(--card)));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--bdr));position:relative;overflow:hidden;content-visibility:auto;contain-intrinsic-size:auto 400px}
 .a-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),#8b5cf6,var(--accent));background-size:200% 100%;animation:shimmer 3s linear infinite}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .a-head{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
@@ -134,7 +134,8 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 const S={dates:[],date:"",cat:"analysis",meta:null,newsPage:{},_loading:false,_pageSize:0};
 const $=id=>document.getElementById(id);
 const main=$("main"),catList=$("catList"),dateText=$("dateText"),prevBtn=$("prevDate"),nextBtn=$("nextDate"),latestTag=$("latestTag");
-const esc=s=>{const d=document.createElement("div");d.textContent=s;return d.innerHTML.replace(/"/g,"&quot;")};
+const _escEl=document.createElement("div");
+const esc=s=>{_escEl.textContent=s;return _escEl.innerHTML.replace(/"/g,"&quot;")};
 function safeHref(url){try{const u=new URL(url);if(u.protocol==="http:"||u.protocol==="https:")return url}catch{return""}return""}
 function fetchT(u,ms=10000){const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);return fetch(u,{signal:c.signal}).finally(()=>clearTimeout(t))}
 
@@ -283,14 +284,20 @@ function renderNews(items,catTitle,catIcon,appendMode){
   return`<div class="news-head"><span class="news-head-icon">${catIcon}</span><span class="news-head-title">${esc(catTitle)}</span><span class="news-head-count">${items.length} 条</span></div><div id="newsList">${list}</div>${more}`;
 }
 
-// Build sidebar categories
-async function buildSidebar(){
-  const meta=await loadMeta();
-  let html=`<div class="cat-item active" data-cat="analysis"><span class="cat-icon">🧠</span><span class="cat-name">AI 深度分析</span></div>`;
-  for(const c of meta.categories){
-    html+=`<div class="cat-item" data-cat="${esc(c.file)}"><span class="cat-icon">${c.icon}</span><span class="cat-name">${esc(c.title)}</span><span class="cat-count">${c.count}</span></div>`;
-  }
-  catList.innerHTML=html;
+// Build sidebar categories（同步，meta 已预加载）
+function buildSidebarFromMeta(meta){
+  const frag=document.createDocumentFragment();
+  const addItem=(cat,icon,name,count)=>{
+    const el=document.createElement("div");
+    el.className="cat-item"+(cat==="analysis"?" active":"");
+    el.dataset.cat=cat;
+    el.innerHTML=`<span class="cat-icon">${icon}</span><span class="cat-name">${esc(name)}</span>${count!=null?`<span class="cat-count">${count}</span>`:""}`;
+    frag.appendChild(el);
+  };
+  addItem("analysis","🧠","AI 深度分析");
+  for(const c of meta.categories)addItem(c.file,c.icon,c.title,c.count);
+  catList.innerHTML="";
+  catList.appendChild(frag);
 }
 
 // Navigate date
@@ -396,20 +403,24 @@ function setupEvents(){
   window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(h&&h!==S.date&&S.dates.includes(h)){setDate(h)}});
 }
 
-// Init
+// Init（优化：并行加载 dates+meta，延迟构建侧边栏，空闲预取分类）
 async function init(){
   setupEvents();
-  const dates=await fetchT("data/news/analysis/index.json").then(r=>r.json()).catch(()=>[]);
+  // 并行加载 dates 和 meta（原来是串行：先 dates → buildSidebar 内再 loadMeta）
+  const [dates,meta]=await Promise.all([
+    fetchT("data/news/analysis/index.json").then(r=>r.json()).catch(()=>[]),
+    loadMeta()
+  ]);
   S.dates=dates;
   const h=location.hash.slice(1);
   S.date=(h&&dates.includes(h))?h:(dates[0]||"");
   dateText.textContent=S.date;
-  await buildSidebar();
+  // 构建侧边栏（meta 已就绪，无额外网络请求）
+  buildSidebarFromMeta(meta);
   setDate(S.date);
-  // Idle prefetch: warm up top category files in background
+  // 空闲时预取顶部分类数据
   const prefetchCats=()=>{
-    if(!S.meta||!S.meta.categories)return;
-    const top=S.meta.categories.slice(0,2); // top 2 by order (reduced from 5)
+    const top=meta.categories.slice(0,2);
     top.forEach((c,i)=>{
       if(rawCatGet(c.file))return;
       setTimeout(()=>{fetchT(`data/news/${encodeURIComponent(c.file)}.json`).then(r=>r.json()).then(d=>rawCatSet(c.file,d)).catch(()=>{})},i*200);
