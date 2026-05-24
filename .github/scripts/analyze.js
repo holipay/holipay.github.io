@@ -563,22 +563,87 @@ function loadPreviousAnalyses(currentDateStr, count = 2) {
     return [];
   }
 
-  const prevDates = dates.filter((d) => d < currentDateStr).slice(0, count);
-  const results = [];
+  const prevDates = dates.filter((d) => d < currentDateStr);
+  if (prevDates.length === 0) return [];
 
+  // 加载所有历史分析（用于语义匹配）
+  const allAnalyses = [];
   for (const d of prevDates) {
     const filePath = path.join(ANALYSIS_DIR, `${d}.json`);
     if (!fs.existsSync(filePath)) continue;
     try {
       const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-      results.push({
+      allAnalyses.push({
         date: d,
         analysis: data.analysis || "",
+        structured: data.structured || {},
+        hotKeywords: data.hotKeywords || [],
       });
     } catch {}
   }
 
-  return results;
+  return allAnalyses;
+}
+
+// ===== 语义匹配：基于结构化数据的轻量级检索 =====
+function computeRelevance(target, candidate) {
+  let score = 0;
+  const targetThemes = new Set((target.keyThemes || []).map(t => t.toLowerCase()));
+  const targetSectors = new Set((target.sectors || []).map(s => s.toLowerCase()));
+  const targetKws = new Set((target.hotKeywords || []).map(hk => (hk.keyword || hk).toLowerCase()));
+  const candidateThemes = (candidate.structured?.keyThemes || []).map(t => t.toLowerCase());
+  const candidateSectors = (candidate.structured?.sectors || []).map(s => s.toLowerCase());
+  const candidateKws = (candidate.hotKeywords || []).map(hk => (hk.keyword || hk).toLowerCase());
+
+  // 主题匹配（权重 3）
+  for (const t of candidateThemes) {
+    if (targetThemes.has(t)) score += 3;
+  }
+
+  // 行业匹配（权重 2）
+  for (const s of candidateSectors) {
+    if (targetSectors.has(s)) score += 2;
+  }
+
+  // 关键词匹配（权重 1，关键词交集越多分越高）
+  let kwOverlap = 0;
+  for (const kw of candidateKws) {
+    if (targetKws.has(kw)) kwOverlap++;
+  }
+  score += kwOverlap;
+
+  // 时间衰减（越近的分析越有参考价值，但不主导匹配）
+  const dayDiff = Math.max(1, (new Date(target.date || Date.now()) - new Date(candidate.date)) / 86400000);
+  const recencyBonus = Math.max(0, 1 - dayDiff / 30); // 30天内有递减加分
+  score += recencyBonus;
+
+  return score;
+}
+
+function selectRelevantAnalyses(allAnalyses, currentHotKeywords, currentStructured, count) {
+  if (allAnalyses.length === 0) return [];
+
+  const todayTarget = {
+    date: new Date().toISOString().slice(0, 10),
+    hotKeywords: currentHotKeywords || [],
+    keyThemes: currentStructured?.keyThemes || [],
+    sectors: currentStructured?.sectors || [],
+  };
+
+  // 计算每个历史分析的相关度
+  const scored = allAnalyses.map(a => ({
+    ...a,
+    relevance: computeRelevance(todayTarget, a),
+  }));
+
+  // 按相关度排序，取 top N
+  scored.sort((a, b) => b.relevance - a.relevance);
+  const selected = scored.slice(0, count);
+
+  // 按日期排序（prompt 中需要时间顺序）
+  selected.sort((a, b) => a.date.localeCompare(b.date));
+
+  return selected;
 }
 
 // ===== 热点关键词提取 =====
@@ -1388,7 +1453,7 @@ async function runMonthlyReview(dateStr, now) {
 const FORCE_FLAG = process.argv.includes("--force");
 
 async function main() {
-  console.log("🤖 AI 深度分析引擎 v7.0（记忆 + 视角轮换 + 热点加权 + 信源权威度 + 噪音过滤 + 文章摘要 + 趋势追踪 + 事件链追踪 + 信号仪表盘 + Token优化 + 重试 + 幂等 + 月度回顾）");
+  console.log("🤖 AI 深度分析引擎 v7.0（记忆 + 语义检索 + 视角轮换 + 热点加权 + 信源权威度 + 噪音过滤 + 文章摘要 + 趋势追踪 + 事件链追踪 + 信号仪表盘 + Token优化 + 重试 + 幂等 + 月度回顾）");
   const now = new Date();
   const dateStr = now.toLocaleDateString("sv-SE", { timeZone: "Asia/Shanghai" });
   const dayOfWeek = now.getDay();
@@ -1435,15 +1500,12 @@ async function main() {
   const perspective = DAILY_PERSPECTIVES.find((p) => p.day === dayOfWeek) || DAILY_PERSPECTIVES[0];
   console.log(`🎯 今日视角: ${perspective.label}`);
 
-  const previousAnalyses = loadPreviousAnalyses(dateStr, 2);
-  if (previousAnalyses.length > 0) {
-    console.log(`🧠 已加载 ${previousAnalyses.length} 条历史分析记忆:`);
-    previousAnalyses.forEach((p) => {
-      const { themes } = extractThemes(p.analysis);
-      console.log(`   ${p.date}: ${themes.slice(0, 4).join("、")}${themes.length > 4 ? "..." : ""}`);
-    });
+  // 加载所有历史分析（用于后续语义匹配）
+  const allPreviousAnalyses = loadPreviousAnalyses(dateStr);
+  if (allPreviousAnalyses.length > 0) {
+    console.log(`🧠 已加载 ${allPreviousAnalyses.length} 份历史分析（待语义匹配）`);
   } else {
-    console.log("🧠 无历史分析记忆（首次运行或无历史数据）");
+    console.log("🧠 无历史分析（首次运行或无历史数据）");
   }
 
   console.log("\n📰 加载新闻数据...");
@@ -1465,6 +1527,16 @@ async function main() {
 
   // 计算热点关键词
   const hotKeywords = extractHotKeywords(newsData.items, 15);
+
+  // 语义匹配：从历史分析中选出最相关的 2-3 份
+  const previousAnalyses = selectRelevantAnalyses(allPreviousAnalyses, hotKeywords, null, 3);
+  if (previousAnalyses.length > 0) {
+    console.log(`🎯 语义匹配选出 ${previousAnalyses.length} 份相关历史分析:`);
+    previousAnalyses.forEach((p) => {
+      const { themes } = extractThemes(p.analysis);
+      console.log(`   ${p.date} (相关度:${p.relevance?.toFixed(1)}): ${themes.slice(0, 3).join("、")}`);
+    });
+  }
 
   // 抓取热点文章摘要
   let snippets = [];
