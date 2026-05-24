@@ -27,8 +27,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 .side-section{padding:14px 16px;border-bottom:1px solid var(--bdr)}
 .side-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
 .side-date{display:flex;align-items:center;gap:6px}
-.side-date input[type=date]{flex:1;padding:6px 8px;border:1.5px solid var(--bdr);border-radius:var(--rs);background:var(--bg);color:var(--text);font-size:12px;font-weight:600;font-family:inherit;outline:none;cursor:pointer;transition:border-color var(--tr)}
-.side-date input:focus{border-color:var(--accent)}
+.date-text{font-size:13px;font-weight:600;color:var(--text);padding:4px 8px;min-width:90px;text-align:center}
 .side-date-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:transparent;border:1.5px solid var(--bdr);border-radius:var(--rs);color:var(--text2);cursor:pointer;font-size:14px;transition:all var(--tr);flex-shrink:0}
 .side-date-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
 .side-date-btn:disabled{opacity:.3;cursor:not-allowed}
@@ -116,7 +115,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
       <div class="side-label">日期</div>
       <div class="side-date">
         <button class="side-date-btn" id="prevDate" disabled>‹</button>
-        <input type="date" id="datePicker"/>
+        <span class="date-text" id="dateText"></span>
         <button class="side-date-btn" id="nextDate" disabled>›</button>
         <span class="side-date-latest" id="latestTag" style="display:none">最新</span>
       </div>
@@ -134,7 +133,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 <script>
 const S={dates:[],date:"",cat:"analysis",cache:new Map(),meta:null,newsPage:{},_loading:false,_pageSize:0};
 const $=id=>document.getElementById(id);
-const main=$("main"),catList=$("catList"),datePicker=$("datePicker"),prevBtn=$("prevDate"),nextBtn=$("nextDate"),latestTag=$("latestTag");
+const main=$("main"),catList=$("catList"),dateText=$("dateText"),prevBtn=$("prevDate"),nextBtn=$("nextDate"),latestTag=$("latestTag");
 const esc=s=>{const d=document.createElement("div");d.textContent=s;return d.innerHTML.replace(/"/g,"&quot;")};
 function safeHref(url){try{const u=new URL(url);if(u.protocol==="http:"||u.protocol==="https:")return url}catch{return""}return""}
 function fetchT(u,ms=10000){const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);return fetch(u,{signal:c.signal}).finally(()=>clearTimeout(t))}
@@ -256,7 +255,7 @@ function setDate(d){
   if(!S.dates.includes(d))return;
   S.date=d;
   S._pageSize=0;
-  datePicker.value=d;
+  dateText.textContent=d;
   prevBtn.disabled=S.dates.indexOf(d)>=S.dates.length-1;
   nextBtn.disabled=S.dates.indexOf(d)<=0;
   latestTag.style.display=S.dates.indexOf(d)===0?"":"none";
@@ -287,7 +286,6 @@ function setupEvents(){
   // Date
   prevBtn.onclick=()=>{const i=S.dates.indexOf(S.date);if(i<S.dates.length-1)setDate(S.dates[i+1])};
   nextBtn.onclick=()=>{const i=S.dates.indexOf(S.date);if(i>0)setDate(S.dates[i-1])};
-  datePicker.onchange=e=>{if(e.target.value&&S.dates.includes(e.target.value))setDate(e.target.value)};
   // Category click + hover prefetch
   catList.onclick=e=>{
     const item=e.target.closest(".cat-item");
@@ -344,7 +342,7 @@ async function init(){
   S.dates=dates;
   const h=location.hash.slice(1);
   S.date=(h&&dates.includes(h))?h:(dates[0]||"");
-  datePicker.value=S.date;
+  dateText.textContent=S.date;
   await buildSidebar();
   setDate(S.date);
   // Idle prefetch: warm up top category files in background
