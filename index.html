@@ -123,7 +123,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
     </div>
     <div class="cat-list" id="catList">
       <div class="cat-item active" data-cat="analysis">
-        <span class="cat-icon">🧠</span><span class="cat-name">AI 深度分析</span>
+        <span class="cat-icon">🤖</span><span class="cat-name">AI 深度分析</span>
       </div>
     </div>
   </aside>
@@ -250,7 +250,7 @@ function renderAnalysis(data){
   const{tags,hotHtml,per}=renderStructuredTags(data);
   const body=parseMarkdown(data.analysis);
   return`<div class="card a-card">
-    <div class="a-head"><span class="a-icon">🧠</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span></div>
+    <div class="a-head"><span class="a-icon">🤖</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span></div>
     ${tags}${hotHtml}<div class="a-body">${body}</div></div>`;
 }
 
@@ -299,7 +299,7 @@ function buildSidebarFromMeta(meta){
     el.innerHTML=`<span class="cat-icon">${icon}</span><span class="cat-name">${esc(name)}</span>${count!=null?`<span class="cat-count">${count}</span>`:""}`;
     frag.appendChild(el);
   };
-  addItem("analysis","🧠","AI 深度分析");
+  addItem("analysis","🤖","AI 深度分析");
   for(const c of meta.categories)addItem(c.file,c.icon,c.title,c.count);
   catList.innerHTML="";
   catList.appendChild(frag);
@@ -334,7 +334,7 @@ async function loadView(){
       const date=data.date||(data.generatedAt?new Date(data.generatedAt).toLocaleDateString("sv-SE",{timeZone:"Asia/Shanghai"}):"");
       const{tags,hotHtml,per}=renderStructuredTags(data);
       main.innerHTML=`<div class="card a-card">
-        <div class="a-head"><span class="a-icon">🧠</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span></div>
+        <div class="a-head"><span class="a-icon">🤖</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span></div>
         ${tags}${hotHtml}<div class="a-body"><div class="sk"><div class="sk-line"></div><div class="sk-line w80"></div><div class="sk-line w60"></div></div></div></div>`;
       const full=await loadAnalysisFull();
       const bodyEl=main.querySelector(".a-body");
