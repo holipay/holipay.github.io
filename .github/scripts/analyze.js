@@ -331,6 +331,194 @@ ${trendLines.join("\n")}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 }
 
+// ===== 事件链追踪 =====
+const EVENTS_FILE = path.join(DATA_DIR, "events.json");
+const MAX_ACTIVE_EVENTS = 20;
+const EVENT_STALE_DAYS = 7; // 超过7天无更新自动归档
+
+function loadActiveEvents() {
+  if (!fs.existsSync(EVENTS_FILE)) return [];
+  try {
+    const all = JSON.parse(fs.readFileSync(EVENTS_FILE, "utf-8"));
+    return all.filter(e => e.status === "active");
+  } catch { return []; }
+}
+
+function buildEventChainSection(events) {
+  if (events.length === 0) return "";
+  const lines = events.map(e => {
+    const last = e.timeline[e.timeline.length - 1];
+    const days = Math.round((new Date() - new Date(e.firstSeen)) / 86400000);
+    return `  - **${e.title}**（${days}天前起始，${e.timeline.length}条动态）→ 最新: ${last.summary}`;
+  });
+  return `
+
+━━━ 🔗 活跃事件链（跟踪中的持续性事件）━━━
+${lines.join("\n")}
+说明: 如果今日新闻中有这些事件的后续发展，请在 eventChains 中标注 event_id 并更新。如果事件已结束，标记 status="resolved"。
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+}
+
+function updateEvents(existingEvents, eventChains, dateStr, sentiment) {
+  if (!Array.isArray(eventChains)) return existingEvents;
+  const eventMap = new Map(existingEvents.map(e => [e.id, e]));
+
+  for (const chain of eventChains) {
+    if (chain.status === "resolved" && chain.id && eventMap.has(chain.id)) {
+      eventMap.get(chain.id).status = "resolved";
+      eventMap.get(chain.id).lastSeen = dateStr;
+      continue;
+    }
+    const summary = chain.summary || "";
+    if (!summary) continue;
+
+    if (chain.id && eventMap.has(chain.id)) {
+      // 更新已有事件
+      const evt = eventMap.get(chain.id);
+      evt.timeline.push({ date: dateStr, summary, sentiment });
+      evt.lastSeen = dateStr;
+      if (chain.keywords) evt.relatedKeywords = [...new Set([...evt.relatedKeywords, ...chain.keywords])];
+    } else {
+      // 新事件
+      const id = `evt-${dateStr}-${(chain.title || summary).replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g, "").slice(0, 20)}`;
+      eventMap.set(id, {
+        id,
+        title: chain.title || summary.slice(0, 40),
+        firstSeen: dateStr,
+        lastSeen: dateStr,
+        status: "active",
+        timeline: [{ date: dateStr, summary, sentiment }],
+        relatedKeywords: chain.keywords || [],
+      });
+    }
+  }
+
+  // 自动归档超期事件
+  const staleCutoff = new Date();
+  staleCutoff.setDate(staleCutoff.getDate() - EVENT_STALE_DAYS);
+  const cutoffStr = staleCutoff.toISOString().slice(0, 10);
+  for (const [, evt] of eventMap) {
+    if (evt.status === "active" && evt.lastSeen < cutoffStr) {
+      evt.status = "stale";
+    }
+  }
+
+  // 限制活跃事件数
+  const all = [...eventMap.values()];
+  const active = all.filter(e => e.status === "active");
+  if (active.length > MAX_ACTIVE_EVENTS) {
+    active.sort((a, b) => a.lastSeen.localeCompare(b.lastSeen));
+    const toArchive = active.slice(0, active.length - MAX_ACTIVE_EVENTS);
+    for (const e of toArchive) e.status = "stale";
+  }
+
+  return all;
+}
+
+function saveEvents(events) {
+  const tmp = EVENTS_FILE + ".tmp";
+  fs.writeFileSync(tmp, JSON.stringify(events, null, 2), "utf-8");
+  fs.renameSync(tmp, EVENTS_FILE);
+}
+
+// ===== 信号仪表盘 =====
+const DASHBOARD_FILE = path.join(DATA_DIR, "dashboard.json");
+const DASHBOARD_RETENTION_DAYS = 90;
+
+function loadDashboard() {
+  if (!fs.existsSync(DASHBOARD_FILE)) return { days: [], keywordTrends: [] };
+  try { return JSON.parse(fs.readFileSync(DASHBOARD_FILE, "utf-8")); }
+  catch { return { days: [], keywordTrends: [] }; }
+}
+
+function updateDashboard(dashboard, dateStr, structured, hotKeywords) {
+  // 更新/插入当日数据
+  const dayEntry = {
+    date: dateStr,
+    sentiment: structured.sentiment,
+    riskLevel: structured.riskLevel,
+    keyThemes: structured.keyThemes || [],
+    sectors: structured.sectors || [],
+    outlook: structured.outlook || "",
+    topKeywords: (hotKeywords || []).slice(0, 10).map(hk => ({
+      keyword: hk.keyword,
+      score: hk.score,
+      count: hk.count,
+    })),
+  };
+
+  dashboard.days = (dashboard.days || []).filter(d => d.date !== dateStr);
+  dashboard.days.push(dayEntry);
+
+  // 清理超期数据
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - DASHBOARD_RETENTION_DAYS);
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+  dashboard.days = dashboard.days.filter(d => d.date >= cutoffStr);
+  dashboard.days.sort((a, b) => a.date.localeCompare(b.date));
+
+  // 计算关键词趋势（7天 vs 30天）
+  const now = dashboard.days;
+  const last7 = now.slice(-7);
+  const last30 = now.slice(-30);
+  const kw7 = aggregateKeywords(last7);
+  const kw30 = aggregateKeywords(last30);
+
+  const trendMap = new Map();
+  for (const [kw, data7] of kw7) {
+    const data30 = kw30.get(kw) || { avgScore: 0, total: 0 };
+    const delta = data30.avgScore > 0 ? ((data7.avgScore - data30.avgScore) / data30.avgScore * 100) : 0;
+    trendMap.set(kw, {
+      keyword: kw,
+      avgScore7d: Math.round(data7.avgScore * 100) / 100,
+      avgScore30d: Math.round(data30.avgScore * 100) / 100,
+      trend: Math.round(delta),
+      frequency7d: data7.total,
+      frequency30d: data30.total,
+    });
+  }
+
+  dashboard.keywordTrends = [...trendMap.values()]
+    .sort((a, b) => b.avgScore7d - a.avgScore7d)
+    .slice(0, 30);
+
+  // 情绪/风险序列（用于前端绘图）
+  dashboard.signals = now.map(d => ({
+    date: d.date,
+    sentiment: d.sentiment,
+    riskLevel: d.riskLevel,
+    keywordCount: d.topKeywords.length,
+  }));
+
+  return dashboard;
+}
+
+function aggregateKeywords(days) {
+  const map = new Map();
+  for (const d of days) {
+    for (const kw of (d.topKeywords || [])) {
+      if (!map.has(kw.keyword)) map.set(kw.keyword, { scores: [], total: 0 });
+      const entry = map.get(kw.keyword);
+      entry.scores.push(kw.score);
+      entry.total++;
+    }
+  }
+  const result = new Map();
+  for (const [kw, data] of map) {
+    result.set(kw, {
+      avgScore: data.scores.reduce((a, b) => a + b, 0) / data.scores.length,
+      total: data.total,
+    });
+  }
+  return result;
+}
+
+function saveDashboard(dashboard) {
+  const tmp = DASHBOARD_FILE + ".tmp";
+  fs.writeFileSync(tmp, JSON.stringify(dashboard, null, 2), "utf-8");
+  fs.renameSync(tmp, DASHBOARD_FILE);
+}
+
 // ===== 数据加载 =====
 function loadTodayNews() {
   const metaPath = path.join(DATA_DIR, "meta.json");
@@ -724,6 +912,10 @@ ${memoryParts.join("\n\n")}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
   }
 
+  // 事件链上下文
+  const events = loadActiveEvents();
+  const eventChainSection = buildEventChainSection(events);
+
   const perspectiveSection = `
 
 ━━━ 今日分析视角（方法论）: ${perspective.label} ━━━
@@ -737,6 +929,7 @@ ${newsList}
 ${hotKeywordsSection}
 ${snippetsSection}
 ${trendSection}
+${eventChainSection}
 ${memorySection}
 ${perspectiveSection}
 
@@ -776,7 +969,8 @@ ${perspective.sectionHint}
   "keyThemes": ["主题1", "主题2", "主题3"],
   "sectors": ["行业1", "行业2"],
   "outlook": "一句话前瞻判断",
-  "hotKeywords": ${JSON.stringify(topHotKeywords.slice(0, 5).map(hk => ({ keyword: hk.keyword, score: hk.score })))}
+  "hotKeywords": ${JSON.stringify(topHotKeywords.slice(0, 5).map(hk => ({ keyword: hk.keyword, score: hk.score })))},
+  "eventChains": [{"id": "已有事件ID或留空", "title": "事件名称", "summary": "今日进展", "keywords": ["关键词"], "status": "active|resolved"}]
 }
 \`\`\`
 
@@ -786,7 +980,8 @@ ${perspective.sectionHint}
 - keyThemes: 3-5 今日最核心的主题关键词
 - sectors: 今日新闻涉及的主要行业/赛道
 - outlook: 对未来 1-2 周的一句话核心判断
-- hotKeywords: 今日热点关键词及其热度分数（原样输出上面的数组即可）`;
+- hotKeywords: 今日热点关键词及其热度分数（原样输出上面的数组即可）
+- eventChains: 事件链更新。如果今日新闻是某个活跃事件的后续发展，填入该事件的 id 并更新 summary。如果是全新重大事件，新建一条（id留空）。如果没有相关事件，输出空数组 []。`;
 }
 
 // ===== 解析结构化输出 =====
@@ -798,6 +993,7 @@ function parseStructuredOutput(rawAnalysis) {
     sectors: [],
     outlook: "",
     hotKeywords: [],
+    eventChains: [],
   };
 
   try {
@@ -830,6 +1026,8 @@ function parseStructuredOutput(rawAnalysis) {
           ? parsed.outlook.slice(0, 200) : "",
         hotKeywords: Array.isArray(parsed.hotKeywords)
           ? parsed.hotKeywords.slice(0, 10) : [],
+        eventChains: Array.isArray(parsed.eventChains)
+          ? parsed.eventChains.slice(0, 10) : [],
       },
     };
   } catch (e) {
@@ -1115,7 +1313,7 @@ async function runMonthlyReview(dateStr, now) {
 const FORCE_FLAG = process.argv.includes("--force");
 
 async function main() {
-  console.log("🤖 AI 深度分析引擎 v6.0（记忆 + 视角轮换 + 热点加权 + 信源权威度 + 噪音过滤 + 文章摘要 + 趋势追踪 + Token优化 + 重试 + 幂等 + 月度回顾）");
+  console.log("🤖 AI 深度分析引擎 v7.0（记忆 + 视角轮换 + 热点加权 + 信源权威度 + 噪音过滤 + 文章摘要 + 趋势追踪 + 事件链追踪 + 信号仪表盘 + Token优化 + 重试 + 幂等 + 月度回顾）");
   const now = new Date();
   const dateStr = now.toLocaleDateString("sv-SE", { timeZone: "Asia/Shanghai" });
   const dayOfWeek = now.getDay();
@@ -1255,6 +1453,19 @@ async function main() {
     // 保存热点趋势数据
     saveTrends(dateStr, hotKeywords);
     console.log("📈 已保存热点趋势数据");
+
+    // 更新事件链
+    const activeEvents = loadActiveEvents();
+    const updatedEvents = updateEvents(activeEvents, structured.eventChains, dateStr, structured.sentiment);
+    saveEvents(updatedEvents);
+    const activeCount = updatedEvents.filter(e => e.status === "active").length;
+    console.log(`🔗 已更新事件链（${activeCount} 个活跃事件）`);
+
+    // 更新信号仪表盘
+    const dashboard = loadDashboard();
+    updateDashboard(dashboard, dateStr, structured, hotKeywords);
+    saveDashboard(dashboard);
+    console.log(`📊 已更新信号仪表盘（${dashboard.days.length} 天数据）`);
 
   } catch (e) {
     console.error(`❌ 分析失败: ${e.message}`);
