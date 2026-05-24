@@ -65,6 +65,14 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 .a-body ul{list-style:none;padding:0;margin:8px 0}
 .a-body li{padding:4px 0 4px 16px;position:relative}
 .a-body li::before{content:"›";position:absolute;left:0;color:var(--accent);font-weight:700}
+.a-body blockquote{margin:12px 0;padding:8px 12px;border-left:3px solid var(--bdr);color:var(--text3);font-style:italic}
+.a-body pre{margin:12px 0;padding:12px;background:var(--bg);border-radius:var(--rs);overflow-x:auto;font-size:13px;line-height:1.5}
+.a-body code{font-size:13px;background:var(--bg);padding:1px 4px;border-radius:3px}
+.a-body pre code{padding:0;background:none}
+.a-body table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.a-body th,.a-body td{padding:6px 10px;border:1px solid var(--bdr);text-align:left}
+.a-body th{background:var(--bg);font-weight:600}
+.a-body a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
 
 /* Structured badges */
 .a-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
@@ -208,19 +216,48 @@ function prefetchAdjacentAnalysis(){
 // ===== Markdown 解析（单遍扫描） =====
 function parseMarkdown(text){
   let body=esc(text);
-  // 行级：标题和列表项
+  // 代码块（先处理，避免内部被其他规则匹配）
+  body=body.replace(/```(\w*)\n([\s\S]*?)```/g,(_,lang,code)=>`<pre><code>${code.replace(/\n$/,'')}</code></pre>`);
+  // 行内代码
+  body=body.replace(/`([^`]+)`/g,'<code>$1</code>');
+  // 表格：连续的 | 开头行
+  body=body.replace(/((?:^\|.+\|$\n?)+)/gm,(block)=>{
+    const rows=block.trim().split('\n').filter(r=>r.trim());
+    if(rows.length<2)return block;
+    // 跳过分隔行 |---|---|
+    const isSep=r=>/^\|[\s:-]+\|$/.test(r.trim());
+    const header=rows[0];
+    const bodyRows=rows.slice(1).filter(r=>!isSep(r));
+    const parseCells=(row,tag)=>row.split('|').slice(1,-1).map(c=>`<${tag}>${c.trim()}</${tag}>`).join('');
+    const thead=`<thead><tr>${parseCells(header,'th')}</tr></thead>`;
+    const tbody=bodyRows.length?`<tbody>${bodyRows.map(r=>`<tr>${parseCells(r,'td')}</tr>`).join('')}</tbody>`:'';
+    return`<table>${thead}${tbody}</table>`;
+  });
+  // 引用块
+  body=body.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
+  // 合并连续 blockquote
+  body=body.replace(/(<\/blockquote>\n*<blockquote>)+/g,'<br>');
+  // 标题
   body=body.replace(/^### (.+)$/gm,'<h4>$1</h4>');
   body=body.replace(/^## (.+)$/gm,'<h3>$1</h3>');
+  // 列表项（无序 + 有序）
   body=body.replace(/^- (.+)$/gm,'<li>$1</li>');
-  // 行内：加粗（全局，不限行首）
+  body=body.replace(/^\d+\. (.+)$/gm,'<li>$1</li>');
+  // 行内：加粗、斜体、链接
   body=body.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  body=body.replace(/\*(.+?)\*/g,'<em>$1</em>');
+  body=body.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
   // 合并连续 <li> 为 <ul>
   body=body.replace(/(<li>.*<\/li>\n?)+/g,m=>`<ul>${m}</ul>`);
+  // 水平线
+  body=body.replace(/^---+$/gm,'<hr>');
   // 段落分割
   body=body.replace(/\n\n/g,'</p><p>');
   body=`<p>${body}</p>`;
-  // 清理空段落和包裹标题的 <p>
-  body=body.replace(/<p>\s*<\/p>/g,'').replace(/<p>\s*(<h[34]>)/g,'$1').replace(/(<\/h[34]>)\s*<\/p>/g,'$1');
+  // 清理：空段落、包裹块级元素的 <p>
+  body=body.replace(/<p>\s*<\/p>/g,'');
+  body=body.replace(/<p>\s*(<h[34]>|<table|<blockquote|<pre|<ul|<hr)/g,'$1');
+  body=body.replace(/(<\/h[34]>|<\/table>|<\/blockquote>|<\/pre>|<\/ul>|<hr>)\s*<\/p>/g,'$1');
   return body;
 }
 
