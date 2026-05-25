@@ -1,8 +1,188 @@
 {
   "icon": "🏦",
   "title": "央行与利率",
-  "updatedAt": "2026-05-24T03:16:02.267Z",
+  "updatedAt": "2026-05-25T02:35:47.033Z",
   "items": [
+    {
+      "title": "大衰退及其后果-美联储历史",
+      "source": "Reuters",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "$ 4.50的天然气经济性：减少外出过夜，加强皮带紧固- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "随着债券市场押注物价上涨，各国央行难以维持通货膨胀- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "债券收益率飙升将如何影响经济、市场- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "土耳其3月清算了几乎所有持有的美国国债- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美国国债，美元贬值，因中国标志美国债券风险：市场环节- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "观看投资者权衡伊朗战争的影响，对信贷市场经济的预期|实际收益率2026年4月17日- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "拉加德称欧洲经济下滑至欧洲央行基线以下- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "观看商业领袖权衡美国经济，美国信贷市场展望|实际收益率2026年1月23日- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "债券暴跌引发民团恐慌-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "拉加德表示，欧洲央行可能在6月份修改其通胀前景- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "欧洲央行维持利率，通货膨胀率接近2% ，经济扩张- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "如果你认为你了解债券，你就不了解-金融时报",
+      "source": "Financial Times",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "欧洲央行的拉加德敦促欧洲刺激增长或采取“不负责任”态度- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "许多美联储官员呼吁央行在4月份下调降息信号-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "“一个大错误” ：高级经济学家警告称，尽管存在经济衰退风险，但欧洲央行仍“坚决”加息- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "日本核心通胀放缓至逾四年低点，日本央行加息案例减弱- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "凯文·沃什(Kevin Warsh)在特朗普寻求降息之际宣誓就任美联储主席- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "“无风险”国债收益率的飙升让债券投资者寻找更好的机会- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "在€ 115亿元的出价被拒绝后，优步出价更高-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "预测市场正在加剧州和联邦监管机构之间的高风险争吵- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美联储官员认为，如果通胀保持高位，加息将提前，分钟显示- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "Strategy的Michael Saylor表示，代币化将让投资者“购买”收益率- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "欧洲央行敦促银行修复最新人工智能模型暴露的缺陷-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "搅动债券市场的危险酝酿 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "市场关注中东，国债收益率变化不大 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "凯文·沃什希望重塑美联储。这就是他所面临的挑战。 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美联储会议纪要显示如果通胀持续存在则支持加息 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "日本通胀放缓但中东风险仍将加息 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "调查显示日本债券市场重新获得煤矿经济金丝雀的地位 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "未来一周外汇、债券走势：美国个人消费支出数据、中东事态发展成为焦点 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美国国债收益率失去动力，但因霍尔木兹协议的希望而仍上升 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美联储巴尔金称加息并不能解决供应冲击驱动的通胀 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美联储的Waller ：通胀风险意味着美联储不应该再削减信号-华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "这是中国对劳斯莱斯的答案-它充满了小工具-华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "托尼·阿博特将成为自由党新任联邦主席",
+      "source": "The Conversation",
+      "date": "2026-05-25"
+    },
     {
       "title": "大衰退及其后果-美联储历史",
       "source": "Reuters",

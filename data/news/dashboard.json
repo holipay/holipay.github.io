@@ -55,48 +55,100 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-05-25",
+      "sentiment": "中性",
+      "riskLevel": "中",
+      "keyThemes": [],
+      "sectors": [],
+      "outlook": "",
+      "topKeywords": [
+        {
+          "keyword": "com",
+          "score": 112,
+          "count": 14
+        },
+        {
+          "keyword": "雅虎财经",
+          "score": 104,
+          "count": 13
+        },
+        {
+          "keyword": "investopedia",
+          "score": 40,
+          "count": 5
+        },
+        {
+          "keyword": "华盛顿邮报",
+          "score": 16,
+          "count": 2
+        },
+        {
+          "keyword": "美国新闻财经",
+          "score": 16,
+          "count": 2
+        },
+        {
+          "keyword": "世界经济论坛",
+          "score": 16,
+          "count": 2
+        },
+        {
+          "keyword": "市场",
+          "score": 12,
+          "count": 2
+        },
+        {
+          "keyword": "美国经济",
+          "score": 12,
+          "count": 2
+        },
+        {
+          "keyword": "为什么华尔街",
+          "score": 12,
+          "count": 2
+        },
+        {
+          "keyword": "经济衰退期间",
+          "score": 12,
+          "count": 2
+        }
+      ]
     }
   ],
   "keywordTrends": [
     {
       "keyword": "雅虎财经",
-      "avgScore7d": 170,
-      "avgScore30d": 170,
+      "avgScore7d": 137,
+      "avgScore30d": 137,
       "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
+      "frequency7d": 2,
+      "frequency30d": 2
     },
     {
       "keyword": "com",
-      "avgScore7d": 60,
-      "avgScore30d": 60,
+      "avgScore7d": 86,
+      "avgScore30d": 86,
       "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
+      "frequency7d": 2,
+      "frequency30d": 2
     },
     {
       "keyword": "investopedia",
-      "avgScore7d": 48,
-      "avgScore30d": 48,
+      "avgScore7d": 44,
+      "avgScore30d": 44,
       "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
-    },
-    {
-      "keyword": "美国经济",
-      "avgScore7d": 18,
-      "avgScore30d": 18,
-      "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
+      "frequency7d": 2,
+      "frequency30d": 2
     },
     {
       "keyword": "华盛顿邮报",
       "avgScore7d": 16,
       "avgScore30d": 16,
       "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
+      "frequency7d": 2,
+      "frequency30d": 2
     },
     {
       "keyword": "为什么",
@@ -107,7 +159,47 @@
       "frequency30d": 1
     },
     {
+      "keyword": "美国新闻财经",
+      "avgScore7d": 16,
+      "avgScore30d": 16,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "世界经济论坛",
+      "avgScore7d": 16,
+      "avgScore30d": 16,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "美国经济",
+      "avgScore7d": 15,
+      "avgScore30d": 15,
+      "trend": 0,
+      "frequency7d": 2,
+      "frequency30d": 2
+    },
+    {
       "keyword": "为什么华尔街",
+      "avgScore7d": 12,
+      "avgScore30d": 12,
+      "trend": 0,
+      "frequency7d": 2,
+      "frequency30d": 2
+    },
+    {
+      "keyword": "市场",
+      "avgScore7d": 12,
+      "avgScore30d": 12,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "经济衰退期间",
       "avgScore7d": 12,
       "avgScore30d": 12,
       "trend": 0,
@@ -121,6 +213,12 @@
       "sentiment": "分化",
       "riskLevel": "高",
       "keywordCount": 7
+    },
+    {
+      "date": "2026-05-25",
+      "sentiment": "中性",
+      "riskLevel": "中",
+      "keywordCount": 10
     }
   ]
 }

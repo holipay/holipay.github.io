@@ -38,5 +38,60 @@
         "count": 2
       }
     ]
+  },
+  {
+    "date": "2026-05-25",
+    "keywords": [
+      {
+        "keyword": "com",
+        "score": 112,
+        "count": 14
+      },
+      {
+        "keyword": "雅虎财经",
+        "score": 104,
+        "count": 13
+      },
+      {
+        "keyword": "investopedia",
+        "score": 40,
+        "count": 5
+      },
+      {
+        "keyword": "华盛顿邮报",
+        "score": 16,
+        "count": 2
+      },
+      {
+        "keyword": "美国新闻财经",
+        "score": 16,
+        "count": 2
+      },
+      {
+        "keyword": "世界经济论坛",
+        "score": 16,
+        "count": 2
+      },
+      {
+        "keyword": "市场",
+        "score": 12,
+        "count": 2
+      },
+      {
+        "keyword": "美国经济",
+        "score": 12,
+        "count": 2
+      },
+      {
+        "keyword": "为什么华尔街",
+        "score": 12,
+        "count": 2
+      },
+      {
+        "keyword": "经济衰退期间",
+        "score": 12,
+        "count": 2
+      }
+    ]
   }
 ]

@@ -1,8 +1,488 @@
 {
   "icon": "👥",
   "title": "社会与人口",
-  "updatedAt": "2026-05-24T03:16:02.266Z",
+  "updatedAt": "2026-05-25T02:35:47.032Z",
   "items": [
+    {
+      "title": "分析：中国经济及其对全球市场的影响-美国银行",
+      "source": "Reuters",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "基本面分析：原则、类型和使用方法- Investopedia",
+      "source": "Reuters",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "随着投资恢复下滑，中国经济大幅放缓- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美国信任度下降是全球经济的潘多拉盒子- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "尽管实现了5%的增长目标，但中国的经济势头减弱- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "最高法院拒绝接受60年的黑人选举权-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "印度内部通讯：随着公司和基金转向美国，印度的投资吸引力减弱- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "尽管法律环境模糊不清，但公司的预测市场投资并未受到阻碍- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "BMO发现，千禧一代的平均约会花费为252 $ —社交媒体因“约会通货膨胀”而螺旋式增长- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "洛杉矶试图对豪宅征税。公寓建设陷入困境。 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社交媒体公司在审判浪潮之前解决青年伤害案件-《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "今年夏天的青少年就业市场是几十年来最艰难的-华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "全球政策溢出效应：环境政策如何通过产品属性传播——作者：Koichiro Ito、James M. Sallee、Jonathan (Andrew) Smith",
+      "source": "NBER",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社会主义宪政的可信度和预先承诺——塞巴斯蒂安·爱德华兹",
+      "source": "NBER",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "更多路径还是更多对比度？实验广度理论——作者：Joshua S. Gans、Luca Gius",
+      "source": "NBER",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "机遇之地：美国财富地理和收入流动性的差异——作者：Ariel J. Binder、Max Risch、John L. Voorheis",
+      "source": "NBER",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "澳大利亚在移民方面存在问题。自由党的政策方法无助于解决这个问题",
+      "source": "The Conversation",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "27%的澳大利亚学生现在已经适应了学校的残疾状况。我们为什么会看到这种增长？",
+      "source": "The Conversation",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "婴儿潮一代拥抱更自由的性行为，但年龄歧视规范依然存在",
+      "source": "The Conversation",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "减少医院分娩的健康保险费用对绝育率的影响比纠正不公正更大",
+      "source": "The Conversation",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "关于美国人和心理健康的主要发现",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "关于非洲人口增长的 5 个事实",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美国人如何看待宗教对政府和公共生活的影响",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "为什么美国人从健康和保健影响者那里获得信息，他们是如何找到这些信息的？",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "对健康和养生影响者的信任",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美国人从健康和保健影响者那里了解到的主题",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "问题措辞如何影响同性恋道德的民意调查",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美国人认为哪些国家是全球“超级大国” ，有多少国家？",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "关于美国枪支死亡的数据说明了什么",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "关于生活在混合家庭中的美国儿童的5个事实",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美国人越来越有可能说特朗普不太虔诚或根本不虔诚",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美国人因其对国家政治制度的悲观情绪而在国际上脱颖而出",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "青少年在TikTok、Instagram和Snapchat上的体验",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "父母对青少年使用社交媒体的看法",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "青少年在TikTok、Instagram和Snapchat上的体验如何因种族、民族和性别而异",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美国大多数新数据中心都位于农村地区",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "大约三分之一的年轻人对自己的心理健康持负面看法",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美国人从哪里获得健康信息，他们信任什么？",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "大约一半有兄弟姐妹的美国人至少有一个兄弟姐妹",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "2023年，约9%的美国新生儿是未经授权或临时合法移民母亲所生",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "许多拉丁美洲人，特别是新教徒，认为宗教在国家领导、身份和法律方面发挥着作用",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "您所在州的宗教广播电台是什么样的？",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美国各地的宗教广播电台",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "美国人的宗教音频节目体验",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "宗教电台的政治评论，以及听众对此的看法",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "天主教电台与其他基督教电台有何不同",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "宗教广播中的音乐",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "宗教广播电台的所在地及其所有者",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "荷兰将同性婚姻合法化25年后，世界各地同性婚姻的关键事实",
+      "source": "Pew Research",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "尼日利亚暴力事件为何持续存在",
+      "source": "Foreign Affairs",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "在整个社会科学领域，一半的研究无法复制-科学| AAAS",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "新的大规模研究发现，只有一半的社会科学发现是重复的-今天的UVA",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "只有大约一半的社会科学结果可以复制，发现新的研究-福布斯",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社会科学的新舞台：学生组织全校研究展示| CWRU 新闻编辑室 - 凯斯西储大学",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "将英语学习者留在科学和社会研究课堂-哈佛教育研究生院",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "新研究发现社会科学领域存在持续且日益严重的左倾倾向",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "“复制游戏”测试社会科学研究的稳健性 - Nature",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社会研究需要自然科学的语义验证吗？：意见和问题 – Niloy Pratim Kashyap - 做社会学",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社会科学研究奖学金开放申请-柬埔寨人",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社会科学的低重复率并不是一场危机 - 日本时报",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "周末读到：一半的社会科学“无法复制”； 《科学幽灵：撤回后的生活》；多感官学习论文被撤回 - Retraction Watch",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "一半的社会科学成果无法复制 - 卡罗林斯卡医学院",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "《自然》杂志发表赫瑞瓦特学者参与的关于科学信任的全球研究 - 赫瑞瓦特大学",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "评估科学研究结果可信度的框架1 - PNAS",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "牛津研究发现， 90%的社会科学研究倾向于左翼-朱诺新闻",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社交媒体研究工具降低了政治温度——斯坦福大学报告",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "10 个薪酬最高的社会科学工作（含薪水）- 内克斯福德大学",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "为什么其他人对我们影响这么大？ - 今日心理学",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "探戈需要两个人：为什么工程与社会科学相结合是个好主意 - 特文特大学",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "种族研究本来应该从加州的学校开始。发生了什么？ - 加州事务",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "我们还能相信社会科学吗？ - asteriskmag.com",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "巴基斯坦选民投票率下降：为什么2024年女性登记人数增加，但投票人数减少",
+      "source": "The Conversation",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "[封面科学] 研究发现社会科学研究的重复性仅为 54% - 동아사і언스",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "欺诈性研究正在“破坏对科学的信任” - DW.com",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社交媒体情况说明书 - 皮尤研究中心",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "在政策制定中，我们需要社会科学和 STEM 一样多 - 伦敦政治经济学院",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "不可靠的社会科学研究比可靠的研究更受关注美国科学促进会",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社会科学促进国家复原力 - GOV.UK",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "在社会科学研究的复制危机中，为期六年的研究验证了开放科学方法 - 加州大学伯克利分校",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "现金紧缩、研究空白和客座教师激增：印度社会科学的崩溃 - TheWire.in",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "五角大楼突然终止对社会科学研究的所有资助美国科学促进会",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "上世纪最有影响力的社会科学研究之一相当糟糕 - 麦吉尔大学",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "研究发现 Bluesky 上的科学研究比 X 上的参与度更高 - 《卫报》",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "尼日利亚社会科学研究的成果：现状和系统性决定因素 - Nature",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社会科学研究有政治偏见吗？ - promarket.org",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社会科学中的科学 - PNAS",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "什么是社会科学？ - 特洛伊大学",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "2010 年代出现了许多伟大的社会科学。这是我最喜欢的 12 项研究。 -vox.com",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "世界卫生组织 (WHO) 社会联系与改善健康和降低早逝风险有关",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社会期望偏差如何影响情绪表达 - 剑桥大学出版社与评估",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "使用深度伪造品进行社会科学实验 - 一项试点研究 - Frontiers",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "研究人员表示，社交媒体用户可能不会阅读这个标题以外的内容 - 宾夕法尼亚州立大学",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "理论输入，理论输出：社会理论在社会科学机器学习中的应用 - Frontiers",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社会科学专业示例-东南密苏里州立大学| SEM",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "社交媒体上的社交比较与年轻人心理健康之间的关联-前沿",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
+    {
+      "title": "将社会科学引入临界区科学：探索中国人工修饰临界区小农户的学习偏好- AGU出版物",
+      "source": "Google News Academic",
+      "date": "2026-05-25"
+    },
     {
       "title": "分析：中国经济及其对全球市场的影响-美国银行",
       "source": "Reuters",
