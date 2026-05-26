@@ -44,7 +44,7 @@ function trimFile(filePath) {
 
   if (!dryRun) {
     const tmp = filePath + ".tmp";
-    fs.writeFileSync(tmp, JSON.stringify(data, null, 2), "utf-8");
+    fs.writeFileSync(tmp, JSON.stringify(data), "utf-8");
     fs.renameSync(tmp, filePath);
   }
 
