@@ -21,7 +21,7 @@ const ROOT = path.resolve(__dirname, "../..");
 const API_KEY = process.env.DEEPSEEK_API_KEY;
 const API_URL = "https://api.deepseek.com";
 const MAX_ITEMS = 50;
-const MODEL = "deepseek-v4-flash";
+const MODEL = "deepseek-v4-pro";
 const MAX_RETRIES = 3;
 const RETRY_BASE_DELAY = 3000; // 3s, 6s, 12s
 
@@ -192,11 +192,20 @@ function fetchUrlText(url, maxChars = 500) {
       const parsed = new URL(url);
       const mod = parsed.protocol === "https:" ? https : http;
       const req = mod.get(url, {
-        headers: { "User-Agent": "Mozilla/5.0 (compatible; NASE-Bot/1.0)" },
-        timeout: 8000,
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.9",
+        },
+        timeout: 10000,
       }, (res) => {
         if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
           fetchUrlText(res.headers.location, maxChars).then(resolve);
+          return;
+        }
+        // 跳过付费墙 (402/403) 和需要登录的页面
+        if (res.statusCode === 402 || res.statusCode === 403) {
+          resolve("");
           return;
         }
         if (res.statusCode !== 200) { resolve(""); return; }
@@ -204,15 +213,8 @@ function fetchUrlText(url, maxChars = 500) {
         res.on("data", (c) => chunks.push(c));
         res.on("end", () => {
           const raw = Buffer.concat(chunks).toString("utf-8");
-          // 去 HTML 标签，提取纯文本
-          const text = raw
-            .replace(/<script[\s\S]*?<\/script>/gi, "")
-            .replace(/<style[\s\S]*?<\/style>/gi, "")
-            .replace(/<[^>]+>/g, " ")
-            .replace(/&[a-z]+;/gi, " ")
-            .replace(/\s+/g, " ")
-            .trim();
-          resolve(text.slice(0, maxChars));
+          const text = cleanHtmlContent(raw);
+          resolve(truncateAtSentence(text, maxChars));
         });
       });
       req.on("error", () => resolve(""));
@@ -221,33 +223,169 @@ function fetchUrlText(url, maxChars = 500) {
   });
 }
 
-async function fetchArticleSnippets(hotKeywords, items, topN = 5) {
-  const snippets = [];
-  const topKws = hotKeywords.slice(0, topN);
+// HTML 内容清洗（提取正文，移除样板文本）
+function cleanHtmlContent(html) {
+  // 移除 script/style/nav/footer/header
+  let text = html
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[\s\S]*?<\/style>/gi, "")
+    .replace(/<nav[\s\S]*?<\/nav>/gi, "")
+    .replace(/<footer[\s\S]*?<\/footer>/gi, "")
+    .replace(/<header[\s\S]*?<\/header>/gi, "")
+    .replace(/<aside[\s\S]*?<\/aside>/gi, "");
 
-  for (const hk of topKws) {
-    // 找到匹配热度关键词的新闻条目（有 link 的优先）
-    const matched = items.filter(i => {
-      const lower = (i.title || "").toLowerCase();
-      return lower.includes(hk.keyword.toLowerCase()) && i.link;
-    });
-    if (matched.length === 0) continue;
+  // 尝试提取 article 或 main 内容
+  const articleMatch = text.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
+  const mainMatch = text.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
+  if (articleMatch) text = articleMatch[1];
+  else if (mainMatch) text = mainMatch[1];
 
-    // 取第一条有链接的
-    const item = matched[0];
-    console.log(`  📄 抓取摘要: ${hk.keyword} → ${item.link.slice(0, 60)}...`);
-    const text = await fetchUrlText(item.link, 300);
-    if (text && text.length > 30) {
-      snippets.push({ keyword: hk.keyword, score: hk.score, title: item.title, snippet: text });
-      console.log(`     ✅ ${text.length} 字`);
-    } else {
-      console.log(`     ⚠️ 内容过短或抓取失败`);
-    }
+  // 去 HTML 标签
+  text = text
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&[a-z]+;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
-    // 限速
-    await new Promise(r => setTimeout(r, 300));
+  // 移除常见样板文本
+  const boilerplatePatterns = [
+    /cookie[s]?\s*(policy|notice|consent|preferences)?\s*[:.]?\s*.{0,100}(accept|agree|reject|manage|settings|click|continue).{0,50}/gi,
+    /subscribe\s*(to|for|now|today|here)?\s*[:.]?\s*.{0,80}(newsletter|email|updates|free|trial)/gi,
+    /sign\s*up\s*(for|to|now)?\s*[:.]?\s*.{0,60}(newsletter|email|updates|free|trial|account)/gi,
+    /(please|click)\s+(here|below|subscribe|sign up).{0,50}/gi,
+    /advertisement\s*/gi,
+    /sponsored\s*(content|by)?\s*/gi,
+    /read\s*more\s*(→|>|»|\.\.\.)?/gi,
+    /continue\s*reading\s*(→|>|»|\.\.\.)?/gi,
+    /share\s*(this|on)\s*(facebook|twitter|linkedin|x)/gi,
+    /follow\s*us\s*(on|at)\s*/gi,
+    /©\s*\d{4}\s*.{0,50}(rights|reserved)/gi,
+    /all\s*rights\s*reserved/gi,
+    /terms\s*(of|&)\s*(use|service|conditions)/gi,
+    /privacy\s*policy/gi,
+  ];
+  for (const pattern of boilerplatePatterns) {
+    text = text.replace(pattern, "");
   }
-  return snippets;
+
+  return text.replace(/\s+/g, " ").trim();
+}
+
+// 按句子边界截断
+function truncateAtSentence(text, maxChars) {
+  if (text.length <= maxChars) return text;
+  const truncated = text.slice(0, maxChars);
+  const lastPeriod = Math.max(
+    truncated.lastIndexOf("."),
+    truncated.lastIndexOf("。"),
+    truncated.lastIndexOf("!"),
+    truncated.lastIndexOf("！"),
+    truncated.lastIndexOf("?"),
+    truncated.lastIndexOf("？"),
+  );
+  if (lastPeriod > maxChars * 0.6) {
+    return truncated.slice(0, lastPeriod + 1);
+  }
+  return truncated + "...";
+}
+
+// 辅助：获取 N 天前的日期字符串
+function getDateOffset(days) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toLocaleDateString("sv-SE", { timeZone: "Asia/Shanghai" });
+}
+
+// 从文章正文中提取关键数据点（数字、百分比、引述）
+function extractKeyData(text) {
+  const dataPoints = [];
+  const pcts = text.match(/\d+\.?\d*\s*%/g);
+  if (pcts && pcts.length > 0) dataPoints.push(`百分比: ${pcts.slice(0, 3).join(", ")}`);
+  const amounts = text.match(/\$\s*\d+[\d,.]*\s*(billion|million|trillion)?/gi);
+  if (amounts && amounts.length > 0) dataPoints.push(`金额: ${amounts.slice(0, 3).join(", ")}`);
+  const quotes = text.match(/[""「]([^""」]{20,120})[""」]/g);
+  if (quotes && quotes.length > 0) dataPoints.push(`引述: ${quotes[0].slice(0, 100)}`);
+  return dataPoints.join(" | ");
+}
+
+/**
+ * 按权重分层抓取文章内容
+ * Tier 1 (热度 Top 3): 3篇×1500字  Tier 2 (4-8): 2篇×800字  Tier 3 (9-15): 1篇×300字
+ * 评分公式：keywordScore × sourceWeight × recencyDecay
+ */
+async function fetchWeightedArticles(hotKeywords, items) {
+  const TIER_CONFIG = [
+    { maxRank: 3,  articlesPerKw: 3, charsPerArticle: 1500 },
+    { maxRank: 8,  articlesPerKw: 2, charsPerArticle: 800 },
+    { maxRank: 15, articlesPerKw: 1, charsPerArticle: 300 },
+  ];
+  const TOTAL_BUDGET = 18000;
+  let usedBudget = 0;
+  const results = [];
+  const fetchedUrls = new Set();
+
+  function scoreArticle(item, keywordScore) {
+    const sourceWeight = getSourceWeight(item.source || "");
+    const today = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Shanghai" });
+    const itemDate = item.date || "";
+    let recency = 0.3;
+    if (itemDate === today) recency = 1.0;
+    else if (itemDate >= getDateOffset(-1)) recency = 0.7;
+    else if (itemDate >= getDateOffset(-2)) recency = 0.5;
+    return keywordScore * sourceWeight * recency;
+  }
+
+  for (let tierIdx = 0; tierIdx < TIER_CONFIG.length; tierIdx++) {
+    const tier = TIER_CONFIG[tierIdx];
+    const prevMax = tierIdx === 0 ? 0 : TIER_CONFIG[tierIdx - 1].maxRank;
+    const tierKws = hotKeywords.filter((_, i) => (i + 1) > prevMax && (i + 1) <= tier.maxRank);
+
+    for (const hk of tierKws) {
+      if (usedBudget >= TOTAL_BUDGET) break;
+      const candidates = items.filter(i => {
+        const lower = (i.title || "").toLowerCase();
+        return lower.includes(hk.keyword.toLowerCase()) && i.link && !fetchedUrls.has(i.link);
+      });
+      if (candidates.length === 0) continue;
+      candidates.sort((a, b) => scoreArticle(b, hk.score) - scoreArticle(a, hk.score));
+
+      const selected = [];
+      for (const c of candidates) {
+        if (selected.length >= tier.articlesPerKw) break;
+        const src = c.source || "unknown";
+        if (selected.filter(s => s.source === src).length >= 2) continue;
+        selected.push(c);
+      }
+
+      for (const item of selected) {
+        if (usedBudget >= TOTAL_BUDGET) break;
+        const charsToFetch = Math.min(tier.charsPerArticle, TOTAL_BUDGET - usedBudget);
+        console.log(`  📄 [Tier ${tierIdx + 1}] ${hk.keyword} → ${item.link.slice(0, 60)}...`);
+        const text = await fetchUrlText(item.link, charsToFetch);
+        if (text && text.length > 50) {
+          fetchedUrls.add(item.link);
+          usedBudget += text.length;
+          results.push({
+            keyword: hk.keyword, score: hk.score, tier: tierIdx + 1,
+            title: item.title, source: item.source || "",
+            snippet: text, chars: text.length,
+          });
+          console.log(`     ✅ ${text.length} 字 (累计 ${usedBudget}/${TOTAL_BUDGET})`);
+        } else {
+          console.log(`     ⚠️ 内容过短或抓取失败`);
+        }
+        await new Promise(r => setTimeout(r, 300));
+      }
+    }
+  }
+  console.log(`  📊 文章抓取完成: ${results.length} 篇, 共 ${usedBudget} 字`);
+  return results;
 }
 
 // ===== 跨日趋势追踪 =====
@@ -665,6 +803,14 @@ const SOURCE_WEIGHTS = {
   '观察者': 1.3, '凤凰科技': 1.2,
   // Google News 聚合
   'Google News Academic': 1.2,
+  // Tier 2.5: 独立财经分析/专业媒体 — 1.3~1.5x
+  'Crossing Wall Street': 1.4,
+  'Dealbreaker': 1.4,
+  'Goldmoney': 1.3,
+  'ScienceDirect': 1.5,
+  'Journal of Financial Economics': 1.5,
+  'ZeroHedge': 1.3,
+  'Wolf Street': 1.3,
   // 默认
   'default': 1.0,
 };
@@ -705,6 +851,11 @@ const CN_STOPWORDS = new Set([
   '报道','消息','新闻','据悉','显示','指出','认为','表示','透露',
   '来源','图片','视频','编辑','责任编辑','记者',
   'com','http','https','www','html','the','and','for','that',
+  '为什么','怎么回事','怎么办','原因','导致','引发','关注','透露','表示','认为','指出',
+  '回应','宣布','发布','曝光','事件','情况','问题','方面','相关','进行','通过','其中',
+  '以及','包括','同时','由于','因此','不过','然而','仍然','依然','居然','竟然',
+  '是否','能否','应该','需要','必须','已经','尚未','目前','当前',
+  '截至','截止','此前','之后','之前','以来','最近','近日','近期','日前','据悉',
 ]);
 
 const EN_STOPWORDS = new Set([
@@ -718,6 +869,15 @@ const EN_STOPWORDS = new Set([
   'more','most','other','some','such','than','too','very',
   'new','says','said','report','reuters','bloomberg','wsj','cnbc',
   'bbc','cnn','ft','news','update','breaking','latest',
+  'why','how','what','when','where','who','which','because','after','before','during',
+  'could','would','should','might','must','shall','into','over','under','between',
+  'through','against','among','upon','within','without','across','along','around',
+  'behind','below','beneath','beside','beyond','despite','except','following',
+  'like','near','off','onto','outside','past','per','since','toward','towards',
+  'unlike','until','via','whether','also','just','only','still','even',
+  'first','second','third','last','next','much','many','few','little','several',
+  'according','based','expected','reported','suggests','shows','reveals','indicates',
+  'found','founds','study','research','analysis','report','data','survey',
 ]);
 
 const DOMAIN_KEYWORDS = new Set([
@@ -947,17 +1107,38 @@ ${kwList}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
   }
 
-  // 文章摘要 section
+  // 文章内容 section（分层展示）
   let snippetsSection = "";
   if (snippets.length > 0) {
-    const snippetText = snippets.map(s =>
-      `【${s.keyword}（热度${s.score}）】${s.title}\n${s.snippet}`
-    ).join("\n\n");
+    const tier1 = snippets.filter(s => s.tier === 1);
+    const tier2 = snippets.filter(s => s.tier === 2);
+    const tier3 = snippets.filter(s => s.tier === 3);
+    const tierParts = [];
+
+    if (tier1.length > 0) {
+      const tier1Text = tier1.map(s => {
+        const keyData = extractKeyData(s.snippet);
+        return `  ▸ 【${s.keyword}】${s.title} (${s.source})\n    摘要: ${s.snippet}${keyData ? '\n    关键数据: ' + keyData : ''}`;
+      }).join("\n\n");
+      tierParts.push(`【🔥🔥🔥 Tier 1 - 核心话题（${tier1.length} 篇）】\n${tier1Text}`);
+    }
+    if (tier2.length > 0) {
+      const tier2Text = tier2.map(s =>
+        `  ▸ 【${s.keyword}】${s.title} (${s.source})\n    ${s.snippet}`
+      ).join("\n\n");
+      tierParts.push(`【🔥🔥 Tier 2 - 重要话题（${tier2.length} 篇）】\n${tier2Text}`);
+    }
+    if (tier3.length > 0) {
+      const tier3Text = tier3.map(s =>
+        `  ▸ ${s.keyword}: ${s.title} — ${s.snippet.slice(0, 150)}...`
+      ).join("\n");
+      tierParts.push(`【🔥 Tier 3 - 补充（${tier3.length} 篇简要）】\n${tier3Text}`);
+    }
 
     snippetsSection = `
 
-━━━ 📄 热点文章摘要（深度分析素材）━━━
-${snippetText}
+━━━ 📄 深度文章内容（按权重分层抓取）━━━
+${tierParts.join("\n\n")}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
   }
 
@@ -1453,7 +1634,7 @@ async function runMonthlyReview(dateStr, now) {
 const FORCE_FLAG = process.argv.includes("--force");
 
 async function main() {
-  console.log("🤖 AI 深度分析引擎 v7.0（记忆 + 语义检索 + 视角轮换 + 热点加权 + 信源权威度 + 噪音过滤 + 文章摘要 + 趋势追踪 + 事件链追踪 + 信号仪表盘 + Token优化 + 重试 + 幂等 + 月度回顾）");
+  console.log("🤖 AI 深度分析引擎 v8.0（记忆 + 语义检索 + 视角轮换 + 热点加权 + 信源权威度 + 噪音过滤 + 权重分层抓取 + 内容深度分析 + 付费墙跳过 + 趋势追踪 + 事件链追踪 + 信号仪表盘 + Token优化 + 重试 + 幂等 + 月度回顾）");
   const now = new Date();
   const dateStr = now.toLocaleDateString("sv-SE", { timeZone: "Asia/Shanghai" });
   const dayOfWeek = now.getDay();
@@ -1541,9 +1722,9 @@ async function main() {
   // 抓取热点文章摘要
   let snippets = [];
   if (hotKeywords.length > 0) {
-    console.log("\n📄 抓取热点文章摘要...");
-    snippets = await fetchArticleSnippets(hotKeywords, newsData.items, 5);
-    console.log(`  📄 共获取 ${snippets.length} 篇摘要`);
+    console.log("\n📄 按权重分层抓取文章内容...");
+    snippets = await fetchWeightedArticles(hotKeywords, newsData.items);
+    console.log(`  📄 共获取 ${snippets.length} 篇文章`);
   }
 
   // 加载历史趋势 + 构建趋势对比
