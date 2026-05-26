@@ -393,6 +393,7 @@ function setDate(d){
   const idx=S.dates.indexOf(d);
   if(idx<0)return;
   S.date=d;S.dateIdx=idx;
+  main.scrollTop=0;
   updateDateNav();
   // debounce history.replaceState
   if(S._histTimer)cancelAnimationFrame(S._histTimer);
@@ -403,6 +404,7 @@ function setDate(d){
 // ===== 加载视图 =====
 async function loadView(){
   if(S._loading)return;S._loading=true;
+  main.scrollTop=0;
   try{
     if(S.cat==="analysis"){
       const cachedHtml=renderedAnalysisCache.get(S.date);
