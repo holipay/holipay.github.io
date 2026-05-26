@@ -900,6 +900,72 @@ function atomicWrite(filePath, data) {
   fs.renameSync(tmp, filePath);
 }
 
+
+
+// ===== P2-1: LLM 辅助分类 =====
+async function llmClassify(items, categoryTitles) {
+  const result = new Map();
+  const BATCH = 20;
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  if (!apiKey) return result;
+
+  for (let i = 0; i < items.length; i += BATCH) {
+    const batch = items.slice(i, i + BATCH);
+    const numbered = batch.map((it, j) => `${j + 1}. ${it.title}`).join("\n");
+    const cats = categoryTitles.join("、");
+    const body = JSON.stringify({
+      model: "deepseek-chat",
+      messages: [
+        {
+          role: "system",
+          content: `你是新闻分类引擎。将新闻标题分类到以下类别之一: ${cats}。如果都不匹配，输出"跳过"。输出JSON数组，每个元素是{"n":行号,"c":"类别名"}或{"n":行号,"c":"跳过"}。`,
+        },
+        { role: "user", content: numbered },
+      ],
+      temperature: 0.1,
+      max_tokens: 800,
+    });
+
+    try {
+      const res = await new Promise((resolve, reject) => {
+        const req = https.request({
+          hostname: "api.deepseek.com", path: "/v1/chat/completions", method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json",
+            "Content-Length": Buffer.byteLength(body),
+          },
+          timeout: 15000,
+        }, (res) => {
+          const chunks = [];
+          res.on("data", (c) => chunks.push(c));
+          res.on("end", () => {
+            try { resolve(JSON.parse(Buffer.concat(chunks).toString("utf-8"))); }
+            catch { resolve({}); }
+          });
+        });
+        req.on("error", () => resolve({}));
+        req.on("timeout", () => { req.destroy(); resolve({}); });
+        req.write(body);
+        req.end();
+      });
+
+      const content = res?.choices?.[0]?.message?.content?.trim() || "";
+      // Extract JSON array from response
+      const jsonMatch = content.match(/\[.*\]/s);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        for (const entry of parsed) {
+          if (entry.c && entry.c !== "跳过" && entry.n >= 1 && entry.n <= batch.length) {
+            result.set(batch[entry.n - 1].title, entry.c);
+          }
+        }
+      }
+    } catch {}
+    if (i + BATCH < items.length) await new Promise(r => setTimeout(r, 500));
+  }
+  return result;
+}
+
 // ==================== 单主题处理 ====================
 async function processTopic(topic) {
   console.log(`\n${"=".repeat(50)}`);
@@ -917,17 +983,28 @@ async function processTopic(topic) {
   );
 
   const sourceLangMap = {};
+  const sourceHealth = {};
   for (const s of topic.sources) sourceLangMap[s.name] = s.lang;
 
   let allRaw = [];
   results.forEach((r, i) => {
+    const name = topic.sources[i].name;
     if (r.status === "fulfilled") {
-      console.log(`  ✅ ${topic.sources[i].name}: ${r.value.length} 条`);
+      console.log(`  ✅ ${name}: ${r.value.length} 条`);
       allRaw.push(...r.value);
+      sourceHealth[name] = { ok: true, count: r.value.length };
     } else {
-      console.error(`  ❌ ${topic.sources[i].name}: ${r.reason.message}`);
+      console.error(`  ❌ ${name}: ${r.reason.message}`);
+      sourceHealth[name] = { ok: false, count: 0, error: r.reason.message };
     }
   });
+
+  // 源健康报告
+  const failedSources = Object.entries(sourceHealth).filter(([, h]) => !h.ok);
+  if (failedSources.length > 0) {
+    console.log(`\n⚠️ 源健康报告: ${failedSources.length}/${topic.sources.length} 个源失败:`);
+    failedSources.forEach(([name, h]) => console.log(`  ❌ ${name}: ${h.error}`));
+  }
 
   // 2. 加载历史数据用于去重
   console.log("🔍 加载历史数据进行去重...");
@@ -964,11 +1041,39 @@ async function processTopic(topic) {
   console.log(`✅ 去重后共 ${allItems.length} 条新闻`);
 
   // 7. 分类
-  const sections = groupByCategory(
+  let sections = groupByCategory(
     allItems,
     topic.categories,
     topic.defaultCategory,
   );
+
+  // P2-1: LLM 辅助分类 — 对"其他资讯"中的条目做二次分类
+  const defaultCatTitle = topic.defaultCategory?.title || "其他资讯";
+  const otherSection = sections.find(s => s.title === defaultCatTitle);
+  if (otherSection && otherSection.items.length > 5 && process.env.DEEPSEEK_API_KEY) {
+    console.log(`\n🤖 LLM 辅助分类: ${otherSection.items.length} 条"${defaultCatTitle}"条目...`);
+    const catTitles = topic.categories.map(c => c.title).filter(t => t !== defaultCatTitle);
+    const reclassified = await llmClassify(otherSection.items, catTitles);
+    if (reclassified.size > 0) {
+      // 将重新分类的条目从"其他资讯"移到正确分类
+      const moved = [];
+      const remaining = [];
+      for (const item of otherSection.items) {
+        const newCat = reclassified.get(item.title);
+        if (newCat) {
+          const target = sections.find(s => s.title === newCat);
+          if (target) {
+            target.items.push(item);
+            moved.push(item);
+            continue;
+          }
+        }
+        remaining.push(item);
+      }
+      otherSection.items = remaining;
+      console.log(`  ✅ 已将 ${moved.length} 条重新分类`);
+    }
+  }
 
   // 8. 按分类写入独立文件（分片：recent + archive）
   if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
@@ -1007,8 +1112,18 @@ async function processTopic(topic) {
       date: today,
     }));
 
-    // 合并 + 去重（按 title 精确去重）
-    const mergedItems = [...newItems, ...existingItems];
+    // P1-3: 增量追加 — 先对新条目去重，再追加到现有数据前面
+    const existingNorms = new Set(existingItems.map(i => normalizeTitle(i.title).slice(0, 80)));
+    const trulyNew = newItems.filter((item) => {
+      const norm = normalizeTitle(item.title).slice(0, 80);
+      return norm && !existingNorms.has(norm);
+    });
+    if (trulyNew.length > 0) {
+      console.log(`  ➕ ${sec.title}: 新增 ${trulyNew.length} 条`);
+    }
+
+    // 合并: 新条目在前 + 现有条目在后，清理过期
+    const mergedItems = [...trulyNew, ...existingItems];
     const seenTitles = new Set();
     const filteredItems = mergedItems.filter((item) => {
       if ((item.date || today) < cutoff) return false;
