@@ -146,7 +146,7 @@ class LRU{
 }
 
 // ===== 状态 =====
-const S={dates:[],dateIdx:-1,date:"",cat:"analysis",meta:null,newsPage:{},_loading:false,_pageSize:0};
+const S={dates:[],dateIdx:-1,date:"",cat:"analysis",meta:null,newsPage:{},_loading:false};
 const $=id=>document.getElementById(id);
 const main=$("main"),catList=$("catList"),dateText=$("dateText"),prevBtn=$("prevDate"),nextBtn=$("nextDate"),latestTag=$("latestTag");
 const _escEl=document.createElement("div");
@@ -160,7 +160,6 @@ function fetchT(u,ms=10000){const c=new AbortController();const t=setTimeout(()=
 
 // ===== 缓存实例 =====
 const rawCatCache=new LRU(8);
-const filteredCache=new LRU(32);
 const analysisSummaryCache=new LRU(16);
 const analysisFullCache=new LRU(8);
 const renderedAnalysisCache=new LRU(10);
@@ -172,18 +171,14 @@ async function loadMeta(){
   return S.meta;
 }
 
-// ===== 分类新闻加载 =====
+// ===== 分类新闻加载（不按日期筛选，按日期倒序返回全部）=====
 async function loadNewsCat(file){
-  const cacheKey=file+"@"+S.date;
-  const cached=filteredCache.get(cacheKey);
+  const cached=rawCatCache.get(file);
   if(cached)return cached;
-  let data=rawCatCache.get(file);
-  if(!data){
-    try{const r=await fetchT(`data/news/${encodeURIComponent(file)}.json`);data=await r.json()}catch{data={items:[]}}
-    rawCatCache.set(file,data);
-  }
-  const items=(data.items||[]).filter(i=>i.date===S.date);
-  filteredCache.set(cacheKey,items);
+  let data;
+  try{const r=await fetchT(`data/news/${encodeURIComponent(file)}.json`);data=await r.json()}catch{data={items:[]}}
+  const items=(data.items||[]).slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  rawCatCache.set(file,items);
   return items;
 }
 
@@ -306,11 +301,8 @@ function renderNewsItem(it){
   return`<div class="news-item"><span class="news-title">${t}</span>${s}</div>`;
 }
 
-// pageSize: 缓存，不重复读 clientHeight
-let _cachedHeight=0;
-function getClientHeight(){if(!_cachedHeight)_cachedHeight=main.clientHeight;return _cachedHeight}
-function calcPageSize(){return Math.max(20,Math.floor((getClientHeight()-80)/36))}
-function getPageSize(){if(!S._pageSize)S._pageSize=calcPageSize();return S._pageSize}
+// pageSize: 固定 40 条/页
+function getPageSize(){return 40}
 
 function renderNewsHead(catIcon,catTitle,count){
   return`<div class="news-head"><span class="news-head-icon">${catIcon}</span><span class="news-head-title">${esc(catTitle)}</span><span class="news-head-count">${count} 条</span></div>`;
@@ -354,7 +346,7 @@ function dateIdx(d){return S.dates.indexOf(d)} // fallback
 function setDate(d){
   const idx=S.dates.indexOf(d);
   if(idx<0)return;
-  S.date=d;S.dateIdx=idx;S._pageSize=0;_cachedHeight=0;
+  S.date=d;S.dateIdx=idx;
   dateText.textContent=d;
   prevBtn.disabled=idx>=S.dates.length-1;
   nextBtn.disabled=idx<=0;
@@ -407,7 +399,7 @@ function setupEvents(){
     if(cat===S.cat)return;
     S.cat=cat;
     catList.querySelectorAll(".cat-item").forEach(el=>el.classList.toggle("active",el.dataset.cat===cat));
-    S.newsPage={};S._pageSize=0;_cachedHeight=0;
+    S.newsPage={};
     loadView();
   };
   catList.addEventListener("mouseenter",e=>{
@@ -440,9 +432,6 @@ function setupEvents(){
     }
   };
   window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(h&&h!==S.date&&S.dates.indexOf(h)>=0)setDate(h)});
-  // resize 时重置 pageSize 缓存
-  let _resizeTimer;
-  window.addEventListener("resize",()=>{clearTimeout(_resizeTimer);_resizeTimer=setTimeout(()=>{S._pageSize=0;_cachedHeight=0},200)},{passive:true});
 }
 
 // ===== 初始化 =====
