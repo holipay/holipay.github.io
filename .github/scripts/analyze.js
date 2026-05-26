@@ -940,11 +940,13 @@ function extractKeywordsFromTitle(title) {
     }
   }
 
-  // 英文 2-gram: 保留原逻辑（跨词组合本身就稀有，且已在 extractHotKeywords 中进一步筛选）
+  // 英文 2-gram: 只保留白名单命中的组合
   const enWords = lower.match(/[a-z]+/g) || [];
   for (let i = 0; i < enWords.length - 1; i++) {
-    if (!EN_STOPWORDS.has(enWords[i]) && !EN_STOPWORDS.has(enWords[i + 1])) {
-      keywords.push(enWords[i] + ' ' + enWords[i + 1]);
+    if (EN_STOPWORDS.has(enWords[i]) || EN_STOPWORDS.has(enWords[i + 1])) continue;
+    const gram = enWords[i] + ' ' + enWords[i + 1];
+    if (DOMAIN_KEYWORDS.has(gram)) {
+      keywords.push(gram);
     }
   }
 
