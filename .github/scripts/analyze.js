@@ -1176,6 +1176,80 @@ function saveCandidateLog(newCandidates) {
   fs.renameSync(tmp, CANDIDATE_LOG_FILE);
 }
 
+// ===== 热点新闻去重（相似标题合并为一条附多信源）=====
+function dedupHotItems(hotItems) {
+  const SIMILARITY_THRESHOLD = 0.7;
+
+  function charBigrams(text) {
+    const bigrams = new Set();
+    for (let i = 0; i < text.length - 1; i++) bigrams.add(text.slice(i, i + 2));
+    return bigrams;
+  }
+
+  function similarity(a, b) {
+    if (!a || !b) return 0;
+    if (a === b) return 1;
+    const aBg = charBigrams(a);
+    const bBg = charBigrams(b);
+    let intersection = 0;
+    for (const bg of aBg) if (bBg.has(bg)) intersection++;
+    return intersection / (aBg.size + bBg.size - intersection);
+  }
+
+  function normTitle(title) {
+    return (title || "")
+      .replace(/^[\s\-\u2013\u2014\u00B7\uFF5C\uFF1A:]+/, "")
+      .replace(/\s*[\-\u2013\u2014]\s*(Reuters|Bloomberg|WSJ|CNBC|Financial Times|FT|BBC|CNN|NBER|36\u6C2A|新浪|观察者|凤凰)\s*$/i, "")
+      .replace(/\.com\s*$/i, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase()
+      .slice(0, 80);
+  }
+
+  const merged = [];
+  const normMap = []; // parallel array of normalized titles
+
+  for (const item of hotItems) {
+    const norm = normTitle(item.title);
+    let matchIdx = -1;
+
+    // Find similar existing item
+    for (let i = 0; i < normMap.length; i++) {
+      if (norm === normMap[i] || similarity(norm, normMap[i]) >= SIMILARITY_THRESHOLD) {
+        matchIdx = i;
+        break;
+      }
+    }
+
+    if (matchIdx >= 0) {
+      // Merge: add source to existing item
+      const existing = merged[matchIdx];
+      const src = item.source || "";
+      if (src && !existing.sources.includes(src)) {
+        existing.sources.push(src);
+      }
+      // Keep the longer title
+      if (item.title.length > existing.title.length) {
+        existing.title = item.title;
+      }
+      // Merge hot tags
+      for (const tag of (item.hotTags || [])) {
+        if (!existing.hotTags.includes(tag)) existing.hotTags.push(tag);
+      }
+    } else {
+      merged.push({
+        ...item,
+        sources: [item.source || "unknown"],
+        hotTags: [...(item.hotTags || [])],
+      });
+      normMap.push(norm);
+    }
+  }
+
+  return merged;
+}
+
 function matchHotKeywords(title, hotKeywords) {
   const lower = (title || '').toLowerCase();
   return hotKeywords.filter(hk => lower.includes(hk.keyword.toLowerCase())).map(hk => hk.keyword);
@@ -1232,23 +1306,30 @@ function buildPrompt(newsData, previousAnalyses, perspective, snippets = [], tre
   const topHotKeywords = hotKeywords.slice(0, 10);
 
   // 分层：热点相关条目 vs 其他条目
-  const hotItems = [];   // 匹配热点关键词的条目
-  const otherItems = []; // 其余条目
+  const rawHotItems = [];   // 匹配热点关键词的条目
+  const otherItems = [];    // 其余条目
   for (const item of newsData.items) {
     const hotMatches = matchHotKeywords(item.title, topHotKeywords);
     if (hotMatches.length > 0) {
-      hotItems.push({ ...item, hotTags: hotMatches });
+      rawHotItems.push({ ...item, hotTags: hotMatches });
     } else {
       otherItems.push(item);
     }
   }
 
-  // 热点新闻：完整展示
+  // 热点新闻去重：相似标题合并为一条附多信源
+  const hotItems = dedupHotItems(rawHotItems);
+  if (rawHotItems.length !== hotItems.length) {
+    console.log(`  🔄 热点去重: ${rawHotItems.length} → ${hotItems.length} 条`);
+  }
+
+  // 热点新闻：完整展示（多信源合并标注）
   let hotNewsSection = "";
   if (hotItems.length > 0) {
-    const lines = hotItems.map(i =>
-      `  - ${i.title} (${i.source}) 🔥[${i.hotTags.join('+')}]`
-    ).join("\n");
+    const lines = hotItems.map(i => {
+      const src = i.sources.length > 1 ? i.sources.join(", ") : (i.source || "");
+      return `  - ${i.title} (${src}) 🔥[${i.hotTags.join('+')}]`;
+    }).join("\n");
     hotNewsSection = `【🔥 热点新闻（${hotItems.length} 条）】\n${lines}`;
   }
 
