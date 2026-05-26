@@ -25,12 +25,6 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 /* Sidebar */
 .side-section{padding:14px 16px;border-bottom:1px solid var(--bdr)}
 .side-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-.side-date{display:flex;align-items:center;gap:6px}
-.date-text{font-size:13px;font-weight:600;color:var(--text);padding:4px 8px;min-width:90px;text-align:center}
-.side-date-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:transparent;border:1.5px solid var(--bdr);border-radius:var(--rs);color:var(--text2);cursor:pointer;font-size:14px;transition:all var(--tr);flex-shrink:0}
-.side-date-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
-.side-date-btn:disabled{opacity:.3;cursor:not-allowed}
-.side-date-latest{font-size:10px;font-weight:600;color:#16a34a;background:rgba(22,163,74,.1);padding:1px 6px;border-radius:100px;flex-shrink:0}
 
 .cat-list{padding:8px 0}
 .cat-item{display:flex;align-items:center;gap:8px;padding:9px 16px;cursor:pointer;transition:background var(--tr);user-select:none;font-size:13px;color:var(--text)}
@@ -57,6 +51,11 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 .a-head{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
 .a-icon{font-size:18px}.a-title{font-size:15px;font-weight:700}
 .a-meta{margin-left:auto;font-size:11px;color:var(--text3);background:var(--bg);padding:2px 8px;border-radius:var(--rs)}
+.a-date-nav{display:flex;align-items:center;gap:6px;margin-left:12px}
+.a-date-btn{width:26px;height:26px;display:flex;align-items:center;justify-content:center;background:transparent;border:1.5px solid var(--bdr);border-radius:var(--rs);color:var(--text2);cursor:pointer;font-size:13px;transition:all var(--tr);flex-shrink:0}
+.a-date-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.a-date-btn:disabled{opacity:.3;cursor:not-allowed}
+.a-date-latest{font-size:10px;font-weight:600;color:#16a34a;background:rgba(22,163,74,.1);padding:1px 6px;border-radius:100px;flex-shrink:0}
 .a-body{font-size:14px;line-height:1.85;color:var(--text2)}
 .a-body p{margin-bottom:12px}
 .a-body h3{font-size:15px;font-weight:700;color:var(--text);margin:20px 0 10px}
@@ -130,10 +129,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
   .side-label{display:none}
   /* 隐藏"频道"标签所在的空 section */
   .side-section:has(.side-label){display:none}
-  .side-date{gap:4px}
-  .side-date-btn{width:26px;height:26px;font-size:13px}
-  .date-text{font-size:12px;min-width:auto;padding:3px 6px}
-  .side-date-latest{font-size:9px;padding:1px 4px}
+
   .cat-list{
     display:flex;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;
     padding:6px 8px;flex:1;min-width:0;
@@ -151,7 +147,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
   .cat-count{display:none}
   .main{padding:12px 10px 24px}
 }
-@media(prefers-reduced-motion:reduce){.sk{animation:none}.cat-item,.side-date-btn,.load-more{transition:none}}
+@media(prefers-reduced-motion:reduce){.sk{animation:none}.cat-item,.a-date-btn,.load-more{transition:none}}
 </style>
 </head>
 <body>
@@ -160,15 +156,6 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
     <div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>
   </div>
   <aside class="sidebar" id="sidebar">
-    <div class="side-section">
-      <div class="side-label">日期</div>
-      <div class="side-date">
-        <button class="side-date-btn" id="prevDate" disabled>‹</button>
-        <span class="date-text" id="dateText"></span>
-        <button class="side-date-btn" id="nextDate" disabled>›</button>
-        <span class="side-date-latest" id="latestTag" style="display:none">最新</span>
-      </div>
-    </div>
     <div class="side-section" style="padding-bottom:0">
       <div class="side-label">频道</div>
     </div>
@@ -191,7 +178,7 @@ class LRU{
 // ===== 状态 =====
 const S={dates:[],dateIdx:-1,date:"",cat:"analysis",meta:null,newsPage:{},_loading:false};
 const $=id=>document.getElementById(id);
-const main=$("main"),catList=$("catList"),dateText=$("dateText"),prevBtn=$("prevDate"),nextBtn=$("nextDate"),latestTag=$("latestTag");
+const main=$("main"),catList=$("catList");
 const _escEl=document.createElement("div");
 // esc: 单次正则替换（合并 " 和 HTML 特殊字符）
 const _escRe=/[&<>"']/g;
@@ -326,13 +313,20 @@ function renderStructuredTags(data){
   const hotHtml=hotKw.length>0?`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)">${hotKw.map(hk=>`<span class="tag" style="background:rgba(239,68,68,.08);color:#ef4444;border-color:rgba(239,68,68,.2)">🔥 ${esc(hk.keyword)} <span style="opacity:.6;margin-left:2px">${hk.score}</span></span>`).join("")}</div>`:"";
   return{tags,hotHtml,per};
 }
+function dateNavHtml(){
+  return`<span class="a-date-nav">
+    <button class="a-date-btn" data-dir="prev" disabled>‹</button>
+    <button class="a-date-btn" data-dir="next" disabled>›</button>
+    <span class="a-date-latest" style="display:none">最新</span>
+  </span>`;
+}
 function renderAnalysis(data){
   if(!data||!data.analysis)return'<div class="empty"><div class="empty-icon">📭</div><p>暂无分析数据</p></div>';
   const date=data.date||(data.generatedAt?new Date(data.generatedAt).toLocaleDateString("sv-SE",{timeZone:"Asia/Shanghai"}):"");
   const{tags,hotHtml,per}=renderStructuredTags(data);
   const body=parseMarkdown(data.analysis);
   return`<div class="card a-card">
-    <div class="a-head"><span class="a-icon">🤖</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span></div>
+    <div class="a-head"><span class="a-icon">🤖</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span>${dateNavHtml()}</div>
     ${tags}${hotHtml}<div class="a-body">${body}</div></div>`;
 }
 
@@ -386,14 +380,21 @@ function buildSidebarFromMeta(meta){
 
 // ===== 日期导航（O(1) 查找） =====
 function dateIdx(d){return S.dates.indexOf(d)} // fallback
+function updateDateNav(){
+  const prevBtn=main.querySelector(".a-date-btn[data-dir='prev']");
+  const nextBtn=main.querySelector(".a-date-btn[data-dir='next']");
+  const latestTag=main.querySelector(".a-date-latest");
+  if(!prevBtn)return;
+  prevBtn.disabled=S.dateIdx>=S.dates.length-1;
+  nextBtn.disabled=S.dateIdx<=0;
+  if(latestTag)latestTag.style.display=S.dateIdx===0?"":"none";
+}
 function setDate(d){
   const idx=S.dates.indexOf(d);
   if(idx<0)return;
   S.date=d;S.dateIdx=idx;
-  dateText.textContent=d;
-  prevBtn.disabled=idx>=S.dates.length-1;
-  nextBtn.disabled=idx<=0;
-  latestTag.style.display=idx===0?"":"none";
+  main.scrollTop=0;
+  updateDateNav();
   // debounce history.replaceState
   if(S._histTimer)cancelAnimationFrame(S._histTimer);
   S._histTimer=requestAnimationFrame(()=>history.replaceState(null,"",`#${d}`));
@@ -403,22 +404,24 @@ function setDate(d){
 // ===== 加载视图 =====
 async function loadView(){
   if(S._loading)return;S._loading=true;
+  main.scrollTop=0;
   try{
     if(S.cat==="analysis"){
       const cachedHtml=renderedAnalysisCache.get(S.date);
-      if(cachedHtml){main.innerHTML=cachedHtml;prefetchAdjacentAnalysis();return}
+      if(cachedHtml){main.innerHTML=cachedHtml;updateDateNav();prefetchAdjacentAnalysis();return}
       main.innerHTML='<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
       const data=await loadAnalysisSummary();
       if(!data||!data.analysis){const html=renderAnalysis(data);main.innerHTML=html;renderedAnalysisCache.set(S.date,html);return}
       const date=data.date||(data.generatedAt?new Date(data.generatedAt).toLocaleDateString("sv-SE",{timeZone:"Asia/Shanghai"}):"");
       const{tags,hotHtml,per}=renderStructuredTags(data);
       main.innerHTML=`<div class="card a-card">
-        <div class="a-head"><span class="a-icon">🤖</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span></div>
+        <div class="a-head"><span class="a-icon">🤖</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span>${dateNavHtml()}</div>
         ${tags}${hotHtml}<div class="a-body"><div class="sk"><div class="sk-line"></div><div class="sk-line w80"></div><div class="sk-line w60"></div></div></div></div>`;
       const full=await loadAnalysisFull();
       const bodyEl=main.querySelector(".a-body");
       if(full&&full.analysis&&bodyEl){bodyEl.innerHTML=parseMarkdown(full.analysis)}
       renderedAnalysisCache.set(S.date,main.innerHTML);
+      updateDateNav();
       prefetchAdjacentAnalysis();
     }else{
       main.innerHTML='<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
@@ -433,8 +436,13 @@ async function loadView(){
 
 // ===== 事件绑定 =====
 function setupEvents(){
-  prevBtn.onclick=()=>{if(S.dateIdx<S.dates.length-1)setDate(S.dates[S.dateIdx+1])};
-  nextBtn.onclick=()=>{if(S.dateIdx>0)setDate(S.dates[S.dateIdx-1])};
+  main.addEventListener("click",e=>{
+    const btn=e.target.closest(".a-date-btn");
+    if(!btn)return;
+    const dir=btn.dataset.dir;
+    if(dir==="prev"&&S.dateIdx<S.dates.length-1)setDate(S.dates[S.dateIdx+1]);
+    if(dir==="next"&&S.dateIdx>0)setDate(S.dates[S.dateIdx-1]);
+  });
   catList.onclick=e=>{
     const item=e.target.closest(".cat-item");
     if(!item)return;
@@ -492,7 +500,6 @@ async function init(){
   const startIdx=h?dates.indexOf(h):-1;
   S.date=startIdx>=0?h:(dates[0]||"");
   S.dateIdx=startIdx>=0?startIdx:0;
-  dateText.textContent=S.date;
   buildSidebarFromMeta(meta);
   setDate(S.date);
   // 空闲预取
