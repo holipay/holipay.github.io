@@ -51,11 +51,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 .a-head{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
 .a-icon{font-size:18px}.a-title{font-size:15px;font-weight:700}
 .a-meta{margin-left:auto;font-size:11px;color:var(--text3);background:var(--bg);padding:2px 8px;border-radius:var(--rs)}
-.a-date-nav{display:flex;align-items:center;gap:6px;margin-left:12px}
-.a-date-btn{width:26px;height:26px;display:flex;align-items:center;justify-content:center;background:transparent;border:1.5px solid var(--bdr);border-radius:var(--rs);color:var(--text2);cursor:pointer;font-size:13px;transition:all var(--tr);flex-shrink:0}
-.a-date-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
-.a-date-btn:disabled{opacity:.3;cursor:not-allowed}
-.a-date-latest{font-size:10px;font-weight:600;color:#16a34a;background:rgba(22,163,74,.1);padding:1px 6px;border-radius:100px;flex-shrink:0}
+
 .a-body{font-size:14px;line-height:1.85;color:var(--text2)}
 .a-body p{margin-bottom:12px}
 .a-body h3{font-size:15px;font-weight:700;color:var(--text);margin:20px 0 10px}
@@ -72,6 +68,11 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 .a-body th,.a-body td{padding:6px 10px;border:1px solid var(--bdr);text-align:left}
 .a-body th{background:var(--bg);font-weight:600}
 .a-body a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.a-history{margin-top:20px;padding-top:16px;border-top:1px solid var(--bdr)}
+.a-history-title{font-size:13px;font-weight:700;color:var(--text3);margin-bottom:10px;letter-spacing:.3px}
+.a-history-list{display:flex;flex-wrap:wrap;gap:8px}
+.a-history-item{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:var(--bg);border:1px solid var(--bdr);border-radius:var(--rs);font-size:13px;color:var(--text2);cursor:pointer;transition:all var(--tr);text-decoration:none}
+.a-history-item:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-l)}
 
 /* Structured badges */
 .a-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
@@ -147,7 +148,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
   .cat-count{display:none}
   .main{padding:12px 10px 24px}
 }
-@media(prefers-reduced-motion:reduce){.sk{animation:none}.cat-item,.a-date-btn,.load-more{transition:none}}
+@media(prefers-reduced-motion:reduce){.sk{animation:none}.cat-item,.load-more{transition:none}}
 </style>
 </head>
 <body>
@@ -313,12 +314,14 @@ function renderStructuredTags(data){
   const hotHtml=hotKw.length>0?`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)">${hotKw.map(hk=>`<span class="tag" style="background:rgba(239,68,68,.08);color:#ef4444;border-color:rgba(239,68,68,.2)">🔥 ${esc(hk.keyword)} <span style="opacity:.6;margin-left:2px">${hk.score}</span></span>`).join("")}</div>`:"";
   return{tags,hotHtml,per};
 }
-function dateNavHtml(){
-  return`<span class="a-date-nav">
-    <button class="a-date-btn" data-dir="prev" disabled>‹</button>
-    <button class="a-date-btn" data-dir="next" disabled>›</button>
-    <span class="a-date-latest" style="display:none">最新</span>
-  </span>`;
+function analysisHistoryHtml(currentDate){
+  const dates=S.dates.filter(d=>d!==currentDate).slice(0,10);
+  if(!dates.length)return'';
+  const items=dates.map(d=>\`<a class="a-history-item" data-date="\${d}">\${d}</a>\`).join('');
+  return\`<div class="a-history">
+    <div class="a-history-title">📚 以往的AI分析</div>
+    <div class="a-history-list">\${items}</div>
+  </div>\`;
 }
 function renderAnalysis(data){
   if(!data||!data.analysis)return'<div class="empty"><div class="empty-icon">📭</div><p>暂无分析数据</p></div>';
@@ -326,8 +329,8 @@ function renderAnalysis(data){
   const{tags,hotHtml,per}=renderStructuredTags(data);
   const body=parseMarkdown(data.analysis);
   return`<div class="card a-card">
-    <div class="a-head"><span class="a-icon">🤖</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span>${dateNavHtml()}</div>
-    ${tags}${hotHtml}<div class="a-body">${body}</div></div>`;
+    <div class="a-head"><span class="a-icon">🤖</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span></div>
+    ${tags}${hotHtml}<div class="a-body">${body}</div>${analysisHistoryHtml(date)}</div>`;
 }
 
 // ===== 新闻列表渲染 =====
@@ -380,21 +383,11 @@ function buildSidebarFromMeta(meta){
 
 // ===== 日期导航（O(1) 查找） =====
 function dateIdx(d){return S.dates.indexOf(d)} // fallback
-function updateDateNav(){
-  const prevBtn=main.querySelector(".a-date-btn[data-dir='prev']");
-  const nextBtn=main.querySelector(".a-date-btn[data-dir='next']");
-  const latestTag=main.querySelector(".a-date-latest");
-  if(!prevBtn)return;
-  prevBtn.disabled=S.dateIdx>=S.dates.length-1;
-  nextBtn.disabled=S.dateIdx<=0;
-  if(latestTag)latestTag.style.display=S.dateIdx===0?"":"none";
-}
 function setDate(d){
   const idx=S.dates.indexOf(d);
   if(idx<0)return;
   S.date=d;S.dateIdx=idx;
   main.scrollTop=0;
-  updateDateNav();
   // debounce history.replaceState
   if(S._histTimer)cancelAnimationFrame(S._histTimer);
   S._histTimer=requestAnimationFrame(()=>history.replaceState(null,"",`#${d}`));
@@ -408,20 +401,19 @@ async function loadView(){
   try{
     if(S.cat==="analysis"){
       const cachedHtml=renderedAnalysisCache.get(S.date);
-      if(cachedHtml){main.innerHTML=cachedHtml;updateDateNav();prefetchAdjacentAnalysis();return}
+      if(cachedHtml){main.innerHTML=cachedHtml;prefetchAdjacentAnalysis();return}
       main.innerHTML='<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
       const data=await loadAnalysisSummary();
       if(!data||!data.analysis){const html=renderAnalysis(data);main.innerHTML=html;renderedAnalysisCache.set(S.date,html);return}
       const date=data.date||(data.generatedAt?new Date(data.generatedAt).toLocaleDateString("sv-SE",{timeZone:"Asia/Shanghai"}):"");
       const{tags,hotHtml,per}=renderStructuredTags(data);
       main.innerHTML=`<div class="card a-card">
-        <div class="a-head"><span class="a-icon">🤖</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span>${dateNavHtml()}</div>
-        ${tags}${hotHtml}<div class="a-body"><div class="sk"><div class="sk-line"></div><div class="sk-line w80"></div><div class="sk-line w60"></div></div></div></div>`;
+        <div class="a-head"><span class="a-icon">🤖</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span></div>
+        ${tags}${hotHtml}<div class="a-body"><div class="sk"><div class="sk-line"></div><div class="sk-line w80"></div><div class="sk-line w60"></div></div></div>${analysisHistoryHtml(date)}</div>`;
       const full=await loadAnalysisFull();
       const bodyEl=main.querySelector(".a-body");
       if(full&&full.analysis&&bodyEl){bodyEl.innerHTML=parseMarkdown(full.analysis)}
       renderedAnalysisCache.set(S.date,main.innerHTML);
-      updateDateNav();
       prefetchAdjacentAnalysis();
     }else{
       main.innerHTML='<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
@@ -437,11 +429,11 @@ async function loadView(){
 // ===== 事件绑定 =====
 function setupEvents(){
   main.addEventListener("click",e=>{
-    const btn=e.target.closest(".a-date-btn");
-    if(!btn)return;
-    const dir=btn.dataset.dir;
-    if(dir==="prev"&&S.dateIdx<S.dates.length-1)setDate(S.dates[S.dateIdx+1]);
-    if(dir==="next"&&S.dateIdx>0)setDate(S.dates[S.dateIdx-1]);
+    const item=e.target.closest(".a-history-item");
+    if(!item)return;
+    e.preventDefault();
+    const d=item.dataset.date;
+    if(d&&S.dates.indexOf(d)>=0)setDate(d);
   });
   catList.onclick=e=>{
     const item=e.target.closest(".cat-item");
