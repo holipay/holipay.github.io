@@ -1915,6 +1915,65 @@ async function runMonthlyReview(dateStr, now) {
   return true; // success
 }
 
+
+
+// ===== P1-2: 输出质量校验 =====
+function validateAnalysis(result) {
+  const checks = {
+    hasAnalysis: (result.analysis || "").length > 200,
+    hasSentiment: ["看涨", "看跌", "分化", "中性"].includes(result.structured?.sentiment),
+    hasRiskLevel: ["高", "中", "低"].includes(result.structured?.riskLevel),
+    hasThemes: (result.structured?.keyThemes || []).length >= 1,
+    hasOutlook: (result.structured?.outlook || "").length > 10,
+    hasKeywords: (result.hotKeywords || []).length >= 1,
+  };
+  const failed = Object.entries(checks).filter(([, v]) => !v);
+  if (failed.length > 0) {
+    console.warn(`\n⚠️ 质量检查: ${failed.length}/${Object.keys(checks).length} 项未通过:`);
+    failed.forEach(([k]) => console.warn(`  ❌ ${k}`));
+    return { ok: false, failed: failed.map(([k]) => k) };
+  }
+  console.log("✅ 质量检查全部通过");
+  return { ok: true, failed: [] };
+}
+
+
+
+// ===== P2-2: 结构化信号提取（第一次调用，轻量）=====
+async function extractStructuredSignals(newsData, hotKeywords) {
+  const titles = newsData.items.slice(0, 30).map(i => `- ${i.title} (${i.source})`).join("\n");
+  const kwStr = hotKeywords.slice(0, 10).map(hk => `${hk.keyword}(${hk.score})`).join(", ");
+
+  const prompt = `以下是今日新闻标题（${newsData.items.length} 条中的 30 条）和热点关键词。
+
+热点关键词: ${kwStr}
+
+新闻标题:
+${titles}
+
+请快速输出以下结构化信号（JSON格式，不要其他内容）:
+{
+  "sentiment": "看涨|看跌|分化|中性",
+  "riskLevel": "高|中|低",
+  "keyThemes": ["主题1", "主题2", "主题3"],
+  "sectors": ["行业1", "行业2"],
+  "outlook": "一句话前瞻（30字以内）"
+}`;
+
+  try {
+    const raw = await callDeepSeek(prompt, "你是市场信号分析引擎。只输出JSON，不加任何解释。", 300);
+    const jsonMatch = raw.match(/\{[^{}]*\}/s);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]);
+      console.log(`  📊 结构化信号: sentiment=${parsed.sentiment}, risk=${parsed.riskLevel}`);
+      return parsed;
+    }
+  } catch (e) {
+    console.warn(`  ⚠️ 结构化信号提取失败: ${e.message}`);
+  }
+  return null;
+}
+
 // ===== 主逻辑 =====
 const FORCE_FLAG = process.argv.includes("--force");
 
@@ -2029,11 +2088,30 @@ async function main() {
   console.log("\n🤖 调用 DeepSeek 分析中...");
 
   try {
+    // P2-2: 两步调用 — 先提取结构化信号，再生成深度分析
+    let structured = {};
+    const earlySignals = await extractStructuredSignals(newsData, hotKeywords);
+    if (earlySignals) {
+      structured = earlySignals;
+      // 将提前获取的信号注入分析 prompt，减少重复提取
+      const signalHint = `\n\n━━━ 📊 预提取信号（供参考，可修正）━━━\n情绪: ${earlySignals.sentiment}\n风险: ${earlySignals.riskLevel}\n主题: ${(earlySignals.keyThemes || []).join(", ")}\n行业: ${(earlySignals.sectors || []).join(", ")}\n前瞻: ${earlySignals.outlook || "无"}\n`;
+      prompt += signalHint;
+    }
+
     const rawAnalysis = await callDeepSeek(prompt);
     console.log(`✅ 分析完成 (${rawAnalysis.length} 字)`);
 
-    // 解析结构化输出
-    const { analysis, structured } = parseStructuredOutput(rawAnalysis);
+    // 解析结构化输出（合并: 分析结果优先，预提取做兜底）
+    const parsed = parseStructuredOutput(rawAnalysis);
+    const analysis = parsed.analysis;
+    structured = {
+      sentiment: parsed.structured?.sentiment || structured.sentiment || "中性",
+      riskLevel: parsed.structured?.riskLevel || structured.riskLevel || "中",
+      keyThemes: parsed.structured?.keyThemes?.length ? parsed.structured.keyThemes : (structured.keyThemes || []),
+      sectors: parsed.structured?.sectors?.length ? parsed.structured.sectors : (structured.sectors || []),
+      outlook: parsed.structured?.outlook || structured.outlook || "",
+      eventChains: parsed.structured?.eventChains || [],
+    };
     console.log(`📊 结构化: sentiment=${structured.sentiment}, risk=${structured.riskLevel}, themes=[${structured.keyThemes.join(",")}]`);
 
     if (hotKeywords.length > 0) {
@@ -2053,6 +2131,12 @@ async function main() {
         source: i.source,
       })),
     };
+
+    // P1-2: 质量校验
+    const quality = validateAnalysis(result);
+    if (!quality.ok) {
+      console.warn("⚠️ 分析质量未达标，但仍保存（可使用 --force 重新生成）");
+    }
 
     const datePath = path.join(ANALYSIS_DIR, `${dateStr}.json`);
     const tmp = datePath + ".tmp";
