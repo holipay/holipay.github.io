@@ -902,6 +902,95 @@ function atomicWrite(filePath, data) {
 
 
 
+
+
+// ===== P3-1: 语义去重（LLM 批量检测跨语言/改写重复）=====
+async function semanticDedup(items, existingTitles) {
+  if (items.length < 5 || !process.env.DEEPSEEK_API_KEY) return items;
+
+  // 只对热词命中多的条目做语义去重（减少 API 调用）
+  // 选出标题长度接近、可能重复的候选对
+  const candidates = [];
+  const norms = items.map(i => normalizeTitle(i.title).slice(0, 80));
+  for (let i = 0; i < items.length; i++) {
+    for (let j = i + 1; j < items.length; j++) {
+      // 长度差异超过 50% 的直接跳过
+      const li = norms[i].length, lj = norms[j].length;
+      if (Math.min(li, lj) / Math.max(li, lj) < 0.5) continue;
+      // 已经被精确去重跳过的也跳过
+      if (!norms[i] || !norms[j]) continue;
+      candidates.push([i, j]);
+    }
+  }
+
+  if (candidates.length === 0) return items;
+
+  // 批量检查（最多检查 50 对）
+  const toCheck = candidates.slice(0, 50);
+  const pairs = toCheck.map(([i, j], idx) =>
+    `${idx + 1}. A: ${items[i].title}\n   B: ${items[j].title}`
+  ).join("\n");
+
+  const body = JSON.stringify({
+    model: "deepseek-chat",
+    messages: [
+      {
+        role: "system",
+        content: "你是去重引擎。判断每对新闻标题是否报道同一件事（语义重复）。输出JSON数组，每元素是{"n":序号,"dup":true/false}。中英文标题也可能重复。",
+      },
+      { role: "user", content: pairs },
+    ],
+    temperature: 0.1,
+    max_tokens: 600,
+  });
+
+  try {
+    const res = await new Promise((resolve) => {
+      const req = https.request({
+        hostname: "api.deepseek.com", path: "/v1/chat/completions", method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(body),
+        },
+        timeout: 15000,
+      }, (res) => {
+        const chunks = [];
+        res.on("data", (c) => chunks.push(c));
+        res.on("end", () => {
+          try { resolve(JSON.parse(Buffer.concat(chunks).toString("utf-8"))); }
+          catch { resolve({}); }
+        });
+      });
+      req.on("error", () => resolve({}));
+      req.on("timeout", () => { req.destroy(); resolve({}); });
+      req.write(body);
+      req.end();
+    });
+
+    const content = res?.choices?.[0]?.message?.content?.trim() || "";
+    const jsonMatch = content.match(/\[.*\]/s);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]);
+      const toRemove = new Set();
+      for (const entry of parsed) {
+        if (entry.dup && entry.n >= 1 && entry.n <= toCheck.length) {
+          const [i, j] = toCheck[entry.n - 1];
+          // 移除较短的标题（保留信息量更大的）
+          toRemove.add(items[i].title.length < items[j].title.length ? i : j);
+        }
+      }
+      if (toRemove.size > 0) {
+        console.log(`  🔍 语义去重: 移除 ${toRemove.size} 条重复`);
+        return items.filter((_, idx) => !toRemove.has(idx));
+      }
+    }
+  } catch (e) {
+    console.warn(`  ⚠️ 语义去重失败: ${e.message}`);
+  }
+  return items;
+}
+
 // ===== P2-1: LLM 辅助分类 =====
 async function llmClassify(items, categoryTitles) {
   const result = new Map();
@@ -1033,7 +1122,14 @@ async function processTopic(topic) {
   }
 
   // 6. 合并去重后的条目
-  const allItems = [...cnDeduped, ...enDeduped];
+  let allItems = [...cnDeduped, ...enDeduped];
+
+  // P3-1: 语义去重（检测跨语言/改写的重复）
+  if (allItems.length > 5) {
+    console.log("\n🔍 语义去重检查...");
+    allItems = await semanticDedup(allItems, existingTitles);
+  }
+
   if (allItems.length === 0) {
     console.log(`⚠️ ${topic.name}: 未获取到任何新闻，跳过`);
     return;
