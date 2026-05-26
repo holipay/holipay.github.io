@@ -115,6 +115,48 @@
         "lang": "en",
         "url": "https://www.pnas.org/action/showFeed?type=etoc&feed=rss&jc=pnas",
         "filter": "social|behavior|behaviour|psychology|economic|political|society|demograph|cultural|inequality|governance|policy|migration|gender|race|religion|education|health policy|public health|law|ethics|climate|environment|trust|cooperation|network|institution|election|vote|discrimination|poverty|welfare|labor|employment"
+      },
+      {
+        "name": "Dealbreaker",
+        "type": "rss",
+        "lang": "en",
+        "url": "https://dealbreaker.com/.rss/teaser/",
+        "filter": null
+      },
+      {
+        "name": "Crossing Wall Street",
+        "type": "rss",
+        "lang": "en",
+        "url": "https://news.google.com/rss/search?q=site:crossingwallstreet.com&hl=en&gl=US&ceid=US:en",
+        "filter": null
+      },
+      {
+        "name": "Goldmoney",
+        "type": "rss",
+        "lang": "en",
+        "url": "https://news.google.com/rss/search?q=site:goldmoney.com+gold+research&hl=en&gl=US&ceid=US:en",
+        "filter": null
+      },
+      {
+        "name": "ScienceDirect",
+        "type": "rss",
+        "lang": "en",
+        "url": "https://rss.sciencedirect.com/publication/science/0304405X",
+        "filter": null
+      },
+      {
+        "name": "ZeroHedge",
+        "type": "rss",
+        "lang": "en",
+        "url": "https://feeds.feedburner.com/zerohedge/feed",
+        "filter": null
+      },
+      {
+        "name": "Wolf Street",
+        "type": "rss",
+        "lang": "en",
+        "url": "https://wolfstreet.com/feed/",
+        "filter": null
       }
     ],
     "categories": [
