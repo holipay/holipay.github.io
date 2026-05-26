@@ -317,11 +317,11 @@ function renderStructuredTags(data){
 function analysisHistoryHtml(currentDate){
   const dates=S.dates.filter(d=>d!==currentDate).slice(0,10);
   if(!dates.length)return'';
-  const items=dates.map(d=>\`<a class="a-history-item" data-date="\${d}">\${d}</a>\`).join('');
-  return\`<div class="a-history">
+  const items=dates.map(d=>`<a class="a-history-item" data-date="${d}">${d}</a>`).join('');
+  return `<div class="a-history">
     <div class="a-history-title">📚 以往的AI分析</div>
-    <div class="a-history-list">\${items}</div>
-  </div>\`;
+    <div class="a-history-list">${items}</div>
+  </div>`;
 }
 function renderAnalysis(data){
   if(!data||!data.analysis)return'<div class="empty"><div class="empty-icon">📭</div><p>暂无分析数据</p></div>';
