@@ -696,10 +696,33 @@ function selectBestNews(allItems, hotKeywords, maxItems = 50) {
   const today = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Shanghai" });
   const topKws = hotKeywords.slice(0, 10);
 
+  // 分类感知的时间衰减系数 [今天, 昨天, 前天, 更早]
+  const DECAY_PROFILES = {
+    // 经济金融：极度时效敏感
+    fast: [1.0, 0.5, 0.2, 0.1],
+    // 社科研究：长尾价值
+    slow: [1.0, 0.9, 0.8, 0.6],
+    // 默认：中等衰减
+    medium: [1.0, 0.7, 0.5, 0.3],
+  };
+  const FAST_DECAY = new Set(["股市与市场", "央行与利率", "大宗商品与能源"]);
+  const SLOW_DECAY = new Set(["心理学与认知", "教育与媒体", "健康与公共卫生", "科技与研究"]);
+
+  function getDecay(category, date) {
+    const profile = FAST_DECAY.has(category) ? DECAY_PROFILES.fast
+      : SLOW_DECAY.has(category) ? DECAY_PROFILES.slow
+      : DECAY_PROFILES.medium;
+    if (date === today) return profile[0];
+    if (date >= getDateOffset(-1)) return profile[1];
+    if (date >= getDateOffset(-2)) return profile[2];
+    return profile[3];
+  }
+
   function scoreItem(item) {
     const title = (item.title || "").toLowerCase();
     const source = item.source || "";
     const date = item.date || "";
+    const category = item.category || "";
 
     // 热词匹配分（匹配到的热词分数之和）
     let kwScore = 0;
@@ -712,16 +735,10 @@ function selectBestNews(allItems, hotKeywords, maxItems = 50) {
     // 信源权重
     const srcWeight = getSourceWeight(source);
 
-    // 时间衰减（今天=1.0, 昨天=0.7, 前天=0.5, 更早=0.3）
-    let recency = 0.3;
-    if (date === today) recency = 1.0;
-    else if (date >= getDateOffset(-1)) recency = 0.7;
-    else if (date >= getDateOffset(-2)) recency = 0.5;
+    // 分类感知的时间衰减
+    const recency = getDecay(category, date);
 
-    // 跨分类加成（热词出现在多个分类中更有价值）
-    const kwBoost = kwScore > 0 ? 1.0 : 0.0;
-
-    // 最终分数：有热词命中时信源和时效作为乘数，无热词命中时用信源×时效作为基础分
+    // 最终分数
     if (kwScore > 0) {
       return kwScore * srcWeight * recency;
     }
