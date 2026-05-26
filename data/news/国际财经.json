@@ -1,8 +1,133 @@
 {
   "icon": "🌍",
   "title": "国际财经",
-  "updatedAt": "2026-05-25T02:35:47.034Z",
+  "updatedAt": "2026-05-26T08:56:12.740Z",
   "items": [
+    {
+      "title": "美国针对伊朗经济的制裁权力达到极限- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "跟踪特朗普在全球经济中的关税- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "国际货币基金组织将全球经济增长率降至3.1% ，如果战争持续，则标志着经济衰退的风险- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "在中东冲突影响之前，巴基斯坦经济增长- Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "随着经济放缓，俄罗斯第一季度钢铁使用量下降15% - Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "市场准备好在地缘政治中定价了吗？ - Bloomberg.com",
+      "source": "Bloomberg",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "欧盟加速意大利经济的计划如何失败-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "欧洲如何学会热爱补贴-《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "豺狼在欧洲度过美好时光-《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "新兴市场-金融时报",
+      "source": "Financial Times",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "新兴市场对唐纳德·特朗普的关税不屑一顾-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "市场在中东地区显示出明显的赢家-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "作为重新开放霍尔木兹刺激风险偏好交易的迹象，美元暴跌- CNBC",
+      "source": "CNBC",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "美元对美国-伊朗交易前景的影响-《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "中国取消对非洲的关税以超越特朗普-《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "华尔街日报美元指数上涨 0.02% 至 95.80 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "独家|美国警告俄罗斯和中国在古巴开展的间谍活动日益增多 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "欧洲天然气价格因美伊谈判乐观情绪而下跌5% -《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "妈妈、教练、医生、企业家：谁是美国的健康和健康影响者？",
+      "source": "Pew Research",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "欧尔班的垮台和欧洲的崛起",
+      "source": "Foreign Affairs",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "欧洲如何找到勇气",
+      "source": "Foreign Affairs",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "四所拥有社会科学学位的欧洲大学可以拯救世界 - Study International",
+      "source": "Google News Academic",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "代达罗斯探讨社会研究的伦理：中东和北非研究的视角 - 美国艺术与科学院",
+      "source": "Google News Academic",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "Neurocrine 的 $2.9B 收购 Soleno 带来了可能成为其下一个重磅药物的药物",
+      "source": "Dealbreaker",
+      "date": "2026-05-26"
+    },
+    {
+      "title": "数字欧元作为欧洲的后门资本控制系统",
+      "source": "ZeroHedge",
+      "date": "2026-05-26"
+    },
     {
       "title": "美国针对伊朗经济的制裁权力达到极限- Bloomberg.com",
       "source": "Bloomberg",
@@ -877,136 +1002,6 @@
       "title": "“贫困色情” ： MrBeast数十亿美元帝国背后的道德困境",
       "source": "The Conversation",
       "date": "2026-05-13"
-    },
-    {
-      "title": "妈妈、教练、医生、企业家：谁是美国的健康和健康影响者？",
-      "source": "Pew Research",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "这不是俄罗斯想要的世界",
-      "source": "Foreign Affairs",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "代达罗斯探讨社会研究的伦理：中东和北非研究的视角 - 美国艺术与科学院",
-      "source": "Google News Academic",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "跟踪特朗普在全球经济中的关税- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "在中东冲突影响之前，巴基斯坦经济增长- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "欧洲经济可以摆脱伊朗战争—如果在一个月内结束- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "世界银行警告，伊朗战争将使非洲经济付出高昂代价-彭博社",
-      "source": "Bloomberg",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "如果中东冲突持续下去，印度经济将面临风险- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "胜利日对俄罗斯现在意味着什么 - 英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "欧洲重新发现了社会市场经济 - 英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "新兴市场光纤宽带推动数字经济增长 - 英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "日本可能已经两次发射日元火箭筒，但市场正在考验东京的决心 - CNBC",
-      "source": "CNBC",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "数十亿美元的赌注：全球投资者追逐印度超级联赛以乘机蓬勃发展的板球经济 - CNBC",
-      "source": "CNBC",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "特朗普与习近平峰会的焦点可能会推迟关税和稀土方面的进展 - CNBC",
-      "source": "CNBC",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "伦敦市长告诉 CNBC，英国应承诺重新加入欧盟 - CNBC",
-      "source": "CNBC",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "分析师表示，关税退款是耐克的催化剂——除非顾客阻碍 - CNBC",
-      "source": "CNBC",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "日本财务大臣确认继续与美国就外汇问题进行协调 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "如果风险偏好改善，美元可能下跌 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "特朗普关税的“生产过剩”借口 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "下次来巴黎，跳过卢浮宫，尝试一下这些鲜为人知的博物馆 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "竞争曝光和创业实验--Joshua S. Gans",
-      "source": "NBER",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "预期贬值的因果效应--Martha Elena Delgado Rojas、Juan Herreño、Marc Hofstetter、Mathieu Pedemonte著",
-      "source": "NBER",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "“贫困色情” ： MrBeast数十亿美元帝国背后的道德困境",
-      "source": "The Conversation",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "妈妈、教练、医生、企业家：谁是美国的健康和健康影响者？",
-      "source": "Pew Research",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "这不是俄罗斯想要的世界",
-      "source": "Foreign Affairs",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "四所拥有社会科学学位的欧洲大学可以拯救世界 - Study International",
-      "source": "Google News Academic",
-      "date": "2026-05-12"
     }
   ]
 }

@@ -115,6 +115,24 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-05-26",
+      "sentiment": "分化",
+      "riskLevel": "中",
+      "keyThemes": [
+        "金融业合法性辩论",
+        "德克萨斯州金融中心崛起",
+        "金融产业链地理重构",
+        "嵌入实体的金融服务"
+      ],
+      "sectors": [
+        "金融服务业",
+        "商业地产(德州)",
+        "金融科技(以色列)"
+      ],
+      "outlook": "金融板块内部分化加剧，与实体和区域绑定的资产获得叙事溢价，传统交易型叙事承压。",
+      "topKeywords": []
     }
   ],
   "keywordTrends": [
@@ -219,6 +237,12 @@
       "sentiment": "中性",
       "riskLevel": "中",
       "keywordCount": 10
+    },
+    {
+      "date": "2026-05-26",
+      "sentiment": "分化",
+      "riskLevel": "中",
+      "keywordCount": 0
     }
   ]
 }
