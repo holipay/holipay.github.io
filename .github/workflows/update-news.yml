@@ -2,9 +2,19 @@ name: Update News
 
 on:
   schedule:
-    # 每 2 天 UTC 0:00（北京时间 8:00）
-    - cron: "0 0 */2 * *"
+    # 每天 UTC 0:00（北京时间 8:00）— 全量更新
+    - cron: "0 0 * * *"
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "更新模式"
+        required: false
+        default: "full"
+        type: choice
+        options:
+          - full
+          - finance-only
+          - analysis-only
 
 permissions:
   contents: write
@@ -21,7 +31,15 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Determine mode
+        id: mode
+        run: |
+          MODE="${{ github.event.inputs.mode || 'full' }}"
+          echo "mode=$MODE" >> $GITHUB_OUTPUT
+          echo "📋 Mode: $MODE"
+
       - name: Fetch news
+        if: steps.mode.outputs.mode != 'analysis-only'
         env:
           TZ: Asia/Shanghai
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -32,7 +50,9 @@ jobs:
           TZ: Asia/Shanghai
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          if [ "${{ steps.mode.outputs.mode }}" = "finance-only" ]; then
+            echo "⏭️ finance-only 模式，跳过分析"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             node .github/scripts/analyze.js --force
           else
             node .github/scripts/analyze.js
@@ -44,7 +64,7 @@ jobs:
       - name: Update SW cache version
         run: |
           SW_DATE=$(TZ=Asia/Shanghai date +%Y%m%d)
-          sed -i "s/const CACHE_NAME = \"nase-[^\"]*\"/const CACHE_NAME = \"nase-${SW_DATE}\"/" sw.js
+          sed -i "s/const CACHE_NAME = \"nase-[^"]*\"/const CACHE_NAME = \"nase-${SW_DATE}\"/" sw.js
 
       - name: Commit and push
         run: |
