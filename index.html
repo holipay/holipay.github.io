@@ -351,7 +351,7 @@ function renderNewsHead(catIcon,catTitle,count){
   return`<div class="news-head"><span class="news-head-icon">${catIcon}</span><span class="news-head-title">${esc(catTitle)}</span><span class="news-head-count">${count} 条</span></div>`;
 }
 function renderNews(items,catTitle,catIcon,appendMode){
-  if(!items||items.length===0)return`<div class="news-head"><span class="news-head-icon">${catIcon}</span><span class="news-head-title">${esc(catTitle)}</span></div><div class="empty"><div class="empty-icon">📭</div><p>该日期暂无新闻</p></div>`;
+  if(!items||items.length===0)return`<div class="news-head"><span class="news-head-icon">${catIcon}</span><span class="news-head-title">${esc(catTitle)}</span></div><div class="empty"><div class="empty-icon">📭</div><p>暂无新闻</p></div>`;
   const PAGE=getPageSize();
   const page=S.newsPage[catTitle]||1;
   const show=items.slice(0,page*PAGE);
@@ -450,7 +450,10 @@ function setupEvents(){
     if(!item||item.dataset.cat==="analysis")return;
     const file=item.dataset.cat;
     if(!rawCatCache.has(file)){
-      fetchT(`data/news/${encodeURIComponent(file)}.json`).then(r=>r.json()).then(d=>rawCatCache.set(file,d)).catch(()=>{});
+      fetchT(`data/news/${encodeURIComponent(file)}.json`).then(r=>r.json()).then(d=>{
+        const items=(d.items||[]).slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+        rawCatCache.set(file,items);
+      }).catch(()=>{});
     }
   },true);
   main.onclick=async e=>{
@@ -497,7 +500,10 @@ async function init(){
     const top=meta.categories.slice(0,2);
     top.forEach((c,i)=>{
       if(rawCatCache.has(c.file))return;
-      setTimeout(()=>{fetchT(`data/news/${encodeURIComponent(c.file)}.json`).then(r=>r.json()).then(d=>rawCatCache.set(c.file,d)).catch(()=>{})},i*200);
+      setTimeout(()=>{fetchT(`data/news/${encodeURIComponent(c.file)}.json`).then(r=>r.json()).then(d=>{
+        const items=(d.items||[]).slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+        rawCatCache.set(c.file,items);
+      }).catch(()=>{})},i*200);
     });
   };
   if("requestIdleCallback"in window)requestIdleCallback(prefetchCats,{timeout:3000});else setTimeout(prefetchCats,1000);
