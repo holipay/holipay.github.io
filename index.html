@@ -19,8 +19,8 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 
 /* Layout */
 .layout{display:grid;grid-template-columns:1fr var(--side-w);height:100vh}
-.main{overflow-y:auto;padding:24px 28px 40px;min-width:0;contain:layout style}
-.sidebar{border-left:1px solid var(--bdr);background:var(--card);overflow-y:auto;padding:0;contain:layout style}
+.main{overflow-y:auto;padding:24px 28px 40px;min-width:0;contain:layout style;max-width:860px;margin:0 auto}
+.sidebar{border-left:1px solid var(--bdr);background:var(--card);overflow-y:auto;padding:0;contain:layout style;position:sticky;top:0;height:100vh}
 
 /* Sidebar */
 .side-section{padding:14px 16px;border-bottom:1px solid var(--bdr)}
@@ -47,6 +47,12 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 
 /* Analysis */
+.date-nav{display:flex;align-items:center;gap:8px;padding:12px 0;margin-bottom:16px;border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:10;background:var(--bg)}
+.date-nav-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:var(--rs);background:var(--card);border:1px solid var(--bdr);cursor:pointer;font-size:14px;color:var(--text2);transition:all var(--tr);flex-shrink:0}
+.date-nav-btn:hover{border-color:var(--accent);color:var(--accent)}
+.date-nav-btn:disabled{opacity:.3;cursor:not-allowed}
+.date-nav-current{font-size:15px;font-weight:700;color:var(--text);flex:1;text-align:center}
+.date-nav-label{font-size:11px;color:var(--text3);white-space:nowrap}
 .a-card{content-visibility:auto;contain-intrinsic-size:auto 400px}
 .a-head{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
 .a-icon{font-size:18px}.a-title{font-size:15px;font-weight:700}
@@ -54,7 +60,8 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 
 .a-body{font-size:14px;line-height:1.85;color:var(--text2)}
 .a-body p{margin-bottom:12px}
-.a-body h3{font-size:15px;font-weight:700;color:var(--text);margin:20px 0 10px}
+.a-body h3{font-size:15px;font-weight:700;color:var(--text);margin:24px 0 12px;padding-top:16px;border-top:1px solid var(--bdr)}
+.a-body h3:first-child{border-top:none;padding-top:0;margin-top:0}
 .a-body h4{font-size:14px;font-weight:600;color:var(--text);margin:14px 0 8px}
 .a-body strong{color:var(--text);font-weight:600}
 .a-body ul{list-style:none;padding:0;margin:8px 0}
@@ -70,9 +77,12 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 .a-body a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
 .a-history{margin-top:20px;padding-top:16px;border-top:1px solid var(--bdr)}
 .a-history-title{font-size:13px;font-weight:700;color:var(--text3);margin-bottom:10px;letter-spacing:.3px}
-.a-history-list{display:flex;flex-wrap:wrap;gap:8px}
-.a-history-item{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:var(--bg);border:1px solid var(--bdr);border-radius:var(--rs);font-size:13px;color:var(--text2);cursor:pointer;transition:all var(--tr);text-decoration:none}
+.a-history-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;max-height:120px;overflow:hidden;transition:max-height .3s ease}
+.a-history-item{display:flex;align-items:center;justify-content:center;padding:6px 4px;background:var(--bg);border:1px solid var(--bdr);border-radius:var(--rs);font-size:12px;color:var(--text2);cursor:pointer;transition:all var(--tr);text-decoration:none;white-space:nowrap}
 .a-history-item:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-l)}
+.a-history-list.expanded{max-height:none}
+.a-history-toggle{display:block;margin-top:8px;padding:4px 0;background:none;border:none;color:var(--accent);font-size:12px;cursor:pointer;font-family:inherit}
+.a-history-toggle:hover{text-decoration:underline}
 
 /* Structured badges */
 .a-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
@@ -154,6 +164,12 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 <body>
 <div class="layout">
   <div class="main" id="main">
+    <div class="date-nav">
+      <button class="date-nav-btn" id="prevDate" title="前一天">‹</button>
+      <div class="date-nav-current" id="currentDateDisplay">—</div>
+      <button class="date-nav-btn" id="nextDate" title="后一天">›</button>
+      <span class="date-nav-label" id="dateCount"></span>
+    </div>
     <div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>
   </div>
   <aside class="sidebar" id="sidebar">
@@ -315,12 +331,18 @@ function renderStructuredTags(data){
   return{tags,hotHtml,per};
 }
 function analysisHistoryHtml(currentDate){
-  const dates=S.dates.filter(d=>d!==currentDate).slice(0,10);
+  const dates=S.dates.filter(d=>d!==currentDate).slice(0,30);
   if(!dates.length)return'';
-  const items=dates.map(d=>`<a class="a-history-item" data-date="${d}">${d}</a>`).join('');
+  const items=dates.map(d=>{
+    const m=d.slice(5,7).replace(/^0/,'');
+    const day=d.slice(8,10).replace(/^0/,'');
+    return `<a class="a-history-item" data-date="${d}" title="${d}">${m}月${day}日</a>`;
+  }).join('');
+  const needToggle=dates.length>7;
   return `<div class="a-history">
     <div class="a-history-title">📚 以往的AI分析</div>
     <div class="a-history-list">${items}</div>
+    ${needToggle?'<button class="a-history-toggle" onclick="this.previousElementSibling.classList.toggle(\'expanded\');this.textContent=this.previousElementSibling.classList.contains(\'expanded\')?\'收起 ▲\':\'展开全部 ▼\'">展开全部 ▼</button>':''}
   </div>`;
 }
 function renderAnalysis(data){
@@ -387,6 +409,7 @@ function setDate(d){
   const idx=S.dates.indexOf(d);
   if(idx<0)return;
   S.date=d;S.dateIdx=idx;
+  updateDateNav();
   main.scrollTop=0;
   // debounce history.replaceState
   if(S._histTimer)cancelAnimationFrame(S._histTimer);
@@ -478,9 +501,22 @@ function setupEvents(){
     }
   };
   window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(h&&h!==S.date&&S.dates.indexOf(h)>=0)setDate(h)});
+  document.getElementById('prevDate')?.addEventListener('click',()=>{if(S.dateIdx>0)setDate(S.dates[S.dateIdx-1])});
+  document.getElementById('nextDate')?.addEventListener('click',()=>{if(S.dateIdx<S.dates.length-1)setDate(S.dates[S.dateIdx+1])});
 }
 
 // ===== 初始化 =====
+function updateDateNav(){
+  const d=S.date;
+  const el=document.getElementById('currentDateDisplay');
+  const prev=document.getElementById('prevDate');
+  const next=document.getElementById('nextDate');
+  const cnt=document.getElementById('dateCount');
+  if(el){const[y,m,day]=d.split('-');el.textContent=y+'年'+parseInt(m)+'月'+parseInt(day)+'日'}
+  if(prev)prev.disabled=S.dateIdx<=0;
+  if(next)next.disabled=S.dateIdx>=S.dates.length-1;
+  if(cnt)cnt.textContent=S.dates.length+' 个分析';
+}
 async function init(){
   setupEvents();
   const[dates,meta]=await Promise.all([
@@ -493,6 +529,7 @@ async function init(){
   S.date=startIdx>=0?h:(dates[0]||"");
   S.dateIdx=startIdx>=0?startIdx:0;
   buildSidebarFromMeta(meta);
+  updateDateNav();
   setDate(S.date);
   // 空闲预取
   const prefetchCats=()=>{
