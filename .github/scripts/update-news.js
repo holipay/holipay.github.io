@@ -289,49 +289,149 @@ async function translateENtoZH(text) {
   return text;
 }
 
+// ===== 批量翻译（减少 API 调用次数）=====
+const BATCH_SIZE = 15; // DeepSeek 单次翻译条数
+
+async function translateBatchDeepSeek(texts) {
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  if (!apiKey || texts.length === 0) return new Map();
+
+  const numbered = texts.map((t, i) => `${i + 1}. ${t}`).join("\n");
+  const body = JSON.stringify({
+    model: "deepseek-chat",
+    messages: [
+      {
+        role: "system",
+        content: "你是翻译引擎。将用户输入的英文新闻标题逐行翻译为中文。保持相同的行数和顺序，每行只输出翻译结果，不加编号、引号或解释。如果某行已是中文，原样输出。",
+      },
+      { role: "user", content: numbered },
+    ],
+    temperature: 0.1,
+    max_tokens: Math.max(800, texts.length * 80),
+  });
+
+  return new Promise((resolve) => {
+    const req = https.request(
+      {
+        hostname: "api.deepseek.com",
+        path: "/v1/chat/completions",
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(body),
+        },
+        timeout: 30000,
+      },
+      (res) => {
+        const chunks = [];
+        res.on("data", (c) => chunks.push(c));
+        res.on("end", () => {
+          try {
+            const data = JSON.parse(Buffer.concat(chunks).toString("utf-8"));
+            const content = data?.choices?.[0]?.message?.content?.trim() || "";
+            const lines = content.split("\n").map((l) => l.replace(/^\d+\.\s*/, "").trim());
+            const result = new Map();
+            for (let i = 0; i < texts.length; i++) {
+              const translated = lines[i] || "";
+              if (translated && translated.toLowerCase() !== texts[i].toLowerCase()) {
+                result.set(texts[i], translated);
+                translationCache[cacheKey(texts[i])] = { zh: translated, ts: Date.now() };
+              }
+            }
+            resolve(result);
+          } catch {
+            resolve(new Map());
+          }
+        });
+      },
+    );
+    req.on("error", () => resolve(new Map()));
+    req.on("timeout", () => { req.destroy(); resolve(new Map()); });
+    req.write(body);
+    req.end();
+  });
+}
+
 async function translateItems(items) {
   const results = [];
   let cached = 0;
   let newTranslated = 0;
   let failed = 0;
 
-  const queue = [...items];
-  const running = new Set();
-
-  async function processOne(item) {
+  // 分离英文/非英文
+  const enItems = [];
+  const nonEnItems = [];
+  for (const item of items) {
     if (isEnglish(item.title)) {
       const key = cacheKey(item.title);
       if (translationCache[key] && translationCache[key].zh) {
         cached++;
+        results.push({ ...item, title: translationCache[key].zh, titleEN: item.title });
       } else {
-        newTranslated++;
-      }
-      try {
-        const zh = await translateENtoZH(item.title);
-        const translatedOk = zh !== item.title;
-        if (!translatedOk) failed++;
-        results.push({ ...item, title: zh, titleEN: item.title });
-      } catch {
-        failed++;
-        results.push({ ...item, titleEN: item.title });
+        enItems.push(item);
       }
     } else {
-      results.push(item);
+      nonEnItems.push(item);
+    }
+  }
+  results.push(...nonEnItems);
+
+  if (enItems.length === 0) {
+    console.log(`📊 翻译统计: ${cached} 缓存, 0 新翻译, 0 失败`);
+    return results;
+  }
+
+  // 批量翻译（DeepSeek 单次翻译多条）
+  const texts = enItems.map((i) => i.title);
+  console.log(`🌐 批量翻译 ${texts.length} 条 (每批 ${BATCH_SIZE} 条)...`);
+
+  for (let i = 0; i < texts.length; i += BATCH_SIZE) {
+    const batch = texts.slice(i, i + BATCH_SIZE);
+    const batchNum = Math.floor(i / BATCH_SIZE) + 1;
+    const totalBatches = Math.ceil(texts.length / BATCH_SIZE);
+    console.log(`  📦 批次 ${batchNum}/${totalBatches} (${batch.length} 条)...`);
+
+    let translated;
+    try {
+      translated = await translateBatchDeepSeek(batch);
+      newTranslated += translated.size;
+    } catch (e) {
+      console.warn(`  ⚠️ 批量翻译失败: ${e.message}，回退到逐条翻译`);
+      translated = new Map();
+    }
+
+    // 对批量翻译失败的条目，回退到逐条翻译
+    for (let j = 0; j < batch.length; j++) {
+      const item = enItems[i + j];
+      const zh = translated.get(batch[j]);
+      if (zh) {
+        results.push({ ...item, title: zh, titleEN: item.title });
+      } else {
+        // 回退: MyMemory → Google → DeepSeek 逐条
+        try {
+          const fallbackZh = await translateENtoZH(item.title);
+          if (fallbackZh !== item.title) {
+            newTranslated++;
+            results.push({ ...item, title: fallbackZh, titleEN: item.title });
+          } else {
+            failed++;
+            results.push({ ...item, titleEN: item.title });
+          }
+        } catch {
+          failed++;
+          results.push({ ...item, titleEN: item.title });
+        }
+      }
+    }
+
+    // 批次间延迟（避免 DeepSeek 限流）
+    if (i + BATCH_SIZE < texts.length) {
+      await new Promise((r) => setTimeout(r, 1000));
     }
   }
 
-  while (queue.length > 0 || running.size > 0) {
-    while (queue.length > 0 && running.size < TRANSLATE_CONCURRENCY) {
-      const item = queue.shift();
-      const p = processOne(item).finally(() => running.delete(p));
-      running.add(p);
-    }
-    if (running.size > 0) await Promise.race(running);
-  }
-
-  console.log(
-    `📊 翻译统计: ${cached} 缓存, ${newTranslated} 新翻译, ${failed} 失败`,
-  );
+  console.log(`📊 翻译统计: ${cached} 缓存, ${newTranslated} 新翻译, ${failed} 失败`);
   return results;
 }
 
