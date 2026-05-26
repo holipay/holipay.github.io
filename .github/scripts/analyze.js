@@ -670,7 +670,7 @@ function loadTodayNews() {
     if (!fs.existsSync(catPath)) continue;
     try {
       const catData = JSON.parse(fs.readFileSync(catPath, "utf-8"));
-      for (const item of (catData.items || []).slice(0, 20)) {
+      for (const item of (catData.items || [])) {
         allItems.push({
           title: item.title,
           link: item.link || "",
@@ -685,8 +685,88 @@ function loadTodayNews() {
   allItems.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
   return {
     updatedAt: meta.updatedAt,
-    items: allItems.slice(0, MAX_ITEMS),
+    items: allItems,
   };
+}
+
+// ===== 智能新闻选取（热词加权 + 信源权重 + 时间衰减）=====
+function selectBestNews(allItems, hotKeywords, maxItems = 50) {
+  if (allItems.length <= maxItems) return allItems;
+
+  const today = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Shanghai" });
+  const topKws = hotKeywords.slice(0, 10);
+
+  function scoreItem(item) {
+    const title = (item.title || "").toLowerCase();
+    const source = item.source || "";
+    const date = item.date || "";
+
+    // 热词匹配分（匹配到的热词分数之和）
+    let kwScore = 0;
+    for (const hk of topKws) {
+      if (title.includes(hk.keyword.toLowerCase())) {
+        kwScore += hk.score;
+      }
+    }
+
+    // 信源权重
+    const srcWeight = getSourceWeight(source);
+
+    // 时间衰减（今天=1.0, 昨天=0.7, 前天=0.5, 更早=0.3）
+    let recency = 0.3;
+    if (date === today) recency = 1.0;
+    else if (date >= getDateOffset(-1)) recency = 0.7;
+    else if (date >= getDateOffset(-2)) recency = 0.5;
+
+    // 跨分类加成（热词出现在多个分类中更有价值）
+    const kwBoost = kwScore > 0 ? 1.0 : 0.0;
+
+    // 最终分数：有热词命中时信源和时效作为乘数，无热词命中时用信源×时效作为基础分
+    if (kwScore > 0) {
+      return kwScore * srcWeight * recency;
+    }
+    return srcWeight * recency * 0.3; // 无热词命中的条目降权
+  }
+
+  // 去重（标题相似度过高只保留分数最高的）
+  const seenNorms = new Set();
+  const uniqueItems = [];
+  for (const item of allItems) {
+    const norm = (item.title || "").replace(/\s+/g, " ").trim().toLowerCase().slice(0, 80);
+    if (!norm) continue;
+    if (seenNorms.has(norm)) continue;
+    seenNorms.add(norm);
+    uniqueItems.push(item);
+  }
+
+  // 打分排序
+  const scored = uniqueItems.map(item => ({ item, score: scoreItem(item) }));
+  scored.sort((a, b) => b.score - a.score);
+
+  // 保底：确保每个分类至少有 1 条（避免某分类完全被筛掉）
+  const selected = [];
+  const catSeen = new Set();
+  const topItems = scored.slice(0, maxItems * 2); // 候选池扩大 2 倍
+
+  // 第一轮：每个分类保底 1 条
+  for (const { item } of topItems) {
+    if (selected.length >= maxItems) break;
+    const cat = item.category || "其他";
+    if (!catSeen.has(cat)) {
+      catSeen.add(cat);
+      selected.push(item);
+    }
+  }
+
+  // 第二轮：按分数填充剩余名额
+  for (const { item } of topItems) {
+    if (selected.length >= maxItems) break;
+    if (!selected.includes(item)) {
+      selected.push(item);
+    }
+  }
+
+  return selected;
 }
 
 // ===== 加载历史分析（用于记忆注入）=====
@@ -1096,6 +1176,80 @@ function saveCandidateLog(newCandidates) {
   fs.renameSync(tmp, CANDIDATE_LOG_FILE);
 }
 
+// ===== 热点新闻去重（相似标题合并为一条附多信源）=====
+function dedupHotItems(hotItems) {
+  const SIMILARITY_THRESHOLD = 0.7;
+
+  function charBigrams(text) {
+    const bigrams = new Set();
+    for (let i = 0; i < text.length - 1; i++) bigrams.add(text.slice(i, i + 2));
+    return bigrams;
+  }
+
+  function similarity(a, b) {
+    if (!a || !b) return 0;
+    if (a === b) return 1;
+    const aBg = charBigrams(a);
+    const bBg = charBigrams(b);
+    let intersection = 0;
+    for (const bg of aBg) if (bBg.has(bg)) intersection++;
+    return intersection / (aBg.size + bBg.size - intersection);
+  }
+
+  function normTitle(title) {
+    return (title || "")
+      .replace(/^[\s\-\u2013\u2014\u00B7\uFF5C\uFF1A:]+/, "")
+      .replace(/\s*[\-\u2013\u2014]\s*(Reuters|Bloomberg|WSJ|CNBC|Financial Times|FT|BBC|CNN|NBER|36\u6C2A|新浪|观察者|凤凰)\s*$/i, "")
+      .replace(/\.com\s*$/i, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase()
+      .slice(0, 80);
+  }
+
+  const merged = [];
+  const normMap = []; // parallel array of normalized titles
+
+  for (const item of hotItems) {
+    const norm = normTitle(item.title);
+    let matchIdx = -1;
+
+    // Find similar existing item
+    for (let i = 0; i < normMap.length; i++) {
+      if (norm === normMap[i] || similarity(norm, normMap[i]) >= SIMILARITY_THRESHOLD) {
+        matchIdx = i;
+        break;
+      }
+    }
+
+    if (matchIdx >= 0) {
+      // Merge: add source to existing item
+      const existing = merged[matchIdx];
+      const src = item.source || "";
+      if (src && !existing.sources.includes(src)) {
+        existing.sources.push(src);
+      }
+      // Keep the longer title
+      if (item.title.length > existing.title.length) {
+        existing.title = item.title;
+      }
+      // Merge hot tags
+      for (const tag of (item.hotTags || [])) {
+        if (!existing.hotTags.includes(tag)) existing.hotTags.push(tag);
+      }
+    } else {
+      merged.push({
+        ...item,
+        sources: [item.source || "unknown"],
+        hotTags: [...(item.hotTags || [])],
+      });
+      normMap.push(norm);
+    }
+  }
+
+  return merged;
+}
+
 function matchHotKeywords(title, hotKeywords) {
   const lower = (title || '').toLowerCase();
   return hotKeywords.filter(hk => lower.includes(hk.keyword.toLowerCase())).map(hk => hk.keyword);
@@ -1152,23 +1306,30 @@ function buildPrompt(newsData, previousAnalyses, perspective, snippets = [], tre
   const topHotKeywords = hotKeywords.slice(0, 10);
 
   // 分层：热点相关条目 vs 其他条目
-  const hotItems = [];   // 匹配热点关键词的条目
-  const otherItems = []; // 其余条目
+  const rawHotItems = [];   // 匹配热点关键词的条目
+  const otherItems = [];    // 其余条目
   for (const item of newsData.items) {
     const hotMatches = matchHotKeywords(item.title, topHotKeywords);
     if (hotMatches.length > 0) {
-      hotItems.push({ ...item, hotTags: hotMatches });
+      rawHotItems.push({ ...item, hotTags: hotMatches });
     } else {
       otherItems.push(item);
     }
   }
 
-  // 热点新闻：完整展示
+  // 热点新闻去重：相似标题合并为一条附多信源
+  const hotItems = dedupHotItems(rawHotItems);
+  if (rawHotItems.length !== hotItems.length) {
+    console.log(`  🔄 热点去重: ${rawHotItems.length} → ${hotItems.length} 条`);
+  }
+
+  // 热点新闻：完整展示（多信源合并标注）
   let hotNewsSection = "";
   if (hotItems.length > 0) {
-    const lines = hotItems.map(i =>
-      `  - ${i.title} (${i.source}) 🔥[${i.hotTags.join('+')}]`
-    ).join("\n");
+    const lines = hotItems.map(i => {
+      const src = i.sources.length > 1 ? i.sources.join(", ") : (i.source || "");
+      return `  - ${i.title} (${src}) 🔥[${i.hotTags.join('+')}]`;
+    }).join("\n");
     hotNewsSection = `【🔥 热点新闻（${hotItems.length} 条）】\n${lines}`;
   }
 
@@ -1797,24 +1958,30 @@ async function main() {
   }
 
   console.log("\n📰 加载新闻数据...");
-  const newsData = loadTodayNews();
-  if (!newsData || newsData.items.length === 0) {
+  const rawData = loadTodayNews();
+  if (!rawData || rawData.items.length === 0) {
     console.log("⚠️ 无新闻数据，退出");
     process.exit(0);
   }
+  console.log(`  📰 全量加载 ${rawData.items.length} 条新闻`);
 
-  // 统计分类覆盖
+  // 先提取热词（需要全量数据才能准确计算跨分类信号）
+  const hotKeywords = extractHotKeywords(rawData.items, 15);
+
+  // 智能选取：热词加权 + 信源权重 + 时间衰减 → top 50
+  console.log("\n🎯 智能选取新闻...");
+  const selectedItems = selectBestNews(rawData.items, hotKeywords, MAX_ITEMS);
+  const newsData = { updatedAt: rawData.updatedAt, items: selectedItems };
+
+  // 统计选取结果
   const catCounts = {};
   for (const item of newsData.items) {
     catCounts[item.category || "其他"] = (catCounts[item.category || "其他"] || 0) + 1;
   }
-  console.log(`  📰 ${newsData.items.length} 条新闻，覆盖 ${Object.keys(catCounts).length} 个分类`);
+  console.log(`  ✅ 选取 ${newsData.items.length} 条（从 ${rawData.items.length} 条中），覆盖 ${Object.keys(catCounts).length} 个分类`);
   for (const [cat, count] of Object.entries(catCounts).sort((a, b) => b[1] - a[1]).slice(0, 5)) {
     console.log(`     ${cat}: ${count} 条`);
   }
-
-  // 计算热点关键词
-  const hotKeywords = extractHotKeywords(newsData.items, 15);
 
   // 语义匹配：从历史分析中选出最相关的 2-3 份
   const previousAnalyses = selectRelevantAnalyses(allPreviousAnalyses, hotKeywords, null, 3);
