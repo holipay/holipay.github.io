@@ -18,8 +18,8 @@ body{font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans SC",sans-serif;backg
 a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 
 /* Layout */
-.layout{display:grid;grid-template-columns:1fr var(--side-w);height:100vh}
-.main{overflow-y:auto;padding:24px 28px 40px;min-width:0;contain:layout style;max-width:860px;margin:0 auto}
+.layout{display:grid;grid-template-columns:1fr var(--side-w);grid-template-rows:auto 1fr;height:100vh}
+.main{overflow-y:auto;padding:24px 28px 40px;min-width:0;contain:layout style}
 .sidebar{border-left:1px solid var(--bdr);background:var(--card);overflow-y:auto;padding:0;contain:layout style;position:sticky;top:0;height:100vh}
 
 /* Sidebar */
@@ -47,7 +47,7 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 
 /* Analysis */
-.date-nav{display:flex;align-items:center;gap:8px;padding:12px 0;margin-bottom:16px;border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:10;background:var(--bg)}
+.date-nav{display:flex;align-items:center;gap:8px;padding:10px 24px;border-bottom:1px solid var(--bdr);background:var(--card);grid-column:1/-1;flex-shrink:0}
 .date-nav-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:var(--rs);background:var(--card);border:1px solid var(--bdr);cursor:pointer;font-size:14px;color:var(--text2);transition:all var(--tr);flex-shrink:0}
 .date-nav-btn:hover{border-color:var(--accent);color:var(--accent)}
 .date-nav-btn:disabled{opacity:.3;cursor:not-allowed}
@@ -157,12 +157,20 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
   .cat-item.active{background:var(--accent-l);color:var(--accent);font-weight:700}
   .cat-count{display:none}
   .main{padding:12px 10px 24px}
+  .date-nav{padding:8px 10px}
+  .date-nav-label{display:none}
 }
 @media(prefers-reduced-motion:reduce){.sk{animation:none}.cat-item,.load-more{transition:none}}
 </style>
 </head>
 <body>
 <div class="layout">
+  <div class="date-nav" id="dateNav">
+    <button class="date-nav-btn" id="prevDate" title="前一天">‹</button>
+    <div class="date-nav-current" id="currentDateDisplay">—</div>
+    <button class="date-nav-btn" id="nextDate" title="后一天">›</button>
+    <span class="date-nav-label" id="dateCount"></span>
+  </div>
   <div class="main" id="main">
     <div class="date-nav">
       <button class="date-nav-btn" id="prevDate" title="前一天">‹</button>
