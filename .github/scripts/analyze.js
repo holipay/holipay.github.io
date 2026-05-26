@@ -907,20 +907,47 @@ const DOMAIN_KEYWORDS = new Set([
 function extractKeywordsFromTitle(title) {
   const keywords = [];
   const lower = title.toLowerCase();
+
+  // 中文: 白名单匹配（精确命中 or 包含白名单词作为子串）
   const cnMatches = lower.match(/[\u4e00-\u9fff]{2,6}/g) || [];
   for (const word of cnMatches) {
-    if (!CN_STOPWORDS.has(word) && word.length >= 2) keywords.push(word);
+    if (CN_STOPWORDS.has(word)) continue;
+    if (DOMAIN_KEYWORDS.has(word)) {
+      keywords.push(word);
+    } else {
+      for (const dk of DOMAIN_KEYWORDS) {
+        if (dk.length >= 2 && word.includes(dk)) {
+          keywords.push(word);
+          break;
+        }
+      }
+    }
   }
+
+  // 英文: 白名单匹配（精确 or 子串）
   const enMatches = lower.match(/[a-z]{3,}/g) || [];
   for (const word of enMatches) {
-    if (!EN_STOPWORDS.has(word)) keywords.push(word);
+    if (EN_STOPWORDS.has(word)) continue;
+    if (DOMAIN_KEYWORDS.has(word)) {
+      keywords.push(word);
+    } else {
+      for (const dk of DOMAIN_KEYWORDS) {
+        if (dk.length >= 3 && word.includes(dk)) {
+          keywords.push(word);
+          break;
+        }
+      }
+    }
   }
+
+  // 英文 2-gram: 保留原逻辑（跨词组合本身就稀有，且已在 extractHotKeywords 中进一步筛选）
   const enWords = lower.match(/[a-z]+/g) || [];
   for (let i = 0; i < enWords.length - 1; i++) {
     if (!EN_STOPWORDS.has(enWords[i]) && !EN_STOPWORDS.has(enWords[i + 1])) {
       keywords.push(enWords[i] + ' ' + enWords[i + 1]);
     }
   }
+
   return keywords;
 }
 
@@ -951,42 +978,120 @@ function extractHotKeywords(items, topN = 15) {
     const keywords = extractKeywordsFromTitle(title);
     const uniqueKw = new Set(keywords);
     for (const kw of uniqueKw) {
-      // 噪音关键词直接跳过
+      // 底线黑名单: 娱乐/体育等明确无关词
       if (NOISE_KEYWORDS.has(kw)) continue;
       if (!keywordMap.has(kw)) {
         keywordMap.set(kw, {
           count: 0, weightedCount: 0,
-          categories: new Set(), isDomain: DOMAIN_KEYWORDS.has(kw),
+          categories: new Set(), sources: new Set(),
+          isDomain: DOMAIN_KEYWORDS.has(kw),
           totalSourceWeight: 0,
         });
       }
       const entry = keywordMap.get(kw);
       entry.count++;
-      entry.weightedCount += sourceWeight; // 按信源加权计数
+      entry.weightedCount += sourceWeight;
       entry.categories.add(category);
+      entry.sources.add(source);
       entry.totalSourceWeight += sourceWeight;
     }
   }
+
   const scored = [];
+  const candidateLog = []; // 规则3: 待审核新词
+
   for (const [keyword, data] of keywordMap) {
-    if (data.count < 2) continue;
-    const crossCat = data.categories.size;
-    // 如果关键词只出现在噪音分类中，且不是领域词，跳过
     const cats = [...data.categories];
-    const onlyNoise = cats.every(c => NOISE_CATEGORIES.has(c));
-    if (onlyNoise && !data.isDomain) continue;
-    const domainBonus = data.isDomain ? 1.5 : 1.0;
+    const crossCat = data.categories.size;
+    const crossSource = data.sources.size;
     const avgSourceWeight = data.totalSourceWeight / data.count;
-    // 热度 = 加权频次 × (1 + 0.5×跨分类数) × 领域加权 × 信源权威度
-    const score = data.weightedCount * (1 + 0.5 * crossCat) * domainBonus * avgSourceWeight;
-    scored.push({
-      keyword, score: Math.round(score * 100) / 100,
-      count: data.count, categories: cats, domain: data.isDomain,
-      sourceWeight: Math.round(avgSourceWeight * 100) / 100,
-    });
+
+    // ── 规则 1: 白名单词直接通过（count≥1 即可）──
+    if (data.isDomain) {
+      if (data.count < 1) continue;
+      const score = data.weightedCount * (1 + 0.5 * crossCat) * 1.5 * avgSourceWeight;
+      scored.push({
+        keyword, score: Math.round(score * 100) / 100,
+        count: data.count, categories: cats, domain: true,
+        sourceWeight: Math.round(avgSourceWeight * 100) / 100,
+      });
+      continue;
+    }
+
+    // ── 规则 2: 跨分类/跨信源信号 → 正常权重通过（count≥2）──
+    const crossSignal = crossCat >= 2 || crossSource >= 2;
+    if (crossSignal) {
+      if (data.count < 2) continue;
+      const score = data.weightedCount * (1 + 0.5 * crossCat) * 1.0 * avgSourceWeight;
+      scored.push({
+        keyword, score: Math.round(score * 100) / 100,
+        count: data.count, categories: cats, domain: false,
+        sourceWeight: Math.round(avgSourceWeight * 100) / 100,
+      });
+      continue;
+    }
+
+    // ── 规则 3: 高频新词（count≥3）→ 降级保留 + 记录候选日志 ──
+    if (data.count >= 3) {
+      const score = data.weightedCount * (1 + 0.5 * crossCat) * 0.5 * avgSourceWeight;
+      scored.push({
+        keyword, score: Math.round(score * 100) / 100,
+        count: data.count, categories: cats, domain: false,
+        sourceWeight: Math.round(avgSourceWeight * 100) / 100,
+      });
+      candidateLog.push({
+        keyword, count: data.count, categories: cats,
+        sources: [...data.sources],
+      });
+      continue;
+    }
+
+    // 其余: 丢弃（非领域、无跨分类信号、count<3）
   }
+
   scored.sort((a, b) => b.score - a.score);
+
+  // 保存候选词日志供人工审核
+  if (candidateLog.length > 0) {
+    saveCandidateLog(candidateLog);
+  }
+
   return scored.slice(0, topN);
+}
+
+// ===== 候选关键词日志（规则3: 高频新词供人工审核）=====
+const CANDIDATE_LOG_FILE = path.join(DATA_DIR, "candidate-keywords.json");
+
+function saveCandidateLog(newCandidates) {
+  let existing = [];
+  try {
+    if (fs.existsSync(CANDIDATE_LOG_FILE)) {
+      existing = JSON.parse(fs.readFileSync(CANDIDATE_LOG_FILE, "utf-8"));
+    }
+  } catch { existing = []; }
+
+  const today = new Date().toISOString().slice(0, 10);
+  // 合并: 同一天的候选词去重
+  const todayEntry = existing.find(e => e.date === today);
+  if (todayEntry) {
+    const existingKws = new Set(todayEntry.candidates.map(c => c.keyword));
+    for (const c of newCandidates) {
+      if (!existingKws.has(c.keyword)) todayEntry.candidates.push(c);
+    }
+  } else {
+    existing.push({ date: today, candidates: newCandidates });
+  }
+
+  // 只保留最近 30 天
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 30);
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+  existing = existing.filter(e => e.date >= cutoffStr);
+  existing.sort((a, b) => a.date.localeCompare(b.date));
+
+  const tmp = CANDIDATE_LOG_FILE + ".tmp";
+  fs.writeFileSync(tmp, JSON.stringify(existing, null, 2), "utf-8");
+  fs.renameSync(tmp, CANDIDATE_LOG_FILE);
 }
 
 function matchHotKeywords(title, hotKeywords) {
