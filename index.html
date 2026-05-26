@@ -104,9 +104,52 @@ a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
 
 /* Responsive */
 @media(max-width:860px){
-  .layout{grid-template-columns:1fr;grid-template-rows:1fr auto}
-  .sidebar{border-left:none;border-top:1px solid var(--bdr);max-height:40vh}
-  .main{padding:16px 14px 32px}
+  .layout{
+    display:flex;flex-direction:column;height:100vh;
+    grid-template-columns:unset;grid-template-rows:unset;
+  }
+  .sidebar{
+    border-left:none;border-bottom:1px solid var(--bdr);
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+    display:flex;flex-direction:row;align-items:center;
+    overflow:visible;
+    background:var(--card);
+    padding:0;gap:0;
+    flex-shrink:0;
+  }
+  .main{
+    overflow-y:auto;padding:12px 10px 24px;
+    contain:layout style;
+  }
+  .side-section{
+    padding:8px 10px;border-bottom:none;
+    display:flex;align-items:center;gap:6px;
+    white-space:nowrap;flex-shrink:0;
+    border-right:1px solid var(--bdr);
+  }
+  .side-label{display:none}
+  /* 隐藏"频道"标签所在的空 section */
+  .side-section:has(.side-label){display:none}
+  .side-date{gap:4px}
+  .side-date-btn{width:26px;height:26px;font-size:13px}
+  .date-text{font-size:12px;min-width:auto;padding:3px 6px}
+  .side-date-latest{font-size:9px;padding:1px 4px}
+  .cat-list{
+    display:flex;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    padding:6px 8px;flex:1;min-width:0;
+    scrollbar-width:none;
+  }
+  .cat-list::-webkit-scrollbar{display:none}
+  .cat-item{
+    padding:5px 10px;cursor:pointer;
+    font-size:12px;white-space:nowrap;flex-shrink:0;
+    border-radius:var(--rs);gap:4px;
+    color:var(--text2);
+  }
+  .cat-item:hover{background:var(--accent-l)}
+  .cat-item.active{background:var(--accent-l);color:var(--accent);font-weight:700}
+  .cat-count{display:none}
+  .main{padding:12px 10px 24px}
 }
 @media(prefers-reduced-motion:reduce){.sk{animation:none}.cat-item,.side-date-btn,.load-more{transition:none}}
 </style>
