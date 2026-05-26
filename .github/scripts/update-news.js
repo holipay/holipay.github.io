@@ -909,10 +909,18 @@ async function processTopic(topic) {
 
     // 合并 + 去重（按 title 精确去重）
     const mergedItems = [...newItems, ...existingItems];
-    const filteredItems = mergedItems.filter(
-      (item) => (item.date || today) >= cutoff,
-    );
+    const seenTitles = new Set();
+    const filteredItems = mergedItems.filter((item) => {
+      if ((item.date || today) < cutoff) return false;
+      const norm = normalizeTitle(item.title).slice(0, 80);
+      if (!norm) return true;
+      if (seenTitles.has(norm)) return false;
+      seenTitles.add(norm);
+      return true;
+    });
     const finalItems = filteredItems.slice(0, MAX_ITEMS_PER_CATEGORY);
+    const dedupeRemoved = mergedItems.filter((i) => (i.date || today) >= cutoff).length - filteredItems.length;
+    if (dedupeRemoved > 0) console.log(`  🔄 ${sec.title}: 合并去重移除 ${dedupeRemoved} 条`);
 
     // 分片：recent（最近 RECENT_DAYS 天）+ archive（更早的）
     const recentItems = finalItems.filter(
