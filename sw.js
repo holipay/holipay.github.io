@@ -4,16 +4,20 @@ const MAX_CACHE_ENTRIES = 50; // Limit cached JSON responses
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS)),
   );
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (e) => {
   e.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    )
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)),
+        ),
+      ),
   );
   self.clients.claim();
 });
@@ -21,8 +25,9 @@ self.addEventListener("activate", (e) => {
 // Evict oldest entries when cache exceeds limit
 async function evictOldEntries(cache) {
   const keys = await cache.keys();
-  if (keys.length <= MAX_CACHE_ENTRIES) return;
-  const toDelete = keys.slice(0, keys.length - MAX_CACHE_ENTRIES);
+  const jsonKeys = keys.filter((req) => req.url.includes("/data/"));
+  if (jsonKeys.length <= MAX_CACHE_ENTRIES) return;
+  const toDelete = jsonKeys.slice(0, jsonKeys.length - MAX_CACHE_ENTRIES);
   await Promise.all(toDelete.map((req) => cache.delete(req)));
 }
 
@@ -46,14 +51,14 @@ self.addEventListener("fetch", (e) => {
             })
             .catch(() => cached);
           return cached || fetchPromise;
-        })
-      )
+        }),
+      ),
     );
     return;
   }
 
   // Static assets: cache-first
   e.respondWith(
-    caches.match(e.request).then((cached) => cached || fetch(e.request))
+    caches.match(e.request).then((cached) => cached || fetch(e.request)),
   );
 });

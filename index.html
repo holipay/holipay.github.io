@@ -1,587 +1,1671 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>nase.me</title>
-<meta name="description" content="nase.me AI深度分析全球金融、科技、社科资讯"/>
-<meta name="robots" content="index,follow"/>
-<meta name="theme-color" content="#f0f2f5" media="(prefers-color-scheme:light)"/>
-<meta name="theme-color" content="#0f1117" media="(prefers-color-scheme:dark)"/>
-<style>
-:root{--bg:#f0f2f5;--card:#fff;--text:#1a1a2e;--text2:#555;--text3:#999;--accent:#2563eb;--accent-h:#1d4ed8;--accent-l:#eff6ff;--accent-g:rgba(37,99,235,.15);--bdr:#e8e8e8;--sh:0 2px 8px rgba(0,0,0,.06);--sh-h:0 4px 16px rgba(0,0,0,.1);--r:12px;--rs:8px;--tr:.2s cubic-bezier(.4,0,.2,1);--side-w:260px}
-@media(prefers-color-scheme:dark){:root{--bg:#0f1117;--card:#181b25;--text:#e8e8f0;--text2:#a0a0b8;--text3:#666680;--accent:#3b82f6;--accent-h:#60a5fa;--accent-l:#172554;--accent-g:rgba(59,130,246,.12);--bdr:#2a2d3a;--sh:0 2px 8px rgba(0,0,0,.25);--sh-h:0 4px 16px rgba(0,0,0,.35)}}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans SC",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-h)}
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <title>nase.me</title>
+        <meta
+            name="description"
+            content="nase.me AI深度分析全球金融、科技、社科资讯"
+        />
+        <meta name="robots" content="index,follow" />
+        <meta
+            name="theme-color"
+            content="#f0f2f5"
+            media="(prefers-color-scheme:light)"
+        />
+        <meta
+            name="theme-color"
+            content="#0f1117"
+            media="(prefers-color-scheme:dark)"
+        />
+        <style>
+            :root {
+                --bg: #f0f2f5;
+                --card: #fff;
+                --text: #1a1a2e;
+                --text2: #555;
+                --text3: #999;
+                --accent: #2563eb;
+                --accent-h: #1d4ed8;
+                --accent-l: #eff6ff;
+                --accent-g: rgba(37, 99, 235, 0.15);
+                --bdr: #e8e8e8;
+                --sh: 0 2px 8px rgba(0, 0, 0, 0.06);
+                --sh-h: 0 4px 16px rgba(0, 0, 0, 0.1);
+                --r: 12px;
+                --rs: 8px;
+                --tr: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                --side-w: 260px;
+            }
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg: #0f1117;
+                    --card: #181b25;
+                    --text: #e8e8f0;
+                    --text2: #a0a0b8;
+                    --text3: #666680;
+                    --accent: #3b82f6;
+                    --accent-h: #60a5fa;
+                    --accent-l: #172554;
+                    --accent-g: rgba(59, 130, 246, 0.12);
+                    --bdr: #2a2d3a;
+                    --sh: 0 2px 8px rgba(0, 0, 0, 0.25);
+                    --sh-h: 0 4px 16px rgba(0, 0, 0, 0.35);
+                }
+            }
+            *,
+            *::before,
+            *::after {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family:
+                    -apple-system, "Segoe UI", Roboto, "Noto Sans SC",
+                    sans-serif;
+                background: var(--bg);
+                color: var(--text);
+                line-height: 1.6;
+                -webkit-font-smoothing: antialiased;
+                overflow-x: hidden;
+            }
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                color: var(--accent-h);
+            }
 
-/* Layout */
-.layout{display:grid;grid-template-columns:1fr var(--side-w);grid-template-rows:auto 1fr;height:100vh}
-.main{overflow-y:auto;padding:24px 28px 40px;min-width:0;contain:layout style}
-.sidebar{border-left:1px solid var(--bdr);background:var(--card);overflow-y:auto;padding:0;contain:layout style;position:sticky;top:0;height:100vh}
+            /* Layout */
+            .layout {
+                display: grid;
+                grid-template-columns: 1fr var(--side-w);
+                grid-template-rows: auto 1fr;
+                height: 100vh;
+            }
+            .main {
+                overflow-y: auto;
+                padding: 24px 28px 40px;
+                min-width: 0;
+                contain: layout style;
+            }
+            .sidebar {
+                border-left: 1px solid var(--bdr);
+                background: var(--card);
+                overflow-y: auto;
+                padding: 0;
+                contain: layout style;
+                position: sticky;
+                top: 0;
+                height: 100vh;
+            }
 
-/* Sidebar */
-.side-section{padding:14px 16px;border-bottom:1px solid var(--bdr)}
-.side-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+            /* Sidebar */
+            .side-section {
+                padding: 14px 16px;
+                border-bottom: 1px solid var(--bdr);
+            }
+            .side-label {
+                font-size: 11px;
+                font-weight: 700;
+                color: var(--text3);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 10px;
+            }
 
-.cat-list{padding:8px 0}
-.cat-item{display:flex;align-items:center;gap:8px;padding:9px 16px;cursor:pointer;transition:background var(--tr);user-select:none;font-size:13px;color:var(--text)}
-.cat-item:hover{background:var(--accent-l)}
-.cat-item.active{background:var(--accent-l);color:var(--accent);font-weight:700}
-.cat-icon{font-size:15px;flex-shrink:0;width:20px;text-align:center}
-.cat-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cat-count{font-size:10px;color:var(--text3);background:var(--bg);padding:1px 6px;border-radius:100px;flex-shrink:0}
+            .cat-list {
+                padding: 8px 0;
+            }
+            .cat-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 9px 16px;
+                cursor: pointer;
+                transition: background var(--tr);
+                user-select: none;
+                font-size: 13px;
+                color: var(--text);
+            }
+            .cat-item:hover {
+                background: var(--accent-l);
+            }
+            .cat-item.active {
+                background: var(--accent-l);
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .cat-icon {
+                font-size: 15px;
+                flex-shrink: 0;
+                width: 20px;
+                text-align: center;
+            }
+            .cat-name {
+                flex: 1;
+                min-width: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .cat-count {
+                font-size: 10px;
+                color: var(--text3);
+                background: var(--bg);
+                padding: 1px 6px;
+                border-radius: 100px;
+                flex-shrink: 0;
+            }
 
-/* Cards */
-.card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--sh);border:1px solid var(--bdr);margin-bottom:16px;content-visibility:auto;contain-intrinsic-size:auto 200px}
-.empty{text-align:center;padding:80px 20px;color:var(--text3)}
-.empty-icon{font-size:48px;margin-bottom:12px;opacity:.6}
+            /* Cards */
+            .card {
+                background: var(--card);
+                border-radius: var(--r);
+                padding: 20px;
+                box-shadow: var(--sh);
+                border: 1px solid var(--bdr);
+                margin-bottom: 16px;
+                content-visibility: auto;
+                contain-intrinsic-size: auto 200px;
+            }
+            .empty {
+                text-align: center;
+                padding: 80px 20px;
+                color: var(--text3);
+            }
+            .empty-icon {
+                font-size: 48px;
+                margin-bottom: 12px;
+                opacity: 0.6;
+            }
 
-/* Skeleton */
-.sk{animation:pulse 1.5s ease-in-out infinite}
-.sk-card{background:var(--card);border-radius:var(--r);padding:20px;margin-bottom:16px;border:1px solid var(--bdr)}
-.sk-line{height:14px;background:var(--bdr);border-radius:6px;margin-bottom:10px}
-.sk-line.w60{width:60%}.sk-line.w80{width:80%}.sk-line.w45{width:45%;height:18px;margin-bottom:16px}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+            /* Skeleton */
+            .sk {
+                animation: pulse 1.5s ease-in-out infinite;
+            }
+            .sk-card {
+                background: var(--card);
+                border-radius: var(--r);
+                padding: 20px;
+                margin-bottom: 16px;
+                border: 1px solid var(--bdr);
+            }
+            .sk-line {
+                height: 14px;
+                background: var(--bdr);
+                border-radius: 6px;
+                margin-bottom: 10px;
+            }
+            .sk-line.w60 {
+                width: 60%;
+            }
+            .sk-line.w80 {
+                width: 80%;
+            }
+            .sk-line.w45 {
+                width: 45%;
+                height: 18px;
+                margin-bottom: 16px;
+            }
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.5;
+                }
+            }
 
-/* Analysis */
-.date-nav{display:flex;align-items:center;gap:8px;padding:10px 24px;border-bottom:1px solid var(--bdr);background:var(--card);grid-column:1/-1;flex-shrink:0}
-.date-nav-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:var(--rs);background:var(--card);border:1px solid var(--bdr);cursor:pointer;font-size:14px;color:var(--text2);transition:all var(--tr);flex-shrink:0}
-.date-nav-btn:hover{border-color:var(--accent);color:var(--accent)}
-.date-nav-btn:disabled{opacity:.3;cursor:not-allowed}
-.date-nav-current{font-size:15px;font-weight:700;color:var(--text);flex:1;text-align:center}
-.date-nav-label{font-size:11px;color:var(--text3);white-space:nowrap}
-.a-card{content-visibility:auto;contain-intrinsic-size:auto 800px}
-.a-head{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
-.a-icon{font-size:18px}.a-title{font-size:15px;font-weight:700}
-.a-meta{margin-left:auto;font-size:11px;color:var(--text3);background:var(--bg);padding:2px 8px;border-radius:var(--rs)}
+            /* Analysis */
+            .date-nav {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 24px;
+                border-bottom: 1px solid var(--bdr);
+                background: var(--card);
+                grid-column: 1/-1;
+                flex-shrink: 0;
+            }
+            .date-nav-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border-radius: var(--rs);
+                background: var(--card);
+                border: 1px solid var(--bdr);
+                cursor: pointer;
+                font-size: 14px;
+                color: var(--text2);
+                transition: all var(--tr);
+                flex-shrink: 0;
+            }
+            .date-nav-btn:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+            .date-nav-btn:disabled {
+                opacity: 0.3;
+                cursor: not-allowed;
+            }
+            .date-nav-current {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--text);
+                flex: 1;
+                text-align: center;
+            }
+            .date-nav-label {
+                font-size: 11px;
+                color: var(--text3);
+                white-space: nowrap;
+            }
+            .a-card {
+                content-visibility: auto;
+                contain-intrinsic-size: auto 800px;
+            }
+            .a-head {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 16px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--bdr);
+            }
+            .a-icon {
+                font-size: 18px;
+            }
+            .a-title {
+                font-size: 15px;
+                font-weight: 700;
+            }
+            .a-meta {
+                margin-left: auto;
+                font-size: 11px;
+                color: var(--text3);
+                background: var(--bg);
+                padding: 2px 8px;
+                border-radius: var(--rs);
+            }
 
-.a-body{font-size:14px;line-height:1.85;color:var(--text2)}
-.a-body p{margin-bottom:12px}
-.a-body h3{font-size:15px;font-weight:700;color:var(--text);margin:24px 0 12px;padding-top:16px;border-top:1px solid var(--bdr)}
-.a-body h3:first-child{border-top:none;padding-top:0;margin-top:0}
-.a-body h4{font-size:14px;font-weight:600;color:var(--text);margin:14px 0 8px}
-.a-body strong{color:var(--text);font-weight:600}
-.a-body ul{list-style:none;padding:0;margin:8px 0}
-.a-body li{padding:4px 0 4px 16px;position:relative}
-.a-body li::before{content:"›";position:absolute;left:0;color:var(--accent);font-weight:700}
-.a-body blockquote{margin:12px 0;padding:8px 12px;border-left:3px solid var(--bdr);color:var(--text3);font-style:italic}
-.a-body pre{margin:12px 0;padding:12px;background:var(--bg);border-radius:var(--rs);overflow-x:auto;font-size:13px;line-height:1.5}
-.a-body code{font-size:13px;background:var(--bg);padding:1px 4px;border-radius:3px}
-.a-body pre code{padding:0;background:none}
-.a-body table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
-.a-body th,.a-body td{padding:6px 10px;border:1px solid var(--bdr);text-align:left}
-.a-body th{background:var(--bg);font-weight:600}
-.a-body a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
-.a-history{margin-top:20px;padding-top:16px;border-top:1px solid var(--bdr)}
-.a-history-title{font-size:13px;font-weight:700;color:var(--text3);margin-bottom:10px;letter-spacing:.3px}
-.a-history-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;max-height:120px;overflow:hidden;transition:max-height .3s ease}
-.a-history-item{display:flex;align-items:center;justify-content:center;padding:6px 4px;background:var(--bg);border:1px solid var(--bdr);border-radius:var(--rs);font-size:12px;color:var(--text2);cursor:pointer;transition:all var(--tr);text-decoration:none;white-space:nowrap}
-.a-history-item:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-l)}
-.a-history-list.expanded{max-height:none}
-.a-history-toggle{display:block;margin-top:8px;padding:4px 0;background:none;border:none;color:var(--accent);font-size:12px;cursor:pointer;font-family:inherit}
-.a-history-toggle:hover{text-decoration:underline}
+            .a-body {
+                font-size: 14px;
+                line-height: 1.85;
+                color: var(--text2);
+            }
+            .a-body p {
+                margin-bottom: 12px;
+            }
+            .a-body h3 {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--text);
+                margin: 24px 0 12px;
+                padding-top: 16px;
+                border-top: 1px solid var(--bdr);
+            }
+            .a-body h3:first-child {
+                border-top: none;
+                padding-top: 0;
+                margin-top: 0;
+            }
+            .a-body h4 {
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--text);
+                margin: 14px 0 8px;
+            }
+            .a-body strong {
+                color: var(--text);
+                font-weight: 600;
+            }
+            .a-body ul {
+                list-style: none;
+                padding: 0;
+                margin: 8px 0;
+            }
+            .a-body li {
+                padding: 4px 0 4px 16px;
+                position: relative;
+            }
+            .a-body li::before {
+                content: "›";
+                position: absolute;
+                left: 0;
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .a-body blockquote {
+                margin: 12px 0;
+                padding: 8px 12px;
+                border-left: 3px solid var(--bdr);
+                color: var(--text3);
+                font-style: italic;
+            }
+            .a-body pre {
+                margin: 12px 0;
+                padding: 12px;
+                background: var(--bg);
+                border-radius: var(--rs);
+                overflow-x: auto;
+                font-size: 13px;
+                line-height: 1.5;
+            }
+            .a-body code {
+                font-size: 13px;
+                background: var(--bg);
+                padding: 1px 4px;
+                border-radius: 3px;
+            }
+            .a-body pre code {
+                padding: 0;
+                background: none;
+            }
+            .a-body table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 12px 0;
+                font-size: 13px;
+            }
+            .a-body th,
+            .a-body td {
+                padding: 6px 10px;
+                border: 1px solid var(--bdr);
+                text-align: left;
+            }
+            .a-body th {
+                background: var(--bg);
+                font-weight: 600;
+            }
+            .a-body a {
+                color: var(--accent);
+                text-decoration: underline;
+                text-underline-offset: 2px;
+            }
+            .a-history {
+                margin-top: 20px;
+                padding-top: 16px;
+                border-top: 1px solid var(--bdr);
+            }
+            .a-history-title {
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--text3);
+                margin-bottom: 10px;
+                letter-spacing: 0.3px;
+            }
+            .a-history-list {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                gap: 6px;
+                max-height: 120px;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            .a-history-item {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 6px 4px;
+                background: var(--bg);
+                border: 1px solid var(--bdr);
+                border-radius: var(--rs);
+                font-size: 12px;
+                color: var(--text2);
+                cursor: pointer;
+                transition: all var(--tr);
+                text-decoration: none;
+                white-space: nowrap;
+            }
+            .a-history-item:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+                background: var(--accent-l);
+            }
+            .a-history-list.expanded {
+                max-height: none;
+            }
+            .a-history-toggle {
+                display: block;
+                margin-top: 8px;
+                padding: 4px 0;
+                background: none;
+                border: none;
+                color: var(--accent);
+                font-size: 12px;
+                cursor: pointer;
+                font-family: inherit;
+            }
+            .a-history-toggle:hover {
+                text-decoration: underline;
+            }
 
-/* Structured badges */
-.a-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
-.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:100px;font-size:11px;font-weight:600;line-height:1}
-.badge-up{background:rgba(22,163,74,.1);color:#16a34a}
-.badge-down{background:rgba(220,38,38,.1);color:#dc2626}
-.badge-flat{background:rgba(37,99,235,.1);color:#2563eb}
-.badge-mix{background:rgba(217,119,6,.1);color:#d97706}
-.badge-risk-h{background:rgba(220,38,38,.1);color:#dc2626}
-.badge-risk-m{background:rgba(107,114,128,.1);color:#6b7280}
-.badge-risk-l{background:rgba(22,163,74,.1);color:#16a34a}
-.tag{display:inline-flex;align-items:center;padding:2px 7px;border-radius:100px;font-size:10px;font-weight:500;background:var(--accent-l);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 20%,transparent)}
+            /* Structured badges */
+            .a-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                margin-bottom: 14px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--bdr);
+            }
+            .badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 3px;
+                padding: 3px 9px;
+                border-radius: 100px;
+                font-size: 11px;
+                font-weight: 600;
+                line-height: 1;
+            }
+            .badge-up {
+                background: rgba(22, 163, 74, 0.1);
+                color: #16a34a;
+            }
+            .badge-down {
+                background: rgba(220, 38, 38, 0.1);
+                color: #dc2626;
+            }
+            .badge-flat {
+                background: rgba(37, 99, 235, 0.1);
+                color: #2563eb;
+            }
+            .badge-mix {
+                background: rgba(217, 119, 6, 0.1);
+                color: #d97706;
+            }
+            .badge-risk-h {
+                background: rgba(220, 38, 38, 0.1);
+                color: #dc2626;
+            }
+            .badge-risk-m {
+                background: rgba(107, 114, 128, 0.1);
+                color: #6b7280;
+            }
+            .badge-risk-l {
+                background: rgba(22, 163, 74, 0.1);
+                color: #16a34a;
+            }
+            .tag {
+                display: inline-flex;
+                align-items: center;
+                padding: 2px 7px;
+                border-radius: 100px;
+                font-size: 10px;
+                font-weight: 500;
+                background: var(--accent-l);
+                color: var(--accent);
+                border: 1px solid
+                    color-mix(in srgb, var(--accent) 20%, transparent);
+            }
 
-.outlook{font-size:12.5px;color:var(--text2);line-height:1.5;padding:8px 12px;background:var(--bg);border-radius:var(--rs);margin-bottom:14px}
-.outlook::before{content:"🔮 "}
+            .outlook {
+                font-size: 12.5px;
+                color: var(--text2);
+                line-height: 1.5;
+                padding: 8px 12px;
+                background: var(--bg);
+                border-radius: var(--rs);
+                margin-bottom: 14px;
+            }
+            .outlook::before {
+                content: "🔮 ";
+            }
 
-/* News list */
-.news-item{display:flex;align-items:baseline;gap:8px;padding:8px 0;border-bottom:1px solid var(--bdr);content-visibility:auto;contain-intrinsic-size:auto 36px}
-.news-item:last-child{border-bottom:none}
-.news-title{font-size:13.5px;color:var(--text2);line-height:1.5;flex:1;min-width:0}
-.news-title a{color:inherit}.news-title a:hover{color:var(--accent)}
-.news-src{font-size:11px;color:var(--text3);white-space:nowrap;flex-shrink:0}
-.news-head{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
-.news-head-icon{font-size:18px}.news-head-title{font-size:15px;font-weight:700}
-.news-head-count{margin-left:auto;font-size:11px;color:var(--text3);background:var(--bg);padding:2px 8px;border-radius:var(--rs)}
-.load-more{display:block;width:100%;padding:10px;margin-top:12px;background:var(--accent-l);color:var(--accent);border:none;border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;transition:all var(--tr);font-family:inherit}
-.load-more:hover{background:var(--accent);color:#fff}
-.load-more:disabled{opacity:.4;cursor:not-allowed}
+            /* News list */
+            .news-item {
+                display: flex;
+                align-items: baseline;
+                gap: 8px;
+                padding: 8px 0;
+                border-bottom: 1px solid var(--bdr);
+                content-visibility: auto;
+                contain-intrinsic-size: auto 36px;
+            }
+            .news-item:last-child {
+                border-bottom: none;
+            }
+            .news-title {
+                font-size: 13.5px;
+                color: var(--text2);
+                line-height: 1.5;
+                flex: 1;
+                min-width: 0;
+            }
+            .news-title a {
+                color: inherit;
+            }
+            .news-title a:hover {
+                color: var(--accent);
+            }
+            .news-src {
+                font-size: 11px;
+                color: var(--text3);
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+            .news-head {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 16px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--bdr);
+            }
+            .news-head-icon {
+                font-size: 18px;
+            }
+            .news-head-title {
+                font-size: 15px;
+                font-weight: 700;
+            }
+            .news-head-count {
+                margin-left: auto;
+                font-size: 11px;
+                color: var(--text3);
+                background: var(--bg);
+                padding: 2px 8px;
+                border-radius: var(--rs);
+            }
+            .load-more {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                margin-top: 12px;
+                background: var(--accent-l);
+                color: var(--accent);
+                border: none;
+                border-radius: var(--rs);
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all var(--tr);
+                font-family: inherit;
+            }
+            .load-more:hover {
+                background: var(--accent);
+                color: #fff;
+            }
+            .load-more:disabled {
+                opacity: 0.4;
+                cursor: not-allowed;
+            }
 
-/* Responsive */
-@media(max-width:860px){
-  .layout{
-    display:flex;flex-direction:column;height:100vh;
-    grid-template-columns:unset;grid-template-rows:unset;
-  }
-  .sidebar{
-    border-left:none;border-bottom:1px solid var(--bdr);
-    box-shadow:0 2px 8px rgba(0,0,0,.06);
-    display:flex;flex-direction:row;align-items:center;
-    overflow:visible;
-    background:var(--card);
-    padding:0;gap:0;
-    flex-shrink:0;
-  }
-  .main{
-    overflow-y:auto;padding:12px 10px 24px;
-    contain:layout style;
-  }
-  .side-section{
-    padding:8px 10px;border-bottom:none;
-    display:flex;align-items:center;gap:6px;
-    white-space:nowrap;flex-shrink:0;
-    border-right:1px solid var(--bdr);
-  }
-  .side-label{display:none}
-  /* 隐藏"频道"标签所在的空 section */
-  .side-section:has(.side-label){display:none}
+            /* Responsive */
+            @media (max-width: 860px) {
+                .layout {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100vh;
+                    grid-template-columns: unset;
+                    grid-template-rows: unset;
+                }
+                .sidebar {
+                    border-left: none;
+                    border-bottom: 1px solid var(--bdr);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    overflow: visible;
+                    background: var(--card);
+                    padding: 0;
+                    gap: 0;
+                    flex-shrink: 0;
+                }
+                .main {
+                    overflow-y: auto;
+                    padding: 12px 10px 24px;
+                    contain: layout style;
+                }
+                .side-section {
+                    padding: 8px 10px;
+                    border-bottom: none;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    white-space: nowrap;
+                    flex-shrink: 0;
+                    border-right: 1px solid var(--bdr);
+                }
+                .side-label {
+                    display: none;
+                }
+                /* 隐藏"频道"标签所在的空 section */
+                .side-section:has(.side-label) {
+                    display: none;
+                }
 
-  .cat-list{
-    display:flex;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;
-    padding:6px 8px;flex:1;min-width:0;
-    scrollbar-width:none;
-  }
-  .cat-list::-webkit-scrollbar{display:none}
-  .cat-item{
-    padding:5px 10px;cursor:pointer;
-    font-size:12px;white-space:nowrap;flex-shrink:0;
-    border-radius:var(--rs);gap:4px;
-    color:var(--text2);
-  }
-  .cat-item:hover{background:var(--accent-l)}
-  .cat-item.active{background:var(--accent-l);color:var(--accent);font-weight:700}
-  .cat-count{display:none}
-  .main{padding:12px 10px 24px}
-  .date-nav{padding:8px 10px}
-  .date-nav-label{display:none}
-}
-/* Back to top */
-#toTop{position:fixed;bottom:24px;right:24px;width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:18px;cursor:pointer;opacity:0;transform:translateY(10px);transition:all .3s ease;box-shadow:0 2px 12px rgba(0,0,0,.2);z-index:100;pointer-events:none}
-#toTop.visible{opacity:1;transform:translateY(0);pointer-events:auto}
-#toTop:hover{background:var(--accent-h);transform:translateY(-2px)}
-@media(prefers-reduced-motion:reduce){.sk{animation:none}.cat-item,.load-more,#toTop{transition:none}}
-</style>
-</head>
-<body>
-<div class="layout">
-  <div class="date-nav" id="dateNav">
-    <button class="date-nav-btn" id="prevDate" title="前一天">‹</button>
-    <div class="date-nav-current" id="currentDateDisplay">—</div>
-    <button class="date-nav-btn" id="nextDate" title="后一天">›</button>
-    <span class="date-nav-label" id="dateCount"></span>
-  </div>
-  <div class="main" id="main">
-    <div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>
-  </div>
-  <aside class="sidebar" id="sidebar">
-    <div class="side-section" style="padding-bottom:0">
-      <div class="side-label">频道</div>
-    </div>
-    <div class="cat-list" id="catList">
-      <div class="cat-item active" data-cat="analysis">
-        <span class="cat-icon">🤖</span><span class="cat-name">AI 深度分析</span>
-      </div>
-    </div>
-  </aside>
-</div>
-<button id="toTop" title="回到顶部">↑</button>
-<script id="boot-data" type="application/json">{"dates":["2026-05-26","2026-05-25","2026-05-24","2026-05-23","2026-05-21","2026-05-19","2026-05-17","2026-05-15","2026-05-13","2026-05-12"],"meta":{"topic":"news","name":"全球资讯","icon":"📰","updatedAt":"2026-05-26T08:56:12.743Z","categories":[{"icon":"📈","title":"股市与市场","file":"股市与市场","count":200,"archiveCount":0},{"icon":"📰","title":"其他资讯","file":"其他资讯","count":200,"archiveCount":0},{"icon":"🖥️","title":"科技与企业","file":"科技与企业","count":200,"archiveCount":0},{"icon":"🏛️","title":"政治与治理","file":"政治与治理","count":200,"archiveCount":0},{"icon":"💰","title":"宏观经济","file":"宏观经济","count":200,"archiveCount":0},{"icon":"📚","title":"教育与媒体","file":"教育与媒体","count":136,"archiveCount":0},{"icon":"👥","title":"社会与人口","file":"社会与人口","count":200,"archiveCount":0},{"icon":"🌍","title":"环境与能源","file":"环境与能源","count":36,"archiveCount":0},{"icon":"🏦","title":"央行与利率","file":"央行与利率","count":200,"archiveCount":0},{"icon":"🛢️","title":"大宗商品与能源","file":"大宗商品与能源","count":200,"archiveCount":0},{"icon":"🧠","title":"心理学与认知","file":"心理学与认知","count":50,"archiveCount":0},{"icon":"🌍","title":"国际财经","file":"国际财经","count":200,"archiveCount":0},{"icon":"🤖","title":"科技与研究","file":"科技与研究","count":66,"archiveCount":0},{"icon":"🏥","title":"健康与公共卫生","file":"健康与公共卫生","count":71,"archiveCount":0},{"icon":"⚖️","title":"法律与伦理","file":"法律与伦理","count":34,"archiveCount":0}]},"analysis":{"date":"2026-05-26","generatedAt":"2026-05-26T08:56:12.820Z","newsCount":50,"perspective":"行业深潜","analysis":"## 📌 今日要点\n今日新闻的核心张力在于一场围绕“金融业合法性”的叙事战争与实体地域的重构。《纽约时报》旗帜鲜明地将金融业定性为“骗局”（热度100），而《City Journal》则针锋相对地为其实体价值辩护。与此同时，德克萨斯州正试图加冕为美国“下一个金融中心”（热度80），揭示了资本在地理和政治版图上的一轮悄然重塑。金融业内部的“自我审视”与地域上的“去中心化”正在同步发生，构成今日超越大盘波动的深层行业变动。\n\n## 🔍 深度解读\n**1. 金融业的“合法性危机”与两极化叙事**\n今天最引人注目的是对金融业本质的激烈辩论。《纽约时报》直指金融业为“骗局”，这并非简单的民粹宣泄，而是在当前战争消耗加剧（来自昨日新闻）、实体产业回流被反复强调的宏观背景下，对“纸上繁荣”的一种社会清算。然而，《City Journal》和美国银行的论点揭示了硬币的另一面：即便在AI投资与地缘风险并存的2026年，金融业依然充当着资本定价、风险转移的核心枢纽。这场辩论的实质不是“金融有没有用”，而是“金融该为谁服务”——是继续制造“K型分裂”中的上层资产泡沫，还是回归巴菲特的“旧经济”语境，服务于实体锚点？\n\n**2. 德克萨斯州的“金融起义”：从华尔街到奥斯汀的产业链迁徙**\n德州试图成为“下一个金融中心”的野心（《本周》），是这场叙事战争的实体化投射。这不再是简单的税收优惠驱动的企业搬迁，而是一条完整的金融产业链正在从纽约/加州向外撕裂。当《纽约时报》在质疑金融业的存在意义时，德州却在务实地将金融的“后台”职能——数据中心、法务支持、资管运营——与本地蓬勃发展的能源实体经济和科技新贵深度绑定。这是一种新型的“嵌入式金融”范式，而非快进快出的投机资本，其竞局格局直指纽约和加州的监管与成本软肋。\n\n## 🏭 行业深潜: **金融服务业**\n今日新闻将金融服务业推到了解剖台前，但这次的焦点不只是股价与利率，而是**行业存在的底层逻辑与地理版图**的深刻重构。\n\n**产业链透视**\n- **上游（资本与信任之源）**: 当前正经历前所未有的撕裂。一边是散户与部分舆论将金融视为“合法劫掠”，另一边是巴菲特所代表的老派资本坚持“耐心资本”在实体中的价值。信任赤字正在使廉价资金变得“不廉价”，因为获取资金的隐性社会与政治成本急剧上升。\n- **中游（机构与中介）**: 正处于双重夹击中。《纽约时报》的攻击可能加速监管收紧与人才从金融业流失的“ESG化”。而《City Journal》的辩护则反映出部分机构正急切地寻求将自身包装成解决实体问题的“基建型金融”，而非交易型金融。以色列金融科技在战火中蓬勃（CNBC）的案例，恰恰因为其将金融技术作为维持社会坚韧的实体工具，而非纯粹的套利机器。\n- **下游（地域与生态）**: 德州的崛起代表着“金融节点化”的趋势。金融不再需要集中于曼哈顿一个大脑，而是成为嵌入区域实体经济的神经网络节点。这意味着为本地能源转型、制造业回流提供定制化金融服务的**精品投行、属地化资管公司、供应链金融科技**将确定性受益。竞争格局从“华尔街内部座次重排”演变为“多个区域金融中心的联盟与对抗”，受损最大的是依赖单一物理中心集聚效应、成本高企的传统中间业务。\n\n**受益/受损分析**\n- **潜在受益者**: 德州及类似新兴金融中心的商业地产、专业服务律所、掌握区域网络的社区银行/精品投行、服务于制造业回流的供应链金融平台。\n- **潜在受损者**: 纽约与加州高度依赖“面对面”高端交易和监管套利的传统投行与律所、单纯追逐二级市场价格波动的杠杆型对冲基金模式。\n\n## 📊 市场信号\n- **金融业（叙事驱动）**: **中性偏谨慎**。强烈的舆论否定会对金融股、尤其是零售友好型券商和消费信贷的估值产生“社会性折价”压力。但《City Journal》的辩护和实体化转向提供了底部支撑。信号强度：强。\n- **德克萨斯州相关资产**: **看涨**。涉及德州本地银行、商业地产信托及该州产业生态的债券与股票可能获得“地域风险溢价重估”的机会。信号强度：中。\n- **以色列科技/金融科技**: **看涨**。被证实能在极端地缘风险中充当经济韧性“润滑剂”的金融科技模式，将获得全球资本在配置“战争对冲”时的优先考虑。信号强度：中。\n\n## ⚠️ 风险提示\n最大的风险在于“标签化”蔓延。对金融业“骗局”的定性如果从舆论升级为政策倾向（如暴利税、更严酷的奖金限制），可能导致一场自上而下的“金融业供给侧改革”，引发不可预知的流动性收缩。同时，德州等新兴中心若无法解决与其产业繁荣伴生的环境与社会成本，可能重蹈“先发展后治理”的信任陷阱。\n\n## 🔮 前瞻展望\n未来1-2周，市场将不仅是消化经济数据，更在消化这场“金融业的社会角色”辩论。大盘可能持续盘整，但**金融板块内部将出现显著分化**：与实体基建、区域经济深度捆绑的金融股逻辑走强，而依赖复杂衍生品和全球化套利的“旧华尔街叙事”股票将遭遇持续质疑。德州的金融中心叙事将成为地域性投资主题的催化剂。","structured":{"sentiment":"分化","riskLevel":"中","keyThemes":["金融业合法性辩论","德克萨斯州金融中心崛起","金融产业链地理重构","嵌入实体的金融服务"],"sectors":["金融服务业","商业地产(德州)","金融科技(以色列)"],"outlook":"金融板块内部分化加剧，与实体和区域绑定的资产获得叙事溢价，传统交易型叙事承压。","hotKeywords":[],"eventChains":[{"id":"","title":"美国金融业社会角色大辩论","summary":"《纽约时报》将金融业指为骗局，《City Journal》等为其辩护，社会对金融业存在价值的质疑达到高峰，可能引发行业经营逻辑的重构。","keywords":["金融骗局","金融业价值","监管前景"],"status":"active"},{"id":"","title":"美国金融地理版图重塑","summary":"德克萨斯州积极吸引金融机构，意图成为下一个美国金融中心，挑战纽约和加州的地位，推动金融产业链的分散化和嵌入式发展。","keywords":["金融中心","德克萨斯","产业链转移"],"status":"active"}]},"hotKeywords":[],"sources":[{"title":"特朗普政府领导下的股市： 2026年是什么驱动市场？ -美国银行","source":"Reuters"},{"title":"股市多头可能忘记了经济预警-雅虎财经","source":"Reuters"},{"title":"随着伊朗战争的经济风险加剧，股票抛售-《华尔街日报》","source":"Reuters"},{"title":"戴夫·拉姆齐（ Dave Ramsey ）表示，听到有关经济和股市的坏消息将在短短3年内花费67 ％的收益。“这不是新闻” -雅虎财经","source":"Reuters"},{"title":"担心经济状况？投资这些优质股票-雅虎财经","source":"Reuters"},{"title":"哪个将首先给出： K型经济或股票市场？ -雅虎财经","source":"Reuters"},{"title":"“通货膨胀将在2026年出人意料地走下坡路” ：为什么华尔街预计今年会出现富裕的经济，股票上涨-雅虎财经","source":"Reuters"},{"title":"分析师表示，股市翻番是没有利率飙升GDP繁荣的白日梦-雅虎财经","source":"Reuters"},{"title":"“我最担心的问题” ：为什么股市繁荣可能成为美国最大的风险-雅虎财经","source":"Reuters"},{"title":"零工经济型股票第四季度收入回顾：优步（纽约证券交易所代码： UBER ）大放异彩-雅虎财经","source":"Reuters"}]}}</script>
-<script>
-// ===== 统一 LRU 缓存 =====
-class LRU{
-  constructor(max){this._m=new Map();this._max=max}
-  get(k){const m=this._m;if(!m.has(k))return null;const v=m.get(k);m.delete(k);m.set(k,v);return v}
-  set(k,v){const m=this._m;if(m.has(k))m.delete(k);else if(m.size>=this._max)m.delete(m.keys().next().value);m.set(k,v)}
-  has(k){return this._m.has(k)}
-}
+                .cat-list {
+                    display: flex;
+                    gap: 4px;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                    padding: 6px 8px;
+                    flex: 1;
+                    min-width: 0;
+                    scrollbar-width: none;
+                }
+                .cat-list::-webkit-scrollbar {
+                    display: none;
+                }
+                .cat-item {
+                    padding: 5px 10px;
+                    cursor: pointer;
+                    font-size: 12px;
+                    white-space: nowrap;
+                    flex-shrink: 0;
+                    border-radius: var(--rs);
+                    gap: 4px;
+                    color: var(--text2);
+                }
+                .cat-item:hover {
+                    background: var(--accent-l);
+                }
+                .cat-item.active {
+                    background: var(--accent-l);
+                    color: var(--accent);
+                    font-weight: 700;
+                }
+                .cat-count {
+                    display: none;
+                }
+                .main {
+                    padding: 12px 10px 24px;
+                }
+                .date-nav {
+                    padding: 8px 10px;
+                }
+                .date-nav-label {
+                    display: none;
+                }
+            }
+            /* Back to top */
+            #toTop {
+                position: fixed;
+                bottom: 24px;
+                right: 24px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: var(--accent);
+                color: #fff;
+                border: none;
+                font-size: 18px;
+                cursor: pointer;
+                opacity: 0;
+                transform: translateY(10px);
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+                z-index: 100;
+                pointer-events: none;
+            }
+            #toTop.visible {
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+            #toTop:hover {
+                background: var(--accent-h);
+                transform: translateY(-2px);
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .sk {
+                    animation: none;
+                }
+                .cat-item,
+                .load-more,
+                #toTop {
+                    transition: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <div class="date-nav" id="dateNav">
+                <button class="date-nav-btn" id="prevDate" title="前一天">
+                    ‹
+                </button>
+                <div class="date-nav-current" id="currentDateDisplay">—</div>
+                <button class="date-nav-btn" id="nextDate" title="后一天">
+                    ›
+                </button>
+                <span class="date-nav-label" id="dateCount"></span>
+            </div>
+            <div class="main" id="main">
+                <div class="sk-card sk">
+                    <div class="sk-line w45"></div>
+                    <div class="sk-line"></div>
+                    <div class="sk-line w80"></div>
+                </div>
+            </div>
+            <aside class="sidebar" id="sidebar">
+                <div class="side-section" style="padding-bottom: 0">
+                    <div class="side-label">频道</div>
+                </div>
+                <div class="cat-list" id="catList">
+                    <div class="cat-item active" data-cat="analysis">
+                        <span class="cat-icon">🤖</span
+                        ><span class="cat-name">AI 深度分析</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+        <button id="toTop" title="回到顶部">↑</button>
+        <script id="boot-data" type="application/json">
+            {
+                "dates": [
+                    "2026-05-26",
+                    "2026-05-25",
+                    "2026-05-24",
+                    "2026-05-23",
+                    "2026-05-21",
+                    "2026-05-19",
+                    "2026-05-17",
+                    "2026-05-15",
+                    "2026-05-13",
+                    "2026-05-12"
+                ],
+                "meta": {
+                    "topic": "news",
+                    "name": "全球资讯",
+                    "icon": "📰",
+                    "updatedAt": "2026-05-26T08:56:12.743Z",
+                    "categories": [
+                        {
+                            "icon": "📈",
+                            "title": "股市与市场",
+                            "file": "股市与市场",
+                            "count": 200,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "📰",
+                            "title": "其他资讯",
+                            "file": "其他资讯",
+                            "count": 200,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "🖥️",
+                            "title": "科技与企业",
+                            "file": "科技与企业",
+                            "count": 200,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "🏛️",
+                            "title": "政治与治理",
+                            "file": "政治与治理",
+                            "count": 200,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "💰",
+                            "title": "宏观经济",
+                            "file": "宏观经济",
+                            "count": 200,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "📚",
+                            "title": "教育与媒体",
+                            "file": "教育与媒体",
+                            "count": 136,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "👥",
+                            "title": "社会与人口",
+                            "file": "社会与人口",
+                            "count": 200,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "🌍",
+                            "title": "环境与能源",
+                            "file": "环境与能源",
+                            "count": 36,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "🏦",
+                            "title": "央行与利率",
+                            "file": "央行与利率",
+                            "count": 200,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "🛢️",
+                            "title": "大宗商品与能源",
+                            "file": "大宗商品与能源",
+                            "count": 200,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "🧠",
+                            "title": "心理学与认知",
+                            "file": "心理学与认知",
+                            "count": 50,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "🌍",
+                            "title": "国际财经",
+                            "file": "国际财经",
+                            "count": 200,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "🤖",
+                            "title": "科技与研究",
+                            "file": "科技与研究",
+                            "count": 66,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "🏥",
+                            "title": "健康与公共卫生",
+                            "file": "健康与公共卫生",
+                            "count": 71,
+                            "archiveCount": 0
+                        },
+                        {
+                            "icon": "⚖️",
+                            "title": "法律与伦理",
+                            "file": "法律与伦理",
+                            "count": 34,
+                            "archiveCount": 0
+                        }
+                    ]
+                },
+                "analysis": {
+                    "date": "2026-05-26",
+                    "generatedAt": "2026-05-26T08:56:12.820Z",
+                    "newsCount": 50,
+                    "perspective": "行业深潜",
+                    "analysis": "## 📌 今日要点\n今日新闻的核心张力在于一场围绕“金融业合法性”的叙事战争与实体地域的重构。《纽约时报》旗帜鲜明地将金融业定性为“骗局”（热度100），而《City Journal》则针锋相对地为其实体价值辩护。与此同时，德克萨斯州正试图加冕为美国“下一个金融中心”（热度80），揭示了资本在地理和政治版图上的一轮悄然重塑。金融业内部的“自我审视”与地域上的“去中心化”正在同步发生，构成今日超越大盘波动的深层行业变动。\n\n## 🔍 深度解读\n**1. 金融业的“合法性危机”与两极化叙事**\n今天最引人注目的是对金融业本质的激烈辩论。《纽约时报》直指金融业为“骗局”，这并非简单的民粹宣泄，而是在当前战争消耗加剧（来自昨日新闻）、实体产业回流被反复强调的宏观背景下，对“纸上繁荣”的一种社会清算。然而，《City Journal》和美国银行的论点揭示了硬币的另一面：即便在AI投资与地缘风险并存的2026年，金融业依然充当着资本定价、风险转移的核心枢纽。这场辩论的实质不是“金融有没有用”，而是“金融该为谁服务”——是继续制造“K型分裂”中的上层资产泡沫，还是回归巴菲特的“旧经济”语境，服务于实体锚点？\n\n**2. 德克萨斯州的“金融起义”：从华尔街到奥斯汀的产业链迁徙**\n德州试图成为“下一个金融中心”的野心（《本周》），是这场叙事战争的实体化投射。这不再是简单的税收优惠驱动的企业搬迁，而是一条完整的金融产业链正在从纽约/加州向外撕裂。当《纽约时报》在质疑金融业的存在意义时，德州却在务实地将金融的“后台”职能——数据中心、法务支持、资管运营——与本地蓬勃发展的能源实体经济和科技新贵深度绑定。这是一种新型的“嵌入式金融”范式，而非快进快出的投机资本，其竞局格局直指纽约和加州的监管与成本软肋。\n\n## 🏭 行业深潜: **金融服务业**\n今日新闻将金融服务业推到了解剖台前，但这次的焦点不只是股价与利率，而是**行业存在的底层逻辑与地理版图**的深刻重构。\n\n**产业链透视**\n- **上游（资本与信任之源）**: 当前正经历前所未有的撕裂。一边是散户与部分舆论将金融视为“合法劫掠”，另一边是巴菲特所代表的老派资本坚持“耐心资本”在实体中的价值。信任赤字正在使廉价资金变得“不廉价”，因为获取资金的隐性社会与政治成本急剧上升。\n- **中游（机构与中介）**: 正处于双重夹击中。《纽约时报》的攻击可能加速监管收紧与人才从金融业流失的“ESG化”。而《City Journal》的辩护则反映出部分机构正急切地寻求将自身包装成解决实体问题的“基建型金融”，而非交易型金融。以色列金融科技在战火中蓬勃（CNBC）的案例，恰恰因为其将金融技术作为维持社会坚韧的实体工具，而非纯粹的套利机器。\n- **下游（地域与生态）**: 德州的崛起代表着“金融节点化”的趋势。金融不再需要集中于曼哈顿一个大脑，而是成为嵌入区域实体经济的神经网络节点。这意味着为本地能源转型、制造业回流提供定制化金融服务的**精品投行、属地化资管公司、供应链金融科技**将确定性受益。竞争格局从“华尔街内部座次重排”演变为“多个区域金融中心的联盟与对抗”，受损最大的是依赖单一物理中心集聚效应、成本高企的传统中间业务。\n\n**受益/受损分析**\n- **潜在受益者**: 德州及类似新兴金融中心的商业地产、专业服务律所、掌握区域网络的社区银行/精品投行、服务于制造业回流的供应链金融平台。\n- **潜在受损者**: 纽约与加州高度依赖“面对面”高端交易和监管套利的传统投行与律所、单纯追逐二级市场价格波动的杠杆型对冲基金模式。\n\n## 📊 市场信号\n- **金融业（叙事驱动）**: **中性偏谨慎**。强烈的舆论否定会对金融股、尤其是零售友好型券商和消费信贷的估值产生“社会性折价”压力。但《City Journal》的辩护和实体化转向提供了底部支撑。信号强度：强。\n- **德克萨斯州相关资产**: **看涨**。涉及德州本地银行、商业地产信托及该州产业生态的债券与股票可能获得“地域风险溢价重估”的机会。信号强度：中。\n- **以色列科技/金融科技**: **看涨**。被证实能在极端地缘风险中充当经济韧性“润滑剂”的金融科技模式，将获得全球资本在配置“战争对冲”时的优先考虑。信号强度：中。\n\n## ⚠️ 风险提示\n最大的风险在于“标签化”蔓延。对金融业“骗局”的定性如果从舆论升级为政策倾向（如暴利税、更严酷的奖金限制），可能导致一场自上而下的“金融业供给侧改革”，引发不可预知的流动性收缩。同时，德州等新兴中心若无法解决与其产业繁荣伴生的环境与社会成本，可能重蹈“先发展后治理”的信任陷阱。\n\n## 🔮 前瞻展望\n未来1-2周，市场将不仅是消化经济数据，更在消化这场“金融业的社会角色”辩论。大盘可能持续盘整，但**金融板块内部将出现显著分化**：与实体基建、区域经济深度捆绑的金融股逻辑走强，而依赖复杂衍生品和全球化套利的“旧华尔街叙事”股票将遭遇持续质疑。德州的金融中心叙事将成为地域性投资主题的催化剂。",
+                    "structured": {
+                        "sentiment": "分化",
+                        "riskLevel": "中",
+                        "keyThemes": [
+                            "金融业合法性辩论",
+                            "德克萨斯州金融中心崛起",
+                            "金融产业链地理重构",
+                            "嵌入实体的金融服务"
+                        ],
+                        "sectors": [
+                            "金融服务业",
+                            "商业地产(德州)",
+                            "金融科技(以色列)"
+                        ],
+                        "outlook": "金融板块内部分化加剧，与实体和区域绑定的资产获得叙事溢价，传统交易型叙事承压。",
+                        "hotKeywords": [],
+                        "eventChains": [
+                            {
+                                "id": "",
+                                "title": "美国金融业社会角色大辩论",
+                                "summary": "《纽约时报》将金融业指为骗局，《City Journal》等为其辩护，社会对金融业存在价值的质疑达到高峰，可能引发行业经营逻辑的重构。",
+                                "keywords": [
+                                    "金融骗局",
+                                    "金融业价值",
+                                    "监管前景"
+                                ],
+                                "status": "active"
+                            },
+                            {
+                                "id": "",
+                                "title": "美国金融地理版图重塑",
+                                "summary": "德克萨斯州积极吸引金融机构，意图成为下一个美国金融中心，挑战纽约和加州的地位，推动金融产业链的分散化和嵌入式发展。",
+                                "keywords": [
+                                    "金融中心",
+                                    "德克萨斯",
+                                    "产业链转移"
+                                ],
+                                "status": "active"
+                            }
+                        ]
+                    },
+                    "hotKeywords": [],
+                    "sources": [
+                        {
+                            "title": "特朗普政府领导下的股市： 2026年是什么驱动市场？ -美国银行",
+                            "source": "Reuters"
+                        },
+                        {
+                            "title": "股市多头可能忘记了经济预警-雅虎财经",
+                            "source": "Reuters"
+                        },
+                        {
+                            "title": "随着伊朗战争的经济风险加剧，股票抛售-《华尔街日报》",
+                            "source": "Reuters"
+                        },
+                        {
+                            "title": "戴夫·拉姆齐（ Dave Ramsey ）表示，听到有关经济和股市的坏消息将在短短3年内花费67 ％的收益。“这不是新闻” -雅虎财经",
+                            "source": "Reuters"
+                        },
+                        {
+                            "title": "担心经济状况？投资这些优质股票-雅虎财经",
+                            "source": "Reuters"
+                        },
+                        {
+                            "title": "哪个将首先给出： K型经济或股票市场？ -雅虎财经",
+                            "source": "Reuters"
+                        },
+                        {
+                            "title": "“通货膨胀将在2026年出人意料地走下坡路” ：为什么华尔街预计今年会出现富裕的经济，股票上涨-雅虎财经",
+                            "source": "Reuters"
+                        },
+                        {
+                            "title": "分析师表示，股市翻番是没有利率飙升GDP繁荣的白日梦-雅虎财经",
+                            "source": "Reuters"
+                        },
+                        {
+                            "title": "“我最担心的问题” ：为什么股市繁荣可能成为美国最大的风险-雅虎财经",
+                            "source": "Reuters"
+                        },
+                        {
+                            "title": "零工经济型股票第四季度收入回顾：优步（纽约证券交易所代码： UBER ）大放异彩-雅虎财经",
+                            "source": "Reuters"
+                        }
+                    ]
+                }
+            }
+        </script>
+        <script>
+            // ===== 统一 LRU 缓存 =====
+            class LRU {
+                constructor(max) {
+                    this._m = new Map();
+                    this._max = max;
+                }
+                get(k) {
+                    const m = this._m;
+                    if (!m.has(k)) return null;
+                    const v = m.get(k);
+                    m.delete(k);
+                    m.set(k, v);
+                    return v;
+                }
+                set(k, v) {
+                    const m = this._m;
+                    if (m.has(k)) m.delete(k);
+                    else if (m.size >= this._max)
+                        m.delete(m.keys().next().value);
+                    m.set(k, v);
+                }
+                has(k) {
+                    return this._m.has(k);
+                }
+            }
 
-// ===== 状态 =====
-const S={dates:[],dateIdx:-1,date:"",cat:"analysis",meta:null,newsPage:{},_loading:false};
-const $=id=>document.getElementById(id);
-const main=$("main"),catList=$("catList");
-const _escEl=document.createElement("div");
-// esc: 单次正则替换（合并 " 和 HTML 特殊字符）
-const _escRe=/[&<>"']/g;
-const _escMap={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"};
-const esc=s=>{if(s==null)return"";_escEl.textContent=s;return _escEl.innerHTML.replace(_escRe,c=>_escMap[c])};
+            // ===== 状态 =====
+            const S = {
+                dates: [],
+                dateIdx: -1,
+                date: "",
+                cat: "analysis",
+                meta: null,
+                newsPage: {},
+                _loading: false,
+            };
+            const $ = (id) => document.getElementById(id);
+            const main = $("main"),
+                catList = $("catList");
+            const _escEl = document.createElement("div");
+            // textContent -> innerHTML 已正确处理 < > & 的转义
+            const esc = (s) => {
+                if (s == null) return "";
+                _escEl.textContent = s;
+                return _escEl.innerHTML;
+            };
 
-function safeHref(url){try{const u=new URL(url);if(u.protocol==="http:"||u.protocol==="https:")return url}catch{return""}return""}
-function fetchT(u,ms=10000){const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);return fetch(u,{signal:c.signal}).finally(()=>clearTimeout(t))}
+            function safeHref(url) {
+                try {
+                    const u = new URL(url);
+                    if (u.protocol === "http:" || u.protocol === "https:")
+                        return url;
+                } catch {}
+                return "";
+            }
+            function fetchT(u, ms = 10000) {
+                const c = new AbortController();
+                const t = setTimeout(() => c.abort(), ms);
+                return fetch(u, { signal: c.signal }).finally(() =>
+                    clearTimeout(t),
+                );
+            }
 
-// ===== 缓存实例 =====
-const rawCatCache=new LRU(8);
-const analysisSummaryCache=new LRU(16);
-const analysisFullCache=new LRU(8);
-const renderedAnalysisCache=new LRU(10);
+            // ===== 缓存实例 =====
+            const rawCatCache = new LRU(8);
+            const analysisSummaryCache = new LRU(16);
+            const analysisFullCache = new LRU(8);
+            const renderedAnalysisCache = new LRU(10);
 
-// ===== Meta =====
-async function loadMeta(){
-  if(S.meta)return S.meta;
-  try{const r=await fetchT("data/news/meta.json");S.meta=await r.json()}catch{S.meta={categories:[]}}
-  return S.meta;
-}
+            // ===== Meta =====
+            async function loadMeta() {
+                if (S.meta) return S.meta;
+                try {
+                    const r = await fetchT("data/news/meta.json");
+                    S.meta = await r.json();
+                } catch {
+                    S.meta = { categories: [] };
+                }
+                return S.meta;
+            }
 
-// ===== 分类新闻加载（不按日期筛选，按日期倒序返回全部）=====
-async function loadNewsCat(file){
-  const cached=rawCatCache.get(file);
-  if(cached)return cached;
-  let data;
-  try{const r=await fetchT(`data/news/${encodeURIComponent(file)}.json`);data=await r.json()}catch{data={items:[]}}
-  const items=(data.items||[]).slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
-  rawCatCache.set(file,items);
-  return items;
-}
+            // ===== 分类新闻加载（不按日期筛选，按日期倒序返回全部）=====
+            async function loadNewsCat(file) {
+                const cached = rawCatCache.get(file);
+                if (cached) return cached;
+                let data;
+                try {
+                    const r = await fetchT(
+                        `data/news/${encodeURIComponent(file)}.json`,
+                    );
+                    data = await r.json();
+                } catch {
+                    data = { items: [] };
+                }
+                const items = (data.items || [])
+                    .slice()
+                    .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+                rawCatCache.set(file, items);
+                return items;
+            }
 
-// ===== 分析数据加载 =====
-async function loadAnalysisSummary(){
-  const cached=analysisSummaryCache.get(S.date);
-  if(cached)return cached;
-  try{const r=await fetchT(`data/news/analysis/${S.date}.json`);const d=await r.json();analysisSummaryCache.set(S.date,d);return d}catch{return null}
-}
-async function loadAnalysisFull(){
-  const cached=analysisFullCache.get(S.date);
-  if(cached)return cached;
-  const summary=analysisSummaryCache.get(S.date);
-  if(summary&&summary.analysis){analysisFullCache.set(S.date,summary);return summary}
-  try{const r=await fetchT(`data/news/analysis/${S.date}.json`);const d=await r.json();analysisFullCache.set(S.date,d);return d}catch{return null}
-}
+            // ===== 分析数据加载 =====
+            async function loadAnalysisSummary() {
+                const cached = analysisSummaryCache.get(S.date);
+                if (cached) return cached;
+                try {
+                    const r = await fetchT(`data/news/analysis/${S.date}.json`);
+                    const d = await r.json();
+                    analysisSummaryCache.set(S.date, d);
+                    return d;
+                } catch {
+                    return null;
+                }
+            }
+            async function loadAnalysisFull() {
+                const cached = analysisFullCache.get(S.date);
+                if (cached) return cached;
+                const summary = analysisSummaryCache.get(S.date);
+                if (summary && summary.analysis) {
+                    analysisFullCache.set(S.date, summary);
+                    return summary;
+                }
+                try {
+                    const r = await fetchT(`data/news/analysis/${S.date}.json`);
+                    const d = await r.json();
+                    analysisFullCache.set(S.date, d);
+                    return d;
+                } catch {
+                    return null;
+                }
+            }
 
-// ===== 预加载相邻日期 =====
-function prefetchAdjacentAnalysis(){
-  if(S.dateIdx<0)return;
-  const toPrefetch=[];
-  if(S.dateIdx>0)toPrefetch.push(S.dates[S.dateIdx-1]);
-  if(S.dateIdx<S.dates.length-1)toPrefetch.push(S.dates[S.dateIdx+1]);
-  toPrefetch.forEach((d,i)=>{
-    if(analysisSummaryCache.has(d))return;
-    setTimeout(()=>{fetchT(`data/news/analysis/${d}.json`).then(r=>r.json()).then(j=>analysisSummaryCache.set(d,j)).catch(()=>{})},i*300);
-  });
-}
+            // ===== 预加载相邻日期 =====
+            function prefetchAdjacentAnalysis() {
+                if (S.dateIdx < 0) return;
+                const toPrefetch = [];
+                if (S.dateIdx > 0) toPrefetch.push(S.dates[S.dateIdx - 1]);
+                if (S.dateIdx < S.dates.length - 1)
+                    toPrefetch.push(S.dates[S.dateIdx + 1]);
+                toPrefetch.forEach((d, i) => {
+                    if (analysisSummaryCache.has(d)) return;
+                    setTimeout(() => {
+                        fetchT(`data/news/analysis/${d}.json`)
+                            .then((r) => r.json())
+                            .then((j) => analysisSummaryCache.set(d, j))
+                            .catch(() => {});
+                    }, i * 300);
+                });
+            }
 
-// ===== Markdown 解析（单遍扫描） =====
-function parseMarkdown(text){
-  let body=esc(text);
-  // 代码块（先处理，避免内部被其他规则匹配）
-  body=body.replace(/```(\w*)\n([\s\S]*?)```/g,(_,lang,code)=>`<pre><code>${code.replace(/\n$/,'')}</code></pre>`);
-  // 行内代码
-  body=body.replace(/`([^`]+)`/g,'<code>$1</code>');
-  // 表格：连续的 | 开头行
-  body=body.replace(/((?:^\|.+\|$\n?)+)/gm,(block)=>{
-    const rows=block.trim().split('\n').filter(r=>r.trim());
-    if(rows.length<2)return block;
-    // 跳过分隔行 |---|---|
-    const isSep=r=>/^\|[\s:-]+\|$/.test(r.trim());
-    const header=rows[0];
-    const bodyRows=rows.slice(1).filter(r=>!isSep(r));
-    const parseCells=(row,tag)=>row.split('|').slice(1,-1).map(c=>`<${tag}>${c.trim()}</${tag}>`).join('');
-    const thead=`<thead><tr>${parseCells(header,'th')}</tr></thead>`;
-    const tbody=bodyRows.length?`<tbody>${bodyRows.map(r=>`<tr>${parseCells(r,'td')}</tr>`).join('')}</tbody>`:'';
-    return`<table>${thead}${tbody}</table>`;
-  });
-  // 引用块
-  body=body.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
-  // 合并连续 blockquote
-  body=body.replace(/(<\/blockquote>\n*<blockquote>)+/g,'<br>');
-  // 标题
-  body=body.replace(/^### (.+)$/gm,'<h4>$1</h4>');
-  body=body.replace(/^## (.+)$/gm,'<h3>$1</h3>');
-  // 列表项（无序 + 有序）
-  body=body.replace(/^- (.+)$/gm,'<li>$1</li>');
-  body=body.replace(/^\d+\. (.+)$/gm,'<li>$1</li>');
-  // 行内：加粗、斜体、链接
-  body=body.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-  body=body.replace(/\*(.+?)\*/g,'<em>$1</em>');
-  body=body.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
-  // 合并连续 <li> 为 <ul>
-  body=body.replace(/(<li>.*<\/li>\n?)+/g,m=>`<ul>${m}</ul>`);
-  // 水平线
-  body=body.replace(/^-{3,}\s*$/gm,'<hr>');
-  // 段落分割
-  body=body.replace(/\n\n/g,'</p><p>');
-  body=`<p>${body}</p>`;
-  // 清理：空段落、包裹块级元素的 <p>
-  body=body.replace(/<p>\s*<\/p>/g,'');
-  body=body.replace(/<p>\s*(<h[34]>|<table|<blockquote|<pre|<ul|<hr)/g,'$1');
-  body=body.replace(/(<\/h[34]>|<\/table>|<\/blockquote>|<\/pre>|<\/ul>|<hr>)\s*<\/p>/g,'$1');
-  return body;
-}
+            // ===== Markdown 解析（单遍扫描） =====
+            function parseMarkdown(text) {
+                let body = esc(text);
+                // 代码块（先处理，避免内部被其他规则匹配）
+                body = body.replace(
+                    /```(\w*)\n([\s\S]*?)```/g,
+                    (_, lang, code) =>
+                        `<pre><code>${code.replace(/\n$/, "")}</code></pre>`,
+                );
+                // 行内代码
+                body = body.replace(/`([^`]+)`/g, "<code>$1</code>");
+                // 表格：连续的 | 开头行
+                body = body.replace(/((?:^\|.+\|$\n?)+)/gm, (block) => {
+                    const rows = block
+                        .trim()
+                        .split("\n")
+                        .filter((r) => r.trim());
+                    if (rows.length < 2) return block;
+                    // 跳过分隔行 |---|---|
+                    const isSep = (r) => /^\|[\s:-]+\|$/.test(r.trim());
+                    const header = rows[0];
+                    const bodyRows = rows.slice(1).filter((r) => !isSep(r));
+                    const parseCells = (row, tag) =>
+                        row
+                            .split("|")
+                            .slice(1, -1)
+                            .map((c) => `<${tag}>${c.trim()}</${tag}>`)
+                            .join("");
+                    const thead = `<thead><tr>${parseCells(header, "th")}</tr></thead>`;
+                    const tbody = bodyRows.length
+                        ? `<tbody>${bodyRows.map((r) => `<tr>${parseCells(r, "td")}</tr>`).join("")}</tbody>`
+                        : "";
+                    return `<table>${thead}${tbody}</table>`;
+                });
+                // 引用块
+                body = body.replace(
+                    /^&gt; (.+)$/gm,
+                    "<blockquote>$1</blockquote>",
+                );
+                // 合并连续 blockquote
+                body = body.replace(
+                    /(<\/blockquote>\n*<blockquote>)+/g,
+                    "<br>",
+                );
+                // 标题
+                body = body.replace(/^### (.+)$/gm, "<h4>$1</h4>");
+                body = body.replace(/^## (.+)$/gm, "<h3>$1</h3>");
+                // 列表项（无序 + 有序）
+                body = body.replace(/^- (.+)$/gm, "<li>$1</li>");
+                body = body.replace(/^\d+\. (.+)$/gm, "<li>$1</li>");
+                // 行内：加粗、斜体、链接
+                body = body.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+                body = body.replace(/\*(.+?)\*/g, "<em>$1</em>");
+                body = body.replace(
+                    /\[([^\]]+)\]\(([^)]+)\)/g,
+                    '<a href="$2" target="_blank" rel="noopener">$1</a>',
+                );
+                // 合并连续 <li> 为 <ul>
+                body = body.replace(
+                    /(<li>.*<\/li>\n?)+/g,
+                    (m) => `<ul>${m}</ul>`,
+                );
+                // 水平线
+                body = body.replace(/^-{3,}\s*$/gm, "<hr>");
+                // 段落分割
+                body = body.replace(/\n\n/g, "</p><p>");
+                body = `<p>${body}</p>`;
+                // 清理：空段落、包裹块级元素的 <p>
+                body = body.replace(/<p>\s*<\/p>/g, "");
+                body = body.replace(
+                    /<p>\s*(<h[34]>|<table|<blockquote|<pre|<ul|<hr)/g,
+                    "$1",
+                );
+                body = body.replace(
+                    /(<\/h[34]>|<\/table>|<\/blockquote>|<\/pre>|<\/ul>|<hr>)\s*<\/p>/g,
+                    "$1",
+                );
+                return body;
+            }
 
-// ===== 渲染结构化标签 =====
-function sortByWeight(items,scoreMap){
-  return[...items].sort((a,b)=>(scoreMap.get(b)||0)-(scoreMap.get(a)||0));
-}
-function renderStructuredTags(data){
-  const per=data.perspective?` · ${data.perspective}`:"";
-  let tags="";const s=data.structured;
-  if(s){
-    const sm=s.sentiment||"中性",rk=s.riskLevel||"中";
-    const smC={看涨:"badge-up",看跌:"badge-down",分化:"badge-mix"}[sm]||"badge-flat";
-    const rkC={高:"badge-risk-h",低:"badge-risk-l"}[rk]||"badge-risk-m";
-    const smI={看涨:"📈",看跌:"📉",分化:"🔀"}[sm]||"➡️";
-    const rkI={高:"🔴",低:"🟢"}[rk]||"🟡";
-    const b=`<span class="badge ${smC}">${smI} ${sm}</span><span class="badge ${rkC}">${rkI} 风险${rk}</span>`;
-    // 用 hotKeywords 分数作为权重排序主题/行业
-    const kwMap=new Map((data.hotKeywords||[]).map(h=>[h.keyword,h.score]));
-    const themes=sortByWeight(s.keyThemes||[],kwMap);
-    const sectors=sortByWeight(s.sectors||[],kwMap);
-    const t=themes.map(x=>`<span class="tag">${esc(x)}</span>`).join("");
-    const sec=sectors.map(x=>`<span class="tag">🏭 ${esc(x)}</span>`).join("");
-    const o=s.outlook?`<div class="outlook">${esc(s.outlook)}</div>`:"";
-    tags=`<div class="a-tags">${b}${t}${sec}</div>${o}`;
-  }
-  const hotKw=(data.hotKeywords||[]).slice(0,8);
-  const hotHtml=hotKw.length>0?`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)">${hotKw.map(hk=>`<span class="tag" style="background:rgba(239,68,68,.08);color:#ef4444;border-color:rgba(239,68,68,.2)">🔥 ${esc(hk.keyword)} <span style="opacity:.6;margin-left:2px">${hk.score}</span></span>`).join("")}</div>`:"";
-  return{tags,hotHtml,per};
-}
-function analysisHistoryHtml(currentDate){
-  const dates=S.dates.filter(d=>d!==currentDate).slice(0,30);
-  if(!dates.length)return'';
-  const items=dates.map(d=>{
-    const m=d.slice(5,7).replace(/^0/,'');
-    const day=d.slice(8,10).replace(/^0/,'');
-    return `<a class="a-history-item" data-date="${d}" title="${d}">${m}月${day}日</a>`;
-  }).join('');
-  const needToggle=dates.length>7;
-  return `<div class="a-history">
+            // ===== 渲染结构化标签 =====
+            function sortByWeight(items, scoreMap) {
+                return [...items].sort(
+                    (a, b) => (scoreMap.get(b) || 0) - (scoreMap.get(a) || 0),
+                );
+            }
+            function renderStructuredTags(data) {
+                const per = data.perspective ? ` · ${data.perspective}` : "";
+                let tags = "";
+                const s = data.structured;
+                if (s) {
+                    const sm = s.sentiment || "中性",
+                        rk = s.riskLevel || "中";
+                    const smC =
+                        {
+                            看涨: "badge-up",
+                            看跌: "badge-down",
+                            分化: "badge-mix",
+                        }[sm] || "badge-flat";
+                    const rkC =
+                        { 高: "badge-risk-h", 低: "badge-risk-l" }[rk] ||
+                        "badge-risk-m";
+                    const smI =
+                        { 看涨: "📈", 看跌: "📉", 分化: "🔀" }[sm] || "➡️";
+                    const rkI = { 高: "🔴", 低: "🟢" }[rk] || "🟡";
+                    const b = `<span class="badge ${smC}">${smI} ${sm}</span><span class="badge ${rkC}">${rkI} 风险${rk}</span>`;
+                    // 用 hotKeywords 分数作为权重排序主题/行业
+                    const kwMap = new Map(
+                        (data.hotKeywords || []).map((h) => [
+                            h.keyword,
+                            h.score,
+                        ]),
+                    );
+                    const themes = sortByWeight(s.keyThemes || [], kwMap);
+                    const sectors = sortByWeight(s.sectors || [], kwMap);
+                    const t = themes
+                        .map((x) => `<span class="tag">${esc(x)}</span>`)
+                        .join("");
+                    const sec = sectors
+                        .map((x) => `<span class="tag">🏭 ${esc(x)}</span>`)
+                        .join("");
+                    const o = s.outlook
+                        ? `<div class="outlook">${esc(s.outlook)}</div>`
+                        : "";
+                    tags = `<div class="a-tags">${b}${t}${sec}</div>${o}`;
+                }
+                const hotKw = (data.hotKeywords || []).slice(0, 8);
+                const hotHtml =
+                    hotKw.length > 0
+                        ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)">${hotKw.map((hk) => `<span class="tag" style="background:rgba(239,68,68,.08);color:#ef4444;border-color:rgba(239,68,68,.2)">🔥 ${esc(hk.keyword)} <span style="opacity:.6;margin-left:2px">${hk.score}</span></span>`).join("")}</div>`
+                        : "";
+                return { tags, hotHtml, per };
+            }
+            function analysisHistoryHtml(currentDate) {
+                const dates = S.dates
+                    .filter((d) => d !== currentDate)
+                    .slice(0, 30);
+                if (!dates.length) return "";
+                const items = dates
+                    .map((d) => {
+                        const m = d.slice(5, 7).replace(/^0/, "");
+                        const day = d.slice(8, 10).replace(/^0/, "");
+                        return `<a class="a-history-item" data-date="${d}" title="${d}">${m}月${day}日</a>`;
+                    })
+                    .join("");
+                const needToggle = dates.length > 7;
+                return `<div class="a-history">
     <div class="a-history-title">📚 以往的AI分析</div>
     <div class="a-history-list">${items}</div>
-    ${needToggle?'<button class="a-history-toggle" onclick="this.previousElementSibling.classList.toggle(\'expanded\');this.textContent=this.previousElementSibling.classList.contains(\'expanded\')?\'收起 ▲\':\'展开全部 ▼\'">展开全部 ▼</button>':''}
+    ${needToggle ? "<button class=\"a-history-toggle\" onclick=\"this.previousElementSibling.classList.toggle('expanded');this.textContent=this.previousElementSibling.classList.contains('expanded')?'收起 ▲':'展开全部 ▼'\">展开全部 ▼</button>" : ""}
   </div>`;
-}
-function renderAnalysis(data){
-  if(!data||!data.analysis)return'<div class="empty"><div class="empty-icon">📭</div><p>暂无分析数据</p></div>';
-  const date=data.date||(data.generatedAt?new Date(data.generatedAt).toLocaleDateString("sv-SE",{timeZone:"Asia/Shanghai"}):"");
-  const{tags,hotHtml,per}=renderStructuredTags(data);
-  const body=parseMarkdown(data.analysis);
-  return`<div class="card a-card">
+            }
+            function renderAnalysis(data) {
+                if (!data || !data.analysis)
+                    return '<div class="empty"><div class="empty-icon">📭</div><p>暂无分析数据</p></div>';
+                const date =
+                    data.date ||
+                    (data.generatedAt
+                        ? new Date(data.generatedAt).toLocaleDateString(
+                              "sv-SE",
+                              { timeZone: "Asia/Shanghai" },
+                          )
+                        : "");
+                const { tags, hotHtml, per } = renderStructuredTags(data);
+                const body = parseMarkdown(data.analysis);
+                return `<div class="card a-card">
     <div class="a-head"><span class="a-icon">🤖</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span></div>
     ${tags}${hotHtml}<div class="a-body">${body}</div>${analysisHistoryHtml(date)}</div>`;
-}
+            }
 
-// ===== 新闻列表渲染 =====
-function renderNewsItem(it){
-  const href=it.link?safeHref(it.link):"";
-  const t=href?`<a href="${esc(href)}" target="_blank" rel="noopener">${esc(it.title)}</a>`:esc(it.title);
-  const s=it.source?`<span class="news-src">${esc(it.source)}</span>`:"";
-  return`<div class="news-item"><span class="news-title">${t}</span>${s}</div>`;
-}
+            // ===== 新闻列表渲染 =====
+            function renderNewsItem(it) {
+                const href = it.link ? safeHref(it.link) : "";
+                const t = href
+                    ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(it.title)}</a>`
+                    : esc(it.title);
+                const s = it.source
+                    ? `<span class="news-src">${esc(it.source)}</span>`
+                    : "";
+                return `<div class="news-item"><span class="news-title">${t}</span>${s}</div>`;
+            }
 
-// pageSize: 固定 40 条/页
-function getPageSize(){return 40}
+            // pageSize: 固定 40 条/页
+            function getPageSize() {
+                return 40;
+            }
 
-function renderNewsHead(catIcon,catTitle,count){
-  return`<div class="news-head"><span class="news-head-icon">${catIcon}</span><span class="news-head-title">${esc(catTitle)}</span><span class="news-head-count">${count} 条</span></div>`;
-}
-function renderNews(items,catTitle,catIcon,appendMode){
-  if(!items||items.length===0)return`<div class="news-head"><span class="news-head-icon">${catIcon}</span><span class="news-head-title">${esc(catTitle)}</span></div><div class="empty"><div class="empty-icon">📭</div><p>暂无新闻</p></div>`;
-  const PAGE=getPageSize();
-  const page=S.newsPage[catTitle]||1;
-  const show=items.slice(0,page*PAGE);
-  const hasMore=items.length>show.length;
-  if(appendMode){
-    const prevCount=(page-1)*PAGE;
-    const newItems=show.slice(prevCount);
-    const newHtml=newItems.map(renderNewsItem).join("");
-    const moreHtml=hasMore?`<button class="load-more" data-cat="${esc(catTitle)}">加载更多 (${items.length-show.length} 条)</button>`:"";
-    return{newHtml,moreHtml,hasMore,total:items.length,shown:show.length};
-  }
-  const list=show.map(renderNewsItem).join("");
-  const more=hasMore?`<button class="load-more" data-cat="${esc(catTitle)}">加载更多 (${items.length-show.length} 条)</button>`:"";
-  return renderNewsHead(catIcon,catTitle,items.length)+`<div id="newsList">${list}</div>${more}`;
-}
+            function renderNewsHead(catIcon, catTitle, count) {
+                return `<div class="news-head"><span class="news-head-icon">${catIcon}</span><span class="news-head-title">${esc(catTitle)}</span><span class="news-head-count">${count} 条</span></div>`;
+            }
+            function renderNews(items, catTitle, catIcon, appendMode) {
+                if (!items || items.length === 0)
+                    return `<div class="news-head"><span class="news-head-icon">${catIcon}</span><span class="news-head-title">${esc(catTitle)}</span></div><div class="empty"><div class="empty-icon">📭</div><p>暂无新闻</p></div>`;
+                const PAGE = getPageSize();
+                const page = S.newsPage[catTitle] || 1;
+                const show = items.slice(0, page * PAGE);
+                const hasMore = items.length > show.length;
+                if (appendMode) {
+                    const prevCount = (page - 1) * PAGE;
+                    const newItems = show.slice(prevCount);
+                    const newHtml = newItems.map(renderNewsItem).join("");
+                    const moreHtml = hasMore
+                        ? `<button class="load-more" data-cat="${esc(catTitle)}">加载更多 (${items.length - show.length} 条)</button>`
+                        : "";
+                    return {
+                        newHtml,
+                        moreHtml,
+                        hasMore,
+                        total: items.length,
+                        shown: show.length,
+                    };
+                }
+                const list = show.map(renderNewsItem).join("");
+                const more = hasMore
+                    ? `<button class="load-more" data-cat="${esc(catTitle)}">加载更多 (${items.length - show.length} 条)</button>`
+                    : "";
+                return (
+                    renderNewsHead(catIcon, catTitle, items.length) +
+                    `<div id="newsList">${list}</div>${more}`
+                );
+            }
 
-// ===== 侧边栏构建 =====
-function buildSidebarFromMeta(meta){
-  const frag=document.createDocumentFragment();
-  const addItem=(cat,icon,name,count)=>{
-    const el=document.createElement("div");
-    el.className="cat-item"+(cat==="analysis"?" active":"");
-    el.dataset.cat=cat;
-    el.innerHTML=`<span class="cat-icon">${icon}</span><span class="cat-name">${esc(name)}</span>${count!=null?`<span class="cat-count">${count}</span>`:""}`;
-    frag.appendChild(el);
-  };
-  addItem("analysis","🤖","AI 深度分析");
-  for(const c of meta.categories)addItem(c.file,c.icon,c.title,c.count);
-  catList.innerHTML="";
-  catList.appendChild(frag);
-}
+            // ===== 侧边栏构建 =====
+            function buildSidebarFromMeta(meta) {
+                const frag = document.createDocumentFragment();
+                const addItem = (cat, icon, name, count) => {
+                    const el = document.createElement("div");
+                    el.className =
+                        "cat-item" + (cat === "analysis" ? " active" : "");
+                    el.dataset.cat = cat;
+                    el.innerHTML = `<span class="cat-icon">${icon}</span><span class="cat-name">${esc(name)}</span>${count != null ? `<span class="cat-count">${count}</span>` : ""}`;
+                    frag.appendChild(el);
+                };
+                addItem("analysis", "🤖", "AI 深度分析");
+                for (const c of meta.categories)
+                    addItem(c.file, c.icon, c.title, c.count);
+                catList.innerHTML = "";
+                catList.appendChild(frag);
+            }
 
-// ===== 日期导航（O(1) 查找） =====
-function dateIdx(d){return S.dates.indexOf(d)} // fallback
-function setDate(d){
-  const idx=S.dates.indexOf(d);
-  if(idx<0)return;
-  S.date=d;S.dateIdx=idx;
-  updateDateNav();
-  main.scrollTop=0;
-  // debounce history.replaceState
-  if(S._histTimer)cancelAnimationFrame(S._histTimer);
-  S._histTimer=requestAnimationFrame(()=>history.replaceState(null,"",`#${d}`));
-  loadView();
-}
+            // ===== 日期导航（O(1) 查找） =====
+            function dateIdx(d) {
+                return S.dates.indexOf(d);
+            } // fallback
+            function setDate(d) {
+                const idx = S.dates.indexOf(d);
+                if (idx < 0) return;
+                S.date = d;
+                S.dateIdx = idx;
+                updateDateNav();
+                main.scrollTop = 0;
+                // debounce history.replaceState
+                if (S._histTimer) cancelAnimationFrame(S._histTimer);
+                S._histTimer = requestAnimationFrame(() =>
+                    history.replaceState(null, "", `#${d}`),
+                );
+                loadView();
+            }
 
-// ===== 加载视图 =====
-async function loadView(){
-  if(S._loading)return;S._loading=true;
-  main.scrollTop=0;
-  try{
-    if(S.cat==="analysis"){
-      const cachedHtml=renderedAnalysisCache.get(S.date);
-      if(cachedHtml){main.innerHTML=cachedHtml;prefetchAdjacentAnalysis();return}
-      main.innerHTML='<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
-      const data=await loadAnalysisSummary();
-      if(!data||!data.analysis){const html=renderAnalysis(data);main.innerHTML=html;renderedAnalysisCache.set(S.date,html);return}
-      const date=data.date||(data.generatedAt?new Date(data.generatedAt).toLocaleDateString("sv-SE",{timeZone:"Asia/Shanghai"}):"");
-      const{tags,hotHtml,per}=renderStructuredTags(data);
-      main.innerHTML=`<div class="card a-card">
+            // ===== 加载视图 =====
+            async function loadView() {
+                if (S._loading) return;
+                S._loading = true;
+                main.scrollTop = 0;
+                try {
+                    if (S.cat === "analysis") {
+                        const cachedHtml = renderedAnalysisCache.get(S.date);
+                        if (cachedHtml) {
+                            main.innerHTML = cachedHtml;
+                            prefetchAdjacentAnalysis();
+                            return;
+                        }
+                        main.innerHTML =
+                            '<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
+                        const data = await loadAnalysisSummary();
+                        if (!data || !data.analysis) {
+                            const html = renderAnalysis(data);
+                            main.innerHTML = html;
+                            renderedAnalysisCache.set(S.date, html);
+                            return;
+                        }
+                        const date =
+                            data.date ||
+                            (data.generatedAt
+                                ? new Date(data.generatedAt).toLocaleDateString(
+                                      "sv-SE",
+                                      { timeZone: "Asia/Shanghai" },
+                                  )
+                                : "");
+                        const { tags, hotHtml, per } =
+                            renderStructuredTags(data);
+                        main.innerHTML = `<div class="card a-card">
         <div class="a-head"><span class="a-icon">🤖</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span></div>
         ${tags}${hotHtml}<div class="a-body"><div class="sk"><div class="sk-line"></div><div class="sk-line w80"></div><div class="sk-line w60"></div></div></div>${analysisHistoryHtml(date)}</div>`;
-      const full=await loadAnalysisFull();
-      const bodyEl=main.querySelector(".a-body");
-      if(full&&full.analysis&&bodyEl){bodyEl.innerHTML=parseMarkdown(full.analysis)}
-      renderedAnalysisCache.set(S.date,main.innerHTML);
-      prefetchAdjacentAnalysis();
-    }else{
-      main.innerHTML='<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
-      const meta=await loadMeta();
-      const cat=meta.categories.find(c=>c.file===S.cat);
-      if(!cat){main.innerHTML='<div class="empty">分类未找到</div>';return}
-      const items=await loadNewsCat(S.cat);
-      main.innerHTML=renderNews(items,cat.title,cat.icon);
-    }
-  }finally{S._loading=false}
-}
+                        const full = await loadAnalysisFull();
+                        const bodyEl = main.querySelector(".a-body");
+                        if (full && full.analysis && bodyEl) {
+                            bodyEl.innerHTML = parseMarkdown(full.analysis);
+                        }
+                        renderedAnalysisCache.set(S.date, main.innerHTML);
+                        prefetchAdjacentAnalysis();
+                    } else {
+                        main.innerHTML =
+                            '<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
+                        const meta = await loadMeta();
+                        const cat = meta.categories.find(
+                            (c) => c.file === S.cat,
+                        );
+                        if (!cat) {
+                            main.innerHTML =
+                                '<div class="empty">分类未找到</div>';
+                            return;
+                        }
+                        const items = await loadNewsCat(S.cat);
+                        main.innerHTML = renderNews(items, cat.title, cat.icon);
+                    }
+                } finally {
+                    S._loading = false;
+                }
+            }
 
-// ===== 事件绑定 =====
-function setupEvents(){
-  main.addEventListener("click",e=>{
-    const item=e.target.closest(".a-history-item");
-    if(!item)return;
-    e.preventDefault();
-    const d=item.dataset.date;
-    if(d&&S.dates.indexOf(d)>=0)setDate(d);
-  });
-  catList.onclick=e=>{
-    const item=e.target.closest(".cat-item");
-    if(!item)return;
-    const cat=item.dataset.cat;
-    if(cat===S.cat)return;
-    S.cat=cat;
-    catList.querySelectorAll(".cat-item").forEach(el=>el.classList.toggle("active",el.dataset.cat===cat));
-    S.newsPage={};
-    loadView();
-  };
-  catList.addEventListener("mouseenter",e=>{
-    const item=e.target.closest(".cat-item");
-    if(!item||item.dataset.cat==="analysis")return;
-    const file=item.dataset.cat;
-    if(!rawCatCache.has(file)){
-      fetchT(`data/news/${encodeURIComponent(file)}.json`).then(r=>r.json()).then(d=>{
-        const items=(d.items||[]).slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
-        rawCatCache.set(file,items);
-      }).catch(()=>{});
-    }
-  },true);
-  main.onclick=async e=>{
-    const btn=e.target.closest(".load-more");
-    if(!btn)return;
-    const cat=btn.dataset.cat;
-    S.newsPage[cat]=(S.newsPage[cat]||1)+1;
-    const meta=S.meta;
-    const catObj=meta.categories.find(c=>c.title===cat);
-    if(!catObj)return;
-    btn.disabled=true;btn.textContent="加载中...";
-    const items=await loadNewsCat(catObj.file);
-    const result=renderNews(items,cat,catObj.icon,true);
-    const listEl=main.querySelector("#newsList");
-    if(listEl){const frag=document.createElement("div");frag.innerHTML=result.newHtml;while(frag.firstChild)listEl.appendChild(frag.firstChild)}
-    btn.remove();
-    if(result.hasMore){
-      const newBtn=document.createElement("button");
-      newBtn.className="load-more";newBtn.dataset.cat=cat;
-      newBtn.textContent=`加载更多 (${result.total-result.shown} 条)`;
-      (main.querySelector(".card")||main).appendChild(newBtn);
-    }
-  };
-  window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(h&&h!==S.date&&S.dates.indexOf(h)>=0)setDate(h)});
-  document.getElementById('prevDate')?.addEventListener('click',()=>{if(S.dateIdx>0)setDate(S.dates[S.dateIdx-1])});
-  document.getElementById('nextDate')?.addEventListener('click',()=>{if(S.dateIdx<S.dates.length-1)setDate(S.dates[S.dateIdx+1])});
-  // 键盘导航：左右方向键切换日期
-  document.addEventListener('keydown',e=>{
-    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
-    if(e.key==='ArrowLeft'&&S.dateIdx>0)setDate(S.dates[S.dateIdx-1]);
-    if(e.key==='ArrowRight'&&S.dateIdx<S.dates.length-1)setDate(S.dates[S.dateIdx+1]);
-  });
-  // 回到顶部按钮
-  const toTop=document.getElementById('toTop');
-  if(toTop){
-    main.addEventListener('scroll',()=>{toTop.classList.toggle('visible',main.scrollTop>300)},{passive:true});
-    toTop.addEventListener('click',()=>main.scrollTo({top:0,behavior:'smooth'}));
-  }
-}
+            // ===== 事件绑定 =====
+            function setupEvents() {
+                main.addEventListener("click", (e) => {
+                    const item = e.target.closest(".a-history-item");
+                    if (!item) return;
+                    e.preventDefault();
+                    const d = item.dataset.date;
+                    if (d && S.dates.indexOf(d) >= 0) setDate(d);
+                });
+                catList.onclick = (e) => {
+                    const item = e.target.closest(".cat-item");
+                    if (!item) return;
+                    const cat = item.dataset.cat;
+                    if (cat === S.cat) return;
+                    S.cat = cat;
+                    catList
+                        .querySelectorAll(".cat-item")
+                        .forEach((el) =>
+                            el.classList.toggle(
+                                "active",
+                                el.dataset.cat === cat,
+                            ),
+                        );
+                    S.newsPage = {};
+                    loadView();
+                };
+                catList.addEventListener(
+                    "mouseenter",
+                    (e) => {
+                        const item = e.target.closest(".cat-item");
+                        if (!item || item.dataset.cat === "analysis") return;
+                        const file = item.dataset.cat;
+                        if (!rawCatCache.has(file)) {
+                            fetchT(`data/news/${encodeURIComponent(file)}.json`)
+                                .then((r) => r.json())
+                                .then((d) => {
+                                    const items = (d.items || [])
+                                        .slice()
+                                        .sort((a, b) =>
+                                            (b.date || "").localeCompare(
+                                                a.date || "",
+                                            ),
+                                        );
+                                    rawCatCache.set(file, items);
+                                })
+                                .catch(() => {});
+                        }
+                    },
+                    true,
+                );
+                main.onclick = async (e) => {
+                    const btn = e.target.closest(".load-more");
+                    if (!btn) return;
+                    const cat = btn.dataset.cat;
+                    S.newsPage[cat] = (S.newsPage[cat] || 1) + 1;
+                    const meta = S.meta;
+                    const catObj = meta.categories.find((c) => c.title === cat);
+                    if (!catObj) return;
+                    btn.disabled = true;
+                    btn.textContent = "加载中...";
+                    const items = await loadNewsCat(catObj.file);
+                    const result = renderNews(items, cat, catObj.icon, true);
+                    const listEl = main.querySelector("#newsList");
+                    if (listEl) {
+                        const frag = document.createElement("div");
+                        frag.innerHTML = result.newHtml;
+                        while (frag.firstChild)
+                            listEl.appendChild(frag.firstChild);
+                    }
+                    btn.remove();
+                    if (result.hasMore) {
+                        const newBtn = document.createElement("button");
+                        newBtn.className = "load-more";
+                        newBtn.dataset.cat = cat;
+                        newBtn.textContent = `加载更多 (${result.total - result.shown} 条)`;
+                        (main.querySelector(".card") || main).appendChild(
+                            newBtn,
+                        );
+                    }
+                };
+                window.addEventListener("hashchange", () => {
+                    const h = location.hash.slice(1);
+                    if (h && h !== S.date && S.dates.indexOf(h) >= 0)
+                        setDate(h);
+                });
+                document
+                    .getElementById("prevDate")
+                    ?.addEventListener("click", () => {
+                        if (S.dateIdx > 0) setDate(S.dates[S.dateIdx - 1]);
+                    });
+                document
+                    .getElementById("nextDate")
+                    ?.addEventListener("click", () => {
+                        if (S.dateIdx < S.dates.length - 1)
+                            setDate(S.dates[S.dateIdx + 1]);
+                    });
+                // 键盘导航：左右方向键切换日期
+                document.addEventListener("keydown", (e) => {
+                    if (
+                        e.target.tagName === "INPUT" ||
+                        e.target.tagName === "TEXTAREA"
+                    )
+                        return;
+                    if (e.key === "ArrowLeft" && S.dateIdx > 0)
+                        setDate(S.dates[S.dateIdx - 1]);
+                    if (
+                        e.key === "ArrowRight" &&
+                        S.dateIdx < S.dates.length - 1
+                    )
+                        setDate(S.dates[S.dateIdx + 1]);
+                });
+                // 回到顶部按钮
+                const toTop = document.getElementById("toTop");
+                if (toTop) {
+                    main.addEventListener(
+                        "scroll",
+                        () => {
+                            toTop.classList.toggle(
+                                "visible",
+                                main.scrollTop > 300,
+                            );
+                        },
+                        { passive: true },
+                    );
+                    toTop.addEventListener("click", () =>
+                        main.scrollTo({ top: 0, behavior: "smooth" }),
+                    );
+                }
+            }
 
-// ===== 初始化 =====
-function updateDateNav(){
-  const d=S.date;
-  const el=document.getElementById('currentDateDisplay');
-  const prev=document.getElementById('prevDate');
-  const next=document.getElementById('nextDate');
-  const cnt=document.getElementById('dateCount');
-  if(el){const[y,m,day]=d.split('-');el.textContent=y+'年'+parseInt(m)+'月'+parseInt(day)+'日'}
-  if(prev)prev.disabled=S.dateIdx<=0;
-  if(next)next.disabled=S.dateIdx>=S.dates.length-1;
-  if(cnt)cnt.textContent=S.dates.length+' 个分析';
-}
-async function init(){
-  setupEvents();
-  // 优先使用内联数据（首屏零请求）
-  let dates,meta;
-  const bootEl=document.getElementById("boot-data");
-  if(bootEl){
-    try{
-      const boot=JSON.parse(bootEl.textContent);
-      dates=boot.dates;
-      S.meta=boot.meta;
-      meta=boot.meta;
-      // 内联分析数据 → 缓存
-      if(boot.analysis){
-        analysisSummaryCache.set(boot.dates[0],boot.analysis);
-        analysisFullCache.set(boot.dates[0],boot.analysis);
-      }
-      bootEl.remove();
-    }catch(e){}
-  }
-  if(!dates){
-    [dates,meta]=await Promise.all([
-      fetchT("data/news/analysis/index.json").then(r=>r.json()).catch(()=>[]),
-      loadMeta()
-    ]);
-  }
-  S.dates=dates;
-  const h=location.hash.slice(1);
-  const startIdx=h?dates.indexOf(h):-1;
-  S.date=startIdx>=0?h:(dates[0]||"");
-  S.dateIdx=startIdx>=0?startIdx:0;
-  buildSidebarFromMeta(meta);
-  updateDateNav();
-  setDate(S.date);
-  // 空闲预取
-  const prefetchCats=()=>{
-    const top=meta.categories.slice(0,5);
-    top.forEach((c,i)=>{
-      if(rawCatCache.has(c.file))return;
-      setTimeout(()=>{fetchT(`data/news/${encodeURIComponent(c.file)}.json`).then(r=>r.json()).then(d=>{
-        const items=(d.items||[]).slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
-        rawCatCache.set(c.file,items);
-      }).catch(()=>{})},i*200);
-    });
-  };
-  if("requestIdleCallback"in window)requestIdleCallback(prefetchCats,{timeout:3000});else setTimeout(prefetchCats,1000);
-}
-document.addEventListener("DOMContentLoaded",init);
-</script>
-</body>
+            // ===== 初始化 =====
+            function updateDateNav() {
+                const d = S.date;
+                const el = document.getElementById("currentDateDisplay");
+                const prev = document.getElementById("prevDate");
+                const next = document.getElementById("nextDate");
+                const cnt = document.getElementById("dateCount");
+                if (el && d) {
+                    const [y, m, day] = d.split("-");
+                    el.textContent =
+                        y + "年" + parseInt(m) + "月" + parseInt(day) + "日";
+                }
+                if (prev) prev.disabled = S.dateIdx <= 0;
+                if (next) next.disabled = S.dateIdx >= S.dates.length - 1;
+                if (cnt) cnt.textContent = S.dates.length + " 个分析";
+            }
+            async function init() {
+                setupEvents();
+                // 优先使用内联数据（首屏零请求）
+                let dates, meta;
+                const bootEl = document.getElementById("boot-data");
+                if (bootEl) {
+                    try {
+                        const boot = JSON.parse(bootEl.textContent);
+                        dates = boot.dates;
+                        S.meta = boot.meta;
+                        meta = boot.meta;
+                        // 内联分析数据 → 缓存
+                        if (boot.analysis) {
+                            analysisSummaryCache.set(
+                                boot.dates[0],
+                                boot.analysis,
+                            );
+                            analysisFullCache.set(boot.dates[0], boot.analysis);
+                        }
+                        bootEl.remove();
+                    } catch (e) {}
+                }
+                if (!dates) {
+                    [dates, meta] = await Promise.all([
+                        fetchT("data/news/analysis/index.json")
+                            .then((r) => r.json())
+                            .catch(() => []),
+                        loadMeta(),
+                    ]);
+                }
+                S.dates = dates;
+                const h = location.hash.slice(1);
+                const startIdx = h ? dates.indexOf(h) : -1;
+                S.date = startIdx >= 0 ? h : dates[0] || "";
+                S.dateIdx = startIdx >= 0 ? startIdx : 0;
+                buildSidebarFromMeta(meta);
+                updateDateNav();
+                setDate(S.date);
+                // 空闲预取
+                const prefetchCats = () => {
+                    const top = meta.categories.slice(0, 5);
+                    top.forEach((c, i) => {
+                        if (rawCatCache.has(c.file)) return;
+                        setTimeout(() => {
+                            fetchT(
+                                `data/news/${encodeURIComponent(c.file)}.json`,
+                            )
+                                .then((r) => r.json())
+                                .then((d) => {
+                                    const items = (d.items || [])
+                                        .slice()
+                                        .sort((a, b) =>
+                                            (b.date || "").localeCompare(
+                                                a.date || "",
+                                            ),
+                                        );
+                                    rawCatCache.set(c.file, items);
+                                })
+                                .catch(() => {});
+                        }, i * 200);
+                    });
+                };
+                if ("requestIdleCallback" in window)
+                    requestIdleCallback(prefetchCats, { timeout: 3000 });
+                else setTimeout(prefetchCats, 1000);
+            }
+            document.addEventListener("DOMContentLoaded", init);
+        </script>
+    </body>
 </html>

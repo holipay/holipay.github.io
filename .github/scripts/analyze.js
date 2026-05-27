@@ -130,12 +130,14 @@ function apiCall(method, urlPath, body) {
 async function callDeepSeek(prompt, customSystemPrompt, maxTokens) {
   let lastError = null;
 
-  const systemContent = customSystemPrompt || [
-    "你是一位专业的新闻分析师，擅长多角度深度分析。",
-    "你的分析必须有独到见解，拒绝套话和模板化表达。",
-    "每次分析都要带来新的思考角度，而不是重复市场共识。",
-    "输出纯文本格式，使用 Markdown 标记。",
-  ].join("");
+  const systemContent =
+    customSystemPrompt ||
+    [
+      "你是一位专业的新闻分析师，擅长多角度深度分析。",
+      "你的分析必须有独到见解，拒绝套话和模板化表达。",
+      "每次分析都要带来新的思考角度，而不是重复市场共识。",
+      "输出纯文本格式，使用 Markdown 标记。",
+    ].join("");
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
@@ -153,7 +155,8 @@ async function callDeepSeek(prompt, customSystemPrompt, maxTokens) {
       });
 
       if (res.error) {
-        const errStr = typeof res.error === "string" ? res.error : JSON.stringify(res.error);
+        const errStr =
+          typeof res.error === "string" ? res.error : JSON.stringify(res.error);
         throw new Error(`API error: ${errStr.slice(0, 200)}`);
       }
 
@@ -173,7 +176,9 @@ async function callDeepSeek(prompt, customSystemPrompt, maxTokens) {
 
       if (attempt < MAX_RETRIES && isRetryable) {
         const delay = RETRY_BASE_DELAY * Math.pow(2, attempt - 1);
-        console.warn(`⚠️ 第 ${attempt} 次调用失败 (${e.message})，${delay / 1000}s 后重试...`);
+        console.warn(
+          `⚠️ 第 ${attempt} 次调用失败 (${e.message})，${delay / 1000}s 后重试...`,
+        );
         await new Promise((r) => setTimeout(r, delay));
         continue;
       }
@@ -191,35 +196,53 @@ function fetchUrlText(url, maxChars = 500) {
     try {
       const parsed = new URL(url);
       const mod = parsed.protocol === "https:" ? https : http;
-      const req = mod.get(url, {
-        headers: {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
-          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-          "Accept-Language": "en-US,en;q=0.9",
+      const req = mod.get(
+        url,
+        {
+          headers: {
+            "User-Agent":
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+            Accept:
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.9",
+          },
+          timeout: 10000,
         },
-        timeout: 10000,
-      }, (res) => {
-        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-          fetchUrlText(res.headers.location, maxChars).then(resolve);
-          return;
-        }
-        // 跳过付费墙 (402/403) 和需要登录的页面
-        if (res.statusCode === 402 || res.statusCode === 403) {
-          resolve("");
-          return;
-        }
-        if (res.statusCode !== 200) { resolve(""); return; }
-        const chunks = [];
-        res.on("data", (c) => chunks.push(c));
-        res.on("end", () => {
-          const raw = Buffer.concat(chunks).toString("utf-8");
-          const text = cleanHtmlContent(raw);
-          resolve(truncateAtSentence(text, maxChars));
-        });
-      });
+        (res) => {
+          if (
+            res.statusCode >= 300 &&
+            res.statusCode < 400 &&
+            res.headers.location
+          ) {
+            fetchUrlText(res.headers.location, maxChars).then(resolve);
+            return;
+          }
+          // 跳过付费墙 (402/403) 和需要登录的页面
+          if (res.statusCode === 402 || res.statusCode === 403) {
+            resolve("");
+            return;
+          }
+          if (res.statusCode !== 200) {
+            resolve("");
+            return;
+          }
+          const chunks = [];
+          res.on("data", (c) => chunks.push(c));
+          res.on("end", () => {
+            const raw = Buffer.concat(chunks).toString("utf-8");
+            const text = cleanHtmlContent(raw);
+            resolve(truncateAtSentence(text, maxChars));
+          });
+        },
+      );
       req.on("error", () => resolve(""));
-      req.on("timeout", () => { req.destroy(); resolve(""); });
-    } catch { resolve(""); }
+      req.on("timeout", () => {
+        req.destroy();
+        resolve("");
+      });
+    } catch {
+      resolve("");
+    }
   });
 }
 
@@ -306,11 +329,14 @@ function getDateOffset(days) {
 function extractKeyData(text) {
   const dataPoints = [];
   const pcts = text.match(/\d+\.?\d*\s*%/g);
-  if (pcts && pcts.length > 0) dataPoints.push(`百分比: ${pcts.slice(0, 3).join(", ")}`);
+  if (pcts && pcts.length > 0)
+    dataPoints.push(`百分比: ${pcts.slice(0, 3).join(", ")}`);
   const amounts = text.match(/\$\s*\d+[\d,.]*\s*(billion|million|trillion)?/gi);
-  if (amounts && amounts.length > 0) dataPoints.push(`金额: ${amounts.slice(0, 3).join(", ")}`);
+  if (amounts && amounts.length > 0)
+    dataPoints.push(`金额: ${amounts.slice(0, 3).join(", ")}`);
   const quotes = text.match(/[""「]([^""」]{20,120})[""」]/g);
-  if (quotes && quotes.length > 0) dataPoints.push(`引述: ${quotes[0].slice(0, 100)}`);
+  if (quotes && quotes.length > 0)
+    dataPoints.push(`引述: ${quotes[0].slice(0, 100)}`);
   return dataPoints.join(" | ");
 }
 
@@ -321,8 +347,8 @@ function extractKeyData(text) {
  */
 async function fetchWeightedArticles(hotKeywords, items) {
   const TIER_CONFIG = [
-    { maxRank: 3,  articlesPerKw: 3, charsPerArticle: 1500 },
-    { maxRank: 8,  articlesPerKw: 2, charsPerArticle: 800 },
+    { maxRank: 3, articlesPerKw: 3, charsPerArticle: 1500 },
+    { maxRank: 8, articlesPerKw: 2, charsPerArticle: 800 },
     { maxRank: 15, articlesPerKw: 1, charsPerArticle: 300 },
   ];
   const TOTAL_BUDGET = 18000;
@@ -332,7 +358,9 @@ async function fetchWeightedArticles(hotKeywords, items) {
 
   function scoreArticle(item, keywordScore) {
     const sourceWeight = getSourceWeight(item.source || "");
-    const today = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Shanghai" });
+    const today = new Date().toLocaleDateString("sv-SE", {
+      timeZone: "Asia/Shanghai",
+    });
     const itemDate = item.date || "";
     let recency = 0.3;
     if (itemDate === today) recency = 1.0;
@@ -344,43 +372,62 @@ async function fetchWeightedArticles(hotKeywords, items) {
   for (let tierIdx = 0; tierIdx < TIER_CONFIG.length; tierIdx++) {
     const tier = TIER_CONFIG[tierIdx];
     const prevMax = tierIdx === 0 ? 0 : TIER_CONFIG[tierIdx - 1].maxRank;
-    const tierKws = hotKeywords.filter((_, i) => (i + 1) > prevMax && (i + 1) <= tier.maxRank);
+    const tierKws = hotKeywords.filter(
+      (_, i) => i + 1 > prevMax && i + 1 <= tier.maxRank,
+    );
 
     for (const hk of tierKws) {
       if (usedBudget >= TOTAL_BUDGET) break;
-      const candidates = items.filter(i => {
+      const candidates = items.filter((i) => {
         const lower = (i.title || "").toLowerCase();
-        return lower.includes(hk.keyword.toLowerCase()) && i.link && !fetchedUrls.has(i.link);
+        return (
+          lower.includes(hk.keyword.toLowerCase()) &&
+          i.link &&
+          !fetchedUrls.has(i.link)
+        );
       });
       if (candidates.length === 0) continue;
-      candidates.sort((a, b) => scoreArticle(b, hk.score) - scoreArticle(a, hk.score));
+      candidates.sort(
+        (a, b) => scoreArticle(b, hk.score) - scoreArticle(a, hk.score),
+      );
 
       const selected = [];
       for (const c of candidates) {
         if (selected.length >= tier.articlesPerKw) break;
         const src = c.source || "unknown";
-        if (selected.filter(s => s.source === src).length >= 2) continue;
+        if (selected.filter((s) => s.source === src).length >= 2) continue;
         selected.push(c);
       }
 
       for (const item of selected) {
         if (usedBudget >= TOTAL_BUDGET) break;
-        const charsToFetch = Math.min(tier.charsPerArticle, TOTAL_BUDGET - usedBudget);
-        console.log(`  📄 [Tier ${tierIdx + 1}] ${hk.keyword} → ${item.link.slice(0, 60)}...`);
+        const charsToFetch = Math.min(
+          tier.charsPerArticle,
+          TOTAL_BUDGET - usedBudget,
+        );
+        console.log(
+          `  📄 [Tier ${tierIdx + 1}] ${hk.keyword} → ${item.link.slice(0, 60)}...`,
+        );
         const text = await fetchUrlText(item.link, charsToFetch);
         if (text && text.length > 50) {
           fetchedUrls.add(item.link);
           usedBudget += text.length;
           results.push({
-            keyword: hk.keyword, score: hk.score, tier: tierIdx + 1,
-            title: item.title, source: item.source || "",
-            snippet: text, chars: text.length,
+            keyword: hk.keyword,
+            score: hk.score,
+            tier: tierIdx + 1,
+            title: item.title,
+            source: item.source || "",
+            snippet: text,
+            chars: text.length,
           });
-          console.log(`     ✅ ${text.length} 字 (累计 ${usedBudget}/${TOTAL_BUDGET})`);
+          console.log(
+            `     ✅ ${text.length} 字 (累计 ${usedBudget}/${TOTAL_BUDGET})`,
+          );
         } else {
           console.log(`     ⚠️ 内容过短或抓取失败`);
         }
-        await new Promise(r => setTimeout(r, 300));
+        await new Promise((r) => setTimeout(r, 300));
       }
     }
   }
@@ -396,8 +443,10 @@ function loadPreviousTrends(currentDateStr) {
   if (!fs.existsSync(TRENDS_FILE)) return [];
   try {
     const all = JSON.parse(fs.readFileSync(TRENDS_FILE, "utf-8"));
-    return all.filter(t => t.date < currentDateStr).slice(-3); // 最近 3 次
-  } catch { return []; }
+    return all.filter((t) => t.date < currentDateStr).slice(-3); // 最近 3 次
+  } catch {
+    return [];
+  }
 }
 
 function saveTrends(dateStr, hotKeywords) {
@@ -406,13 +455,15 @@ function saveTrends(dateStr, hotKeywords) {
     if (fs.existsSync(TRENDS_FILE)) {
       all = JSON.parse(fs.readFileSync(TRENDS_FILE, "utf-8"));
     }
-  } catch { all = []; }
+  } catch {
+    all = [];
+  }
 
   // 去重（同一天不重复写入）
-  all = all.filter(t => t.date !== dateStr);
+  all = all.filter((t) => t.date !== dateStr);
   all.push({
     date: dateStr,
-    keywords: hotKeywords.slice(0, 10).map(hk => ({
+    keywords: hotKeywords.slice(0, 10).map((hk) => ({
       keyword: hk.keyword,
       score: hk.score,
       count: hk.count,
@@ -423,7 +474,7 @@ function saveTrends(dateStr, hotKeywords) {
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - TRENDS_RETENTION_DAYS);
   const cutoffStr = cutoff.toISOString().slice(0, 10);
-  all = all.filter(t => t.date >= cutoffStr);
+  all = all.filter((t) => t.date >= cutoffStr);
   all.sort((a, b) => a.date.localeCompare(b.date));
 
   const tmp = TRENDS_FILE + ".tmp";
@@ -447,7 +498,9 @@ function buildTrendSection(currentHotKeywords, previousTrends) {
   for (const hk of currentHotKeywords.slice(0, 10)) {
     const history = historyMap.get(hk.keyword);
     if (!history || history.length === 0) {
-      trendLines.push(`  - **${hk.keyword}**: 当前热度 ${hk.score}（🆕 新热点）`);
+      trendLines.push(
+        `  - **${hk.keyword}**: 当前热度 ${hk.score}（🆕 新热点）`,
+      );
       continue;
     }
     const lastScore = history[history.length - 1].score;
@@ -455,8 +508,15 @@ function buildTrendSection(currentHotKeywords, previousTrends) {
     const delta = hk.score - lastScore;
     const pct = lastScore > 0 ? Math.round((delta / lastScore) * 100) : 0;
     const arrow = delta > 2 ? "🔺" : delta < -2 ? "🔻" : "➡️";
-    const trendDesc = delta > 2 ? `上升 ${pct}%` : delta < -2 ? `下降 ${Math.abs(pct)}%` : "持平";
-    trendLines.push(`  - **${hk.keyword}**: ${hk.score}（${arrow} vs ${lastDate}: ${lastScore} → ${trendDesc}）`);
+    const trendDesc =
+      delta > 2
+        ? `上升 ${pct}%`
+        : delta < -2
+          ? `下降 ${Math.abs(pct)}%`
+          : "持平";
+    trendLines.push(
+      `  - **${hk.keyword}**: ${hk.score}（${arrow} vs ${lastDate}: ${lastScore} → ${trendDesc}）`,
+    );
   }
 
   if (trendLines.length === 0) return "";
@@ -478,13 +538,15 @@ function loadActiveEvents() {
   if (!fs.existsSync(EVENTS_FILE)) return [];
   try {
     const all = JSON.parse(fs.readFileSync(EVENTS_FILE, "utf-8"));
-    return all.filter(e => e.status === "active");
-  } catch { return []; }
+    return all.filter((e) => e.status === "active");
+  } catch {
+    return [];
+  }
 }
 
 function buildEventChainSection(events) {
   if (events.length === 0) return "";
-  const lines = events.map(e => {
+  const lines = events.map((e) => {
     const last = e.timeline[e.timeline.length - 1];
     const days = Math.round((new Date() - new Date(e.firstSeen)) / 86400000);
     return `  - **${e.title}**（${days}天前起始，${e.timeline.length}条动态）→ 最新: ${last.summary}`;
@@ -499,7 +561,7 @@ ${lines.join("\n")}
 
 function updateEvents(existingEvents, eventChains, dateStr, sentiment) {
   if (!Array.isArray(eventChains)) return existingEvents;
-  const eventMap = new Map(existingEvents.map(e => [e.id, e]));
+  const eventMap = new Map(existingEvents.map((e) => [e.id, e]));
 
   for (const chain of eventChains) {
     if (chain.status === "resolved" && chain.id && eventMap.has(chain.id)) {
@@ -515,7 +577,10 @@ function updateEvents(existingEvents, eventChains, dateStr, sentiment) {
       const evt = eventMap.get(chain.id);
       evt.timeline.push({ date: dateStr, summary, sentiment });
       evt.lastSeen = dateStr;
-      if (chain.keywords) evt.relatedKeywords = [...new Set([...evt.relatedKeywords, ...chain.keywords])];
+      if (chain.keywords)
+        evt.relatedKeywords = [
+          ...new Set([...evt.relatedKeywords, ...chain.keywords]),
+        ];
     } else {
       // 新事件
       const id = `evt-${dateStr}-${(chain.title || summary).replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g, "").slice(0, 20)}`;
@@ -543,7 +608,7 @@ function updateEvents(existingEvents, eventChains, dateStr, sentiment) {
 
   // 限制活跃事件数
   const all = [...eventMap.values()];
-  const active = all.filter(e => e.status === "active");
+  const active = all.filter((e) => e.status === "active");
   if (active.length > MAX_ACTIVE_EVENTS) {
     active.sort((a, b) => a.lastSeen.localeCompare(b.lastSeen));
     const toArchive = active.slice(0, active.length - MAX_ACTIVE_EVENTS);
@@ -565,8 +630,11 @@ const DASHBOARD_RETENTION_DAYS = 90;
 
 function loadDashboard() {
   if (!fs.existsSync(DASHBOARD_FILE)) return { days: [], keywordTrends: [] };
-  try { return JSON.parse(fs.readFileSync(DASHBOARD_FILE, "utf-8")); }
-  catch { return { days: [], keywordTrends: [] }; }
+  try {
+    return JSON.parse(fs.readFileSync(DASHBOARD_FILE, "utf-8"));
+  } catch {
+    return { days: [], keywordTrends: [] };
+  }
 }
 
 function updateDashboard(dashboard, dateStr, structured, hotKeywords) {
@@ -578,21 +646,21 @@ function updateDashboard(dashboard, dateStr, structured, hotKeywords) {
     keyThemes: structured.keyThemes || [],
     sectors: structured.sectors || [],
     outlook: structured.outlook || "",
-    topKeywords: (hotKeywords || []).slice(0, 10).map(hk => ({
+    topKeywords: (hotKeywords || []).slice(0, 10).map((hk) => ({
       keyword: hk.keyword,
       score: hk.score,
       count: hk.count,
     })),
   };
 
-  dashboard.days = (dashboard.days || []).filter(d => d.date !== dateStr);
+  dashboard.days = (dashboard.days || []).filter((d) => d.date !== dateStr);
   dashboard.days.push(dayEntry);
 
   // 清理超期数据
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - DASHBOARD_RETENTION_DAYS);
   const cutoffStr = cutoff.toISOString().slice(0, 10);
-  dashboard.days = dashboard.days.filter(d => d.date >= cutoffStr);
+  dashboard.days = dashboard.days.filter((d) => d.date >= cutoffStr);
   dashboard.days.sort((a, b) => a.date.localeCompare(b.date));
 
   // 计算关键词趋势（7天 vs 30天）
@@ -605,7 +673,10 @@ function updateDashboard(dashboard, dateStr, structured, hotKeywords) {
   const trendMap = new Map();
   for (const [kw, data7] of kw7) {
     const data30 = kw30.get(kw) || { avgScore: 0, total: 0 };
-    const delta = data30.avgScore > 0 ? ((data7.avgScore - data30.avgScore) / data30.avgScore * 100) : 0;
+    const delta =
+      data30.avgScore > 0
+        ? ((data7.avgScore - data30.avgScore) / data30.avgScore) * 100
+        : 0;
     trendMap.set(kw, {
       keyword: kw,
       avgScore7d: Math.round(data7.avgScore * 100) / 100,
@@ -621,7 +692,7 @@ function updateDashboard(dashboard, dateStr, structured, hotKeywords) {
     .slice(0, 30);
 
   // 情绪/风险序列（用于前端绘图）
-  dashboard.signals = now.map(d => ({
+  dashboard.signals = now.map((d) => ({
     date: d.date,
     sentiment: d.sentiment,
     riskLevel: d.riskLevel,
@@ -634,7 +705,7 @@ function updateDashboard(dashboard, dateStr, structured, hotKeywords) {
 function aggregateKeywords(days) {
   const map = new Map();
   for (const d of days) {
-    for (const kw of (d.topKeywords || [])) {
+    for (const kw of d.topKeywords || []) {
       if (!map.has(kw.keyword)) map.set(kw.keyword, { scores: [], total: 0 });
       const entry = map.get(kw.keyword);
       entry.scores.push(kw.score);
@@ -670,7 +741,7 @@ function loadTodayNews() {
     if (!fs.existsSync(catPath)) continue;
     try {
       const catData = JSON.parse(fs.readFileSync(catPath, "utf-8"));
-      for (const item of (catData.items || [])) {
+      for (const item of catData.items || []) {
         allItems.push({
           title: item.title,
           link: item.link || "",
@@ -693,7 +764,9 @@ function loadTodayNews() {
 function selectBestNews(allItems, hotKeywords, maxItems = 50) {
   if (allItems.length <= maxItems) return allItems;
 
-  const today = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Shanghai" });
+  const today = new Date().toLocaleDateString("sv-SE", {
+    timeZone: "Asia/Shanghai",
+  });
   const topKws = hotKeywords.slice(0, 10);
 
   // 分类感知的时间衰减系数 [今天, 昨天, 前天, 更早]
@@ -706,12 +779,19 @@ function selectBestNews(allItems, hotKeywords, maxItems = 50) {
     medium: [1.0, 0.7, 0.5, 0.3],
   };
   const FAST_DECAY = new Set(["股市与市场", "央行与利率", "大宗商品与能源"]);
-  const SLOW_DECAY = new Set(["心理学与认知", "教育与媒体", "健康与公共卫生", "科技与研究"]);
+  const SLOW_DECAY = new Set([
+    "心理学与认知",
+    "教育与媒体",
+    "健康与公共卫生",
+    "科技与研究",
+  ]);
 
   function getDecay(category, date) {
-    const profile = FAST_DECAY.has(category) ? DECAY_PROFILES.fast
-      : SLOW_DECAY.has(category) ? DECAY_PROFILES.slow
-      : DECAY_PROFILES.medium;
+    const profile = FAST_DECAY.has(category)
+      ? DECAY_PROFILES.fast
+      : SLOW_DECAY.has(category)
+        ? DECAY_PROFILES.slow
+        : DECAY_PROFILES.medium;
     if (date === today) return profile[0];
     if (date >= getDateOffset(-1)) return profile[1];
     if (date >= getDateOffset(-2)) return profile[2];
@@ -749,7 +829,11 @@ function selectBestNews(allItems, hotKeywords, maxItems = 50) {
   const seenNorms = new Set();
   const uniqueItems = [];
   for (const item of allItems) {
-    const norm = (item.title || "").replace(/\s+/g, " ").trim().toLowerCase().slice(0, 80);
+    const norm = (item.title || "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase()
+      .slice(0, 80);
     if (!norm) continue;
     if (seenNorms.has(norm)) continue;
     seenNorms.add(norm);
@@ -757,7 +841,7 @@ function selectBestNews(allItems, hotKeywords, maxItems = 50) {
   }
 
   // 打分排序
-  const scored = uniqueItems.map(item => ({ item, score: scoreItem(item) }));
+  const scored = uniqueItems.map((item) => ({ item, score: scoreItem(item) }));
   scored.sort((a, b) => b.score - a.score);
 
   // 保底：确保每个分类至少有 1 条（避免某分类完全被筛掉）
@@ -776,9 +860,11 @@ function selectBestNews(allItems, hotKeywords, maxItems = 50) {
   }
 
   // 第二轮：按分数填充剩余名额
+  const selectedTitles = new Set(selected.map((i) => i.title));
   for (const { item } of topItems) {
     if (selected.length >= maxItems) break;
-    if (!selected.includes(item)) {
+    if (!selectedTitles.has(item.title)) {
+      selectedTitles.add(item.title);
       selected.push(item);
     }
   }
@@ -823,12 +909,24 @@ function loadPreviousAnalyses(currentDateStr, count = 2) {
 // ===== 语义匹配：基于结构化数据的轻量级检索 =====
 function computeRelevance(target, candidate) {
   let score = 0;
-  const targetThemes = new Set((target.keyThemes || []).map(t => t.toLowerCase()));
-  const targetSectors = new Set((target.sectors || []).map(s => s.toLowerCase()));
-  const targetKws = new Set((target.hotKeywords || []).map(hk => (hk.keyword || hk).toLowerCase()));
-  const candidateThemes = (candidate.structured?.keyThemes || []).map(t => t.toLowerCase());
-  const candidateSectors = (candidate.structured?.sectors || []).map(s => s.toLowerCase());
-  const candidateKws = (candidate.hotKeywords || []).map(hk => (hk.keyword || hk).toLowerCase());
+  const targetThemes = new Set(
+    (target.keyThemes || []).map((t) => t.toLowerCase()),
+  );
+  const targetSectors = new Set(
+    (target.sectors || []).map((s) => s.toLowerCase()),
+  );
+  const targetKws = new Set(
+    (target.hotKeywords || []).map((hk) => (hk.keyword || hk).toLowerCase()),
+  );
+  const candidateThemes = (candidate.structured?.keyThemes || []).map((t) =>
+    t.toLowerCase(),
+  );
+  const candidateSectors = (candidate.structured?.sectors || []).map((s) =>
+    s.toLowerCase(),
+  );
+  const candidateKws = (candidate.hotKeywords || []).map((hk) =>
+    (hk.keyword || hk).toLowerCase(),
+  );
 
   // 主题匹配（权重 3）
   for (const t of candidateThemes) {
@@ -848,14 +946,22 @@ function computeRelevance(target, candidate) {
   score += kwOverlap;
 
   // 时间衰减（越近的分析越有参考价值，但不主导匹配）
-  const dayDiff = Math.max(1, (new Date(target.date || Date.now()) - new Date(candidate.date)) / 86400000);
+  const dayDiff = Math.max(
+    1,
+    (new Date(target.date || Date.now()) - new Date(candidate.date)) / 86400000,
+  );
   const recencyBonus = Math.max(0, 1 - dayDiff / 30); // 30天内有递减加分
   score += recencyBonus;
 
   return score;
 }
 
-function selectRelevantAnalyses(allAnalyses, currentHotKeywords, currentStructured, count) {
+function selectRelevantAnalyses(
+  allAnalyses,
+  currentHotKeywords,
+  currentStructured,
+  count,
+) {
   if (allAnalyses.length === 0) return [];
 
   const todayTarget = {
@@ -866,7 +972,7 @@ function selectRelevantAnalyses(allAnalyses, currentHotKeywords, currentStructur
   };
 
   // 计算每个历史分析的相关度
-  const scored = allAnalyses.map(a => ({
+  const scored = allAnalyses.map((a) => ({
     ...a,
     relevance: computeRelevance(todayTarget, a),
   }));
@@ -886,119 +992,605 @@ function selectRelevantAnalyses(allAnalyses, currentHotKeywords, currentStructur
 // 信源权威度权重（侧重金融经济类）
 const SOURCE_WEIGHTS = {
   // Tier 1: 权威财经媒体 — 2.0x
-  'Reuters': 2.0, 'Bloomberg': 2.0, 'Financial Times': 2.0,
-  'WSJ': 2.0, 'CNBC': 1.8, '华尔街日报': 2.0,
+  Reuters: 2.0,
+  Bloomberg: 2.0,
+  "Financial Times": 2.0,
+  WSJ: 2.0,
+  CNBC: 1.8,
+  华尔街日报: 2.0,
   // Tier 2: 研究/政策机构 — 1.5x
-  'NBER': 1.5, 'Brookings': 1.5, 'VoxEU': 1.5,
-  'Foreign Affairs': 1.5, 'Pew Research': 1.3,
+  NBER: 1.5,
+  Brookings: 1.5,
+  VoxEU: 1.5,
+  "Foreign Affairs": 1.5,
+  "Pew Research": 1.3,
   // Tier 3: 学术/深度分析 — 1.3x
-  'Nature Human Behaviour': 1.3, 'PNAS Social Science': 1.3,
-  'The Conversation': 1.2, 'Aeon': 1.1,
+  "Nature Human Behaviour": 1.3,
+  "PNAS Social Science": 1.3,
+  "The Conversation": 1.2,
+  Aeon: 1.1,
   // Tier 4: 中文财经 — 1.5x
-  '36氪': 1.5, '36kr': 1.5, '新浪财经': 1.5,
-  '东方财富': 1.5, '第一财经': 1.5, '投资者商业日报': 1.5,
-  '观察者': 1.3, '凤凰科技': 1.2,
+  "36氪": 1.5,
+  "36kr": 1.5,
+  新浪财经: 1.5,
+  东方财富: 1.5,
+  第一财经: 1.5,
+  投资者商业日报: 1.5,
+  观察者: 1.3,
+  凤凰科技: 1.2,
   // Google News 聚合
-  'Google News Academic': 1.2,
+  "Google News Academic": 1.2,
   // Tier 2.5: 独立财经分析/专业媒体 — 1.3~1.5x
-  'Crossing Wall Street': 1.4,
-  'Dealbreaker': 1.4,
-  'Goldmoney': 1.3,
-  'ScienceDirect': 1.5,
-  'Journal of Financial Economics': 1.5,
-  'ZeroHedge': 1.3,
-  'Wolf Street': 1.3,
+  "Crossing Wall Street": 1.4,
+  Dealbreaker: 1.4,
+  Goldmoney: 1.3,
+  ScienceDirect: 1.5,
+  "Journal of Financial Economics": 1.5,
+  ZeroHedge: 1.3,
+  "Wolf Street": 1.3,
   // 默认
-  'default': 1.0,
+  default: 1.0,
 };
 
 // 娱乐/社会噪音关键词黑名单（直接从热点中排除）
 const NOISE_KEYWORDS = new Set([
   // 娱乐
-  '电影', '票房', '明星', '演员', '导演', '综艺', '选秀', '偶像',
-  '演唱会', '歌曲', '音乐', '专辑', '歌手', '网红', '直播带货',
-  '八卦', '绯闻', '出轨', '离婚', '结婚', '恋情', '分手',
-  '奥斯卡', '格莱美', '艾美奖', '金球奖',
-  'movie', 'film', 'actor', 'actress', 'director', 'celebrity',
-  'grammy', 'oscar', 'emmy', 'album', 'concert', 'song',
-  'tiktok', 'instagram', 'youtube', 'twitch',
+  "电影",
+  "票房",
+  "明星",
+  "演员",
+  "导演",
+  "综艺",
+  "选秀",
+  "偶像",
+  "演唱会",
+  "歌曲",
+  "音乐",
+  "专辑",
+  "歌手",
+  "网红",
+  "直播带货",
+  "八卦",
+  "绯闻",
+  "出轨",
+  "离婚",
+  "结婚",
+  "恋情",
+  "分手",
+  "奥斯卡",
+  "格莱美",
+  "艾美奖",
+  "金球奖",
+  "movie",
+  "film",
+  "actor",
+  "actress",
+  "director",
+  "celebrity",
+  "grammy",
+  "oscar",
+  "emmy",
+  "album",
+  "concert",
+  "song",
+  "tiktok",
+  "instagram",
+  "youtube",
+  "twitch",
   // 体育（除非与经济相关，如体育产业）
-  '足球', '篮球', '世界杯', 'NBA', '欧冠', '英超', '西甲',
-  '奥运', '金牌', '运动员', '教练', '比赛',
-  'football', 'soccer', 'basketball', 'world cup', 'championship',
-  'tournament', 'athlete', 'coach', 'match',
+  "足球",
+  "篮球",
+  "世界杯",
+  "NBA",
+  "欧冠",
+  "英超",
+  "西甲",
+  "奥运",
+  "金牌",
+  "运动员",
+  "教练",
+  "比赛",
+  "football",
+  "soccer",
+  "basketball",
+  "world cup",
+  "championship",
+  "tournament",
+  "athlete",
+  "coach",
+  "match",
   // 生活/娱乐
-  '美食', '旅游', '穿搭', '化妆', '护肤', '减肥',
-  '星座', '塔罗', '运势', '风水',
-  'recipe', 'fashion', 'makeup', 'skincare', 'travel',
+  "美食",
+  "旅游",
+  "穿搭",
+  "化妆",
+  "护肤",
+  "减肥",
+  "星座",
+  "塔罗",
+  "运势",
+  "风水",
+  "recipe",
+  "fashion",
+  "makeup",
+  "skincare",
+  "travel",
   // 社会八卦
-  '出轨', '小三', '家暴', '打人', '骂人', '互撕', '撕逼',
-  '热搜', '上热搜', '霸榜', '刷屏',
+  "出轨",
+  "小三",
+  "家暴",
+  "打人",
+  "骂人",
+  "互撕",
+  "撕逼",
+  "热搜",
+  "上热搜",
+  "霸榜",
+  "刷屏",
 ]);
 
 const CN_STOPWORDS = new Set([
-  '的','了','在','是','我','有','和','就','不','人','都','一','一个',
-  '上','也','很','到','说','要','去','你','会','着','没有','看','好',
-  '自己','这','他','她','它','们','那','里','为','什么','怎么','如何',
-  '可以','可能','已经','正在','将','被','把','从','对','与','及','或',
-  '但','而','却','又','也','还','再','才','就','只','仅','已',
-  '新','最','更','比','超','大','小','多','少','高','低',
-  '今日','昨天','今天','本周','上周','下周','去年','今年','明年',
-  '万','亿','美元','人民币','欧元','日元','港元','英镑',
-  '报道','消息','新闻','据悉','显示','指出','认为','表示','透露',
-  '来源','图片','视频','编辑','责任编辑','记者',
-  'com','http','https','www','html','the','and','for','that',
-  '为什么','怎么回事','怎么办','原因','导致','引发','关注','透露','表示','认为','指出',
-  '回应','宣布','发布','曝光','事件','情况','问题','方面','相关','进行','通过','其中',
-  '以及','包括','同时','由于','因此','不过','然而','仍然','依然','居然','竟然',
-  '是否','能否','应该','需要','必须','已经','尚未','目前','当前',
-  '截至','截止','此前','之后','之前','以来','最近','近日','近期','日前','据悉',
+  "的",
+  "了",
+  "在",
+  "是",
+  "我",
+  "有",
+  "和",
+  "就",
+  "不",
+  "人",
+  "都",
+  "一",
+  "一个",
+  "上",
+  "也",
+  "很",
+  "到",
+  "说",
+  "要",
+  "去",
+  "你",
+  "会",
+  "着",
+  "没有",
+  "看",
+  "好",
+  "自己",
+  "这",
+  "他",
+  "她",
+  "它",
+  "们",
+  "那",
+  "里",
+  "为",
+  "什么",
+  "怎么",
+  "如何",
+  "可以",
+  "可能",
+  "已经",
+  "正在",
+  "将",
+  "被",
+  "把",
+  "从",
+  "对",
+  "与",
+  "及",
+  "或",
+  "但",
+  "而",
+  "却",
+  "又",
+  "也",
+  "还",
+  "再",
+  "才",
+  "就",
+  "只",
+  "仅",
+  "已",
+  "新",
+  "最",
+  "更",
+  "比",
+  "超",
+  "大",
+  "小",
+  "多",
+  "少",
+  "高",
+  "低",
+  "今日",
+  "昨天",
+  "今天",
+  "本周",
+  "上周",
+  "下周",
+  "去年",
+  "今年",
+  "明年",
+  "万",
+  "亿",
+  "美元",
+  "人民币",
+  "欧元",
+  "日元",
+  "港元",
+  "英镑",
+  "报道",
+  "消息",
+  "新闻",
+  "据悉",
+  "显示",
+  "指出",
+  "认为",
+  "表示",
+  "透露",
+  "来源",
+  "图片",
+  "视频",
+  "编辑",
+  "责任编辑",
+  "记者",
+  "com",
+  "http",
+  "https",
+  "www",
+  "html",
+  "the",
+  "and",
+  "for",
+  "that",
+  "为什么",
+  "怎么回事",
+  "怎么办",
+  "原因",
+  "导致",
+  "引发",
+  "关注",
+  "透露",
+  "表示",
+  "认为",
+  "指出",
+  "回应",
+  "宣布",
+  "发布",
+  "曝光",
+  "事件",
+  "情况",
+  "问题",
+  "方面",
+  "相关",
+  "进行",
+  "通过",
+  "其中",
+  "以及",
+  "包括",
+  "同时",
+  "由于",
+  "因此",
+  "不过",
+  "然而",
+  "仍然",
+  "依然",
+  "居然",
+  "竟然",
+  "是否",
+  "能否",
+  "应该",
+  "需要",
+  "必须",
+  "已经",
+  "尚未",
+  "目前",
+  "当前",
+  "截至",
+  "截止",
+  "此前",
+  "之后",
+  "之前",
+  "以来",
+  "最近",
+  "近日",
+  "近期",
+  "日前",
+  "据悉",
 ]);
 
 const EN_STOPWORDS = new Set([
-  'the','a','an','and','or','but','in','on','at','to','for','of',
-  'with','by','from','as','is','was','are','were','been','be',
-  'have','has','had','do','does','did','will','would','could',
-  'should','may','might','shall','can','this','that','these','those',
-  'it','its','he','she','they','we','you','i','my','your','his',
-  'her','their','our','not','no','so','if','up','out','about',
-  'how','what','when','where','who','which','why','all','each',
-  'more','most','other','some','such','than','too','very',
-  'new','says','said','report','reuters','bloomberg','wsj','cnbc',
-  'bbc','cnn','ft','news','update','breaking','latest',
-  'why','how','what','when','where','who','which','because','after','before','during',
-  'could','would','should','might','must','shall','into','over','under','between',
-  'through','against','among','upon','within','without','across','along','around',
-  'behind','below','beneath','beside','beyond','despite','except','following',
-  'like','near','off','onto','outside','past','per','since','toward','towards',
-  'unlike','until','via','whether','also','just','only','still','even',
-  'first','second','third','last','next','much','many','few','little','several',
-  'according','based','expected','reported','suggests','shows','reveals','indicates',
-  'found','founds','study','research','analysis','report','data','survey',
+  "the",
+  "a",
+  "an",
+  "and",
+  "or",
+  "but",
+  "in",
+  "on",
+  "at",
+  "to",
+  "for",
+  "of",
+  "with",
+  "by",
+  "from",
+  "as",
+  "is",
+  "was",
+  "are",
+  "were",
+  "been",
+  "be",
+  "have",
+  "has",
+  "had",
+  "do",
+  "does",
+  "did",
+  "will",
+  "would",
+  "could",
+  "should",
+  "may",
+  "might",
+  "shall",
+  "can",
+  "this",
+  "that",
+  "these",
+  "those",
+  "it",
+  "its",
+  "he",
+  "she",
+  "they",
+  "we",
+  "you",
+  "i",
+  "my",
+  "your",
+  "his",
+  "her",
+  "their",
+  "our",
+  "not",
+  "no",
+  "so",
+  "if",
+  "up",
+  "out",
+  "about",
+  "how",
+  "what",
+  "when",
+  "where",
+  "who",
+  "which",
+  "why",
+  "all",
+  "each",
+  "more",
+  "most",
+  "other",
+  "some",
+  "such",
+  "than",
+  "too",
+  "very",
+  "new",
+  "says",
+  "said",
+  "report",
+  "reuters",
+  "bloomberg",
+  "wsj",
+  "cnbc",
+  "bbc",
+  "cnn",
+  "ft",
+  "news",
+  "update",
+  "breaking",
+  "latest",
+  "why",
+  "how",
+  "what",
+  "when",
+  "where",
+  "who",
+  "which",
+  "because",
+  "after",
+  "before",
+  "during",
+  "could",
+  "would",
+  "should",
+  "might",
+  "must",
+  "shall",
+  "into",
+  "over",
+  "under",
+  "between",
+  "through",
+  "against",
+  "among",
+  "upon",
+  "within",
+  "without",
+  "across",
+  "along",
+  "around",
+  "behind",
+  "below",
+  "beneath",
+  "beside",
+  "beyond",
+  "despite",
+  "except",
+  "following",
+  "like",
+  "near",
+  "off",
+  "onto",
+  "outside",
+  "past",
+  "per",
+  "since",
+  "toward",
+  "towards",
+  "unlike",
+  "until",
+  "via",
+  "whether",
+  "also",
+  "just",
+  "only",
+  "still",
+  "even",
+  "first",
+  "second",
+  "third",
+  "last",
+  "next",
+  "much",
+  "many",
+  "few",
+  "little",
+  "several",
+  "according",
+  "based",
+  "expected",
+  "reported",
+  "suggests",
+  "shows",
+  "reveals",
+  "indicates",
+  "found",
+  "founds",
+  "study",
+  "research",
+  "analysis",
+  "report",
+  "data",
+  "survey",
 ]);
 
 const DOMAIN_KEYWORDS = new Set([
-  '关税','贸易战','贸易摩擦','制裁','脱钩','供应链',
-  '降息','加息','利率','通胀','通缩','CPI','PPI','GDP',
-  '美联储','央行','人民银行','欧央行','日央行',
-  'A股','美股','港股','纳斯达克','标普','道琼斯','上证','深证',
-  '原油','黄金','白银','铜','天然气','比特币','以太坊',
-  '芯片','半导体','AI','人工智能','大模型','量子',
-  '电动车','新能源','光伏','风电','储能','锂电',
-  '房地产','楼市','房价','土地','城投',
-  '就业','失业率','非农','PMI','制造业',
-  'IPO','融资','并购','收购','估值',
-  '地缘','冲突','战争','选举',
-  '气候','碳排放','ESG','绿色',
-  '疫情','疫苗','病毒','公共卫生',
-  'tariff','inflation','deflation','recession','stimulus',
-  'rate cut','rate hike','federal reserve','fed','ecb','pboc',
-  'stock','bond','yield','treasury','equity',
-  'crypto','bitcoin','ethereum','blockchain',
-  'semiconductor','chip','artificial intelligence','LLM',
-  'EV','electric vehicle','renewable','solar','battery',
-  'trade war','sanctions','geopolitics','conflict',
-  'IPO','merger','acquisition','valuation','funding',
+  "关税",
+  "贸易战",
+  "贸易摩擦",
+  "制裁",
+  "脱钩",
+  "供应链",
+  "降息",
+  "加息",
+  "利率",
+  "通胀",
+  "通缩",
+  "CPI",
+  "PPI",
+  "GDP",
+  "美联储",
+  "央行",
+  "人民银行",
+  "欧央行",
+  "日央行",
+  "A股",
+  "美股",
+  "港股",
+  "纳斯达克",
+  "标普",
+  "道琼斯",
+  "上证",
+  "深证",
+  "原油",
+  "黄金",
+  "白银",
+  "铜",
+  "天然气",
+  "比特币",
+  "以太坊",
+  "芯片",
+  "半导体",
+  "AI",
+  "人工智能",
+  "大模型",
+  "量子",
+  "电动车",
+  "新能源",
+  "光伏",
+  "风电",
+  "储能",
+  "锂电",
+  "房地产",
+  "楼市",
+  "房价",
+  "土地",
+  "城投",
+  "就业",
+  "失业率",
+  "非农",
+  "PMI",
+  "制造业",
+  "IPO",
+  "融资",
+  "并购",
+  "收购",
+  "估值",
+  "地缘",
+  "冲突",
+  "战争",
+  "选举",
+  "气候",
+  "碳排放",
+  "ESG",
+  "绿色",
+  "疫情",
+  "疫苗",
+  "病毒",
+  "公共卫生",
+  "tariff",
+  "inflation",
+  "deflation",
+  "recession",
+  "stimulus",
+  "rate cut",
+  "rate hike",
+  "federal reserve",
+  "fed",
+  "ecb",
+  "pboc",
+  "stock",
+  "bond",
+  "yield",
+  "treasury",
+  "equity",
+  "crypto",
+  "bitcoin",
+  "ethereum",
+  "blockchain",
+  "semiconductor",
+  "chip",
+  "artificial intelligence",
+  "LLM",
+  "EV",
+  "electric vehicle",
+  "renewable",
+  "solar",
+  "battery",
+  "trade war",
+  "sanctions",
+  "geopolitics",
+  "conflict",
+  "IPO",
+  "merger",
+  "acquisition",
+  "valuation",
+  "funding",
 ]);
 
 function extractKeywordsFromTitle(title) {
@@ -1040,8 +1632,9 @@ function extractKeywordsFromTitle(title) {
   // 英文 2-gram: 只保留白名单命中的组合
   const enWords = lower.match(/[a-z]+/g) || [];
   for (let i = 0; i < enWords.length - 1; i++) {
-    if (EN_STOPWORDS.has(enWords[i]) || EN_STOPWORDS.has(enWords[i + 1])) continue;
-    const gram = enWords[i] + ' ' + enWords[i + 1];
+    if (EN_STOPWORDS.has(enWords[i]) || EN_STOPWORDS.has(enWords[i + 1]))
+      continue;
+    const gram = enWords[i] + " " + enWords[i + 1];
     if (DOMAIN_KEYWORDS.has(gram)) {
       keywords.push(gram);
     }
@@ -1057,22 +1650,20 @@ function getSourceWeight(sourceName) {
   // 模糊匹配（source 名称包含关键词）
   const lower = sourceName.toLowerCase();
   for (const [key, weight] of Object.entries(SOURCE_WEIGHTS)) {
-    if (key !== 'default' && lower.includes(key.toLowerCase())) return weight;
+    if (key !== "default" && lower.includes(key.toLowerCase())) return weight;
   }
   return SOURCE_WEIGHTS.default;
 }
 
 // 噪音分类（这些分类中的关键词不进入热点排行，除非同时出现在金融/经济分类中）
-const NOISE_CATEGORIES = new Set([
-  '其他资讯', '教育与媒体', '心理学与认知',
-]);
+const NOISE_CATEGORIES = new Set(["其他资讯", "教育与媒体", "心理学与认知"]);
 
 function extractHotKeywords(items, topN = 15) {
   const keywordMap = new Map();
   for (const item of items) {
-    const title = item.title || '';
-    const category = item.category || '其他';
-    const source = item.source || '';
+    const title = item.title || "";
+    const category = item.category || "其他";
+    const source = item.source || "";
     const sourceWeight = getSourceWeight(source);
     const keywords = extractKeywordsFromTitle(title);
     const uniqueKw = new Set(keywords);
@@ -1081,8 +1672,10 @@ function extractHotKeywords(items, topN = 15) {
       if (NOISE_KEYWORDS.has(kw)) continue;
       if (!keywordMap.has(kw)) {
         keywordMap.set(kw, {
-          count: 0, weightedCount: 0,
-          categories: new Set(), sources: new Set(),
+          count: 0,
+          weightedCount: 0,
+          categories: new Set(),
+          sources: new Set(),
           isDomain: DOMAIN_KEYWORDS.has(kw),
           totalSourceWeight: 0,
         });
@@ -1108,10 +1701,14 @@ function extractHotKeywords(items, topN = 15) {
     // ── 规则 1: 白名单词直接通过（count≥1 即可）──
     if (data.isDomain) {
       if (data.count < 1) continue;
-      const score = data.weightedCount * (1 + 0.5 * crossCat) * 1.5 * avgSourceWeight;
+      const score =
+        data.weightedCount * (1 + 0.5 * crossCat) * 1.5 * avgSourceWeight;
       scored.push({
-        keyword, score: Math.round(score * 100) / 100,
-        count: data.count, categories: cats, domain: true,
+        keyword,
+        score: Math.round(score * 100) / 100,
+        count: data.count,
+        categories: cats,
+        domain: true,
         sourceWeight: Math.round(avgSourceWeight * 100) / 100,
       });
       continue;
@@ -1121,10 +1718,14 @@ function extractHotKeywords(items, topN = 15) {
     const crossSignal = crossCat >= 2 || crossSource >= 2;
     if (crossSignal) {
       if (data.count < 2) continue;
-      const score = data.weightedCount * (1 + 0.5 * crossCat) * 1.0 * avgSourceWeight;
+      const score =
+        data.weightedCount * (1 + 0.5 * crossCat) * 1.0 * avgSourceWeight;
       scored.push({
-        keyword, score: Math.round(score * 100) / 100,
-        count: data.count, categories: cats, domain: false,
+        keyword,
+        score: Math.round(score * 100) / 100,
+        count: data.count,
+        categories: cats,
+        domain: false,
         sourceWeight: Math.round(avgSourceWeight * 100) / 100,
       });
       continue;
@@ -1132,14 +1733,20 @@ function extractHotKeywords(items, topN = 15) {
 
     // ── 规则 3: 高频新词（count≥3）→ 降级保留 + 记录候选日志 ──
     if (data.count >= 3) {
-      const score = data.weightedCount * (1 + 0.5 * crossCat) * 0.5 * avgSourceWeight;
+      const score =
+        data.weightedCount * (1 + 0.5 * crossCat) * 0.5 * avgSourceWeight;
       scored.push({
-        keyword, score: Math.round(score * 100) / 100,
-        count: data.count, categories: cats, domain: false,
+        keyword,
+        score: Math.round(score * 100) / 100,
+        count: data.count,
+        categories: cats,
+        domain: false,
         sourceWeight: Math.round(avgSourceWeight * 100) / 100,
       });
       candidateLog.push({
-        keyword, count: data.count, categories: cats,
+        keyword,
+        count: data.count,
+        categories: cats,
         sources: [...data.sources],
       });
       continue;
@@ -1167,13 +1774,15 @@ function saveCandidateLog(newCandidates) {
     if (fs.existsSync(CANDIDATE_LOG_FILE)) {
       existing = JSON.parse(fs.readFileSync(CANDIDATE_LOG_FILE, "utf-8"));
     }
-  } catch { existing = []; }
+  } catch {
+    existing = [];
+  }
 
   const today = new Date().toISOString().slice(0, 10);
   // 合并: 同一天的候选词去重
-  const todayEntry = existing.find(e => e.date === today);
+  const todayEntry = existing.find((e) => e.date === today);
   if (todayEntry) {
-    const existingKws = new Set(todayEntry.candidates.map(c => c.keyword));
+    const existingKws = new Set(todayEntry.candidates.map((c) => c.keyword));
     for (const c of newCandidates) {
       if (!existingKws.has(c.keyword)) todayEntry.candidates.push(c);
     }
@@ -1185,7 +1794,7 @@ function saveCandidateLog(newCandidates) {
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - 30);
   const cutoffStr = cutoff.toISOString().slice(0, 10);
-  existing = existing.filter(e => e.date >= cutoffStr);
+  existing = existing.filter((e) => e.date >= cutoffStr);
   existing.sort((a, b) => a.date.localeCompare(b.date));
 
   const tmp = CANDIDATE_LOG_FILE + ".tmp";
@@ -1216,7 +1825,10 @@ function dedupHotItems(hotItems) {
   function normTitle(title) {
     return (title || "")
       .replace(/^[\s\-\u2013\u2014\u00B7\uFF5C\uFF1A:]+/, "")
-      .replace(/\s*[\-\u2013\u2014]\s*(Reuters|Bloomberg|WSJ|CNBC|Financial Times|FT|BBC|CNN|NBER|36\u6C2A|新浪|观察者|凤凰)\s*$/i, "")
+      .replace(
+        /\s*[\-\u2013\u2014]\s*(Reuters|Bloomberg|WSJ|CNBC|Financial Times|FT|BBC|CNN|NBER|36\u6C2A|新浪|观察者|凤凰)\s*$/i,
+        "",
+      )
       .replace(/\.com\s*$/i, "")
       .replace(/\s+/g, " ")
       .trim()
@@ -1233,7 +1845,10 @@ function dedupHotItems(hotItems) {
 
     // Find similar existing item
     for (let i = 0; i < normMap.length; i++) {
-      if (norm === normMap[i] || similarity(norm, normMap[i]) >= SIMILARITY_THRESHOLD) {
+      if (
+        norm === normMap[i] ||
+        similarity(norm, normMap[i]) >= SIMILARITY_THRESHOLD
+      ) {
         matchIdx = i;
         break;
       }
@@ -1251,7 +1866,7 @@ function dedupHotItems(hotItems) {
         existing.title = item.title;
       }
       // Merge hot tags
-      for (const tag of (item.hotTags || [])) {
+      for (const tag of item.hotTags || []) {
         if (!existing.hotTags.includes(tag)) existing.hotTags.push(tag);
       }
     } else {
@@ -1268,8 +1883,10 @@ function dedupHotItems(hotItems) {
 }
 
 function matchHotKeywords(title, hotKeywords) {
-  const lower = (title || '').toLowerCase();
-  return hotKeywords.filter(hk => lower.includes(hk.keyword.toLowerCase())).map(hk => hk.keyword);
+  const lower = (title || "").toLowerCase();
+  return hotKeywords
+    .filter((hk) => lower.includes(hk.keyword.toLowerCase()))
+    .map((hk) => hk.keyword);
 }
 
 // ===== 从历史分析中提取关键主题 =====
@@ -1280,7 +1897,12 @@ function extractThemes(analysisText) {
   for (const line of lines) {
     const trimmed = line.trim();
     if (/^#{2,3}\s/.test(trimmed)) {
-      themes.push(trimmed.replace(/^#{2,3}\s+/, "").replace(/[📌🔍📊⚠️🔮📅🌍🏭🔄📜📈🔗]/g, "").trim());
+      themes.push(
+        trimmed
+          .replace(/^#{2,3}\s+/, "")
+          .replace(/[📌🔍📊⚠️🔮📅🌍🏭🔄📜📈🔗]/g, "")
+          .trim(),
+      );
     }
   }
 
@@ -1298,8 +1920,16 @@ function extractThemes(analysisText) {
 }
 
 // ===== 分析生成 =====
-function buildPrompt(newsData, previousAnalyses, perspective, snippets = [], trendSection = "") {
-  const today = new Date().toLocaleDateString("zh-CN", { timeZone: "Asia/Shanghai" });
+function buildPrompt(
+  newsData,
+  previousAnalyses,
+  perspective,
+  snippets = [],
+  trendSection = "",
+) {
+  const today = new Date().toLocaleDateString("zh-CN", {
+    timeZone: "Asia/Shanghai",
+  });
 
   // 计算热点关键词（与AI分析使用相同的新闻集合）
   const allItems = newsData.items;
@@ -1309,7 +1939,9 @@ function buildPrompt(newsData, previousAnalyses, perspective, snippets = [], tre
   if (hotKeywords.length > 0) {
     console.log("\n🔥 热点关键词 Top 15:");
     hotKeywords.slice(0, 10).forEach((hk, i) => {
-      console.log(`   ${i + 1}. ${hk.keyword} (热度:${hk.score}, 频次:${hk.count}, 跨${hk.categories.length}个分类, 信源权重:${hk.sourceWeight || 1}${hk.domain ? ', 领域词' : ''})`);
+      console.log(
+        `   ${i + 1}. ${hk.keyword} (热度:${hk.score}, 频次:${hk.count}, 跨${hk.categories.length}个分类, 信源权重:${hk.sourceWeight || 1}${hk.domain ? ", 领域词" : ""})`,
+      );
     });
   }
 
@@ -1323,8 +1955,8 @@ function buildPrompt(newsData, previousAnalyses, perspective, snippets = [], tre
   const topHotKeywords = hotKeywords.slice(0, 10);
 
   // 分层：热点相关条目 vs 其他条目
-  const rawHotItems = [];   // 匹配热点关键词的条目
-  const otherItems = [];    // 其余条目
+  const rawHotItems = []; // 匹配热点关键词的条目
+  const otherItems = []; // 其余条目
   for (const item of newsData.items) {
     const hotMatches = matchHotKeywords(item.title, topHotKeywords);
     if (hotMatches.length > 0) {
@@ -1343,10 +1975,13 @@ function buildPrompt(newsData, previousAnalyses, perspective, snippets = [], tre
   // 热点新闻：完整展示（多信源合并标注）
   let hotNewsSection = "";
   if (hotItems.length > 0) {
-    const lines = hotItems.map(i => {
-      const src = i.sources.length > 1 ? i.sources.join(", ") : (i.source || "");
-      return `  - ${i.title} (${src}) 🔥[${i.hotTags.join('+')}]`;
-    }).join("\n");
+    const lines = hotItems
+      .map((i) => {
+        const src =
+          i.sources.length > 1 ? i.sources.join(", ") : i.source || "";
+        return `  - ${i.title} (${src}) 🔥[${i.hotTags.join("+")}]`;
+      })
+      .join("\n");
     hotNewsSection = `【🔥 热点新闻（${hotItems.length} 条）】\n${lines}`;
   }
 
@@ -1357,29 +1992,36 @@ function buildPrompt(newsData, previousAnalyses, perspective, snippets = [], tre
     if (!otherByCat[cat]) otherByCat[cat] = [];
     otherByCat[cat].push(item);
   }
-  const otherLines = Object.entries(otherByCat)
-    .map(([cat, items]) => {
-      const titles = items.slice(0, 3).map(i => i.title).join("；");
-      const more = items.length > 3 ? `等${items.length}条` : "";
-      return `  ${cat}(${items.length}条): ${titles}${more}`;
-    });
-  const otherNewsSection = otherLines.length > 0
-    ? `【📊 其他新闻摘要】\n${otherLines.join("\n")}`
-    : "";
+  const otherLines = Object.entries(otherByCat).map(([cat, items]) => {
+    const titles = items
+      .slice(0, 3)
+      .map((i) => i.title)
+      .join("；");
+    const more = items.length > 3 ? `等${items.length}条` : "";
+    return `  ${cat}(${items.length}条): ${titles}${more}`;
+  });
+  const otherNewsSection =
+    otherLines.length > 0
+      ? `【📊 其他新闻摘要】\n${otherLines.join("\n")}`
+      : "";
 
-  const newsList = [hotNewsSection, otherNewsSection].filter(Boolean).join("\n\n");
+  const newsList = [hotNewsSection, otherNewsSection]
+    .filter(Boolean)
+    .join("\n\n");
 
   // 日志：分层统计
-  console.log(`  📊 分层: ${hotItems.length} 条热点新闻（完整展示），${otherItems.length} 条其他新闻（摘要）`);
+  console.log(
+    `  📊 分层: ${hotItems.length} 条热点新闻（完整展示），${otherItems.length} 条其他新闻（摘要）`,
+  );
 
   // 构建热点关键词 section
   let hotKeywordsSection = "";
   if (topHotKeywords.length > 0) {
     const kwList = topHotKeywords
       .map((hk, i) => {
-        const catInfo = hk.categories.join('、');
-        const swInfo = hk.sourceWeight ? `，信源权重${hk.sourceWeight}` : '';
-        return `  ${i + 1}. **${hk.keyword}** — 热度 ${hk.score}（出现 ${hk.count} 次，跨 ${catInfo}${swInfo}）${hk.domain ? ' ⭐领域关键词' : ''}`;
+        const catInfo = hk.categories.join("、");
+        const swInfo = hk.sourceWeight ? `，信源权重${hk.sourceWeight}` : "";
+        return `  ${i + 1}. **${hk.keyword}** — 热度 ${hk.score}（出现 ${hk.count} 次，跨 ${catInfo}${swInfo}）${hk.domain ? " ⭐领域关键词" : ""}`;
       })
       .join("\n");
 
@@ -1395,29 +2037,42 @@ ${kwList}
   // 文章内容 section（分层展示）
   let snippetsSection = "";
   if (snippets.length > 0) {
-    const tier1 = snippets.filter(s => s.tier === 1);
-    const tier2 = snippets.filter(s => s.tier === 2);
-    const tier3 = snippets.filter(s => s.tier === 3);
+    const tier1 = snippets.filter((s) => s.tier === 1);
+    const tier2 = snippets.filter((s) => s.tier === 2);
+    const tier3 = snippets.filter((s) => s.tier === 3);
     const tierParts = [];
 
     if (tier1.length > 0) {
-      const tier1Text = tier1.map(s => {
-        const keyData = extractKeyData(s.snippet);
-        return `  ▸ 【${s.keyword}】${s.title} (${s.source})\n    摘要: ${s.snippet}${keyData ? '\n    关键数据: ' + keyData : ''}`;
-      }).join("\n\n");
-      tierParts.push(`【🔥🔥🔥 Tier 1 - 核心话题（${tier1.length} 篇）】\n${tier1Text}`);
+      const tier1Text = tier1
+        .map((s) => {
+          const keyData = extractKeyData(s.snippet);
+          return `  ▸ 【${s.keyword}】${s.title} (${s.source})\n    摘要: ${s.snippet}${keyData ? "\n    关键数据: " + keyData : ""}`;
+        })
+        .join("\n\n");
+      tierParts.push(
+        `【🔥🔥🔥 Tier 1 - 核心话题（${tier1.length} 篇）】\n${tier1Text}`,
+      );
     }
     if (tier2.length > 0) {
-      const tier2Text = tier2.map(s =>
-        `  ▸ 【${s.keyword}】${s.title} (${s.source})\n    ${s.snippet}`
-      ).join("\n\n");
-      tierParts.push(`【🔥🔥 Tier 2 - 重要话题（${tier2.length} 篇）】\n${tier2Text}`);
+      const tier2Text = tier2
+        .map(
+          (s) =>
+            `  ▸ 【${s.keyword}】${s.title} (${s.source})\n    ${s.snippet}`,
+        )
+        .join("\n\n");
+      tierParts.push(
+        `【🔥🔥 Tier 2 - 重要话题（${tier2.length} 篇）】\n${tier2Text}`,
+      );
     }
     if (tier3.length > 0) {
-      const tier3Text = tier3.map(s =>
-        `  ▸ ${s.keyword}: ${s.title} — ${s.snippet.slice(0, 150)}...`
-      ).join("\n");
-      tierParts.push(`【🔥 Tier 3 - 补充（${tier3.length} 篇简要）】\n${tier3Text}`);
+      const tier3Text = tier3
+        .map(
+          (s) => `  ▸ ${s.keyword}: ${s.title} — ${s.snippet.slice(0, 150)}...`,
+        )
+        .join("\n");
+      tierParts.push(
+        `【🔥 Tier 3 - 补充（${tier3.length} 篇简要）】\n${tier3Text}`,
+      );
     }
 
     snippetsSection = `
@@ -1431,7 +2086,8 @@ ${tierParts.join("\n\n")}
   if (previousAnalyses.length > 0) {
     const memoryParts = previousAnalyses.map((prev) => {
       const { themes, summaries } = extractThemes(prev.analysis);
-      const themeList = themes.length > 0 ? themes.join("、") : "（无明确主题）";
+      const themeList =
+        themes.length > 0 ? themes.join("、") : "（无明确主题）";
       const summaryText = summaries.length > 0 ? summaries.join("\n") : "";
       return `【${prev.date}】\n已覆盖主题: ${themeList}\n内容摘要:\n${summaryText}`;
     });
@@ -1500,7 +2156,7 @@ ${perspective.sectionHint}
   "keyThemes": ["主题1", "主题2", "主题3"],
   "sectors": ["行业1", "行业2"],
   "outlook": "一句话前瞻判断",
-  "hotKeywords": ${JSON.stringify(topHotKeywords.slice(0, 5).map(hk => ({ keyword: hk.keyword, score: hk.score })))},
+  "hotKeywords": ${JSON.stringify(topHotKeywords.slice(0, 5).map((hk) => ({ keyword: hk.keyword, score: hk.score })))},
   "eventChains": [{"id": "已有事件ID或留空", "title": "事件名称", "summary": "今日进展", "keywords": ["关键词"], "status": "active|resolved"}]
 }
 \`\`\`
@@ -1538,7 +2194,8 @@ function parseStructuredOutput(rawAnalysis) {
 
     // 提取 JSON 块
     const jsonMatch = structuredPart.match(/```json\s*([\s\S]*?)\s*```/);
-    if (!jsonMatch) return { analysis: analysisPart, structured: defaultResult };
+    if (!jsonMatch)
+      return { analysis: analysisPart, structured: defaultResult };
 
     const parsed = JSON.parse(jsonMatch[1]);
 
@@ -1546,19 +2203,27 @@ function parseStructuredOutput(rawAnalysis) {
       analysis: analysisPart,
       structured: {
         sentiment: ["看涨", "看跌", "中性", "分化"].includes(parsed.sentiment)
-          ? parsed.sentiment : "中性",
+          ? parsed.sentiment
+          : "中性",
         riskLevel: ["低", "中", "高"].includes(parsed.riskLevel)
-          ? parsed.riskLevel : "中",
+          ? parsed.riskLevel
+          : "中",
         keyThemes: Array.isArray(parsed.keyThemes)
-          ? parsed.keyThemes.slice(0, 5).map(String) : [],
+          ? parsed.keyThemes.slice(0, 5).map(String)
+          : [],
         sectors: Array.isArray(parsed.sectors)
-          ? parsed.sectors.slice(0, 5).map(String) : [],
-        outlook: typeof parsed.outlook === "string"
-          ? parsed.outlook.slice(0, 200) : "",
+          ? parsed.sectors.slice(0, 5).map(String)
+          : [],
+        outlook:
+          typeof parsed.outlook === "string"
+            ? parsed.outlook.slice(0, 200)
+            : "",
         hotKeywords: Array.isArray(parsed.hotKeywords)
-          ? parsed.hotKeywords.slice(0, 10) : [],
+          ? parsed.hotKeywords.slice(0, 10)
+          : [],
         eventChains: Array.isArray(parsed.eventChains)
-          ? parsed.eventChains.slice(0, 10) : [],
+          ? parsed.eventChains.slice(0, 10)
+          : [],
       },
     };
   } catch (e) {
@@ -1574,7 +2239,9 @@ function updateDateIndex(dateStr) {
   const indexPath = path.join(ANALYSIS_DIR, "index.json");
   let dates = [];
   if (fs.existsSync(indexPath)) {
-    try { dates = JSON.parse(fs.readFileSync(indexPath, "utf-8")); } catch {}
+    try {
+      dates = JSON.parse(fs.readFileSync(indexPath, "utf-8"));
+    } catch {}
   }
   if (!dates.includes(dateStr)) {
     dates.push(dateStr);
@@ -1595,7 +2262,9 @@ function cleanupOldAnalyses() {
   cutoffDate.setDate(cutoffDate.getDate() - ANALYSIS_RETENTION_DAYS);
   const cutoff = cutoffDate.toISOString().slice(0, 10);
   if (!fs.existsSync(ANALYSIS_DIR)) return;
-  const files = fs.readdirSync(ANALYSIS_DIR).filter((f) => /^\d{4}-\d{2}-\d{2}\.json$/.test(f));
+  const files = fs
+    .readdirSync(ANALYSIS_DIR)
+    .filter((f) => /^\d{4}-\d{2}-\d{2}\.json$/.test(f));
   let cleaned = 0;
   for (const file of files) {
     const date = file.replace(".json", "");
@@ -1604,7 +2273,10 @@ function cleanupOldAnalyses() {
       cleaned++;
     }
   }
-  if (cleaned > 0) console.log(`🗑️ 清理 ${cleaned} 个过期分析文件 (>${ANALYSIS_RETENTION_DAYS}天)`);
+  if (cleaned > 0)
+    console.log(
+      `🗑️ 清理 ${cleaned} 个过期分析文件 (>${ANALYSIS_RETENTION_DAYS}天)`,
+    );
 }
 
 // ===== 幂等检查 =====
@@ -1617,8 +2289,10 @@ function checkExistingAnalysis(dateStr) {
     if (!existing.generatedAt) return null;
 
     // 检查是否是同一天生成的（Asia/Shanghai 时区）
-    const generatedDate = new Date(existing.generatedAt)
-      .toLocaleDateString("sv-SE", { timeZone: "Asia/Shanghai" });
+    const generatedDate = new Date(existing.generatedAt).toLocaleDateString(
+      "sv-SE",
+      { timeZone: "Asia/Shanghai" },
+    );
 
     if (generatedDate !== dateStr) return null;
 
@@ -1653,14 +2327,22 @@ function loadLastMonthAnalyses(currentDateStr) {
   if (!fs.existsSync(ANALYSIS_DIR)) return [];
 
   const files = fs.readdirSync(ANALYSIS_DIR).filter((f) => {
-    return f.startsWith(prefix) && f.endsWith(".json") && f !== "index.json" && f !== "trends.json" && /^\d{4}-\d{2}-\d{2}\.json$/.test(f);
+    return (
+      f.startsWith(prefix) &&
+      f.endsWith(".json") &&
+      f !== "index.json" &&
+      f !== "trends.json" &&
+      /^\d{4}-\d{2}-\d{2}\.json$/.test(f)
+    );
   });
   files.sort();
 
   const results = [];
   for (const file of files) {
     try {
-      const data = JSON.parse(fs.readFileSync(path.join(ANALYSIS_DIR, file), "utf-8"));
+      const data = JSON.parse(
+        fs.readFileSync(path.join(ANALYSIS_DIR, file), "utf-8"),
+      );
       results.push({
         date: file.replace(".json", ""),
         analysis: data.analysis || "",
@@ -1679,17 +2361,19 @@ function loadLastMonthAnalyses(currentDateStr) {
 // 构建月度回顾 prompt
 function buildMonthlyReviewPrompt(analyses, todayNewsData, monthStr) {
   // 每日分析摘要
-  const dailySummaries = analyses.map((a) => {
-    const themes = (a.structured?.keyThemes || []).join(", ");
-    const sentiment = a.structured?.sentiment || "";
-    const risk = a.structured?.riskLevel || "";
-    const outlook = a.structured?.outlook || "";
-    const bodySlice = (a.analysis || "").slice(0, 400);
-    return `### ${a.date} [${a.perspective}] | 情绪:${sentiment} | 风险:${risk}
+  const dailySummaries = analyses
+    .map((a) => {
+      const themes = (a.structured?.keyThemes || []).join(", ");
+      const sentiment = a.structured?.sentiment || "";
+      const risk = a.structured?.riskLevel || "";
+      const outlook = a.structured?.outlook || "";
+      const bodySlice = (a.analysis || "").slice(0, 400);
+      return `### ${a.date} [${a.perspective}] | 情绪:${sentiment} | 风险:${risk}
 主题: ${themes}
 展望: ${outlook}
 摘要: ${bodySlice}`;
-  }).join("\n\n---\n\n");
+    })
+    .join("\n\n---\n\n");
 
   // 月度热点词频
   const topicFreq = {};
@@ -1700,8 +2384,10 @@ function buildMonthlyReviewPrompt(analyses, todayNewsData, monthStr) {
     }
   }
   const topTopics = Object.entries(topicFreq)
-    .sort((a, b) => b[1] - a[1]).slice(0, 30)
-    .map(([kw, score]) => `${kw}(${Math.round(score)})`).join(", ");
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 30)
+    .map(([kw, score]) => `${kw}(${Math.round(score)})`)
+    .join(", ");
 
   // ===== 异常检测数据准备 =====
   const anomalyLines = [];
@@ -1713,7 +2399,9 @@ function buildMonthlyReviewPrompt(analyses, todayNewsData, monthStr) {
     const ps = prev.structured?.sentiment;
     const cs = curr.structured?.sentiment;
     if (ps && cs && ps !== cs && ps !== "中性" && cs !== "中性") {
-      anomalyLines.push(`  - 🔄 情绪急转 [${prev.date}→${curr.date}]: ${ps}→${cs}`);
+      anomalyLines.push(
+        `  - 🔄 情绪急转 [${prev.date}→${curr.date}]: ${ps}→${cs}`,
+      );
     }
   }
 
@@ -1734,10 +2422,15 @@ function buildMonthlyReviewPrompt(analyses, todayNewsData, monthStr) {
       }
     }
   }
-  const topEmerging = [...new Map(emergingKws.map(e => [e.keyword, e])).values()]
-    .sort((a, b) => b.score - a.score).slice(0, 5);
+  const topEmerging = [
+    ...new Map(emergingKws.map((e) => [e.keyword, e])).values(),
+  ]
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5);
   for (const e of topEmerging) {
-    anomalyLines.push(`  - 🔥 新主题涌现 [${e.date}]: ${e.keyword}（热度 ${e.score}）`);
+    anomalyLines.push(
+      `  - 🔥 新主题涌现 [${e.date}]: ${e.keyword}（热度 ${e.score}）`,
+    );
   }
 
   // 3. 风险升级检测
@@ -1751,20 +2444,25 @@ function buildMonthlyReviewPrompt(analyses, todayNewsData, monthStr) {
     }
   }
 
-  const anomalySection = anomalyLines.length > 0
-    ? anomalyLines.join("\n")
-    : "  （本月未检测到显著异常信号）";
+  const anomalySection =
+    anomalyLines.length > 0
+      ? anomalyLines.join("\n")
+      : "  （本月未检测到显著异常信号）";
 
   // 今日新闻（如有）
   let todaySection = "";
   if (todayNewsData && todayNewsData.items && todayNewsData.items.length > 0) {
     const hotKw = extractHotKeywords(todayNewsData.items, 10);
-    const lines = todayNewsData.items.slice(0, 20).map(i =>
-      `  - ${i.title} (${i.source})`
-    ).join("\n");
+    const lines = todayNewsData.items
+      .slice(0, 20)
+      .map((i) => `  - ${i.title} (${i.source})`)
+      .join("\n");
     todaySection = `\n\n━━━ 📰 今日新增新闻（${todayNewsData.items.length} 条）━━━\n${lines}`;
     if (hotKw.length > 0) {
-      todaySection += `\n今日热点: ${hotKw.slice(0, 5).map(hk => `${hk.keyword}(${hk.score})`).join(", ")}`;
+      todaySection += `\n今日热点: ${hotKw
+        .slice(0, 5)
+        .map((hk) => `${hk.keyword}(${hk.score})`)
+        .join(", ")}`;
     }
   }
 
@@ -1876,7 +2574,8 @@ async function runMonthlyReview(dateStr, now) {
     }
   }
   const topTopics = Object.entries(topicFreq)
-    .sort((a, b) => b[1] - a[1]).slice(0, 20)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 20)
     .map(([keyword, score]) => ({ keyword, score: Math.round(score) }));
 
   const result = {
@@ -1890,7 +2589,10 @@ async function runMonthlyReview(dateStr, now) {
     analysis: analysis,
     structured: {
       ...structured,
-      keyThemes: structured.keyThemes.length > 0 ? structured.keyThemes : [`月度回顾-${monthStr}`],
+      keyThemes:
+        structured.keyThemes.length > 0
+          ? structured.keyThemes
+          : [`月度回顾-${monthStr}`],
     },
     hotKeywords: topTopics,
     sources: [],
@@ -1915,13 +2617,13 @@ async function runMonthlyReview(dateStr, now) {
   return true; // success
 }
 
-
-
 // ===== P1-2: 输出质量校验 =====
 function validateAnalysis(result) {
   const checks = {
     hasAnalysis: (result.analysis || "").length > 200,
-    hasSentiment: ["看涨", "看跌", "分化", "中性"].includes(result.structured?.sentiment),
+    hasSentiment: ["看涨", "看跌", "分化", "中性"].includes(
+      result.structured?.sentiment,
+    ),
     hasRiskLevel: ["高", "中", "低"].includes(result.structured?.riskLevel),
     hasThemes: (result.structured?.keyThemes || []).length >= 1,
     hasOutlook: (result.structured?.outlook || "").length > 10,
@@ -1929,7 +2631,9 @@ function validateAnalysis(result) {
   };
   const failed = Object.entries(checks).filter(([, v]) => !v);
   if (failed.length > 0) {
-    console.warn(`\n⚠️ 质量检查: ${failed.length}/${Object.keys(checks).length} 项未通过:`);
+    console.warn(
+      `\n⚠️ 质量检查: ${failed.length}/${Object.keys(checks).length} 项未通过:`,
+    );
     failed.forEach(([k]) => console.warn(`  ❌ ${k}`));
     return { ok: false, failed: failed.map(([k]) => k) };
   }
@@ -1937,12 +2641,16 @@ function validateAnalysis(result) {
   return { ok: true, failed: [] };
 }
 
-
-
 // ===== P2-2: 结构化信号提取（第一次调用，轻量）=====
 async function extractStructuredSignals(newsData, hotKeywords) {
-  const titles = newsData.items.slice(0, 30).map(i => `- ${i.title} (${i.source})`).join("\n");
-  const kwStr = hotKeywords.slice(0, 10).map(hk => `${hk.keyword}(${hk.score})`).join(", ");
+  const titles = newsData.items
+    .slice(0, 30)
+    .map((i) => `- ${i.title} (${i.source})`)
+    .join("\n");
+  const kwStr = hotKeywords
+    .slice(0, 10)
+    .map((hk) => `${hk.keyword}(${hk.score})`)
+    .join(", ");
 
   const prompt = `以下是今日新闻标题（${newsData.items.length} 条中的 30 条）和热点关键词。
 
@@ -1961,11 +2669,17 @@ ${titles}
 }`;
 
   try {
-    const raw = await callDeepSeek(prompt, "你是市场信号分析引擎。只输出JSON，不加任何解释。", 300);
+    const raw = await callDeepSeek(
+      prompt,
+      "你是市场信号分析引擎。只输出JSON，不加任何解释。",
+      300,
+    );
     const jsonMatch = raw.match(/\{[^{}]*\}/s);
     if (jsonMatch) {
       const parsed = JSON.parse(jsonMatch[0]);
-      console.log(`  📊 结构化信号: sentiment=${parsed.sentiment}, risk=${parsed.riskLevel}`);
+      console.log(
+        `  📊 结构化信号: sentiment=${parsed.sentiment}, risk=${parsed.riskLevel}`,
+      );
       return parsed;
     }
   } catch (e) {
@@ -1978,11 +2692,17 @@ ${titles}
 const FORCE_FLAG = process.argv.includes("--force");
 
 async function main() {
-  console.log("🤖 AI 深度分析引擎 v8.0（记忆 + 语义检索 + 视角轮换 + 热点加权 + 信源权威度 + 噪音过滤 + 权重分层抓取 + 内容深度分析 + 付费墙跳过 + 趋势追踪 + 事件链追踪 + 信号仪表盘 + Token优化 + 重试 + 幂等 + 月度回顾）");
+  console.log(
+    "🤖 AI 深度分析引擎 v8.0（记忆 + 语义检索 + 视角轮换 + 热点加权 + 信源权威度 + 噪音过滤 + 权重分层抓取 + 内容深度分析 + 付费墙跳过 + 趋势追踪 + 事件链追踪 + 信号仪表盘 + Token优化 + 重试 + 幂等 + 月度回顾）",
+  );
   const now = new Date();
-  const dateStr = now.toLocaleDateString("sv-SE", { timeZone: "Asia/Shanghai" });
+  const dateStr = now.toLocaleDateString("sv-SE", {
+    timeZone: "Asia/Shanghai",
+  });
   const dayOfWeek = now.getDay();
-  console.log(`⏰ ${now.toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })} (${dateStr})`);
+  console.log(
+    `⏰ ${now.toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })} (${dateStr})`,
+  );
 
   if (!fs.existsSync(ANALYSIS_DIR)) {
     fs.mkdirSync(ANALYSIS_DIR, { recursive: true });
@@ -1994,7 +2714,9 @@ async function main() {
   // 幂等检查：今天的分析是否已存在
   const existing = checkExistingAnalysis(dateStr);
   if (existing && !FORCE_FLAG) {
-    console.log(`⏭️  今日分析已存在（${existing.generatedAt}，${existing.newsCount} 条新闻，视角: ${existing.perspective}）`);
+    console.log(
+      `⏭️  今日分析已存在（${existing.generatedAt}，${existing.newsCount} 条新闻，视角: ${existing.perspective}）`,
+    );
     console.log("   跳过重复生成。使用 --force 参数可强制重新生成。");
 
     // 确保 analysis.json 最新副本存在
@@ -2022,13 +2744,17 @@ async function main() {
   }
 
   // ===== 常规每日分析 =====
-  const perspective = DAILY_PERSPECTIVES.find((p) => p.day === dayOfWeek) || DAILY_PERSPECTIVES[0];
+  const perspective =
+    DAILY_PERSPECTIVES.find((p) => p.day === dayOfWeek) ||
+    DAILY_PERSPECTIVES[0];
   console.log(`🎯 今日视角: ${perspective.label}`);
 
   // 加载所有历史分析（用于后续语义匹配）
   const allPreviousAnalyses = loadPreviousAnalyses(dateStr);
   if (allPreviousAnalyses.length > 0) {
-    console.log(`🧠 已加载 ${allPreviousAnalyses.length} 份历史分析（待语义匹配）`);
+    console.log(
+      `🧠 已加载 ${allPreviousAnalyses.length} 份历史分析（待语义匹配）`,
+    );
   } else {
     console.log("🧠 无历史分析（首次运行或无历史数据）");
   }
@@ -2052,20 +2778,32 @@ async function main() {
   // 统计选取结果
   const catCounts = {};
   for (const item of newsData.items) {
-    catCounts[item.category || "其他"] = (catCounts[item.category || "其他"] || 0) + 1;
+    catCounts[item.category || "其他"] =
+      (catCounts[item.category || "其他"] || 0) + 1;
   }
-  console.log(`  ✅ 选取 ${newsData.items.length} 条（从 ${rawData.items.length} 条中），覆盖 ${Object.keys(catCounts).length} 个分类`);
-  for (const [cat, count] of Object.entries(catCounts).sort((a, b) => b[1] - a[1]).slice(0, 5)) {
+  console.log(
+    `  ✅ 选取 ${newsData.items.length} 条（从 ${rawData.items.length} 条中），覆盖 ${Object.keys(catCounts).length} 个分类`,
+  );
+  for (const [cat, count] of Object.entries(catCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)) {
     console.log(`     ${cat}: ${count} 条`);
   }
 
   // 语义匹配：从历史分析中选出最相关的 2-3 份
-  const previousAnalyses = selectRelevantAnalyses(allPreviousAnalyses, hotKeywords, null, 3);
+  const previousAnalyses = selectRelevantAnalyses(
+    allPreviousAnalyses,
+    hotKeywords,
+    null,
+    3,
+  );
   if (previousAnalyses.length > 0) {
     console.log(`🎯 语义匹配选出 ${previousAnalyses.length} 份相关历史分析:`);
     previousAnalyses.forEach((p) => {
       const { themes } = extractThemes(p.analysis);
-      console.log(`   ${p.date} (相关度:${p.relevance?.toFixed(1)}): ${themes.slice(0, 3).join("、")}`);
+      console.log(
+        `   ${p.date} (相关度:${p.relevance?.toFixed(1)}): ${themes.slice(0, 3).join("、")}`,
+      );
     });
   }
 
@@ -2084,7 +2822,13 @@ async function main() {
   }
   const trendSection = buildTrendSection(hotKeywords, previousTrends);
 
-  const prompt = buildPrompt(newsData, previousAnalyses, perspective, snippets, trendSection);
+  const prompt = buildPrompt(
+    newsData,
+    previousAnalyses,
+    perspective,
+    snippets,
+    trendSection,
+  );
   console.log("\n🤖 调用 DeepSeek 分析中...");
 
   try {
@@ -2107,15 +2851,26 @@ async function main() {
     structured = {
       sentiment: parsed.structured?.sentiment || structured.sentiment || "中性",
       riskLevel: parsed.structured?.riskLevel || structured.riskLevel || "中",
-      keyThemes: parsed.structured?.keyThemes?.length ? parsed.structured.keyThemes : (structured.keyThemes || []),
-      sectors: parsed.structured?.sectors?.length ? parsed.structured.sectors : (structured.sectors || []),
+      keyThemes: parsed.structured?.keyThemes?.length
+        ? parsed.structured.keyThemes
+        : structured.keyThemes || [],
+      sectors: parsed.structured?.sectors?.length
+        ? parsed.structured.sectors
+        : structured.sectors || [],
       outlook: parsed.structured?.outlook || structured.outlook || "",
       eventChains: parsed.structured?.eventChains || [],
     };
-    console.log(`📊 结构化: sentiment=${structured.sentiment}, risk=${structured.riskLevel}, themes=[${structured.keyThemes.join(",")}]`);
+    console.log(
+      `📊 结构化: sentiment=${structured.sentiment}, risk=${structured.riskLevel}, themes=[${structured.keyThemes.join(",")}]`,
+    );
 
     if (hotKeywords.length > 0) {
-      console.log(`🔥 热点: ${hotKeywords.slice(0, 5).map(hk => `${hk.keyword}(${hk.score})`).join(', ')}`);
+      console.log(
+        `🔥 热点: ${hotKeywords
+          .slice(0, 5)
+          .map((hk) => `${hk.keyword}(${hk.score})`)
+          .join(", ")}`,
+      );
     }
 
     const result = {
@@ -2159,9 +2914,16 @@ async function main() {
 
     // 更新事件链
     const activeEvents = loadActiveEvents();
-    const updatedEvents = updateEvents(activeEvents, structured.eventChains, dateStr, structured.sentiment);
+    const updatedEvents = updateEvents(
+      activeEvents,
+      structured.eventChains,
+      dateStr,
+      structured.sentiment,
+    );
     saveEvents(updatedEvents);
-    const activeCount = updatedEvents.filter(e => e.status === "active").length;
+    const activeCount = updatedEvents.filter(
+      (e) => e.status === "active",
+    ).length;
     console.log(`🔗 已更新事件链（${activeCount} 个活跃事件）`);
 
     // 更新信号仪表盘
@@ -2169,7 +2931,6 @@ async function main() {
     updateDashboard(dashboard, dateStr, structured, hotKeywords);
     saveDashboard(dashboard);
     console.log(`📊 已更新信号仪表盘（${dashboard.days.length} 天数据）`);
-
   } catch (e) {
     console.error(`❌ 分析失败: ${e.message}`);
     process.exit(1);

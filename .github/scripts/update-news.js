@@ -36,10 +36,10 @@ const MAX_ITEMS_PER_CATEGORY = 1500; // 每个分类最大记录数（默认）
 
 // 社科类分类条数限制（降低权重）
 const CATEGORY_ITEM_LIMITS = {
-  '心理学与认知': 30,
-  '教育与媒体': 30,
-  '环境与能源': 20,
-  '法律与伦理': 20,
+  心理学与认知: 30,
+  教育与媒体: 30,
+  环境与能源: 20,
+  法律与伦理: 20,
 };
 
 const RECENT_DAYS = 14; // recent.json 保留天数
@@ -1405,6 +1405,7 @@ async function processTopic(topic) {
         title: catData.title,
         file: sanitizeFilename(catData.title),
         count: catData.items.length,
+        archiveCount: 0,
       });
     } catch {}
   }
