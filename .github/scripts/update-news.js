@@ -207,7 +207,8 @@ async function translateDeepSeek(text) {
       messages: [
         {
           role: "system",
-          content: "你是翻译引擎。将用户输入的英文翻译为中文，只输出翻译结果，不加任何解释、引号或标点符号。如果输入已是中文，直接原样输出。",
+          content:
+            "你是翻译引擎。将用户输入的英文翻译为中文，只输出翻译结果，不加任何解释、引号或标点符号。如果输入已是中文，直接原样输出。",
         },
         { role: "user", content: text.slice(0, 500) },
       ],
@@ -246,7 +247,10 @@ async function translateDeepSeek(text) {
       },
     );
     req.on("error", () => resolve(null));
-    req.on("timeout", () => { req.destroy(); resolve(null); });
+    req.on("timeout", () => {
+      req.destroy();
+      resolve(null);
+    });
     req.write(body);
     req.end();
   });
@@ -278,7 +282,8 @@ async function translateENtoZH(text) {
     try {
       await new Promise((r) => setTimeout(r, 500));
       translated = await translateDeepSeek(text);
-      if (translated) console.log(`    🤖 DeepSeek 翻译兜底: "${text.slice(0, 40)}..."`);
+      if (translated)
+        console.log(`    🤖 DeepSeek 翻译兜底: "${text.slice(0, 40)}..."`);
     } catch {}
   }
 
@@ -302,7 +307,8 @@ async function translateBatchDeepSeek(texts) {
     messages: [
       {
         role: "system",
-        content: "你是翻译引擎。将用户输入的英文新闻标题逐行翻译为中文。保持相同的行数和顺序，每行只输出翻译结果，不加编号、引号或解释。如果某行已是中文，原样输出。",
+        content:
+          "你是翻译引擎。将用户输入的英文新闻标题逐行翻译为中文。保持相同的行数和顺序，每行只输出翻译结果，不加编号、引号或解释。如果某行已是中文，原样输出。",
       },
       { role: "user", content: numbered },
     ],
@@ -330,13 +336,21 @@ async function translateBatchDeepSeek(texts) {
           try {
             const data = JSON.parse(Buffer.concat(chunks).toString("utf-8"));
             const content = data?.choices?.[0]?.message?.content?.trim() || "";
-            const lines = content.split("\n").map((l) => l.replace(/^\d+\.\s*/, "").trim());
+            const lines = content
+              .split("\n")
+              .map((l) => l.replace(/^\d+\.\s*/, "").trim());
             const result = new Map();
             for (let i = 0; i < texts.length; i++) {
               const translated = lines[i] || "";
-              if (translated && translated.toLowerCase() !== texts[i].toLowerCase()) {
+              if (
+                translated &&
+                translated.toLowerCase() !== texts[i].toLowerCase()
+              ) {
                 result.set(texts[i], translated);
-                translationCache[cacheKey(texts[i])] = { zh: translated, ts: Date.now() };
+                translationCache[cacheKey(texts[i])] = {
+                  zh: translated,
+                  ts: Date.now(),
+                };
               }
             }
             resolve(result);
@@ -347,7 +361,10 @@ async function translateBatchDeepSeek(texts) {
       },
     );
     req.on("error", () => resolve(new Map()));
-    req.on("timeout", () => { req.destroy(); resolve(new Map()); });
+    req.on("timeout", () => {
+      req.destroy();
+      resolve(new Map());
+    });
     req.write(body);
     req.end();
   });
@@ -367,7 +384,11 @@ async function translateItems(items) {
       const key = cacheKey(item.title);
       if (translationCache[key] && translationCache[key].zh) {
         cached++;
-        results.push({ ...item, title: translationCache[key].zh, titleEN: item.title });
+        results.push({
+          ...item,
+          title: translationCache[key].zh,
+          titleEN: item.title,
+        });
       } else {
         enItems.push(item);
       }
@@ -390,7 +411,9 @@ async function translateItems(items) {
     const batch = texts.slice(i, i + BATCH_SIZE);
     const batchNum = Math.floor(i / BATCH_SIZE) + 1;
     const totalBatches = Math.ceil(texts.length / BATCH_SIZE);
-    console.log(`  📦 批次 ${batchNum}/${totalBatches} (${batch.length} 条)...`);
+    console.log(
+      `  📦 批次 ${batchNum}/${totalBatches} (${batch.length} 条)...`,
+    );
 
     let translated;
     try {
@@ -431,7 +454,9 @@ async function translateItems(items) {
     }
   }
 
-  console.log(`📊 翻译统计: ${cached} 缓存, ${newTranslated} 新翻译, ${failed} 失败`);
+  console.log(
+    `📊 翻译统计: ${cached} 缓存, ${newTranslated} 新翻译, ${failed} 失败`,
+  );
   return results;
 }
 
@@ -528,7 +553,9 @@ async function fetchSource(source) {
     const before = items.length;
     items = items.filter((item) => !excludeRegex.test(item.title));
     if (before !== items.length) {
-      console.log(`  🚫 ${source.name}: exclude 过滤 ${before - items.length} 条`);
+      console.log(
+        `  🚫 ${source.name}: exclude 过滤 ${before - items.length} 条`,
+      );
     }
   }
 
@@ -643,7 +670,6 @@ function loadExistingTitles(dataDir) {
   } catch {}
   return titles;
 }
-
 
 /**
  * 检查是否已按分类存储
@@ -828,9 +854,9 @@ function migrateToCategoryFiles(dataDir, topic) {
  */
 function dedup(items, existingTitles = []) {
   const seenUrls = new Set();
-  const seenNormsSet = new Set();  // O(1) 精确匹配
-  const seenNormsArr = [];         // 用于模糊匹配
-  const existingTitlesSet = new Set(existingTitles);  // O(1) 历史精确匹配
+  const seenNormsSet = new Set(); // O(1) 精确匹配
+  const seenNormsArr = []; // 用于模糊匹配
+  const existingTitlesSet = new Set(existingTitles); // O(1) 历史精确匹配
 
   return items.filter((item) => {
     // 1. URL 精确匹配（URL 相同一定重复）
@@ -900,10 +926,6 @@ function atomicWrite(filePath, data) {
   fs.renameSync(tmp, filePath);
 }
 
-
-
-
-
 // ===== P3-1: 语义去重（LLM 批量检测跨语言/改写重复）=====
 async function semanticDedup(items, existingTitles) {
   if (items.length < 5 || !process.env.DEEPSEEK_API_KEY) return items;
@@ -911,11 +933,12 @@ async function semanticDedup(items, existingTitles) {
   // 只对热词命中多的条目做语义去重（减少 API 调用）
   // 选出标题长度接近、可能重复的候选对
   const candidates = [];
-  const norms = items.map(i => normalizeTitle(i.title).slice(0, 80));
+  const norms = items.map((i) => normalizeTitle(i.title).slice(0, 80));
   for (let i = 0; i < items.length; i++) {
     for (let j = i + 1; j < items.length; j++) {
       // 长度差异超过 50% 的直接跳过
-      const li = norms[i].length, lj = norms[j].length;
+      const li = norms[i].length,
+        lj = norms[j].length;
       if (Math.min(li, lj) / Math.max(li, lj) < 0.5) continue;
       // 已经被精确去重跳过的也跳过
       if (!norms[i] || !norms[j]) continue;
@@ -927,16 +950,20 @@ async function semanticDedup(items, existingTitles) {
 
   // 批量检查（最多检查 50 对）
   const toCheck = candidates.slice(0, 50);
-  const pairs = toCheck.map(([i, j], idx) =>
-    `${idx + 1}. A: ${items[i].title}\n   B: ${items[j].title}`
-  ).join("\n");
+  const pairs = toCheck
+    .map(
+      ([i, j], idx) =>
+        `${idx + 1}. A: ${items[i].title}\n   B: ${items[j].title}`,
+    )
+    .join("\n");
 
   const body = JSON.stringify({
     model: "deepseek-chat",
     messages: [
       {
         role: "system",
-        content: "你是去重引擎。判断每对新闻标题是否报道同一件事（语义重复）。输出JSON数组，每元素是{"n":序号,"dup":true/false}。中英文标题也可能重复。",
+        content:
+          '你是去重引擎。判断每对新闻标题是否报道同一件事（语义重复）。输出JSON数组，每元素是{"n":序号,"dup":true/false}。中英文标题也可能重复。',
       },
       { role: "user", content: pairs },
     ],
@@ -946,24 +973,35 @@ async function semanticDedup(items, existingTitles) {
 
   try {
     const res = await new Promise((resolve) => {
-      const req = https.request({
-        hostname: "api.deepseek.com", path: "/v1/chat/completions", method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
-          "Content-Type": "application/json",
-          "Content-Length": Buffer.byteLength(body),
+      const req = https.request(
+        {
+          hostname: "api.deepseek.com",
+          path: "/v1/chat/completions",
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+            "Content-Type": "application/json",
+            "Content-Length": Buffer.byteLength(body),
+          },
+          timeout: 15000,
         },
-        timeout: 15000,
-      }, (res) => {
-        const chunks = [];
-        res.on("data", (c) => chunks.push(c));
-        res.on("end", () => {
-          try { resolve(JSON.parse(Buffer.concat(chunks).toString("utf-8"))); }
-          catch { resolve({}); }
-        });
-      });
+        (res) => {
+          const chunks = [];
+          res.on("data", (c) => chunks.push(c));
+          res.on("end", () => {
+            try {
+              resolve(JSON.parse(Buffer.concat(chunks).toString("utf-8")));
+            } catch {
+              resolve({});
+            }
+          });
+        },
+      );
       req.on("error", () => resolve({}));
-      req.on("timeout", () => { req.destroy(); resolve({}); });
+      req.on("timeout", () => {
+        req.destroy();
+        resolve({});
+      });
       req.write(body);
       req.end();
     });
@@ -1017,23 +1055,35 @@ async function llmClassify(items, categoryTitles) {
 
     try {
       const res = await new Promise((resolve, reject) => {
-        const req = https.request({
-          hostname: "api.deepseek.com", path: "/v1/chat/completions", method: "POST",
-          headers: {
-            Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json",
-            "Content-Length": Buffer.byteLength(body),
+        const req = https.request(
+          {
+            hostname: "api.deepseek.com",
+            path: "/v1/chat/completions",
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${apiKey}`,
+              "Content-Type": "application/json",
+              "Content-Length": Buffer.byteLength(body),
+            },
+            timeout: 15000,
           },
-          timeout: 15000,
-        }, (res) => {
-          const chunks = [];
-          res.on("data", (c) => chunks.push(c));
-          res.on("end", () => {
-            try { resolve(JSON.parse(Buffer.concat(chunks).toString("utf-8"))); }
-            catch { resolve({}); }
-          });
-        });
+          (res) => {
+            const chunks = [];
+            res.on("data", (c) => chunks.push(c));
+            res.on("end", () => {
+              try {
+                resolve(JSON.parse(Buffer.concat(chunks).toString("utf-8")));
+              } catch {
+                resolve({});
+              }
+            });
+          },
+        );
         req.on("error", () => resolve({}));
-        req.on("timeout", () => { req.destroy(); resolve({}); });
+        req.on("timeout", () => {
+          req.destroy();
+          resolve({});
+        });
         req.write(body);
         req.end();
       });
@@ -1044,13 +1094,18 @@ async function llmClassify(items, categoryTitles) {
       if (jsonMatch) {
         const parsed = JSON.parse(jsonMatch[0]);
         for (const entry of parsed) {
-          if (entry.c && entry.c !== "跳过" && entry.n >= 1 && entry.n <= batch.length) {
+          if (
+            entry.c &&
+            entry.c !== "跳过" &&
+            entry.n >= 1 &&
+            entry.n <= batch.length
+          ) {
             result.set(batch[entry.n - 1].title, entry.c);
           }
         }
       }
     } catch {}
-    if (i + BATCH < items.length) await new Promise(r => setTimeout(r, 500));
+    if (i + BATCH < items.length) await new Promise((r) => setTimeout(r, 500));
   }
   return result;
 }
@@ -1091,8 +1146,12 @@ async function processTopic(topic) {
   // 源健康报告
   const failedSources = Object.entries(sourceHealth).filter(([, h]) => !h.ok);
   if (failedSources.length > 0) {
-    console.log(`\n⚠️ 源健康报告: ${failedSources.length}/${topic.sources.length} 个源失败:`);
-    failedSources.forEach(([name, h]) => console.log(`  ❌ ${name}: ${h.error}`));
+    console.log(
+      `\n⚠️ 源健康报告: ${failedSources.length}/${topic.sources.length} 个源失败:`,
+    );
+    failedSources.forEach(([name, h]) =>
+      console.log(`  ❌ ${name}: ${h.error}`),
+    );
   }
 
   // 2. 加载历史数据用于去重
@@ -1145,10 +1204,18 @@ async function processTopic(topic) {
 
   // P2-1: LLM 辅助分类 — 对"其他资讯"中的条目做二次分类
   const defaultCatTitle = topic.defaultCategory?.title || "其他资讯";
-  const otherSection = sections.find(s => s.title === defaultCatTitle);
-  if (otherSection && otherSection.items.length > 5 && process.env.DEEPSEEK_API_KEY) {
-    console.log(`\n🤖 LLM 辅助分类: ${otherSection.items.length} 条"${defaultCatTitle}"条目...`);
-    const catTitles = topic.categories.map(c => c.title).filter(t => t !== defaultCatTitle);
+  const otherSection = sections.find((s) => s.title === defaultCatTitle);
+  if (
+    otherSection &&
+    otherSection.items.length > 5 &&
+    process.env.DEEPSEEK_API_KEY
+  ) {
+    console.log(
+      `\n🤖 LLM 辅助分类: ${otherSection.items.length} 条"${defaultCatTitle}"条目...`,
+    );
+    const catTitles = topic.categories
+      .map((c) => c.title)
+      .filter((t) => t !== defaultCatTitle);
     const reclassified = await llmClassify(otherSection.items, catTitles);
     if (reclassified.size > 0) {
       // 将重新分类的条目从"其他资讯"移到正确分类
@@ -1157,7 +1224,7 @@ async function processTopic(topic) {
       for (const item of otherSection.items) {
         const newCat = reclassified.get(item.title);
         if (newCat) {
-          const target = sections.find(s => s.title === newCat);
+          const target = sections.find((s) => s.title === newCat);
           if (target) {
             target.items.push(item);
             moved.push(item);
@@ -1209,7 +1276,9 @@ async function processTopic(topic) {
     }));
 
     // P1-3: 增量追加 — 先对新条目去重，再追加到现有数据前面
-    const existingNorms = new Set(existingItems.map(i => normalizeTitle(i.title).slice(0, 80)));
+    const existingNorms = new Set(
+      existingItems.map((i) => normalizeTitle(i.title).slice(0, 80)),
+    );
     const trulyNew = newItems.filter((item) => {
       const norm = normalizeTitle(item.title).slice(0, 80);
       return norm && !existingNorms.has(norm);
@@ -1230,8 +1299,11 @@ async function processTopic(topic) {
       return true;
     });
     const finalItems = filteredItems.slice(0, MAX_ITEMS_PER_CATEGORY);
-    const dedupeRemoved = mergedItems.filter((i) => (i.date || today) >= cutoff).length - filteredItems.length;
-    if (dedupeRemoved > 0) console.log(`  🔄 ${sec.title}: 合并去重移除 ${dedupeRemoved} 条`);
+    const dedupeRemoved =
+      mergedItems.filter((i) => (i.date || today) >= cutoff).length -
+      filteredItems.length;
+    if (dedupeRemoved > 0)
+      console.log(`  🔄 ${sec.title}: 合并去重移除 ${dedupeRemoved} 条`);
 
     // 分片：recent（最近 RECENT_DAYS 天）+ archive（更早的）
     const recentItems = finalItems.filter(
