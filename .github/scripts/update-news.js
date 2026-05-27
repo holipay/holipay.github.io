@@ -32,7 +32,16 @@ const SCRIPTS_DIR = __dirname;
 const CACHE_FILE = path.join(SCRIPTS_DIR, "translations-cache.json");
 const TOPICS_FILE = path.join(SCRIPTS_DIR, "topics.json");
 const RETENTION_DAYS = 90; // 数据保留天数（3个月）
-const MAX_ITEMS_PER_CATEGORY = 1500; // 每个分类最大记录数
+const MAX_ITEMS_PER_CATEGORY = 1500; // 每个分类最大记录数（默认）
+
+// 社科类分类条数限制（降低权重）
+const CATEGORY_ITEM_LIMITS = {
+  '心理学与认知': 30,
+  '教育与媒体': 30,
+  '环境与能源': 20,
+  '法律与伦理': 20,
+};
+
 const RECENT_DAYS = 14; // recent.json 保留天数
 const SIMILARITY_THRESHOLD = 0.75; // 标题相似度阈值（75% 以上视为重复）
 const TRANSLATE_CONCURRENCY = 8;
@@ -798,8 +807,9 @@ function migrateToCategoryFiles(dataDir, topic) {
   const categoryMeta = [];
   for (const [title, sec] of sectionsMap) {
     sec.items.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-    if (sec.items.length > MAX_ITEMS_PER_CATEGORY) {
-      sec.items = sec.items.slice(0, MAX_ITEMS_PER_CATEGORY);
+    const catLimit = CATEGORY_ITEM_LIMITS[sec.title] || MAX_ITEMS_PER_CATEGORY;
+    if (sec.items.length > catLimit) {
+      sec.items = sec.items.slice(0, catLimit);
     }
     const catFile = path.join(dataDir, `${sanitizeFilename(title)}.json`);
     atomicWrite(
