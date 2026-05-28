@@ -23,26 +23,139 @@
                 flex: 1;
                 contain: layout style;
             }
-            .date-group {
-                margin-bottom: 24px;
+            .keyword-group {
+                margin-bottom: 28px;
             }
-            .date-header {
+            .keyword-header {
                 display: flex;
                 align-items: center;
-                gap: 8px;
-                margin-bottom: 12px;
-                padding-bottom: 8px;
-                border-bottom: 1px solid var(--bdr);
+                gap: 10px;
+                margin-bottom: 14px;
+                padding-bottom: 10px;
+                border-bottom: 2px solid var(--accent);
             }
-            .date-header-text {
-                font-size: 15px;
+            .keyword-tag {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                padding: 4px 12px;
+                background: rgba(239,68,68,.08);
+                color: #ef4444;
+                border: 1px solid rgba(239,68,68,.2);
+                border-radius: 100px;
+                font-size: 14px;
                 font-weight: 700;
-                color: var(--text);
             }
-            .date-header-meta {
+            .keyword-score {
+                font-size: 11px;
+                opacity: .6;
+                margin-left: 2px;
+            }
+            .keyword-count {
                 font-size: 11px;
                 color: var(--text3);
                 margin-left: auto;
+            }
+            .article-card {
+                background: var(--card);
+                border-radius: var(--r);
+                padding: 18px 22px;
+                box-shadow: var(--sh);
+                border: 1px solid var(--bdr);
+                margin-bottom: 16px;
+                transition: border-color .2s;
+            }
+            .article-card:hover {
+                border-color: var(--accent);
+            }
+            .article-head {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+            .article-tier {
+                flex-shrink: 0;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 28px;
+                height: 28px;
+                border-radius: 8px;
+                font-size: 12px;
+                font-weight: 700;
+            }
+            .tier-1 {
+                background: rgba(239,68,68,.1);
+                color: #ef4444;
+            }
+            .tier-2 {
+                background: rgba(245,158,11,.1);
+                color: #f59e0b;
+            }
+            .tier-3 {
+                background: rgba(107,114,128,.1);
+                color: #6b7280;
+            }
+            .article-title {
+                font-size: 15px;
+                font-weight: 600;
+                color: var(--text);
+                line-height: 1.4;
+                flex: 1;
+            }
+            .article-title a {
+                color: inherit;
+                text-decoration: none;
+            }
+            .article-title a:hover {
+                color: var(--accent);
+            }
+            .article-meta {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 12px;
+                font-size: 12px;
+                color: var(--text3);
+            }
+            .article-source {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+            }
+            .article-source::before {
+                content: "📰";
+                font-size: 11px;
+            }
+            .article-chars {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+            }
+            .article-chars::before {
+                content: "📝";
+                font-size: 11px;
+            }
+            .article-snippet {
+                font-size: 14px;
+                line-height: 1.7;
+                color: var(--text2);
+                background: var(--bg);
+                padding: 14px 16px;
+                border-radius: var(--rs);
+                border: 1px solid var(--bdr);
+                max-height: 300px;
+                overflow-y: auto;
+                white-space: pre-wrap;
+                word-break: break-word;
+            }
+            .article-snippet::-webkit-scrollbar {
+                width: 4px;
+            }
+            .article-snippet::-webkit-scrollbar-thumb {
+                background: var(--bdr);
+                border-radius: 4px;
             }
             .dash-card {
                 background: var(--card);
@@ -50,13 +163,22 @@
                 padding: 16px 20px;
                 box-shadow: var(--sh);
                 border: 1px solid var(--bdr);
-                margin-bottom: 20px;
+                margin-bottom: 24px;
             }
             .dash-title {
                 font-size: 13px;
                 font-weight: 700;
                 color: var(--text);
                 margin-bottom: 8px;
+            }
+            .empty {
+                text-align: center;
+                padding: 60px 20px;
+                color: var(--text3);
+            }
+            .empty-icon {
+                font-size: 48px;
+                margin-bottom: 12px;
             }
             @media (max-width: 860px) {
                 .nav-bar {
@@ -72,6 +194,17 @@
                 }
                 .main {
                     padding: 16px 14px 32px;
+                }
+                .article-card {
+                    padding: 14px 16px;
+                }
+                .article-title {
+                    font-size: 14px;
+                }
+                .article-snippet {
+                    font-size: 13px;
+                    padding: 12px 14px;
+                    max-height: 200px;
                 }
             }
         </style>
@@ -99,14 +232,67 @@
             </div>
         </div>
         <button id="toTop" title="回到顶部">↑</button>
-        <script src="common.js"></script>
+        <script src="js/common.js"></script>
         <script>
             const main = $("main");
 
+            // 按热词分组渲染
+            function renderByKeyword(articles) {
+                // 按 keyword 分组
+                const groups = new Map();
+                for (const item of articles) {
+                    const kw = item.keyword || "其他";
+                    if (!groups.has(kw)) groups.set(kw, []);
+                    groups.get(kw).push(item);
+                }
+
+                // 按热词分数排序（取每组第一个的 score）
+                const sorted = [...groups.entries()].sort(
+                    (a, b) => (b[1][0]?.score || 0) - (a[1][0]?.score || 0),
+                );
+
+                let html = "";
+                for (const [keyword, items] of sorted) {
+                    const score = items[0]?.score || 0;
+                    html += `<div class="keyword-group">
+      <div class="keyword-header">
+        <span class="keyword-tag">🔥 ${esc(keyword)}<span class="keyword-score">${score}</span></span>
+        <span class="keyword-count">${items.length} 篇</span>
+      </div>`;
+
+                    for (const it of items) {
+                        const tierClass = `tier-${it.tier || 3}`;
+                        const tierLabel = `T${it.tier || 3}`;
+                        const href = it.link ? safeHref(it.link) : "";
+                        const titleHtml = href
+                            ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(it.title)}</a>`
+                            : esc(it.title);
+                        const snippet = it.snippet
+                            ? esc(it.snippet).slice(0, 2000)
+                            : "";
+
+                        html += `<div class="article-card">
+          <div class="article-head">
+            <span class="article-tier ${tierClass}">${tierLabel}</span>
+            <span class="article-title">${titleHtml}</span>
+          </div>
+          <div class="article-meta">
+            <span class="article-source">${esc(it.source || "")}</span>
+            <span class="article-chars">${it.chars || 0} 字</span>
+          </div>${snippet ? `\n          <div class="article-snippet">${snippet}</div>` : ""}
+        </div>`;
+                    }
+
+                    html += "</div>";
+                }
+
+                return html;
+            }
+
             async function init() {
-                // Load latest articles and dashboard in parallel
-                const [latest, dash] = await Promise.all([
-                    fetchT("data/news/latest.json")
+                // Load articles and dashboard in parallel
+                const [articles, dash] = await Promise.all([
+                    fetchT("data/news/articles.json")
                         .then((r) => r.json())
                         .catch(() => null),
                     fetchT("data/news/dashboard.json")
@@ -114,18 +300,20 @@
                         .catch(() => null),
                 ]);
 
-                if (!latest || !latest.items || !latest.items.length) {
+                if (
+                    !articles ||
+                    !articles.items ||
+                    !articles.items.length
+                ) {
                     main.innerHTML =
                         '<div class="empty"><div class="empty-icon">📭</div><p>暂无精选文章</p></div>';
                     return;
                 }
 
-                const items = latest.items;
-
-                // Dashboard summary (most recent day's signals)
+                // Dashboard summary
                 let dashHtml = "";
                 if (dash && dash.days && dash.days.length) {
-                    const today = dash.days[0];
+                    const today = dash.days[dash.days.length - 1];
                     const smI =
                         { 看涨: "📈", 看跌: "📉", 分化: "🔀" }[
                             today.sentiment
@@ -143,29 +331,8 @@
     </div>`;
                 }
 
-                // Group articles by date
-                const groups = new Map();
-                for (const it of items) {
-                    const d = it.date || "";
-                    if (!groups.has(d)) groups.set(d, []);
-                    groups.get(d).push(it);
-                }
-
-                // Render date groups
-                let listHtml = "";
-                for (const [date, groupItems] of groups) {
-                    listHtml += `<div class="date-group">
-      <div class="date-header">
-        <span class="date-header-text">${esc(date)}</span>
-        <span class="date-header-meta">${groupItems.length} 篇</span>
-      </div>`;
-                    for (const it of groupItems) {
-                        listHtml += renderNewsItem(it);
-                    }
-                    listHtml += "</div>";
-                }
-
-                main.innerHTML = dashHtml + listHtml;
+                const articlesHtml = renderByKeyword(articles.items);
+                main.innerHTML = dashHtml + articlesHtml;
             }
 
             // Back to top
@@ -185,7 +352,7 @@
 
             init();
             if ("serviceWorker" in navigator)
-                navigator.serviceWorker.register("sw.js").catch(() => {});
+                navigator.serviceWorker.register("js/sw.js").catch(() => {});
         </script>
     </body>
 </html>

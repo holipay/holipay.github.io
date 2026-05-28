@@ -418,6 +418,7 @@ async function fetchWeightedArticles(hotKeywords, items) {
             tier: tierIdx + 1,
             title: item.title,
             source: item.source || "",
+            link: item.link || "",
             snippet: text,
             chars: text.length,
           });
@@ -2813,6 +2814,20 @@ async function main() {
     console.log("\n📄 按权重分层抓取文章内容...");
     snippets = await fetchWeightedArticles(hotKeywords, newsData.items);
     console.log(`  📄 共获取 ${snippets.length} 篇文章`);
+
+    // 保存抓取的文章内容到 articles.json
+    if (snippets.length > 0) {
+      const articlesPath = path.join(DATA_DIR, "articles.json");
+      const articlesData = {
+        date: dateStr,
+        updatedAt: now.toISOString(),
+        items: snippets,
+      };
+      const articlesTmp = articlesPath + ".tmp";
+      fs.writeFileSync(articlesTmp, JSON.stringify(articlesData, null, 2), "utf-8");
+      fs.renameSync(articlesTmp, articlesPath);
+      console.log(`💾 已保存 data/news/articles.json (${snippets.length} 篇文章)`);
+    }
   }
 
   // 加载历史趋势 + 构建趋势对比

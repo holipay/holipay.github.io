@@ -188,7 +188,7 @@
             </aside>
         </div>
         <button id="toTop" title="回到顶部">↑</button>
-        <script src="common.js"></script>
+        <script src="js/common.js"></script>
         <script>
             const main = $("main"),
                 catList = $("catList");
@@ -355,7 +355,7 @@
 
             init();
             if ("serviceWorker" in navigator)
-                navigator.serviceWorker.register("sw.js").catch(() => {});
+                navigator.serviceWorker.register("js/sw.js").catch(() => {});
         </script>
     </body>
 </html>

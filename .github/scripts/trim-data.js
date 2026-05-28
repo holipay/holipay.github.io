@@ -6,14 +6,21 @@
 const fs = require("fs");
 const path = require("path");
 
-const DATA_DIR = path.join(__dirname, "data/news");
+const DATA_DIR = path.join(__dirname, "..", "..", "data", "news");
 const args = process.argv.slice(2);
 const dryRun = args.includes("--dry-run");
-const maxArg = args.find(a => a.startsWith("--max="));
+const maxArg = args.find((a) => a.startsWith("--max="));
 const MAX_ITEMS = maxArg ? parseInt(maxArg.split("=")[1], 10) : 200;
 
 // 跳过的文件
-const SKIP = new Set(["meta.json", "dashboard.json", "events.json", "latest.json", "candidate-keywords.json"]);
+const SKIP = new Set([
+  "meta.json",
+  "dashboard.json",
+  "events.json",
+  "latest.json",
+  "articles.json",
+  "candidate-keywords.json",
+]);
 
 function trimFile(filePath) {
   const name = path.basename(filePath);
@@ -48,7 +55,9 @@ function trimFile(filePath) {
     fs.renameSync(tmp, filePath);
   }
 
-  console.log(`  ${dryRun ? "🔍" : "✓"} ${name}: ${original} → ${MAX_ITEMS} (移除 ${removed} 条，最早保留: ${oldestKept})`);
+  console.log(
+    `  ${dryRun ? "🔍" : "✓"} ${name}: ${original} → ${MAX_ITEMS} (移除 ${removed} 条，最早保留: ${oldestKept})`,
+  );
   return { file: name, original, kept: MAX_ITEMS, removed, oldestKept };
 }
 
@@ -56,17 +65,19 @@ function trimFile(filePath) {
 function updateMetaCounts(trimResults) {
   const metaPath = path.join(DATA_DIR, "meta.json");
   if (!fs.existsSync(metaPath)) return;
-  
+
   let meta;
   try {
     meta = JSON.parse(fs.readFileSync(metaPath, "utf-8"));
-  } catch { return; }
+  } catch {
+    return;
+  }
 
   let updated = 0;
   for (const r of trimResults) {
     if (!r) continue;
     const baseName = r.file.replace(".json", "");
-    const cat = meta.categories.find(c => c.file === baseName);
+    const cat = meta.categories.find((c) => c.file === baseName);
     if (cat && cat.count !== r.kept) {
       cat.count = r.kept;
       updated++;
@@ -82,10 +93,13 @@ function updateMetaCounts(trimResults) {
 }
 
 // 主逻辑
-console.log(`\n📂 数据裁剪 (最多保留 ${MAX_ITEMS} 条/分类${dryRun ? ", dry-run 模式" : ""})\n`);
+console.log(
+  `\n📂 数据裁剪 (最多保留 ${MAX_ITEMS} 条/分类${dryRun ? ", dry-run 模式" : ""})\n`,
+);
 
-const files = fs.readdirSync(DATA_DIR)
-  .filter(f => f.endsWith(".json") && !SKIP.has(f))
+const files = fs
+  .readdirSync(DATA_DIR)
+  .filter((f) => f.endsWith(".json") && !SKIP.has(f))
   .sort();
 
 const results = [];
@@ -98,4 +112,6 @@ updateMetaCounts(results);
 
 const trimmed = results.filter(Boolean);
 const totalRemoved = trimmed.reduce((s, r) => s + r.removed, 0);
-console.log(`\n📊 总计: 处理 ${files.length} 个文件，裁剪 ${trimmed.length} 个，移除 ${totalRemoved} 条\n`);
+console.log(
+  `\n📊 总计: 处理 ${files.length} 个文件，裁剪 ${trimmed.length} 个，移除 ${totalRemoved} 条\n`,
+);
