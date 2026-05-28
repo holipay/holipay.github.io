@@ -239,5 +239,40 @@
             if ("serviceWorker" in navigator)
                 navigator.serviceWorker.register("js/sw.js").catch(() => {});
         </script>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "nase.me",
+                "url": "https://nase.me/",
+                "description": "nase.me AI 每日深度分析全球金融、科技、社科资讯",
+                "inLanguage": "zh-CN",
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://nase.me/search?q={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                }
+            }
+        </script>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "CollectionPage",
+                "name": "AI 深度分析 - nase.me",
+                "url": "https://nase.me/",
+                "description": "nase.me AI 每日深度分析全球金融、科技、社科资讯",
+                "inLanguage": "zh-CN",
+                "isPartOf": {
+                    "@type": "WebSite",
+                    "name": "nase.me",
+                    "url": "https://nase.me/"
+                },
+                "about": [
+                    { "@type": "Thing", "name": "全球金融分析" },
+                    { "@type": "Thing", "name": "科技资讯" },
+                    { "@type": "Thing", "name": "社科资讯" }
+                ]
+            }
+        </script>
     </body>
 </html>
