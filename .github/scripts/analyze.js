@@ -1145,6 +1145,8 @@ const SOURCE_WEIGHTS = {
   // Tier 4: 中文财经 — 1.5x
   "36氪": 1.5,
   "36kr": 1.5,
+  财新网: 1.5,
+  华尔街见闻: 1.5,
   新浪财经: 1.5,
   东方财富: 1.5,
   第一财经: 1.5,
@@ -1613,14 +1615,61 @@ const EN_STOPWORDS = new Set([
 ]);
 
 const CN_KEYWORD_PREFIXES = [
-  "随着", "对于", "关于", "由于", "通过", "根据", "针对",
-  "如果", "虽然", "因为", "所以", "但是", "而且", "或者",
-  "可能", "已经", "正在", "即将", "仍然", "依然", "竟然",
-  "居然", "终于", "终于", "不断", "持续", "逐渐", "逐步",
-  "大幅", "急剧", "显著", "明显", "进一步", "重新", "再次",
-  "首次", "突然", "爆发", "引发", "导致", "推动", "促进",
-  "伊朗", "美国", "中国", "欧洲", "日本", "韩国", "俄罗斯",
-  "英国", "德国", "法国", "印度", "巴西", "澳大利亚",
+  "随着",
+  "对于",
+  "关于",
+  "由于",
+  "通过",
+  "根据",
+  "针对",
+  "如果",
+  "虽然",
+  "因为",
+  "所以",
+  "但是",
+  "而且",
+  "或者",
+  "可能",
+  "已经",
+  "正在",
+  "即将",
+  "仍然",
+  "依然",
+  "竟然",
+  "居然",
+  "终于",
+  "终于",
+  "不断",
+  "持续",
+  "逐渐",
+  "逐步",
+  "大幅",
+  "急剧",
+  "显著",
+  "明显",
+  "进一步",
+  "重新",
+  "再次",
+  "首次",
+  "突然",
+  "爆发",
+  "引发",
+  "导致",
+  "推动",
+  "促进",
+  "伊朗",
+  "美国",
+  "中国",
+  "欧洲",
+  "日本",
+  "韩国",
+  "俄罗斯",
+  "英国",
+  "德国",
+  "法国",
+  "印度",
+  "巴西",
+  "澳大利亚",
 ];
 
 function stripCNPrefix(word) {
@@ -1747,12 +1796,16 @@ const DOMAIN_KEYWORDS = new Set([
 ]);
 
 // 按长度降序预排序（最长匹配优先）
-const CN_DOMAIN_SORTED = [...DOMAIN_KEYWORDS].filter(k => /[\u4e00-\u9fff]/.test(k)).sort((a, b) => b.length - a.length);
-const EN_DOMAIN_SORTED = [...DOMAIN_KEYWORDS].filter(k => /^[a-z\s]+$/.test(k)).sort((a, b) => b.length - a.length);
-
+const CN_DOMAIN_SORTED = [...DOMAIN_KEYWORDS]
+  .filter((k) => /[\u4e00-\u9fff]/.test(k))
+  .sort((a, b) => b.length - a.length);
+const EN_DOMAIN_SORTED = [...DOMAIN_KEYWORDS]
+  .filter((k) => /^[a-z\s]+$/.test(k))
+  .sort((a, b) => b.length - a.length);
 
 function extractKeywordsFromTitle(title) {
   const keywords = [];
+  const keywordSet = new Set();
   const lower = title.toLowerCase();
 
   // ── 中文关键词提取 ──
@@ -1765,10 +1818,14 @@ function extractKeywordsFromTitle(title) {
       // 检查该位置是否已被更长的关键词占用
       let overlap = false;
       for (let k = idx; k < idx + dk.length; k++) {
-        if (cnUsed.has(k)) { overlap = true; break; }
+        if (cnUsed.has(k)) {
+          overlap = true;
+          break;
+        }
       }
       if (!overlap) {
         keywords.push(dk);
+        keywordSet.add(dk);
         for (let k = idx; k < idx + dk.length; k++) cnUsed.add(k);
       }
       idx = lower.indexOf(dk, idx + 1);
@@ -1776,11 +1833,16 @@ function extractKeywordsFromTitle(title) {
   }
 
   // 补充：提取未匹配的中文词（2-4字），去除停用词前缀后匹配白名单
-  const cnWords = lower.match(/[\u4e00-\u9fff]{2,6}/g) || [];
+  const cnWords = lower.match(/[\u4e00-\u9fff]{2,4}/g) || [];
   for (const word of cnWords) {
     const stripped = stripCNPrefix(word);
-    if (stripped !== word && DOMAIN_KEYWORDS.has(stripped) && !keywords.includes(stripped)) {
+    if (
+      stripped !== word &&
+      DOMAIN_KEYWORDS.has(stripped) &&
+      !keywordSet.has(stripped)
+    ) {
       keywords.push(stripped);
+      keywordSet.add(stripped);
     }
   }
 
@@ -1791,15 +1853,20 @@ function extractKeywordsFromTitle(title) {
     let idx = lower.indexOf(dk);
     while (idx !== -1) {
       // 英文需要检查词边界
-      const before = idx > 0 ? lower[idx - 1] : ' ';
-      const after = idx + dk.length < lower.length ? lower[idx + dk.length] : ' ';
+      const before = idx > 0 ? lower[idx - 1] : " ";
+      const after =
+        idx + dk.length < lower.length ? lower[idx + dk.length] : " ";
       if (/[^a-z]/.test(before) && /[^a-z]/.test(after)) {
         let overlap = false;
         for (let k = idx; k < idx + dk.length; k++) {
-          if (enUsed.has(k)) { overlap = true; break; }
+          if (enUsed.has(k)) {
+            overlap = true;
+            break;
+          }
         }
         if (!overlap) {
           keywords.push(dk);
+          keywordSet.add(dk);
           for (let k = idx; k < idx + dk.length; k++) enUsed.add(k);
         }
       }
@@ -1863,19 +1930,23 @@ function extractHotKeywords(items, topN = 15) {
     const crossCat = data.categories.size;
     const crossSource = data.sources.size;
     const avgSourceWeight = data.totalSourceWeight / data.count;
+    // 预计算最高信源权重，避免重复调用 getSourceWeight
+    const maxSourceWeight = Math.max(
+      ...[...data.sources].map((s) => getSourceWeight(s)),
+    );
 
     // ── 规则 1: 白名单词直接通过（count≥1 即可）──
     if (data.isDomain) {
       if (data.count < 1) continue;
       const score =
-        data.weightedCount * Math.pow(1.3, crossCat) * 1.5 * Math.max(...[...data.sources].map(s => getSourceWeight(s)));
+        data.weightedCount * Math.pow(1.3, crossCat) * 1.5 * maxSourceWeight;
       scored.push({
         keyword,
         score: Math.round(score * 100) / 100,
         count: data.count,
         categories: cats,
         domain: true,
-        sourceWeight: Math.round(Math.max(...[...data.sources].map(s => getSourceWeight(s))) * 100) / 100,
+        sourceWeight: Math.round(maxSourceWeight * 100) / 100,
       });
       continue;
     }
@@ -1885,14 +1956,14 @@ function extractHotKeywords(items, topN = 15) {
     if (crossSignal) {
       if (data.count < 2) continue;
       const score =
-        data.weightedCount * Math.pow(1.3, crossCat) * 1.0 * Math.max(...[...data.sources].map(s => getSourceWeight(s)));
+        data.weightedCount * Math.pow(1.3, crossCat) * 1.0 * maxSourceWeight;
       scored.push({
         keyword,
         score: Math.round(score * 100) / 100,
         count: data.count,
         categories: cats,
         domain: false,
-        sourceWeight: Math.round(Math.max(...[...data.sources].map(s => getSourceWeight(s))) * 100) / 100,
+        sourceWeight: Math.round(maxSourceWeight * 100) / 100,
       });
       continue;
     }
@@ -1900,14 +1971,14 @@ function extractHotKeywords(items, topN = 15) {
     // ── 规则 3: 高频新词（count≥3）→ 降级保留 + 记录候选日志 ──
     if (data.count >= 3) {
       const score =
-        data.weightedCount * Math.pow(1.3, crossCat) * 0.5 * Math.max(...[...data.sources].map(s => getSourceWeight(s)));
+        data.weightedCount * Math.pow(1.3, crossCat) * 0.5 * maxSourceWeight;
       scored.push({
         keyword,
         score: Math.round(score * 100) / 100,
         count: data.count,
         categories: cats,
         domain: false,
-        sourceWeight: Math.round(Math.max(...[...data.sources].map(s => getSourceWeight(s))) * 100) / 100,
+        sourceWeight: Math.round(maxSourceWeight * 100) / 100,
       });
       candidateLog.push({
         keyword,
@@ -1928,10 +1999,8 @@ function extractHotKeywords(items, topN = 15) {
     saveCandidateLog(candidateLog);
   }
 
-  return mergeSimilarKeywords(scored).slice(0, topN)
+  return mergeSimilarKeywords(scored).slice(0, topN);
 }
-
-
 
 /**
  * 合并相似关键词（子串关系）：如 "随着伊朗战争" 和 "伊朗战争" → 合并为 "伊朗战争"
@@ -1952,8 +2021,10 @@ function mergeSimilarKeywords(keywords) {
     for (let j = i + 1; j < sorted.length; j++) {
       if (used.has(j)) continue;
       const other = sorted[j];
-      const shorter = kw.keyword.length <= other.keyword.length ? kw.keyword : other.keyword;
-      const longer = kw.keyword.length <= other.keyword.length ? other.keyword : kw.keyword;
+      const shorter =
+        kw.keyword.length <= other.keyword.length ? kw.keyword : other.keyword;
+      const longer =
+        kw.keyword.length <= other.keyword.length ? other.keyword : kw.keyword;
 
       // 子串关系且短关键词长度 ≥ 2
       if (longer.includes(shorter) && shorter.length >= 2) {
@@ -1961,8 +2032,12 @@ function mergeSimilarKeywords(keywords) {
         kw.score += other.score;
         kw.count += other.count;
         if (!kw.domain && other.domain) kw.domain = true;
-        if (other.sourceWeight > kw.sourceWeight) kw.sourceWeight = other.sourceWeight;
-        const catSet = new Set([...(kw.categories || []), ...(other.categories || [])]);
+        if (other.sourceWeight > kw.sourceWeight)
+          kw.sourceWeight = other.sourceWeight;
+        const catSet = new Set([
+          ...(kw.categories || []),
+          ...(other.categories || []),
+        ]);
         kw.categories = [...catSet];
         used.add(j);
       }
