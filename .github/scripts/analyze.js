@@ -2812,7 +2812,7 @@ async function main() {
   let snippets = [];
   if (hotKeywords.length > 0) {
     console.log("\n📄 按权重分层抓取文章内容...");
-    snippets = await fetchWeightedArticles(hotKeywords, newsData.items);
+    snippets = await fetchWeightedArticles(hotKeywords, rawData.items);
     console.log(`  📄 共获取 ${snippets.length} 篇文章`);
 
     // 保存抓取的文章内容到 articles.json
