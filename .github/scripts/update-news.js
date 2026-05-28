@@ -1280,7 +1280,7 @@ async function processTopic(topic) {
     } catch {}
 
     // 准备新条目
-    const newItems = sec.items.map(({ titleEN, link, ...rest }) => ({
+    const newItems = sec.items.map(({ titleEN, ...rest }) => ({
       ...rest,
       date: today,
     }));
