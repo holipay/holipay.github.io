@@ -2837,7 +2837,7 @@ async function main() {
   }
   const trendSection = buildTrendSection(hotKeywords, previousTrends);
 
-  const prompt = buildPrompt(
+  let prompt = buildPrompt(
     newsData,
     previousAnalyses,
     perspective,
