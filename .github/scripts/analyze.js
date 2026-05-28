@@ -32,6 +32,8 @@ if (!API_KEY) {
 
 const DATA_DIR = path.join(ROOT, "data/news");
 const ANALYSIS_DIR = path.join(DATA_DIR, "analysis");
+const CACHE_FILE = path.join(__dirname, "translations-cache.json");
+const SNIPPET_BATCH_SIZE = 3; // 摘要翻译批次大小（摘要较长，批次小些）
 
 // ===== 每日视角配置 =====
 const DAILY_PERSPECTIVES = [
@@ -85,6 +87,129 @@ const DAILY_PERSPECTIVES = [
     sectionHint: "## 🔗 跨市场联动\n分析资产间的传导和资金流向。",
   },
 ];
+
+// ===== 翻译工具 =====
+let translationCache = {};
+
+function loadTranslationCache() {
+  try {
+    if (fs.existsSync(CACHE_FILE)) {
+      translationCache = JSON.parse(fs.readFileSync(CACHE_FILE, "utf-8"));
+      const count = Object.keys(translationCache).length;
+      if (count > 0) console.log(`📦 加载翻译缓存: ${count} 条`);
+    }
+  } catch {
+    translationCache = {};
+  }
+}
+
+function saveTranslationCache() {
+  try {
+    const cutoff = Date.now() - 90 * 24 * 60 * 60 * 1000;
+    for (const [key, entry] of Object.entries(translationCache)) {
+      if (entry.ts && entry.ts < cutoff) delete translationCache[key];
+    }
+    const tmp = CACHE_FILE + ".tmp";
+    fs.writeFileSync(tmp, JSON.stringify(translationCache, null, 2), "utf-8");
+    fs.renameSync(tmp, CACHE_FILE);
+    console.log(`💾 保存翻译缓存: ${Object.keys(translationCache).length} 条`);
+  } catch (e) {
+    console.error("⚠️ 缓存保存失败:", e.message);
+  }
+}
+
+function trCacheKey(text) {
+  const t = text.trim();
+  if (t.length <= 80) return t.toLowerCase();
+  return (t.slice(0, 80) + t.slice(-20)).toLowerCase();
+}
+
+function isEnglish(text) {
+  const letters = text.replace(
+    /[\s\d.,!?@#$%^&*()\-+='";:/<>[\]{}|\\`~\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]/g,
+    "",
+  );
+  if (!letters.length) return false;
+  const ascii = letters.replace(/[^\x00-\x7F]/g, "");
+  return ascii.length / letters.length > 0.7;
+}
+
+async function translateSnippet(text) {
+  if (!text) return null;
+  try {
+    const res = await apiCall("POST", API_URL + "/v1/chat/completions", {
+      model: "deepseek-chat",
+      messages: [
+        {
+          role: "system",
+          content:
+            "你是翻译引擎。将用户输入的英文新闻摘要翻译为流畅的中文。保持原文段落结构，只输出翻译结果，不加编号、引号或解释。如果已是中文，原样输出。",
+        },
+        { role: "user", content: text },
+      ],
+      temperature: 0.1,
+      max_tokens: Math.max(800, Math.ceil(text.length * 1.5)),
+    });
+    const translated = res?.choices?.[0]?.message?.content?.trim();
+    if (translated && translated !== text) return translated;
+    return null;
+  } catch (e) {
+    console.error(`⚠️ 摘要翻译失败: ${e.message}`);
+    return null;
+  }
+}
+
+async function translateSnippets(items) {
+  const enItems = items.filter(
+    (item) => item.snippet && isEnglish(item.snippet),
+  );
+  if (enItems.length === 0) {
+    console.log("📊 摘要翻译: 无需翻译（全部为中文或无内容）");
+    return;
+  }
+
+  console.log(`🌐 翻译 ${enItems.length} 篇英文摘要...`);
+  let cached = 0;
+  let translated = 0;
+  let failed = 0;
+
+  for (let i = 0; i < enItems.length; i += SNIPPET_BATCH_SIZE) {
+    const batch = enItems.slice(i, i + SNIPPET_BATCH_SIZE);
+    const batchNum = Math.floor(i / SNIPPET_BATCH_SIZE) + 1;
+    const totalBatches = Math.ceil(enItems.length / SNIPPET_BATCH_SIZE);
+    console.log(
+      `  📦 批次 ${batchNum}/${totalBatches} (${batch.length} 篇)...`,
+    );
+
+    for (const item of batch) {
+      const key = trCacheKey(item.snippet);
+      if (translationCache[key] && translationCache[key].zh) {
+        item.snippetEN = item.snippet;
+        item.snippet = translationCache[key].zh;
+        cached++;
+        continue;
+      }
+
+      const zh = await translateSnippet(item.snippet);
+      if (zh) {
+        item.snippetEN = item.snippet;
+        item.snippet = zh;
+        translationCache[key] = { zh, ts: Date.now() };
+        translated++;
+      } else {
+        failed++;
+      }
+    }
+
+    if (i + SNIPPET_BATCH_SIZE < enItems.length) {
+      await new Promise((r) => setTimeout(r, 1000));
+    }
+  }
+
+  console.log(
+    `📊 摘要翻译统计: ${cached} 缓存, ${translated} 新翻译, ${failed} 失败`,
+  );
+}
 
 // ===== HTTP 请求 =====
 function apiCall(method, urlPath, body) {
@@ -433,6 +558,12 @@ async function fetchWeightedArticles(hotKeywords, items) {
     }
   }
   console.log(`  📊 文章抓取完成: ${results.length} 篇, 共 ${usedBudget} 字`);
+
+  // 翻译英文摘要为中文
+  if (results.length > 0) {
+    await translateSnippets(results);
+  }
+
   return results;
 }
 
@@ -2709,6 +2840,9 @@ async function main() {
     fs.mkdirSync(ANALYSIS_DIR, { recursive: true });
   }
 
+  // 加载翻译缓存
+  loadTranslationCache();
+
   // 清理过期分析文件
   cleanupOldAnalyses();
 
@@ -2824,9 +2958,15 @@ async function main() {
         items: snippets,
       };
       const articlesTmp = articlesPath + ".tmp";
-      fs.writeFileSync(articlesTmp, JSON.stringify(articlesData, null, 2), "utf-8");
+      fs.writeFileSync(
+        articlesTmp,
+        JSON.stringify(articlesData, null, 2),
+        "utf-8",
+      );
       fs.renameSync(articlesTmp, articlesPath);
-      console.log(`💾 已保存 data/news/articles.json (${snippets.length} 篇文章)`);
+      console.log(
+        `💾 已保存 data/news/articles.json (${snippets.length} 篇文章)`,
+      );
     }
   }
 
@@ -2946,6 +3086,9 @@ async function main() {
     updateDashboard(dashboard, dateStr, structured, hotKeywords);
     saveDashboard(dashboard);
     console.log(`📊 已更新信号仪表盘（${dashboard.days.length} 天数据）`);
+
+    // 保存翻译缓存
+    saveTranslationCache();
   } catch (e) {
     console.error(`❌ 分析失败: ${e.message}`);
     process.exit(1);
