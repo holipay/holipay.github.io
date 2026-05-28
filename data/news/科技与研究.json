@@ -1,8 +1,18 @@
 {
   "icon": "🤖",
   "title": "科技与研究",
-  "updatedAt": "2026-05-28T04:48:17.070Z",
+  "updatedAt": "2026-05-28T04:59:31.042Z",
   "items": [
+    {
+      "title": "设计更具信息性的测试：将执行与识别分开-- Andrew Caplin、Leo Zhu著",
+      "source": "NBER",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "分销成本--作者： Cian Ruane、Alessandra Peter",
+      "source": "NBER",
+      "date": "2026-05-28"
+    },
     {
       "title": "俄亥俄州因反对声浪将暂停数据中心税收抵免",
       "source": "Bloomberg",

@@ -139,19 +139,19 @@
       "sentiment": "看跌",
       "riskLevel": "高",
       "keyThemes": [
-        "供给冲击型滞胀",
-        "央行鹰派囚笼",
-        "关税自我伤害循环",
-        "债券市场功能危机"
+        "战争驱动的全球滞胀",
+        "多极关税混战",
+        "央行政策两难",
+        "消费者信心崩溃",
+        "供给侧冲击扩散"
       ],
       "sectors": [
-        "能源",
-        "化肥/农业",
-        "工业金属",
-        "金融/债券",
-        "消费"
+        "大宗商品",
+        "利率/债券",
+        "股市",
+        "消费金融/房地产"
       ],
-      "outlook": "4月通胀数据公布前市场将维持高波动性下行趋势，战争供给冲击与加息预期形成死亡螺旋，债券市场流动性风险是最大隐患。",
+      "outlook": "市场将确认'滞胀交易'逻辑，股债面临重估压力，仅少数资源板块可避险。",
       "topKeywords": [
         {
           "keyword": "随着伊朗战争",
@@ -179,6 +179,11 @@
           "count": 2
         },
         {
+          "keyword": "发起敌意收购",
+          "score": 16,
+          "count": 2
+        },
+        {
           "keyword": "伊朗战争可能",
           "score": 16,
           "count": 2
@@ -196,11 +201,6 @@
         {
           "keyword": "利率",
           "score": 12.25,
-          "count": 2
-        },
-        {
-          "keyword": "伊朗战争暴露",
-          "score": 10.24,
           "count": 2
         }
       ]
@@ -304,6 +304,14 @@
       "frequency30d": 1
     },
     {
+      "keyword": "发起敌意收购",
+      "avgScore7d": 16,
+      "avgScore30d": 16,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
       "keyword": "伊朗战争可能",
       "avgScore7d": 16,
       "avgScore30d": 16,
@@ -363,14 +371,6 @@
       "keyword": "经济衰退期间",
       "avgScore7d": 12,
       "avgScore30d": 12,
-      "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
-    },
-    {
-      "keyword": "伊朗战争暴露",
-      "avgScore7d": 10.24,
-      "avgScore30d": 10.24,
       "trend": 0,
       "frequency7d": 1,
       "frequency30d": 1

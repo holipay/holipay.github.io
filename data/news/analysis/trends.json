@@ -127,6 +127,11 @@
         "count": 2
       },
       {
+        "keyword": "发起敌意收购",
+        "score": 16,
+        "count": 2
+      },
+      {
         "keyword": "伊朗战争可能",
         "score": 16,
         "count": 2
@@ -144,11 +149,6 @@
       {
         "keyword": "利率",
         "score": 12.25,
-        "count": 2
-      },
-      {
-        "keyword": "伊朗战争暴露",
-        "score": 10.24,
         "count": 2
       }
     ]
