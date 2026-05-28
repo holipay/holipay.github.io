@@ -174,7 +174,7 @@ function renderAnalysis(data) {
   const body = parseMarkdown(data.analysis);
   return `<div class="card a-card">
     <div class="a-head"><span class="a-icon">🤖</span><span class="a-title">AI 深度分析</span><span class="a-meta">${date} · ${data.newsCount} 条新闻${per}</span></div>
-    ${tags}${hotHtml}<div class="a-body">${body}</div></div>`;
+    <div class="a-body">${body}</div>${hotHtml}${tags}</div>`;
 }
 
 // ===== 渲染新闻条目 =====
