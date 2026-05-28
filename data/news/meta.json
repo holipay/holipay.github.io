@@ -2,15 +2,8 @@
   "topic": "news",
   "name": "全球资讯",
   "icon": "📰",
-  "updatedAt": "2026-05-28T05:06:23.630Z",
+  "updatedAt": "2026-05-28T05:33:22.806Z",
   "categories": [
-    {
-      "icon": "🛢️",
-      "title": "大宗商品与能源",
-      "file": "大宗商品与能源",
-      "count": 169,
-      "archiveCount": 0
-    },
     {
       "icon": "📈",
       "title": "股市与市场",
@@ -19,10 +12,10 @@
       "archiveCount": 0
     },
     {
-      "icon": "🏛️",
-      "title": "政治与治理",
-      "file": "政治与治理",
-      "count": 146,
+      "icon": "📰",
+      "title": "其他资讯",
+      "file": "其他资讯",
+      "count": 157,
       "archiveCount": 0
     },
     {
@@ -40,38 +33,45 @@
       "archiveCount": 18
     },
     {
-      "icon": "📰",
-      "title": "其他资讯",
-      "file": "其他资讯",
-      "count": 157,
+      "icon": "🛢️",
+      "title": "大宗商品与能源",
+      "file": "大宗商品与能源",
+      "count": 174,
       "archiveCount": 0
     },
     {
       "icon": "🏦",
       "title": "央行与利率",
       "file": "央行与利率",
-      "count": 115,
+      "count": 116,
       "archiveCount": 0
     },
     {
       "icon": "💰",
       "title": "宏观经济",
       "file": "宏观经济",
-      "count": 118,
+      "count": 121,
       "archiveCount": 0
     },
     {
       "icon": "🤖",
       "title": "科技与研究",
       "file": "科技与研究",
-      "count": 28,
+      "count": 30,
       "archiveCount": 5
+    },
+    {
+      "icon": "🏛️",
+      "title": "政治与治理",
+      "file": "政治与治理",
+      "count": 146,
+      "archiveCount": 0
     },
     {
       "icon": "👥",
       "title": "社会与人口",
       "file": "社会与人口",
-      "count": 170,
+      "count": 174,
       "archiveCount": 0
     },
     {

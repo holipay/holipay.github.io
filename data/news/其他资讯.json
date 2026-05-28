@@ -1,12 +1,13 @@
 {
   "icon": "📰",
   "title": "其他资讯",
-  "updatedAt": "2026-05-28T05:06:23.620Z",
+  "updatedAt": "2026-05-28T05:33:22.792Z",
   "items": [
     {
       "title": "一个人的宣言 - 为250辩护",
       "source": "ZeroHedge",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.zerohedge.com/political/one-mans-manifesto-defense-250"
     },
     {
       "title": "目前的经济状况如何？ - NerdWallet",
@@ -511,7 +512,8 @@
     {
       "title": "默认球体",
       "source": "Foreign Affairs",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.foreignaffairs.com/china/spheres-default"
     },
     {
       "title": "互惠的幻觉",
@@ -556,7 +558,8 @@
     {
       "title": "假设葡萄牙做到了",
       "source": "Dealbreaker",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://dealbreaker.com/2026/04/suppose-portugal-did-it"
     },
     {
       "title": "私人资本和颠覆会重塑国防工业基础吗？",
@@ -581,7 +584,8 @@
     {
       "title": "节日钟声：26年2月4日",
       "source": "Dealbreaker",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://dealbreaker.com/2026/04/opening-bell-4-2-2026"
     },
     {
       "title": "UHS 为何以 8.35 亿美元收购 Talkspace",
@@ -591,17 +595,20 @@
     {
       "title": "开市钟：26 年 11 月 3 日",
       "source": "Dealbreaker",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://dealbreaker.com/2026/03/opening-bell-3-11-2026"
     },
     {
       "title": "共同定价因素动物园",
       "source": "ScienceDirect",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.sciencedirect.com/science/article/pii/S0304405X26000668?dgcid=rss_sd_all"
     },
     {
       "title": "编委会",
       "source": "ScienceDirect",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.sciencedirect.com/science/article/pii/S0304405X2600070X?dgcid=rss_sd_all"
     },
     {
       "title": "全球主义寻求消灭民族国家",

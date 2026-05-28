@@ -1,7 +1,7 @@
 {
   "icon": "🧠",
   "title": "心理学与认知",
-  "updatedAt": "2026-05-28T05:06:23.627Z",
+  "updatedAt": "2026-05-28T05:33:22.803Z",
   "items": [
     {
       "title": "“Zoom疲劳”的四个原因及其解决方案 - 斯坦福报告",
@@ -11,7 +11,8 @@
     {
       "title": "我们发现仅三分之一发表的心理学研究可靠——接下来怎么办？ - 《对话》",
       "source": "Google News Academic",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQRlZxbHR3NjVVZm9CSzlvUDlFZ2ZHYjRPdnM5dHdEREFMS3VONlZJckNrLUtEcmdoX3FMQ282dzN2ZHp5VlNsSVd5bGFDbmgtbGZTLXVneDQ5MHR1VkxIcFN1TEJDRlhJUkhmam55eXhDNjdQZG5FM0xmbEF6TERRM0wzd2dVNU45cks2VGEzd09IY3FPbzQwbTZUbnZ0WWNQNzV3NkhyWk51Y3F2cTdOTw?oc=5"
     },
     {
       "title": "设计更具信息性的测试：将执行与识别分开-- Andrew Caplin、Leo Zhu著",
@@ -26,17 +27,20 @@
     {
       "title": "为什么开车时我会如此疲惫？",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/why-do-i-get-so-tired-while-driving-282584"
     },
     {
       "title": "保持冷静继续前行：黄蜂教给社会如何应对权力斗争的经验",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/keep-calm-and-carry-on-lessons-from-wasps-on-how-societies-survive-power-struggles-278689"
     },
     {
       "title": "\"来辩论我！\"并不奏效。以下是更好的分歧处理方式——或许还能改变他人想法",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/debate-me-doesnt-work-here-are-better-ways-to-disagree-and-maybe-change-minds-280403"
     },
     {
       "title": "行为金融：偏见、情绪和财务行为- Investopedia",
@@ -51,7 +55,8 @@
     {
       "title": "研究成果产生中的意识形态偏见美国科学促进会",
       "source": "Google News Academic",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1jYjgyR1Z1bXpxeVB2VllfRGszZHFOX1dhZThYTmo2TWh0WlRlVVZNN21Bc3NWamZiZ3VuYnoyRXJ1cmZVa2c3eGZmVmt3UXV4U0E3cGo5ZTkzT1FWd1A4?oc=5"
     },
     {
       "title": "陷入困境的借款人的中介市场力量成本——作者：Winston Wei Dou、Wei Wang、Wenyu Wang",
@@ -86,12 +91,14 @@
     {
       "title": "友谊为何能让我们保持健康的科学 - 美国心理学会 (APA)",
       "source": "Google News Academic",
-      "date": "2026-05-19"
+      "date": "2026-05-19",
+      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5FLUNOUGNqazFJdlVoYVdsWFJ3TGZOMzdTYjFieXRvTjlEOGZ6QjBGMU5kSGZtZHU4LV9kWWVJUXJOQTdLeVY3VEdFV1VEMVdoVmtQSklCWThFb0trSmIxdFZYektHVmc0bG95VkluUmFzR0JM?oc=5"
     },
     {
       "title": "科学记者如何决定一项心理学研究是否值得报道？ - 记者的资源",
       "source": "Google News Academic",
-      "date": "2026-05-19"
+      "date": "2026-05-19",
+      "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQbGlfOEp6VXpabThzNVRsZlh2cGpRcXBxeFVGR2ZnV0dMSUJkNXpfQU96MUc4WV9OZTJwaHZ1cnc0Sm9LdkMxamZOdlkyaGFWaFZQYV9fTlo2VE1IUU9waTNZTG1LSEVIQjNqc3dkcWFWX2NPTEt6RDg3aVVJUk5RemJZbw?oc=5"
     },
     {
       "title": "大萧条：概述、原因和影响- Investopedia",

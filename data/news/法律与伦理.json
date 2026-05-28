@@ -1,12 +1,13 @@
 {
   "icon": "⚖️",
   "title": "法律与伦理",
-  "updatedAt": "2026-05-28T05:06:23.624Z",
+  "updatedAt": "2026-05-28T05:33:22.801Z",
   "items": [
     {
       "title": "两个市场回报的故事：广泛的市场因素和特殊的金融因素-由Sung Je Byun ， Johnathan Loudis ， Lawrence D.W. Schmidt撰写",
       "source": "NBER",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.nber.org/papers/w35243#fromrss"
     },
     {
       "title": "在具有里程碑意义的国际法庭案件支持工人罢工权之后，可能会发生以下变化",
@@ -16,12 +17,14 @@
     {
       "title": "最高法院多久推翻一次自己的决定？",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/short-reads/2026/04/08/how-often-does-the-supreme-court-overturn-its-own-decisions/"
     },
     {
       "title": "美国式的与生俱来的公民身份在世界各地并不常见",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/short-reads/2026/03/31/us-style-birthright-citizenship-is-uncommon-around-the-world/"
     },
     {
       "title": "阿拉伯国家对在耶路撒冷开设新的“非法”大使馆表示愤怒",

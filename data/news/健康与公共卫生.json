@@ -1,12 +1,13 @@
 {
   "icon": "🏥",
   "title": "健康与公共卫生",
-  "updatedAt": "2026-05-28T05:06:23.625Z",
+  "updatedAt": "2026-05-28T05:33:22.802Z",
   "items": [
     {
       "title": "默里谷脑炎可能致命。无疫苗情况下，如何保持安全",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/murray-valley-encephalitis-can-be-fatal-with-no-vaccine-heres-how-to-stay-safe-283573"
     },
     {
       "title": "为什么百健（Biogen）支付 $5.6B 购买 Apellis Pharma",
@@ -16,27 +17,32 @@
     {
       "title": "\"大肉类\"如何塑造科学，为牛排赋予健康光环",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/how-big-meat-shapes-science-to-give-steak-a-healthy-glow-up-283080"
     },
     {
       "title": "宾夕法尼亚州近半数孕产妇死亡发生在产后六周以上",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/nearly-half-of-maternal-deaths-in-pennsylvania-occur-more-than-6-weeks-after-giving-birth-282108"
     },
     {
       "title": "美国食品药品监督管理局被指\"掩盖\"新冠疫苗相关儿童死亡事件",
       "source": "ZeroHedge",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.zerohedge.com/political/inside-fdas-cover-child-deaths-linked-covid-vaccines"
     },
     {
       "title": "今夏防晒安全：从紫外线应用到真正有效的防晒技巧",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/sun-safety-this-summer-from-uv-apps-to-sun-protection-tips-that-actually-work-283820"
     },
     {
       "title": "胡萝卜真能改善夜视能力吗？6个经久不衰的饮食迷思被揭穿",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/do-carrots-really-improve-your-night-vision-6-enduring-diet-myths-debunked-283785"
     },
     {
       "title": "病毒学入门指南",
@@ -51,12 +57,14 @@
     {
       "title": "美国人重视自己的健康，但许多人在照顾健康方面面临挑战",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/science/2026/04/07/americans-value-their-health-but-many-face-challenges-in-taking-care-of-it/"
     },
     {
       "title": "美国人希望从他们的健康信息来源获得什么？",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/science/2026/04/07/what-do-americans-want-from-their-health-information-sources/"
     },
     {
       "title": "第一个免疫细胞实时吞噬活皮肤癌的视频",
@@ -71,7 +79,8 @@
     {
       "title": "为什么 Quantum Health 收购虚拟护理公司 CirrusMD",
       "source": "Dealbreaker",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://dealbreaker.com/2026/03/why-quantum-health-acquired-virtual-care-company-cirrusmd"
     },
     {
       "title": "当运动员聚集在一起参加“类固醇奥运会”时，真正的明星是毒品-英国《金融时报》",

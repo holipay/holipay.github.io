@@ -1,8 +1,26 @@
 {
   "icon": "💰",
   "title": "宏观经济",
-  "updatedAt": "2026-05-28T05:06:23.622Z",
+  "updatedAt": "2026-05-28T05:33:22.798Z",
   "items": [
+    {
+      "title": "飙升1700%后，散户宠儿Sivers成为做空目标",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/a-1-700-jump-turns-retail-trader-favorite-sivers-into-short-bet",
+      "source": "Bloomberg",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "协作问题解决对学生批判性思维的促进效果：基于实证文献的元分析 | 人文与社会科学通讯 - Nature",
+      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1GTFZ2Z0tIeFZWQjlCNERJenc1N3diQm9RTTdma2JqMTJQRzZja201S05TV2dXcnRGWVh5aTZ4WlZSaENPWk5tWFV0TkFWNWtKeE9pT053a2YxTENIaHBV?oc=5",
+      "source": "Google News Academic",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "一房三主：美国梦成本膨胀",
+      "link": "https://www.wsj.com/articles/rising-house-mortgage-costs-north-carolina-home-468a46e5?mod=rss_markets_main",
+      "source": "WSJ",
+      "date": "2026-05-28"
+    },
     {
       "title": "71%的美国房主表示，他们的房屋保险费用上涨了",
       "link": "https://www.pewresearch.org/short-reads/2026/05/06/71-of-u-s-homeowners-say-their-home-insurance-costs-have-gone-up/",
@@ -18,17 +36,20 @@
     {
       "title": "天哪，24 个较大市场的公寓价格已经下降了 15% 至 33%，有些回到了 20 年前的水平",
       "source": "Wolf Street",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://wolfstreet.com/2026/05/25/oh-dear-condo-prices-already-dropped-by-15-to-33-in-24-bigger-markets-some-back-to-where-theyd-been-20-years-ago/"
     },
     {
       "title": "战争压力迫使印尼和泰国依赖短期债务",
       "source": "Bloomberg",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-27/war-stress-pushes-indonesia-thailand-to-lean-on-short-term-debt"
     },
     {
       "title": "交易员认为美伊协议信号相互矛盾",
       "source": "Bloomberg",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.bloomberg.com/news/videos/2026-05-27/traders-see-conflicting-iran-signals-on-us-iran-deal-video"
     },
     {
       "title": "投资者认为Pemex应进入全球债务市场",
@@ -43,7 +64,8 @@
     {
       "title": "亚马逊健康业务高管将离职，由Amwell联合创始人接任",
       "source": "CNBC",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.cnbc.com/2026/05/27/amazons-top-health-exec-is-stepping-down-will-be-replaced-by-amwell-co-founder.html"
     },
     {
       "title": "交易员对伊朗关于霍尔木兹海峡重新开放的时间表持怀疑态度",
@@ -53,37 +75,44 @@
     {
       "title": "高盛称尽管美国制裁俄罗斯原油出口仍相对稳定",
       "source": "WSJ",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.wsj.com/articles/oil-futures-fall-after-trump-calls-for-tariffs-on-colombia-5b2a178c?mod=rss_markets_main"
     },
     {
       "title": "贸易战与机票飙升正重塑加拿大人今夏旅行方式",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/trade-wars-and-soaring-airfares-are-reshaping-how-canadians-travel-this-summer-281696"
     },
     {
       "title": "美国老年人常被迫继续工作——随后因不肯让位而受批评",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/older-americans-are-often-compelled-to-keep-working-and-then-criticized-for-not-stepping-aside-282837"
     },
     {
       "title": "中国打击网络外汇交易将加剧资本外流",
       "source": "ZeroHedge",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.zerohedge.com/geopolitical/chinas-crackdown-online-foreign-trades-will-increase-capital-flight"
     },
     {
       "title": "消费者信心为何跌至历史低点？",
       "source": "ZeroHedge",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.zerohedge.com/personal-finance/why-consumer-sentiment-record-lows"
     },
     {
       "title": "能源饮料成为最新受害者，燃料危机改变消费者行为",
       "source": "ZeroHedge",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.zerohedge.com/markets/energy-drink-sales-abruptly-slow-energy-shock-shifts-consumer-behavior"
     },
     {
       "title": "Kunal Sangani的廉价通货膨胀周期",
       "source": "NBER",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.nber.org/papers/w35235#fromrss"
     },
     {
       "title": "分销成本--作者： Cian Ruane、Alessandra Peter",
@@ -313,32 +342,38 @@
     {
       "title": "解释政府债务的变化-作者： Tatiana Kirsanova ， Eric M. Leeper ， Campbell B. Leith ， Ding Liu",
       "source": "NBER",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.nber.org/papers/w35222#fromrss"
     },
     {
       "title": "解锁抵押贷款锁定：空间住房阶梯模型中的平衡效应--Julia Fonseca、Lu Liu、Pierre Mabille著",
       "source": "NBER",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.nber.org/papers/w35237#fromrss"
     },
     {
       "title": "人力资本生产功能：劳动力供给和税收的新估计和影响-作者： Han Gao ， Michael P. Keane ， Kaja Kierulf ， Alan Woodland",
       "source": "NBER",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.nber.org/papers/w35238#fromrss"
     },
     {
       "title": "页岩气为美国消费者节省了多少？ --卢卡斯· W ·戴维斯",
       "source": "NBER",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.nber.org/papers/w35245#fromrss"
     },
     {
       "title": "住房CPI中的无反应推断和相关测量问题--Lara Loewenstein ， Hugh G. Montag ， Randal Verbrugge",
       "source": "NBER",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.nber.org/papers/w35250#fromrss"
     },
     {
       "title": "保护的代价：臭名昭著的Smoot-Hawley关税下的关税事件和进口崩溃-作者： Kris James Mitchener ， Mathieu Pedemonte",
       "source": "NBER",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.nber.org/papers/w35249#fromrss"
     },
     {
       "title": "印度是一个“国家之国” --新西兰企业需要一个区域战略来使贸易协议发挥作用",
@@ -348,27 +383,32 @@
     {
       "title": "美国人的工资跟得上通货膨胀吗？这取决于",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/short-reads/2026/05/21/have-americans-wages-kept-up-with-inflation-that-depends/"
     },
     {
       "title": "美国人认为怎样才能成为好新闻消费者",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/short-reads/2026/05/14/what-americans-think-it-takes-to-be-a-good-news-consumer/"
     },
     {
       "title": "美国人将医疗保健成本、赤字和通货膨胀视为国家面临的重大问题",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/politics/2026/05/11/americans-see-health-care-costs-deficit-inflation-as-big-problems-facing-the-nation/"
     },
     {
       "title": "民主党人和共和党人更重视推进自己的政策，而不是寻找共同点",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/politics/2026/05/01/democrats-and-republicans-place-more-importance-on-advancing-own-policies-than-finding-common-ground/"
     },
     {
       "title": "美国人如何看待特朗普对贸易和关税的处理",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/short-reads/2026/04/01/how-americans-view-trumps-handling-of-trade-and-tariffs/"
     },
     {
       "title": "通过人机协作加强网络欺凌的社会科学研究 - Nature",
@@ -418,22 +458,26 @@
     {
       "title": "2026 年第一季度信用卡拖欠、余额、债务收入比、信用限额和催收：美国人及其循环信用",
       "source": "Wolf Street",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://wolfstreet.com/2026/05/20/credit-card-delinquencies-balances-debt-to-income-credit-limits-and-collections-in-q1-2026-americans-and-their-revolving-credit/"
     },
     {
       "title": "美国最精彩的房地产泡沫：2026 年 4 月 33 个昂贵大城市的房价涨跌",
       "source": "Wolf Street",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://wolfstreet.com/2026/05/16/the-most-splendid-housing-bubbles-in-america-price-drops-gains-in-33-big-expensive-cities-april-2026/"
     },
     {
       "title": "2026 年第一季度汽车贷款余额、债务收入比以及次级和优质汽车贷款拖欠情况。情况有多糟糕？",
       "source": "Wolf Street",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://wolfstreet.com/2026/05/19/auto-loan-balances-debt-to-income-ratio-and-delinquencies-of-subprime-prime-auto-loans-in-q1-2026-how-bad-is-it/"
     },
     {
       "title": "美国按产品分类的食品通胀：在已经非常高的价格基础上，它归结为急剧加速",
       "source": "Wolf Street",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://wolfstreet.com/2026/05/18/food-inflation-in-america-by-product-it-boils-down-to-a-sharp-re-acceleration-on-top-of-already-very-high-prices/"
     },
     {
       "title": "HELOC 来了：2026 年第一季度的抵押贷款、住房债务收入比、严重拖欠贷款和丧失抵押品赎回权",

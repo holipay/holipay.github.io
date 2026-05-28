@@ -1,32 +1,37 @@
 {
   "icon": "📚",
   "title": "教育与媒体",
-  "updatedAt": "2026-05-28T05:06:23.626Z",
+  "updatedAt": "2026-05-28T05:33:22.803Z",
   "items": [
     {
       "title": "拆除象牙塔的知识壁垒 - 布鲁金斯学会",
       "source": "Google News Academic",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxPa3Jic3hEOTFsOHczYzZlVE9EM2xYeEtRTE11Z1hYTmxfSjNSR1V1YVlLdW5ENUk0SjVDTmpzS1ZhWE1mU05SSVhpSmtsN1ZZdmxYdEpDRUd1SkN3WE9xOWl3SDItZEEtczVGRGhpNGU2SUg1NlItZ19ycnBqZDNHV1RkOHF4N3padWJTNXdRR0VUM29aZWNGWlp4UWhoS3JhcmY2OGxRUFRyTHE3NVRWdHJfTVRNeTNQVEFoMTB4TUtfRGZud0FqUy1EbmxGM3BWMS1GSDNsUTlaUXhYdlY2NWlpSUMtZkdDcUxIZllrdkNaUQ?oc=5"
     },
     {
       "title": "早间新闻：2026年5月27日",
       "source": "Crossing Wall Street",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.crossingwallstreet.com/archives/2026/05/morning-news-may-27-2026.html"
     },
     {
       "title": "算一笔账：加州大学教职员工呼吁恢复标准化考试，因学生技能惊人下滑",
       "source": "ZeroHedge",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.zerohedge.com/political/doing-math-uc-faculty-urges-return-standardized-testing-after-shocking-decline-skills"
     },
     {
       "title": "作为卡尔加里桂冠诗人，我关注诗歌作为公民倾听的形式",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/as-calgarys-poet-laureate-im-interested-in-poetry-as-a-form-of-civic-listening-282530"
     },
     {
       "title": "阿加莎·克里斯蒂：这位全球最畅销作家何以如此成功？这里有个线索",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/agatha-christie-what-made-the-worlds-bestselling-author-so-successful-heres-a-clue-283347"
     },
     {
       "title": "雅虎财经图表： 35张图表讲述了2025年中期市场和经济的故事-雅虎财经",
@@ -91,12 +96,14 @@
     {
       "title": "美国人寻找或碰巧遇到哪些类型的新闻？",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/short-reads/2026/04/20/what-types-of-news-do-americans-seek-out-or-happen-to-come-across/"
     },
     {
       "title": "本地新闻概况介绍",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/journalism/fact-sheet/local-news-fact-sheet/"
     },
     {
       "title": "这项就业市场研究合乎道德吗？ - 黑斯廷斯生物伦理学中心",
@@ -106,7 +113,8 @@
     {
       "title": "金融知识和金融犯罪：断点回归方法",
       "source": "ScienceDirect",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.sciencedirect.com/science/article/pii/S0304405X26000632?dgcid=rss_sd_all"
     },
     {
       "title": "生命周期人力资本积累的地理——作者：Ben Sprung-Keyser、Sonya Porter",

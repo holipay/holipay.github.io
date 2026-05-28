@@ -1,8 +1,20 @@
 {
   "icon": "🤖",
   "title": "科技与研究",
-  "updatedAt": "2026-05-28T05:06:23.622Z",
+  "updatedAt": "2026-05-28T05:33:22.798Z",
   "items": [
+    {
+      "title": "然而它仍在运动 - City Journal",
+      "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1iNEpLSER6a0tNWk41ZVVaOEZjemNzejY2Ri1sTUN1RmRRUVpiQzhkNkkyM203Um11a21SOVdzR2FiWUx4cXhYSnhZMEE4a2w1TjRFVms1aXUyVllNaWFSblAxbw?oc=5",
+      "source": "Google News Academic",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "数据库清单：关键学术研究资源——免费与受限资源 - The Journalist's Resource",
+      "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQd1BVYVZ4NmtwZDZQX0Y4N2E1VGZZZ2dvQ0JsQ1RzNDVkUC1XVHNzeUtvdzNwVHBpYlNBc3hqcW9mTnlUUmhBRGRJNldSWkpqTUNVcEdkZzVfWlNQUXB2NHRtSmt3alBkeXdlVVh5aDdGSjktOXZhY2R6MUVRNjJ1cnk1REx4a1pSVDFWaHBSWGVoYnNxTjloUmtUX2VDNlk2ZXdSS3RDNA?oc=5",
+      "source": "Google News Academic",
+      "date": "2026-05-28"
+    },
     {
       "title": "“Zoom疲劳”的四个原因及其解决方案 - 斯坦福报告",
       "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNbUZDSzBRMTlzcjlOTzd5alo3NGZHaXhJNl9uZk83cF81NkFxbTFGcXFnYnpLVXBLclRvLVR6a3pkcnVTYnlyb3dtSGJ6QU5FTV84bDYzZHRubW5yWlRNWklDVnljbVR2bnFOTmdWdjN4NEw1VXk1THpKeFcxZUNRc2ZR?oc=5",
@@ -18,52 +30,62 @@
     {
       "title": "设计更具信息性的测试：将执行与识别分开-- Andrew Caplin、Leo Zhu著",
       "source": "NBER",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.nber.org/papers/w35232#fromrss"
     },
     {
       "title": "分销成本--作者： Cian Ruane、Alessandra Peter",
       "source": "NBER",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.nber.org/papers/w35252#fromrss"
     },
     {
       "title": "俄亥俄州因反对声浪将暂停数据中心税收抵免",
       "source": "Bloomberg",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-27/ohio-to-halt-data-center-tax-credits-as-opposition-grows"
     },
     {
       "title": "白皮书、工作论文、预印本、期刊文章：有何区别？ - The Journalist's Resource",
       "source": "Google News Academic",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFB2RzlqOGVwTVN1REY3YVp4TDJieEJBbElYQjRPZ25vYnVxbkNJQkt3Ti1JWXJXUkZfQUJkc2hmSHhWa2NkeTJ1bVlMUjY5UElnMFhWR2FJblhVSjBVdjd5SVZRVVhJalhLbTFMeEJVZHJBRlN2X2RpUDloOA?oc=5"
     },
     {
       "title": "什么是可重复性危机？ - News-Medical",
       "source": "Google News Academic",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOVlprUWhqak5qaWozU1VjTnZsTENmaTRpVnY2OW5JdnNueWpPRXFmZ3JsY19vaC1HMVZRXzZzdDB2Y2dFVXhUOGhjOThnODFSdk92Z1NSVDhEMnVheUFlX1YtTHpVeHdkOEZGVUdHN3llaVBqbzJRcmMxTG9uUjNGeWgzRUM?oc=5"
     },
     {
       "title": "研究资助对知识创造与传播的价值：瑞士国家科学基金会资助项目研究 - 《自然》",
       "source": "Google News Academic",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1idXBMMHBKbVVnWXVGTW5PbXYzelc3d2Fkd1Nhb29XZE5PWlFVN0RzT2hJVWt4MEwyVks4eXlSSDA0Wmk1UV8zaHY5a0p0QWdjd3VTQ0RmZmlycWpfZXhJ?oc=5"
     },
     {
       "title": "研究表明每7篇科学论文中就有1篇是伪造的，作者称该研究\"极度不系统\" - 《撤稿观察》",
       "source": "Google News Academic",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNRFFIXzJNbnNQQVRRV2hlYkNZbmRXTVNuTC1HSkkwZldRT1ZNUjJ3bmkzRFFMOFdYUU5TWktxV2FvZ2Rsbm1WODRNNXh4STl1WWYzbzdSVzdVWkxkVGdKVVNqMjRjdzFCNkFETUhqNjFDTTVheUc5bEtDNEI0Vk5tcE53UGpBc2J2eXUzck5Ycm1TUnliV1hxVERuVG9xWk9Ed2VUZWh5WWxLNUdxREUyV1lZUF83ZmRMdGpnRW41MDAzT2d1?oc=5"
     },
     {
       "title": "科学界陷入\"可重复性危机\"已十年，我们学到了什么？ - vox.com",
       "source": "Google News Academic",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNRnB5d0FBaHRMZHF0S0ZnUmRBaTJ3MUItQUVWRHFWcnEyd29EV1Q4ajRHWmtiXzNSOTlTLXYyaG02UXlKaXVMVU52LTRURDRWRVRMT01NVGlDVHBvZXJBaWtPSkVob1Q4TEpjblFVd3VxWFZLRkJELV81eTVRb1hqa3BmZGZRcEdVU2hPNE10a0xNVTU2VGdvNg?oc=5"
     },
     {
       "title": "270位科学家指出的科学界七大问题 - vox.com",
       "source": "Google News Academic",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOOFVyY0RRNHlUN3ZfZnktV1RTdC1oU29zZ05PR0dneUVZZUo2RzhsU2hub0xDSDBTeUpfTy1OX0gzUDFOaXZUZG5LNnJ1cVZkTHFqeGRLaHhZbVZvNVNtQVJwRy1sY0Z5M054RXZwaTFYLTFvUDh5MXNyblBCcC1nbmE4LVo3NnFwUVVKZEZVZXFrbTZxTEdraQ?oc=5"
     },
     {
       "title": "缩放时间点语言模型--作者： Bryan T. Kelly、Semyon Malamud、Johannes Schwab、Teng Andrea Xu",
       "source": "NBER",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.nber.org/papers/w35247#fromrss"
     },
     {
       "title": "\"做好科学很难\"：高知名度可重复性研究被撤稿引发深刻反思 - 《自然》",
@@ -93,7 +115,8 @@
     {
       "title": "美国人仍然选择印刷书籍而不是数字或音频版本；很少有人在读书俱乐部",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/short-reads/2026/04/09/americans-still-opt-for-print-books-over-digital-or-audio-versions-few-are-in-book-clubs/"
     },
     {
       "title": "科学研究如何产生学术界以外的影响？基于 REF 影响案例的跨学科比较 - Nature",

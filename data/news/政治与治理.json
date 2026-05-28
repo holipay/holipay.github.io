@@ -1,7 +1,7 @@
 {
   "icon": "🏛️",
   "title": "政治与治理",
-  "updatedAt": "2026-05-28T05:06:23.617Z",
+  "updatedAt": "2026-05-28T05:33:22.799Z",
   "items": [
     {
       "title": "伊朗战争导致运费飙升，美国天然气买家取消货物",
@@ -11,22 +11,26 @@
     {
       "title": "北约威慑力即将面临的危机",
       "source": "Foreign Affairs",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.foreignaffairs.com/russia/coming-crisis-nato-deterrence"
     },
     {
       "title": "特朗普在伊朗问题上的最不坏选择",
       "source": "Foreign Affairs",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.foreignaffairs.com/iran/trumps-least-bad-option-iran"
     },
     {
       "title": "美国对伊朗发动新一轮打击",
       "source": "Financial Times",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.ft.com/content/de9e4ee6-a370-4934-a456-41bd10a60350"
     },
     {
       "title": "特朗普称经济成本上升不会迫使其达成伊朗协议",
       "source": "Financial Times",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.ft.com/content/c79efc18-7c4f-4ff6-8f12-687892b5bd6f"
     },
     {
       "title": "中国农业巨头先正达称在美无\"恶意\"意图",
@@ -36,67 +40,80 @@
     {
       "title": "前法官主张：应重启特朗普国税局案件，以便法院调查可能的\"欺诈\"行为",
       "source": "CNBC",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.cnbc.com/2026/05/27/trump-irs-case-judge-fraud-doj-fund.html"
     },
     {
       "title": "中国猫鼠游戏：遏制加密货币",
       "source": "WSJ",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.wsj.com/articles/china-cryptocurrency-market-trading-restrictions-3e050cd9?mod=rss_markets_main"
     },
     {
       "title": "特朗普对共和党对手的初选挑战让共和党在中期选举前紧张不安",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/trumps-primary-challenges-to-his-republican-foes-make-gop-nervous-in-run-up-to-midterms-283909"
     },
     {
       "title": "埃塞俄比亚选举将缺乏政治竞争：两个原因",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/ethiopias-elections-will-not-be-politically-competitive-two-reasons-why-283896"
     },
     {
       "title": "埃塞俄比亚应限制总理任期吗？这无法解决更深层的民主问题",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/should-ethiopia-limit-how-long-its-prime-minister-can-serve-why-this-wont-fix-a-deeper-democracy-problem-283405"
     },
     {
       "title": "特朗普言论自由战争的寒蝉效应远不止于校园围墙——而这正是其目的所在",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/chilling-effects-of-trumps-war-on-free-speech-extend-far-beyond-campus-walls-and-thats-the-point-283113"
     },
     {
       "title": "伦敦伊朗当代艺术双年展展出流亡艺术",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/art-in-exile-on-show-at-londons-iranian-contemporary-art-biennale-283812"
     },
     {
       "title": "你对北约了解多少？来参加我们的测验",
       "source": "Pew Research",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.pewresearch.org/short-reads/2026/05/27/how-much-do-you-know-about-nato-take-our-quiz/"
     },
     {
       "title": "美国人在教堂听到哪些政治议题？",
       "source": "Pew Research",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.pewresearch.org/religion/2026/05/27/what-political-issues-do-americans-hear-about-in-church/"
     },
     {
       "title": "测验：你对北约了解多少？",
       "source": "Pew Research",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.pewresearch.org/quiz/quiz-how-much-do-you-know-about-nato/"
     },
     {
       "title": "以色列军队深入黎巴嫩利塔尼河以北夺取\"战略要地\"",
       "source": "ZeroHedge",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.zerohedge.com/geopolitical/israeli-army-seizing-strategic-positions-deep-lebanon-north-litani-river"
     },
     {
       "title": "哈马斯确认其高级军事指挥官在以色列国防军加沙空袭中身亡",
       "source": "ZeroHedge",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.zerohedge.com/markets/hamas-confirms-death-top-military-wing-commander-idf-gaza-strike"
     },
     {
       "title": "图尔西·加巴德将在离开国家情报总监办公室前对深层政府采取强硬措施",
       "source": "ZeroHedge",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.zerohedge.com/political/tulsi-gabbard-go-nuclear-deep-state-leaving-odni"
     },
     {
       "title": "中等强国错觉",
@@ -106,7 +123,8 @@
     {
       "title": "为什么墨西哥的卡特尔如此难以击败",
       "source": "Foreign Affairs",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.foreignaffairs.com/mexico/why-mexicos-cartels-are-so-hard-defeat"
     },
     {
       "title": "美国的霸权荣光面临威胁",
@@ -116,12 +134,14 @@
     {
       "title": "领导者的任期是否正变得\"污秽、野蛮而短暂\"？",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/is-the-tenure-of-a-leader-becoming-nasty-brutish-and-short-283437"
     },
     {
       "title": "拜登国土安全部通过假释计划释放了近90%的边境移民",
       "source": "ZeroHedge",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.zerohedge.com/political/biden-dhs-released-nearly-90-border-migrants-through-parole-program"
     },
     {
       "title": "糟糕，非常糟糕，更糟糕：对战争和经济的预测-纽约时报",
@@ -366,7 +386,8 @@
     {
       "title": "从人民战争到人民统治：反叛治理和包容性民主的基础- Bhishma Bhusal ， Michael Callen ， Rohini Pande ， Soledad A. Prillaman ， Deepak Singhania ， Apurva Subedi",
       "source": "NBER",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.nber.org/papers/w35241#fromrss"
     },
     {
       "title": "对于威利斯和国家党来说，这个选举年的预算就像走政治钢丝",
@@ -391,52 +412,62 @@
     {
       "title": "大约一半的美国人继续表示特朗普政府在驱逐出境方面“做得太多”",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/short-reads/2026/05/04/about-half-of-americans-continue-to-say-trump-administration-is-doing-too-much-on-deportations/"
     },
     {
       "title": "美国人继续对共和党和民主党持负面看法",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/politics/2026/05/01/americans-continue-to-view-both-the-republican-and-democratic-parties-negatively/"
     },
     {
       "title": "大多数美国人现在说美国的外交政策忽视了其他国家的利益",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/global/2026/04/28/most-americans-now-say-u-s-foreign-policy-ignores-the-interests-of-other-countries/"
     },
     {
       "title": "多项指标显示2025年美国民主健康状况下降",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/short-reads/2026/04/15/multiple-indicators-show-a-decline-in-the-health-of-americas-democracy-in-2025/"
     },
     {
       "title": "近年来，美国人对中国的看法变得更加积极",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/short-reads/2026/04/14/americans-views-of-china-have-grown-somewhat-more-positive-in-recent-years/"
     },
     {
       "title": "视频：民意调查可以告诉我们谁将在选举日获胜吗？",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/methods/2026/04/08/video-can-polls-tell-us-who-will-win-on-election-day/"
     },
     {
       "title": "对以色列的负面看法，内塔尼亚胡在美国人中继续上升–特别是年轻人",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/short-reads/2026/04/07/negative-views-of-israel-netanyahu-continue-to-rise-among-americans-especially-young-people/"
     },
     {
       "title": "美国人是否认为特朗普可以在各种外交政策问题上做出正确的决定？",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/global/2026/04/07/do-americans-think-trump-can-make-good-decisions-about-various-foreign-policy-issues/"
     },
     {
       "title": "石油价格是美国人在伊朗战争中最关心的问题",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/global/2026/04/07/gas-prices-are-americans-top-concern-in-iran-war/"
     },
     {
       "title": "共和党人不太可能说加入北约有利于美国",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/short-reads/2026/04/06/republicans-have-become-less-likely-to-say-nato-membership-benefits-the-us/"
     },
     {
       "title": "美国人普遍不赞成美国在伊朗的军事行动",
@@ -446,32 +477,38 @@
     {
       "title": "霍尔木兹海峡是对印太地区的警告",
       "source": "Foreign Affairs",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.foreignaffairs.com/china/hormuz-warning-indo-pacific"
     },
     {
       "title": "全球和平的摇摇欲坠的支柱",
       "source": "Foreign Affairs",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.foreignaffairs.com/united-states/crumbling-pillars-global-peace"
     },
     {
       "title": "海湾新秩序",
       "source": "Foreign Affairs",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.foreignaffairs.com/iran/new-order-gulf"
     },
     {
       "title": "特习峰会解决不了的问题",
       "source": "Foreign Affairs",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.foreignaffairs.com/united-states/what-trump-xi-summit-wont-solve"
     },
     {
       "title": "美国企业界能保护民主吗？",
       "source": "Foreign Affairs",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.foreignaffairs.com/united-states/can-corporate-america-protect-democracy"
     },
     {
       "title": "中国已为无政府时代做好准备",
       "source": "Foreign Affairs",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.foreignaffairs.com/china/china-was-ready-age-anarchy"
     },
     {
       "title": "美中峰会的希望与危险",
@@ -486,7 +523,8 @@
     {
       "title": "定量政治科学研究的力量严重不足| 《政治杂志》：第 88 卷，第 1 期 - 芝加哥大学出版社：期刊",
       "source": "Google News Academic",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5acEd0SU1mNWxDNWJSMXQyVEx0RGlHbnJWQ054amRRSHhUZTRmbk5Lamxtb1RPcENPZzdXa1VrLU1LaHNtcm1XakxrSDI4R2tRSDJva1A5dW5WNmYwX19DOXlB?oc=5"
     },
     {
       "title": "美国科学资助中的党派差异美国科学促进会",
@@ -496,37 +534,44 @@
     {
       "title": "埃塞俄比亚的战争尚未结束",
       "source": "Foreign Affairs",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.foreignaffairs.com/ethiopia/war-ethiopia-isnt-over"
     },
     {
       "title": "很快，数千张美国纸币可能会写着“唐纳德·J·特朗普保护恋童癖”",
       "source": "Dealbreaker",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://dealbreaker.com/2026/04/very-soon-thousands-of-individual-banknotes-of-u-s-paper-currency-could-say-donald-j-trump-protects-pedophiles-"
     },
     {
       "title": "不要在纳税申报表上写下“愚人节”或尝试特朗普抗议的噱头，因为国税局不会笑",
       "source": "Dealbreaker",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://dealbreaker.com/2026/04/dont-write-april-fools-on-your-tax-return-or-try-a-trump-protest-stunt-because-the-irs-wont-be-laughing-"
     },
     {
       "title": "你确切知道伊朗战争将如何结束",
       "source": "Dealbreaker",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://dealbreaker.com/2026/03/you-know-exactly-how-the-war-in-iran-will-end"
     },
     {
       "title": "国会花了数年时间才颁布 PBM 透明度、脱钩。垂直整合怎么样？",
       "source": "Dealbreaker",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://dealbreaker.com/2026/03/it-took-years-for-congress-to-enact-pbm-transparency-delinking-what-about-vertical-integration"
     },
     {
       "title": "特朗普在演讲中途甩掉了克里斯蒂·诺姆，这客观上非常有趣",
       "source": "Dealbreaker",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://dealbreaker.com/2026/03/trump-dumps-kristi-noem-in-the-middle-of-her-speech-which-is-objectively-very-funny"
     },
     {
       "title": "赫普纳和华纳的裁决：大妖怪一致性还是原则的应用？",
       "source": "Dealbreaker",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://dealbreaker.com/2026/03/the-heppner-and-warner-rulings-hobgoblin-consistency-or-an-application-of-principle"
     },
     {
       "title": "民主党人利用黑人运动员作为重新划分战争的棋子",

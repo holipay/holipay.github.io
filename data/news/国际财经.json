@@ -1,7 +1,7 @@
 {
   "icon": "🌍",
   "title": "国际财经",
-  "updatedAt": "2026-05-28T05:06:23.619Z",
+  "updatedAt": "2026-05-28T05:33:22.794Z",
   "items": [
     {
       "title": "不那么安静的美国人",
@@ -12,62 +12,74 @@
     {
       "title": "数据侦探称记者应关注研究数据监管松懈 - 记者资源",
       "source": "Google News Academic",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOREZUVUo4OHhFMHhPREt2SjV3ZW0xcnZGLUp1a1QzWDgxODZwem9XU296Y2JQUjRuSFhHNDNLSmtaQlJkUkFzcEdNa21xQnJhUk5kcVpDUXl0ZzlMeXNncXBvVWJtblpxWDdoU3NpTGRIZDVrczE3dVE1aWFRNjVia0NlbHBUUDUtM3lVZ0Q4N2QxdUk?oc=5"
     },
     {
       "title": "美国的霸权荣光面临威胁",
       "source": "Financial Times",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.ft.com/content/1f088eae-d116-4eca-93b8-283a4695ce71"
     },
     {
       "title": "中等强国错觉",
       "source": "Foreign Affairs",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.foreignaffairs.com/united-states/middle-power-delusion"
     },
     {
       "title": "日元逼近1美元兑160关口，干预数据受关注",
       "source": "Bloomberg",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/japan-intervention-data-eyed-as-yen-hovers-near-160-per-dollar"
     },
     {
       "title": "瑞银的汗称美元计价新兴市场资产表现更优",
       "source": "Bloomberg",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.bloomberg.com/news/videos/2026-05-28/dollar-denominated-em-assets-outperforming-ubs-khan-video"
     },
     {
       "title": "为何欧洲必须接受关税",
       "source": "Financial Times",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.ft.com/content/98768d2d-d9dc-4344-971c-b6496c92a662"
     },
     {
       "title": "卢布走强给俄罗斯战时经济带来压力",
       "source": "Financial Times",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.ft.com/content/e04025b9-f53e-4afa-9944-f787bb58125d"
     },
     {
       "title": "前中情局局长彼得雷乌斯称无人机蜂群是下一个威胁——也是增长机遇",
       "source": "CNBC",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.cnbc.com/2026/05/28/petraeus-unmanned-systems-autonomous-drones-defense-investment.html"
     },
     {
       "title": "美国对伊朗新一轮打击后，中东紧张局势冲击亚洲市场",
       "source": "CNBC",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.cnbc.com/2026/05/28/asia-markets-today-asx-kospi-nikkei-sensex-hang-seng-csi-iran.html"
     },
     {
       "title": "美国与哥伦比亚关税争端致阿拉比卡咖啡价格创纪录",
       "source": "WSJ",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.wsj.com/articles/arabica-coffee-prices-hit-new-high-on-u-s-colombia-tariff-spat-582446fe?mod=rss_markets_main"
     },
     {
       "title": "瑞士法郎和日元因DeepSeek消息提振避险情绪而上涨",
       "source": "WSJ",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.wsj.com/articles/safe-haven-currencies-strengthen-amid-fears-over-global-tariffs-9964e17a?mod=rss_markets_main"
     },
     {
       "title": "欧洲需在2040年前建造1000万套净零排放建筑——四种可行方案",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/europe-needs-10-million-homes-and-net-zero-buildings-by-2040-here-are-four-ways-it-could-happen-283298"
     },
     {
       "title": "特朗普无法在一个对美国失去信任的中东推销亚伯拉罕协议",
@@ -77,32 +89,38 @@
     {
       "title": "欧洲增加国防开支的正确方式",
       "source": "Foreign Affairs",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.foreignaffairs.com/united-states/right-way-europe-spend-more-defense"
     },
     {
       "title": "欧盟第六框架计划（2002–2006）资助的社会科学与人文科学研究：项目、致谢与出版物的长期评估 - Nature",
       "source": "Google News Academic",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFA4MS1NTE9sUDNSbWZGTEhjZVg0RkR5V3VaMEFiTUU4UTVVcllTT1Fjd3dtYlZjaFJyWUg3RnBlR2luekEwaFlDMEpXdHFpOFNxandOUmM4eGFtLWljM1Bv?oc=5"
     },
     {
       "title": "全球南方学者缺席欧美期刊，如何改变现状？ - 《对话》",
       "source": "Google News Academic",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOYTVzZFB5b1FRaFd5OFdfRGhqRTdUQWtyZVZWaVV6TTJ0VUlNamduMzQ5dlFRU3ZGQ19UVTYwMFRHUnZnLW91LUFjT193X1BYNVhGMUVReldSR0xnYlE3cDRwLXhPUzhmOVlKVHJhdkgtYXRzLWhZSU91T3VNX21jcW1RWkZrblJaa0FjanZGZ1MxelhNeEVoal9QT1JZZnpTSzhScHpidm5oMlotMW5IMGw4TElkSWlzMGpnSjZ3eE8?oc=5"
     },
     {
       "title": "俄罗斯燃料油轮在加勒比海漂流一个月后中止向古巴运送货物",
       "source": "ZeroHedge",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.zerohedge.com/energy/russian-fuel-tanker-gives-trying-supply-cuba-after-lingering-month-caribbean"
     },
     {
       "title": "G-2 现实",
       "source": "Foreign Affairs",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.foreignaffairs.com/united-states/g-2-reality"
     },
     {
       "title": "日本的不归路",
       "source": "Foreign Affairs",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.foreignaffairs.com/japan/japans-point-no-return"
     },
     {
       "title": "假设葡萄牙做到了",
@@ -202,17 +220,20 @@
     {
       "title": "妈妈、教练、医生、企业家：谁是美国的健康和健康影响者？",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/data-labs/2026/05/07/moms-coaches-doctors-entrepreneurs-who-are-americas-health-and-wellness-influencers/"
     },
     {
       "title": "欧尔班的垮台和欧洲的崛起",
       "source": "Foreign Affairs",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.foreignaffairs.com/hungary/orbans-fall-and-europes-rise"
     },
     {
       "title": "欧洲如何找到勇气",
       "source": "Foreign Affairs",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.foreignaffairs.com/europe/how-europe-found-its-nerve"
     },
     {
       "title": "四所拥有社会科学学位的欧洲大学可以拯救世界 - Study International",
@@ -227,7 +248,8 @@
     {
       "title": "Neurocrine 的 $2.9B 收购 Soleno 带来了可能成为其下一个重磅药物的药物",
       "source": "Dealbreaker",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://dealbreaker.com/2026/04/neurocrines-2-9b-soleno-buyout-brings-what-could-become-its-next-blockbuster-drug"
     },
     {
       "title": "数字欧元作为欧洲的后门资本控制系统",

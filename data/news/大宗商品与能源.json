@@ -1,17 +1,49 @@
 {
   "icon": "🛢️",
   "title": "大宗商品与能源",
-  "updatedAt": "2026-05-28T05:06:23.615Z",
+  "updatedAt": "2026-05-28T05:33:22.796Z",
   "items": [
     {
-      "title": "秘鲁因厄尔尼诺威胁延长凤尾鱼捕捞禁令",
+      "title": "美国打击伊朗推高油价，国债继续下跌",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/treasuries-resume-decline-as-us-strikes-push-oil-prices-higher",
       "source": "Bloomberg",
       "date": "2026-05-28"
     },
     {
-      "title": "国际能源署称战争冲击导致石油投资连续第三年下降",
+      "title": "美国打击行动打击和平谈判希望，黄金跌至两个月低点",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-27/gold-holds-losses-as-us-iran-impasse-keeps-inflation-risk-high",
       "source": "Bloomberg",
       "date": "2026-05-28"
+    },
+    {
+      "title": "分析师警告需求遭破坏，白银近期暴跌后或进一步下跌",
+      "link": "https://www.cnbc.com/2026/05/28/silver-demand-destruction-analysts-metals-precious.html",
+      "source": "CNBC",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "棕榈油巨头丰益国际因印尼调查暴跌至六年最大跌幅",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/palm-oil-titan-wilmar-dives-most-in-six-years-on-indonesia-probe",
+      "source": "Bloomberg",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "美国液化气买家因运费飙升取消订单",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/us-gas-buyers-cancel-cargoes-as-iran-war-sends-freight-soaring",
+      "source": "Bloomberg",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "秘鲁因厄尔尼诺威胁延长凤尾鱼捕捞禁令",
+      "source": "Bloomberg",
+      "date": "2026-05-28",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-27/el-nino-threat-prompts-peru-to-extend-halt-on-anchovy-fishing"
+    },
+    {
+      "title": "国际能源署称战争冲击导致石油投资连续第三年下降",
+      "source": "Bloomberg",
+      "date": "2026-05-28",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/oil-investments-to-drop-for-third-year-on-war-shock-iea-says"
     },
     {
       "title": "美国打击推高油价，国债跌势延续",
@@ -21,12 +53,14 @@
     {
       "title": "海湾地区再遭袭击威胁脆弱停火，油价飙升",
       "source": "Bloomberg",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-27/latest-oil-market-news-and-analysis-for-may-28"
     },
     {
       "title": "海湾袭击打击交易乐观情绪，工业金属下跌",
       "source": "Bloomberg",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/industrial-metals-decline-as-gulf-strikes-dampen-deal-optimism"
     },
     {
       "title": "棕榈油巨头丰益国际因印尼调查暴跌，创六年最大跌幅",
@@ -36,17 +70,20 @@
     {
       "title": "伊朗战争暴露中国石油需求下降趋势",
       "source": "Bloomberg",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/china-s-declining-appetite-for-oil-laid-bare-by-iran-war"
     },
     {
       "title": "香港拟建新结算系统争夺亚洲黄金中心地位",
       "source": "Bloomberg",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-27/hong-kong-to-get-edge-in-asia-gold-hub-push-with-clearing-system"
     },
     {
       "title": "伊朗称在美国新一轮空袭后打击了美军基地，油价飙升3%",
       "source": "CNBC",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.cnbc.com/2026/05/28/oil-prices-us-strikes-in-iran-revive-strait-of-hormuz-turmoil-fears.html"
     },
     {
       "title": "高盛上调标普500年终预测，原因只有一个",
@@ -61,37 +98,44 @@
     {
       "title": "纽约商品交易所黄金、白银收跌",
       "source": "WSJ",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.wsj.com/articles/gold-edges-lower-feds-rate-decision-in-focus-09dbfceb?mod=rss_markets_main"
     },
     {
       "title": "天气预测变化导致天然气价格下跌",
       "source": "WSJ",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.wsj.com/articles/u-s-natural-gas-futures-fall-on-shifting-weather-forecasts-1ef3e457?mod=rss_markets_main"
     },
     {
       "title": "天然气公司Diversified Energy达成收购二叠纪盆地企业协议",
       "source": "WSJ",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.wsj.com/articles/natural-gas-firm-diversified-energy-nears-deal-for-permian-basin-player-4c1c5ff5?mod=rss_markets_main"
     },
     {
       "title": "健康的土壤能保护土地免受酷热侵袭，但我们的地图显示土壤正在恶化",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/healthy-soil-can-protect-land-from-soaring-heat-but-our-map-shows-where-soil-is-suffering-283079"
     },
     {
       "title": "领土完整与自决仍主导福克兰群岛讨论——但石油可能改变格局",
       "source": "The Conversation",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://theconversation.com/territorial-integrity-and-self-determination-still-dominate-the-falklands-discussion-but-oil-may-change-that-281998"
     },
     {
       "title": "美印签署关键矿产与稀土开采协议",
       "source": "ZeroHedge",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.zerohedge.com/geopolitical/us-india-sign-critical-minerals-and-rare-earths-mining-pact"
     },
     {
       "title": "中国煤矿事故将波及钢铁、电力、化工行业",
       "source": "Bloomberg",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/chinese-coal-disaster-to-ripple-through-steel-power-chemicals"
     },
     {
       "title": "了解黄金价格背后的动态- Investopedia",
@@ -246,7 +290,8 @@
     {
       "title": "央行应如何应对大宗商品价格冲击？商品暴露经济体的最佳货币和汇率框架- Thomas Drechsel ， Michael McLeay ， Silvana Tenreyro ， Enrico D. Turri",
       "source": "NBER",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.nber.org/papers/w35164#fromrss"
     },
     {
       "title": "冬季能源支付每年购买的热量越来越少——是否有更好的长期解决方案？",
@@ -266,17 +311,20 @@
     {
       "title": "许多美国人认为公用事业公司应对他们不断上涨的家庭能源账单负责",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/short-reads/2026/05/06/many-americans-hold-utility-companies-responsible-for-their-rising-home-energy-bills/"
     },
     {
       "title": "美国人对能源问题看法的转变",
       "source": "Pew Research",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://www.pewresearch.org/science/2026/04/03/americans-shifting-views-on-energy-issues/"
     },
     {
       "title": "人工智能为科学家提供了动力，但代价是太多平庸的论文-康奈尔纪事报",
       "source": "Google News Academic",
-      "date": "2026-05-26"
+      "date": "2026-05-26",
+      "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNLVNQcFJpOHpjZ201cTRMWGZDcnBnaWdjNmpNd3ppc1JZWWo3YUlQSUZnaGFpdFhhVS1kZHFtWlZYcnBycU9WZ3UzcEwxWl9ocmVrNFoyMWJwMmRjQjNKYzZxa3JTUERfTWE3Mjd6MlJzWkVwQmN6VWp1enp5S1A0MUVwa2ZiT19oOGpacUREVGVLbkVCZldycW8tcGY?oc=5"
     },
     {
       "title": "美元——先慢后快——Goldmoney",
