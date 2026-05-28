@@ -84,6 +84,17 @@
                 border-radius: 100px;
                 flex-shrink: 0;
             }
+            .news-cat {
+                display: inline-block;
+                font-size: 10px;
+                color: var(--accent);
+                background: var(--accent-l);
+                padding: 1px 6px;
+                border-radius: 100px;
+                margin-right: 6px;
+                flex-shrink: 0;
+                vertical-align: middle;
+            }
             @media (max-width: 860px) {
                 .layout {
                     display: flex;
@@ -196,9 +207,24 @@
             const main = $("main"),
                 catList = $("catList");
             const PAGE_SIZE = 40;
-            const S = { cat: "", newsPage: {}, loading: false };
+            const S = { cat: "__latest__", newsPage: {}, loading: false };
+
+            // 最新视图的新闻条目渲染（带分类标签）
+            function renderLatestItem(it) {
+                const href = it.link ? safeHref(it.link) : "";
+                const t = href
+                    ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(it.title)}</a>`
+                    : esc(it.title);
+                const s = it.source ? `<span class="news-src">${esc(it.source)}</span>` : "";
+                const d = it.date ? `<span class="news-date">${esc(it.date)}</span>` : "";
+                const catBadge = it.category ? `<span class="news-cat">${esc(it.category)}</span>` : "";
+                return `<div class="news-item">${catBadge}<span class="news-title">${t}</span>${d}${s}</div>`;
+            }
 
             function renderNews(items, catFile, catIcon, catTitle, appendMode) {
+                const isLatest = catFile === "__latest__";
+                const itemRenderer = isLatest ? renderLatestItem : renderNewsItem;
+
                 if (!items || items.length === 0)
                     return `<div class="news-head"><span class="news-head-icon">${catIcon}</span><span class="news-head-title">${esc(catTitle)}</span></div><div class="empty"><div class="empty-icon">📭</div><p>暂无新闻</p></div>`;
                 if (appendMode) {
@@ -208,7 +234,7 @@
                     const newItems = show.slice(prevCount);
                     const hasMore = items.length > show.length;
                     return {
-                        newHtml: newItems.map(renderNewsItem).join(""),
+                        newHtml: newItems.map(itemRenderer).join(""),
                         hasMore,
                         total: items.length,
                         shown: show.length,
@@ -223,15 +249,14 @@
                 const firstBatch = show.slice(0, FIRST_BATCH);
                 const restBatch = show.slice(FIRST_BATCH);
                 const headHtml = renderNewsHead(catIcon, catTitle, items.length);
-                const listHtml = firstBatch.map(renderNewsItem).join("");
+                const listHtml = firstBatch.map(itemRenderer).join("");
 
                 if (restBatch.length > 0) {
-                    // 异步渲染剩余条目，不阻塞主线程
                     requestAnimationFrame(() => {
                         const listEl = document.getElementById("newsList");
                         if (listEl) {
                             const frag = document.createElement("div");
-                            frag.innerHTML = restBatch.map(renderNewsItem).join("");
+                            frag.innerHTML = restBatch.map(itemRenderer).join("");
                             while (frag.firstChild) listEl.appendChild(frag.firstChild);
                         }
                     });
@@ -253,11 +278,34 @@
                 return _metaCache;
             }
 
+            // latest.json 缓存
+            let _latestCache = null;
+            async function loadLatest() {
+                if (_latestCache) return _latestCache;
+                try {
+                    const r = await fetchT("data/news/latest.json");
+                    _latestCache = await r.json();
+                } catch {
+                    _latestCache = { items: [] };
+                }
+                return _latestCache;
+            }
+
             async function loadView() {
                 if (S.loading) return;
                 S.loading = true;
                 main.innerHTML =
                     '<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
+
+                if (S.cat === "__latest__") {
+                    // 最新视图：加载 latest.json（更小，更快）
+                    const data = await loadLatest();
+                    const items = (data.items || []).sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+                    main.innerHTML = renderNews(items, "__latest__", "🔥", "最新资讯");
+                    S.loading = false;
+                    return;
+                }
+
                 const meta = await loadMetaOnce();
                 const cat = meta.categories.find((c) => c.file === S.cat);
                 if (!cat) {
@@ -345,8 +393,14 @@
             async function init() {
                 const meta = await loadMetaOnce();
 
-                // Build sidebar 立即渲染
+                // Build sidebar — "🔥 最新" 放在最前面
                 const frag = document.createDocumentFragment();
+                const latestEl = document.createElement("div");
+                latestEl.className = "cat-item active";
+                latestEl.dataset.cat = "__latest__";
+                latestEl.innerHTML = `<span class="cat-icon">🔥</span><span class="cat-name">最新资讯</span>`;
+                frag.appendChild(latestEl);
+
                 for (const c of meta.categories) {
                     const el = document.createElement("div");
                     el.className = "cat-item";
@@ -355,14 +409,12 @@
                     frag.appendChild(el);
                 }
                 catList.appendChild(frag);
-                S.cat = meta.categories[0]?.file || "";
-                catList.querySelector(".cat-item")?.classList.add("active");
 
-                // 首屏：直接加载分类数据（meta 已缓存，loadView 不会再请求 meta）
+                // 默认加载最新视图（latest.json，12KB，比任何分类文件都小）
                 loadView();
 
-                // 预加载前 3 个分类（并行，错开 100ms）
-                meta.categories.slice(1, 4).forEach((c, i) => {
+                // 预加载前 3 个分类（后台，并行）
+                meta.categories.slice(0, 3).forEach((c, i) => {
                     setTimeout(() => {
                         if (!rawCatCache.has(c.file)) loadNewsCat(c.file);
                     }, i * 100);
