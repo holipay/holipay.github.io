@@ -123,6 +123,37 @@ function sortByWeight(items, scoreMap) {
   );
 }
 
+// ===== 热门关键词去重合并 =====
+function mergeHotKeywords(hotKeywords) {
+  if (!hotKeywords || hotKeywords.length <= 1) return hotKeywords || [];
+  const result = [];
+  const used = new Set();
+  for (let i = 0; i < hotKeywords.length; i++) {
+    if (used.has(i)) continue;
+    let { keyword, score, count, categories, domain, sourceWeight } = hotKeywords[i];
+    // 合并：当前关键词是其他更短关键词的子串，或反过来
+    for (let j = i + 1; j < hotKeywords.length; j++) {
+      if (used.has(j)) continue;
+      const other = hotKeywords[j];
+      const shorter = keyword.length <= other.keyword.length ? keyword : other.keyword;
+      const longer = keyword.length <= other.keyword.length ? other.keyword : keyword;
+      if (longer.includes(shorter) && shorter.length >= 2) {
+        // 合并到更短的那个（更通用）
+        keyword = shorter;
+        score += other.score;
+        count += other.count;
+        if (!domain && other.domain) domain = true;
+        if (other.sourceWeight > sourceWeight) sourceWeight = other.sourceWeight;
+        const catSet = new Set([...(categories || []), ...(other.categories || [])]);
+        categories = [...catSet];
+        used.add(j);
+      }
+    }
+    result.push({ keyword, score, count, categories, domain, sourceWeight });
+  }
+  return result;
+}
+
 // ===== 渲染结构化标签 =====
 function renderStructuredTags(data) {
   const per = data.perspective ? ` · ${data.perspective}` : "";
@@ -139,9 +170,8 @@ function renderStructuredTags(data) {
     const smI = { 看涨: "📈", 看跌: "📉", 分化: "🔀" }[sm] || "➡️";
     const rkI = { 高: "🔴", 低: "🟢" }[rk] || "🟡";
     const b = `<span class="badge ${smC}">${smI} ${sm}</span><span class="badge ${rkC}">${rkI} 风险${rk}</span>`;
-    const kwMap = new Map(
-      (data.hotKeywords || []).map((h) => [h.keyword, h.score]),
-    );
+    const mergedKw = mergeHotKeywords(data.hotKeywords || []);
+    const kwMap = new Map(mergedKw.map((h) => [h.keyword, h.score]));
     const themes = sortByWeight(s.keyThemes || [], kwMap);
     const sectors = sortByWeight(s.sectors || [], kwMap);
     const t = themes.map((x) => `<span class="tag">${esc(x)}</span>`).join("");
@@ -151,7 +181,7 @@ function renderStructuredTags(data) {
     const o = s.outlook ? `<div class="outlook">${esc(s.outlook)}</div>` : "";
     tags = `<div class="a-tags">${b}${t}${sec}</div>${o}`;
   }
-  const hotKw = (data.hotKeywords || []).slice(0, 8);
+  const hotKw = mergeHotKeywords(data.hotKeywords).slice(0, 8);
   const hotHtml =
     hotKw.length > 0
       ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--bdr)">${hotKw.map((hk) => `<span class="tag" style="background:rgba(239,68,68,.08);color:#ef4444;border-color:rgba(239,68,68,.2)">🔥 ${esc(hk.keyword)} <span style="opacity:.6;margin-left:2px">${hk.score}</span></span>`).join("")}</div>`
