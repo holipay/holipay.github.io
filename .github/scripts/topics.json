@@ -157,6 +157,27 @@
         "lang": "en",
         "url": "https://wolfstreet.com/feed/",
         "filter": null
+      },
+      {
+        "name": "36氪",
+        "type": "rss",
+        "lang": "zh",
+        "url": "https://36kr.com/feed",
+        "filter": null
+      },
+      {
+        "name": "财新网",
+        "type": "rss",
+        "lang": "zh",
+        "url": "https://rsshub.rssforever.com/caixin/latest",
+        "filter": null
+      },
+      {
+        "name": "华尔街见闻",
+        "type": "rss",
+        "lang": "zh",
+        "url": "https://rsshub.rssforever.com/wallstreetcn/news/global",
+        "filter": null
       }
     ],
     "categories": [
