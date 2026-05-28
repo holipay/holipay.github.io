@@ -75,39 +75,7 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
-            .keyword-group {
-                margin-bottom: 28px;
-            }
-            .keyword-header {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                margin-bottom: 14px;
-                padding-bottom: 10px;
-                border-bottom: 2px solid var(--accent);
-            }
-            .keyword-tag {
-                display: inline-flex;
-                align-items: center;
-                gap: 4px;
-                padding: 4px 12px;
-                background: rgba(239, 68, 68, 0.08);
-                color: #ef4444;
-                border: 1px solid rgba(239, 68, 68, 0.2);
-                border-radius: 100px;
-                font-size: 14px;
-                font-weight: 700;
-            }
-            .keyword-score {
-                font-size: 11px;
-                opacity: 0.6;
-                margin-left: 2px;
-            }
-            .keyword-count {
-                font-size: 11px;
-                color: var(--text3);
-                margin-left: auto;
-            }
+
             .article-card {
                 background: var(--card);
                 border-radius: var(--r);
@@ -346,56 +314,31 @@
                 dateList = $("dateList");
             const S = { date: "" };
 
-            // 按热词分组渲染
-            function renderByKeyword(articles) {
-                // 按 keyword 分组
-                const groups = new Map();
-                for (const item of articles) {
-                    const kw = item.keyword || "其他";
-                    if (!groups.has(kw)) groups.set(kw, []);
-                    groups.get(kw).push(item);
-                }
-
-                // 按热词分数排序（取每组第一个的 score）
-                const sorted = [...groups.entries()].sort(
-                    (a, b) => (b[1][0]?.score || 0) - (a[1][0]?.score || 0),
-                );
-
+            // 渲染文章列表
+            function renderArticles(articles) {
                 let html = "";
-                for (const [keyword, items] of sorted) {
-                    const score = items[0]?.score || 0;
-                    html += `<div class="keyword-group">
-      <div class="keyword-header">
-        <span class="keyword-tag">🔥 ${esc(keyword)}<span class="keyword-score">${score}</span></span>
-        <span class="keyword-count">${items.length} 篇</span>
+                for (const it of articles) {
+                    const tierClass = `tier-${it.tier || 3}`;
+                    const tierLabel = `T${it.tier || 3}`;
+                    const href = it.link ? safeHref(it.link) : "";
+                    const titleHtml = href
+                        ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(it.title)}</a>`
+                        : esc(it.title);
+                    const snippet = it.snippet
+                        ? esc(it.snippet).slice(0, 2000)
+                        : "";
+
+                    html += `<div class="article-card">
+        <div class="article-head">
+          <span class="article-tier ${tierClass}">${tierLabel}</span>
+          <span class="article-title">${titleHtml}</span>
+        </div>
+        <div class="article-meta">
+          <span class="article-source">${esc(it.source || "")}</span>
+          <span class="article-chars">${it.chars || 0} 字</span>
+        </div>${snippet ? `\n        <div class="article-snippet">${snippet}</div>` : ""}
       </div>`;
-
-                    for (const it of items) {
-                        const tierClass = `tier-${it.tier || 3}`;
-                        const tierLabel = `T${it.tier || 3}`;
-                        const href = it.link ? safeHref(it.link) : "";
-                        const titleHtml = href
-                            ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(it.title)}</a>`
-                            : esc(it.title);
-                        const snippet = it.snippet
-                            ? esc(it.snippet).slice(0, 2000)
-                            : "";
-
-                        html += `<div class="article-card">
-          <div class="article-head">
-            <span class="article-tier ${tierClass}">${tierLabel}</span>
-            <span class="article-title">${titleHtml}</span>
-          </div>
-          <div class="article-meta">
-            <span class="article-source">${esc(it.source || "")}</span>
-            <span class="article-chars">${it.chars || 0} 字</span>
-          </div>${snippet ? `\n          <div class="article-snippet">${snippet}</div>` : ""}
-        </div>`;
-                    }
-
-                    html += "</div>";
                 }
-
                 return html;
             }
 
@@ -403,58 +346,26 @@
                 if (!date) return;
                 main.innerHTML =
                     '<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
-                const [articles, dash] = await Promise.all([
-                    fetchT(`data/news/articles/${date}.json`)
-                        .then((r) => r.json())
-                        .catch(() => null),
-                    fetchT("data/news/dashboard.json")
-                        .then((r) => r.json())
-                        .catch(() => null),
-                ]);
-                renderPage(articles, dash);
+                const articles = await fetchT(`data/news/articles/${date}.json`)
+                    .then((r) => r.json())
+                    .catch(() => null);
+                renderPage(articles);
             }
 
-            function renderPage(articles, dash) {
+            function renderPage(articles) {
                 if (!articles || !articles.items || !articles.items.length) {
                     main.innerHTML =
                         '<div class="empty"><div class="empty-icon">📭</div><p>暂无精选文章</p></div>';
                     return;
                 }
 
-                let dashHtml = "";
-                if (dash && dash.days && dash.days.length) {
-                    const today = dash.days[dash.days.length - 1];
-                    const smI =
-                        { 看涨: "📈", 看跌: "📉", 分化: "🔀" }[
-                            today.sentiment
-                        ] || "➡️";
-                    const rkI =
-                        { 高: "🔴", 中: "🟡", 低: "🟢" }[today.riskLevel] ||
-                        "🟡";
-                    const themes = (today.keyThemes || [])
-                        .slice(0, 4)
-                        .map((t) => `<span class="tag">${esc(t)}</span>`)
-                        .join("");
-                    dashHtml = `<div class="dash-card">
-      <div class="dash-title">📊 ${today.date} 市场信号</div>
-      <div class="a-tags"><span class="badge badge-${{ 看涨: "up", 看跌: "down", 分化: "mix" }[today.sentiment] || "flat"}">${smI} ${today.sentiment}</span><span class="badge badge-risk-${{ 高: "h", 中: "m", 低: "l" }[today.riskLevel] || "m"}">${rkI} 风险${today.riskLevel}</span>${themes}</div>
-    </div>`;
-                }
-
-                const articlesHtml = renderByKeyword(articles.items);
-                main.innerHTML = dashHtml + articlesHtml;
+                main.innerHTML = renderArticles(articles.items);
             }
 
             async function init() {
-                // Load date index and dashboard in parallel
-                const [dates, dash] = await Promise.all([
-                    fetchT("data/news/articles/index.json")
-                        .then((r) => r.json())
-                        .catch(() => null),
-                    fetchT("data/news/dashboard.json")
-                        .then((r) => r.json())
-                        .catch(() => null),
-                ]);
+                const dates = await fetchT("data/news/articles/index.json")
+                    .then((r) => r.json())
+                    .catch(() => null);
 
                 // Build sidebar dates
                 if (dates && dates.length) {
@@ -478,13 +389,13 @@
                     )
                         .then((r) => r.json())
                         .catch(() => null);
-                    renderPage(articles, dash);
+                    renderPage(articles);
                 } else {
                     // Fallback: load from articles.json
                     const articles = await fetchT("data/news/articles.json")
                         .then((r) => r.json())
                         .catch(() => null);
-                    renderPage(articles, dash);
+                    renderPage(articles);
                 }
             }
 
