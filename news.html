@@ -190,6 +190,9 @@
         </div>
         <script src="js/common.js"></script>
         <script>
+            // 内联 meta 数据（消除首次加载的 meta.json 请求）
+            const __INLINE_META = {"topic":"news","name":"全球资讯","icon":"📰","updatedAt":"2026-05-28T05:33:22.806Z","categories":[{"icon":"📈","title":"股市与市场","file":"股市与市场","count":200,"archiveCount":0},{"icon":"📰","title":"其他资讯","file":"其他资讯","count":157,"archiveCount":0},{"icon":"🖥️","title":"科技与企业","file":"科技与企业","count":200,"archiveCount":0},{"icon":"🌍","title":"国际财经","file":"国际财经","count":108,"archiveCount":18},{"icon":"🛢️","title":"大宗商品与能源","file":"大宗商品与能源","count":174,"archiveCount":0},{"icon":"🏦","title":"央行与利率","file":"央行与利率","count":116,"archiveCount":0},{"icon":"💰","title":"宏观经济","file":"宏观经济","count":121,"archiveCount":0},{"icon":"🤖","title":"科技与研究","file":"科技与研究","count":30,"archiveCount":5},{"icon":"🏛️","title":"政治与治理","file":"政治与治理","count":146,"archiveCount":0},{"icon":"👥","title":"社会与人口","file":"社会与人口","count":174,"archiveCount":0},{"icon":"⚖️","title":"法律与伦理","file":"法律与伦理","count":11,"archiveCount":2},{"icon":"🏥","title":"健康与公共卫生","file":"健康与公共卫生","count":31,"archiveCount":5},{"icon":"🌍","title":"环境与能源","file":"环境与能源","count":20,"archiveCount":5},{"icon":"📚","title":"教育与媒体","file":"教育与媒体","count":44,"archiveCount":7},{"icon":"🧠","title":"心理学与认知","file":"心理学与认知","count":23,"archiveCount":4}]};
+
             const main = $("main"),
                 catList = $("catList");
             const PAGE_SIZE = 40;
@@ -243,7 +246,7 @@
                 );
             }
 
-            let _metaCache = null;
+            let _metaCache = __INLINE_META; // 优先使用内联数据
             async function loadMetaOnce() {
                 if (_metaCache) return _metaCache;
                 _metaCache = await loadMeta();
