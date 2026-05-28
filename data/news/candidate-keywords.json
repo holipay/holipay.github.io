@@ -1,0 +1,37 @@
+[
+  {
+    "date": "2026-05-28",
+    "candidates": [
+      {
+        "keyword": "黄金价格框架",
+        "count": 4,
+        "categories": [
+          "大宗商品与能源"
+        ],
+        "sources": [
+          "Goldmoney"
+        ]
+      },
+      {
+        "keyword": "黄金和白银的",
+        "count": 3,
+        "categories": [
+          "大宗商品与能源"
+        ],
+        "sources": [
+          "Goldmoney"
+        ]
+      },
+      {
+        "keyword": "黄金市场报告",
+        "count": 4,
+        "categories": [
+          "大宗商品与能源"
+        ],
+        "sources": [
+          "Goldmoney"
+        ]
+      }
+    ]
+  }
+]

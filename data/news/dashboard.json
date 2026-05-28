@@ -133,9 +133,88 @@
       ],
       "outlook": "金融板块内部分化加剧，与实体和区域绑定的资产获得叙事溢价，传统交易型叙事承压。",
       "topKeywords": []
+    },
+    {
+      "date": "2026-05-28",
+      "sentiment": "看跌",
+      "riskLevel": "高",
+      "keyThemes": [
+        "供给冲击型滞胀",
+        "央行鹰派囚笼",
+        "关税自我伤害循环",
+        "债券市场功能危机"
+      ],
+      "sectors": [
+        "能源",
+        "化肥/农业",
+        "工业金属",
+        "金融/债券",
+        "消费"
+      ],
+      "outlook": "4月通胀数据公布前市场将维持高波动性下行趋势，战争供给冲击与加息预期形成死亡螺旋，债券市场流动性风险是最大隐患。",
+      "topKeywords": [
+        {
+          "keyword": "随着伊朗战争",
+          "score": 169.66,
+          "count": 11
+        },
+        {
+          "keyword": "关税",
+          "score": 48,
+          "count": 4
+        },
+        {
+          "keyword": "抵押贷款利率",
+          "score": 21.68,
+          "count": 3
+        },
+        {
+          "keyword": "通胀",
+          "score": 16.33,
+          "count": 2
+        },
+        {
+          "keyword": "加息",
+          "score": 16.24,
+          "count": 2
+        },
+        {
+          "keyword": "伊朗战争可能",
+          "score": 16,
+          "count": 2
+        },
+        {
+          "keyword": "黄金",
+          "score": 15.87,
+          "count": 3
+        },
+        {
+          "keyword": "亿美元收购",
+          "score": 15.36,
+          "count": 3
+        },
+        {
+          "keyword": "利率",
+          "score": 12.25,
+          "count": 2
+        },
+        {
+          "keyword": "伊朗战争暴露",
+          "score": 10.24,
+          "count": 2
+        }
+      ]
     }
   ],
   "keywordTrends": [
+    {
+      "keyword": "随着伊朗战争",
+      "avgScore7d": 169.66,
+      "avgScore30d": 169.66,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
     {
       "keyword": "雅虎财经",
       "avgScore7d": 137,
@@ -153,12 +232,44 @@
       "frequency30d": 2
     },
     {
+      "keyword": "关税",
+      "avgScore7d": 48,
+      "avgScore30d": 48,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
       "keyword": "investopedia",
       "avgScore7d": 44,
       "avgScore30d": 44,
       "trend": 0,
       "frequency7d": 2,
       "frequency30d": 2
+    },
+    {
+      "keyword": "抵押贷款利率",
+      "avgScore7d": 21.68,
+      "avgScore30d": 21.68,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "通胀",
+      "avgScore7d": 16.33,
+      "avgScore30d": 16.33,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "加息",
+      "avgScore7d": 16.24,
+      "avgScore30d": 16.24,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
     },
     {
       "keyword": "华盛顿邮报",
@@ -193,12 +304,44 @@
       "frequency30d": 1
     },
     {
+      "keyword": "伊朗战争可能",
+      "avgScore7d": 16,
+      "avgScore30d": 16,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "黄金",
+      "avgScore7d": 15.87,
+      "avgScore30d": 15.87,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "亿美元收购",
+      "avgScore7d": 15.36,
+      "avgScore30d": 15.36,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
       "keyword": "美国经济",
       "avgScore7d": 15,
       "avgScore30d": 15,
       "trend": 0,
       "frequency7d": 2,
       "frequency30d": 2
+    },
+    {
+      "keyword": "利率",
+      "avgScore7d": 12.25,
+      "avgScore30d": 12.25,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
     },
     {
       "keyword": "为什么华尔街",
@@ -223,6 +366,14 @@
       "trend": 0,
       "frequency7d": 1,
       "frequency30d": 1
+    },
+    {
+      "keyword": "伊朗战争暴露",
+      "avgScore7d": 10.24,
+      "avgScore30d": 10.24,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
     }
   ],
   "signals": [
@@ -243,6 +394,12 @@
       "sentiment": "分化",
       "riskLevel": "中",
       "keywordCount": 0
+    },
+    {
+      "date": "2026-05-28",
+      "sentiment": "看跌",
+      "riskLevel": "高",
+      "keywordCount": 10
     }
   ]
 }

@@ -1,8 +1,13 @@
 {
   "icon": "📰",
   "title": "其他资讯",
-  "updatedAt": "2026-05-26T08:56:12.728Z",
+  "updatedAt": "2026-05-28T04:48:17.064Z",
   "items": [
+    {
+      "title": "一个人的宣言 - 为250辩护",
+      "source": "ZeroHedge",
+      "date": "2026-05-28"
+    },
     {
       "title": "目前的经济状况如何？ - NerdWallet",
       "source": "Reuters",
@@ -609,67 +614,7 @@
       "date": "2026-05-26"
     },
     {
-      "title": "德克萨斯州正试图成为美国的下一个金融中心-本周",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "意见|金融业是个骗局。让我们开始这样对待它。-《纽约时报》",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "了解经济泡沫：它们如何形成和破裂，并举例说明- Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "讲述2024年市场和经济故事的10张图表-雅虎财经",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "市场混乱可能会造成自身的经济损失（ 2025年出版） -《纽约时报》",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "阻止金融危机的唯一途径-大西洋",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "2021年打破的财务和经济记录- Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "反馈效应：金融市场如何影响“实体经济”中的决策-沃顿商学院的知识",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "为什么10月是市场崩盘月- Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "经济衰退期间蓬勃发展的行业- Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "值得关注的12项全球经济指标- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
       "title": "墨西哥经济在第一季度收缩低于预期- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "经合组织表示，经济前景面临进一步恶化的风险- Bloomberg.com",
       "source": "Bloomberg",
       "date": "2026-05-25"
     },
@@ -684,47 +629,12 @@
       "date": "2026-05-25"
     },
     {
-      "title": "经济学家推销肾脏的案例- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "威胁美国经济的巨大差距- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "由于私募市场晦涩的数据，预测下一次崩盘变得更加困难- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "观看脆弱但受经济推动的市场： Seema Shah - Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
       "title": "是什么推动了市场风险的突然撤退- Bloomberg.com",
       "source": "Bloomberg",
       "date": "2026-05-25"
     },
     {
-      "title": "美国柴油挤压威胁到经济波纹- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "加州经济正在蓬勃发展—价格昂贵- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
       "title": "标准普尔500指数因经济意外创下历史新高：市场总结- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "美国银行表示，四年内投资者大幅减少对增长的观点- Bloomberg.com",
       "source": "Bloomberg",
       "date": "2026-05-25"
     },
@@ -746,16 +656,6 @@
     {
       "title": "Global Capital早就应该与美国决裂了- Bloomberg.com",
       "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "主页-金融时报-金融时报",
-      "source": "Financial Times",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "投资稀缺时代-金融时报",
-      "source": "Financial Times",
       "date": "2026-05-25"
     },
     {
@@ -799,11 +699,6 @@
       "date": "2026-05-25"
     },
     {
-      "title": "埃德蒙·菲尔普斯，诺贝尔经济学奖获得者， 1933-2026年-《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-25"
-    },
-    {
       "title": "英国电信终于掌握了其altnet威胁-英国《金融时报》",
       "source": "Financial Times",
       "date": "2026-05-25"
@@ -829,11 +724,6 @@
       "date": "2026-05-25"
     },
     {
-      "title": "英超联赛如何成为英国经济资产-英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-25"
-    },
-    {
       "title": "伦敦房价与英国其他城市之间的差距自2009年以来最小-《金融时报》",
       "source": "Financial Times",
       "date": "2026-05-25"
@@ -849,32 +739,7 @@
       "date": "2026-05-25"
     },
     {
-      "title": "法国尼古丁袋禁令是“对瑞典生活方式的攻击” ，部长说-金融时报",
-      "source": "Financial Times",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "“Kidults”助力日本的“gacha gacha”胶囊玩具狂热-金融时报",
-      "source": "Financial Times",
-      "date": "2026-05-25"
-    },
-    {
       "title": "美国的“同时”噩梦-《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "加密货币兄弟、黄牛和洛根·保罗：卡牌售价数百万美元的神奇宝贝世界内部 - CNBC",
-      "source": "CNBC",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "多头将标准普尔500指数推回到接近纪录的水平—这是上周推动市场的原因- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "只需停止抱怨并缴纳税款-英国《金融时报》",
       "source": "Financial Times",
       "date": "2026-05-25"
     },
@@ -884,82 +749,12 @@
       "date": "2026-05-25"
     },
     {
-      "title": "Centerbridge就收购$ 30亿房地产公司股权进行谈判-英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "根据摩根大通- CNBC的数据，到明年年中，标准普尔500指数将达到9,000点。",
-      "source": "CNBC",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "西汉姆联队在足球赛季最后一天退出英超联赛-《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "由于供应过剩，鸡蛋价格暴跌—生产商表示，随着成本上升，利润率受到打击- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-25"
-    },
-    {
       "title": "中东局势有望取得进展，道指收盘创历史新高 - 华尔街日报",
       "source": "WSJ",
       "date": "2026-05-25"
     },
     {
-      "title": "金融服务综述：市场讨论 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "标准普尔 500 指数创下 2023 年以来最长单周连涨纪录 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "汽车与交通综述：市场谈话-《华尔街日报》",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "吉普和Ram Parent Stellantis将推出$ 40,000以下的九款新车-华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "在印度，牛奶的配送速度比煮咖啡更快-《华尔街日报》",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "加拿大总理卡尼称艾伯塔省在分裂主义浪潮中对国家“至关重要” - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "珠宝需求持续增长，历峰集团销售额加速增长 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
       "title": "独家|派克汉尼汾达成协议以 25.5 亿美元收购 KKR 旗下 Circor 部门 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "独家| IMAX 正在考虑出售 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "更多的爸爸正在缩减儿童和家务办公室的规模-《华尔街日报》",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "为什么感觉良好的千禧一代品牌的梦想没有持续下去-《华尔街日报》",
       "source": "WSJ",
       "date": "2026-05-25"
     },
@@ -971,16 +766,6 @@
     {
       "title": "估算美国研发税收优惠的现值 -- 作者：Brandon Pecoraro、Nicholas C. Hoffman、Martin Lopez-Daneri、Elena C. Derby、Rachel Moore、Shannon E. Sledz",
       "source": "NBER",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "推动规模较小的公共服务可能会给新西兰人带来更大的代价",
-      "source": "The Conversation",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "埃罗尔·弗林（ Errol Flynn ）的传记作者称他为他那个时代最伟大的万人迷，但他也是种族主义者和强奸犯",
-      "source": "The Conversation",
       "date": "2026-05-25"
     },
     {

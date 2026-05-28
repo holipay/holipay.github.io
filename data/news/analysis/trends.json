@@ -97,5 +97,60 @@
   {
     "date": "2026-05-26",
     "keywords": []
+  },
+  {
+    "date": "2026-05-28",
+    "keywords": [
+      {
+        "keyword": "随着伊朗战争",
+        "score": 169.66,
+        "count": 11
+      },
+      {
+        "keyword": "关税",
+        "score": 48,
+        "count": 4
+      },
+      {
+        "keyword": "抵押贷款利率",
+        "score": 21.68,
+        "count": 3
+      },
+      {
+        "keyword": "通胀",
+        "score": 16.33,
+        "count": 2
+      },
+      {
+        "keyword": "加息",
+        "score": 16.24,
+        "count": 2
+      },
+      {
+        "keyword": "伊朗战争可能",
+        "score": 16,
+        "count": 2
+      },
+      {
+        "keyword": "黄金",
+        "score": 15.87,
+        "count": 3
+      },
+      {
+        "keyword": "亿美元收购",
+        "score": 15.36,
+        "count": 3
+      },
+      {
+        "keyword": "利率",
+        "score": 12.25,
+        "count": 2
+      },
+      {
+        "keyword": "伊朗战争暴露",
+        "score": 10.24,
+        "count": 2
+      }
+    ]
   }
 ]

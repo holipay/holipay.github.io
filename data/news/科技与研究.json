@@ -1,8 +1,53 @@
 {
   "icon": "🤖",
   "title": "科技与研究",
-  "updatedAt": "2026-05-26T08:56:12.740Z",
+  "updatedAt": "2026-05-28T04:48:17.070Z",
   "items": [
+    {
+      "title": "俄亥俄州因反对声浪将暂停数据中心税收抵免",
+      "source": "Bloomberg",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "白皮书、工作论文、预印本、期刊文章：有何区别？ - The Journalist's Resource",
+      "source": "Google News Academic",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "什么是可重复性危机？ - News-Medical",
+      "source": "Google News Academic",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "研究资助对知识创造与传播的价值：瑞士国家科学基金会资助项目研究 - 《自然》",
+      "source": "Google News Academic",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "研究表明每7篇科学论文中就有1篇是伪造的，作者称该研究\"极度不系统\" - 《撤稿观察》",
+      "source": "Google News Academic",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "科学界陷入\"可重复性危机\"已十年，我们学到了什么？ - vox.com",
+      "source": "Google News Academic",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "270位科学家指出的科学界七大问题 - vox.com",
+      "source": "Google News Academic",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "缩放时间点语言模型--作者： Bryan T. Kelly、Semyon Malamud、Johannes Schwab、Teng Andrea Xu",
+      "source": "NBER",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "\"做好科学很难\"：高知名度可重复性研究被撤稿引发深刻反思 - 《自然》",
+      "source": "Google News Academic",
+      "date": "2026-05-28"
+    },
     {
       "title": "数据中心不是敌人—它们是未来- Bloomberg.com",
       "source": "Bloomberg",
@@ -44,16 +89,6 @@
       "date": "2026-05-26"
     },
     {
-      "title": "数据中心不是敌人—它们是未来- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "您对数据中心了解多少？参加我们的测验 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
       "title": "内生任务捆绑、技能和自动化——作者：Joshua S. Gans",
       "source": "NBER",
       "date": "2026-05-25"
@@ -64,164 +99,9 @@
       "date": "2026-05-25"
     },
     {
-      "title": "美国人仍然选择印刷书籍而不是数字或音频版本；很少有人在读书俱乐部",
-      "source": "Pew Research",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "科学研究如何产生学术界以外的影响？基于 REF 影响案例的跨学科比较 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "2025 年 10 个最佳在线学术研究工具和资源 - Bestcolleges.com",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "现在，五分之一的美国人定期在 TikTok 上获取新闻，这一比例较 2020 年大幅上升 - 皮尤研究中心",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "数据中心不是敌人—它们是未来- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "您对数据中心了解多少？参加我们的测验 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "内生任务捆绑、技能和自动化——作者：Joshua S. Gans",
-      "source": "NBER",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "美国人仍然选择印刷书籍而不是数字或音频版本；很少有人在读书俱乐部",
-      "source": "Pew Research",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "科学研究如何产生学术界以外的影响？基于 REF 影响案例的跨学科比较 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "现在，五分之一的美国人定期在 TikTok 上获取新闻，这一比例较 2020 年大幅上升 - 皮尤研究中心",
-      "source": "Google News Academic",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "数据中心不是敌人—它们是未来- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "您对数据中心了解多少？参加我们的测验 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "内生任务捆绑、技能和自动化——作者：Joshua S. Gans",
-      "source": "NBER",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "美国人仍然选择印刷书籍而不是数字或音频版本；很少有人在读书俱乐部",
-      "source": "Pew Research",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "科学研究如何产生学术界以外的影响？基于 REF 影响案例的跨学科比较 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "2025 年 10 个最佳在线学术研究工具和资源 - Bestcolleges.com",
-      "source": "Google News Academic",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "现在，五分之一的美国人定期在 TikTok 上获取新闻，这一比例较 2020 年大幅上升 - 皮尤研究中心",
-      "source": "Google News Academic",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "数据中心不是敌人—它们是未来- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "您对数据中心了解多少？参加我们的测验 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "内生任务捆绑、技能和自动化——作者：Joshua S. Gans",
-      "source": "NBER",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "美国人仍然选择印刷书籍而不是数字或音频版本；很少有人在读书俱乐部",
-      "source": "Pew Research",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "科学研究如何产生学术界以外的影响？基于 REF 影响案例的跨学科比较 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "现在，五分之一的美国人定期在 TikTok 上获取新闻，这一比例较 2020 年大幅上升 - 皮尤研究中心",
-      "source": "Google News Academic",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "内生任务捆绑、技能和自动化——作者：Joshua S. Gans",
-      "source": "NBER",
-      "date": "2026-05-19"
-    },
-    {
       "title": "非洲的汉坦病毒：为什么气候变化、老鼠和薄弱的监测令科学家们担忧",
       "source": "The Conversation",
       "date": "2026-05-19"
-    },
-    {
-      "title": "美国人仍然选择印刷书籍而不是数字或音频版本；很少有人在读书俱乐部",
-      "source": "Pew Research",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "2025 年 10 个最佳在线学术研究工具和资源 - Bestcolleges.com",
-      "source": "Google News Academic",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "现在，五分之一的美国人定期在 TikTok 上获取新闻，这一比例较 2020 年大幅上升 - 皮尤研究中心",
-      "source": "Google News Academic",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "美国人仍然选择印刷书籍而不是数字或音频版本；很少有人在读书俱乐部",
-      "source": "Pew Research",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "科学研究如何产生学术界以外的影响？基于 REF 影响案例的跨学科比较 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "2025 年 10 个最佳在线学术研究工具和资源 - Bestcolleges.com",
-      "source": "Google News Academic",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "现在，五分之一的美国人定期在 TikTok 上获取新闻，这一比例较 2020 年大幅上升 - 皮尤研究中心",
-      "source": "Google News Academic",
-      "date": "2026-05-17"
     },
     {
       "title": "关于研究代码质量和执行的大规模研究 - Nature",
@@ -242,96 +122,6 @@
       "title": "TikTok 流行的微剧将电视缩小为一口大小的块",
       "source": "The Conversation",
       "date": "2026-05-15"
-    },
-    {
-      "title": "美国人仍然选择印刷书籍而不是数字或音频版本；很少有人在读书俱乐部",
-      "source": "Pew Research",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "科学研究如何产生学术界以外的影响？基于 REF 影响案例的跨学科比较 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "现在，五分之一的美国人定期在 TikTok 上获取新闻，这一比例较 2020 年大幅上升 - 皮尤研究中心",
-      "source": "Google News Academic",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "电视广告市场正在被流媒体平台接管-《华尔街日报》",
-      "source": "WSJ",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "美国人仍然选择印刷书籍而不是数字或音频版本；很少有人在读书俱乐部",
-      "source": "Pew Research",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "科学研究如何产生学术界以外的影响？基于 REF 影响案例的跨学科比较 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "2025 年 10 个最佳在线学术研究工具和资源 - Bestcolleges.com",
-      "source": "Google News Academic",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "现在，五分之一的美国人定期在 TikTok 上获取新闻，这一比例较 2020 年大幅上升 - 皮尤研究中心",
-      "source": "Google News Academic",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "科学家发现遗传适应可以帮助生活在干燥气候下的人们 - 亚利桑那州立大学新闻",
-      "source": "Google News Academic",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "关于研究代码质量和执行的大规模研究 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "什么是“数字排毒” ，它会让我更健康吗？",
-      "source": "The Conversation",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "美国人仍然选择印刷书籍而不是数字或音频版本；很少有人在读书俱乐部",
-      "source": "Pew Research",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "科学研究如何产生学术界以外的影响？基于 REF 影响案例的跨学科比较 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "大数据共享对个人福利的影响研究——消费与隐私视角 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "现在，五分之一的美国人定期在 TikTok 上获取新闻，这一比例较 2020 年大幅上升 - 皮尤研究中心",
-      "source": "Google News Academic",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "2025 年 10 个最佳在线学术研究工具和资源 - Bestcolleges.com",
-      "source": "Google News Academic",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "新闻平台情况说明书 - 皮尤研究中心",
-      "source": "Google News Academic",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "严谨的研究实践提高科学复制 - 斯坦福大学人文与科学学院",
-      "source": "Google News Academic",
-      "date": "2026-05-12"
     }
   ]
 }

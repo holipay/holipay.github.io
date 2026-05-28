@@ -1,8 +1,38 @@
 {
   "icon": "🧠",
   "title": "心理学与认知",
-  "updatedAt": "2026-05-26T08:56:12.739Z",
+  "updatedAt": "2026-05-28T04:48:17.072Z",
   "items": [
+    {
+      "title": "我们发现仅三分之一发表的心理学研究可靠——接下来怎么办？ - 《对话》",
+      "source": "Google News Academic",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "设计更具信息性的测试：将执行与识别分开-- Andrew Caplin、Leo Zhu著",
+      "source": "NBER",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "互惠的幻觉",
+      "source": "Foreign Affairs",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "为什么开车时我会如此疲惫？",
+      "source": "The Conversation",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "保持冷静继续前行：黄蜂教给社会如何应对权力斗争的经验",
+      "source": "The Conversation",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "\"来辩论我！\"并不奏效。以下是更好的分歧处理方式——或许还能改变他人想法",
+      "source": "The Conversation",
+      "date": "2026-05-28"
+    },
     {
       "title": "行为金融：偏见、情绪和财务行为- Investopedia",
       "source": "Reuters",
@@ -19,11 +49,6 @@
       "date": "2026-05-26"
     },
     {
-      "title": "行为金融：偏见、情绪和财务行为- Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
       "title": "陷入困境的借款人的中介市场力量成本——作者：Winston Wei Dou、Wei Wang、Wenyu Wang",
       "source": "NBER",
       "date": "2026-05-25"
@@ -34,69 +59,9 @@
       "date": "2026-05-25"
     },
     {
-      "title": "研究成果产生中的意识形态偏见美国科学促进会",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
       "title": "副教授研究视觉媒体如何塑造人类行为 - UGA Today",
       "source": "Google News Academic",
       "date": "2026-05-25"
-    },
-    {
-      "title": "陷入困境的借款人的中介市场力量成本——作者：Winston Wei Dou、Wei Wang、Wenyu Wang",
-      "source": "NBER",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "我们的研究发现，单剂量的裸盖菇素可以缓解抑郁症状数月",
-      "source": "The Conversation",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "研究成果产生中的意识形态偏见美国科学促进会",
-      "source": "Google News Academic",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "副教授研究视觉媒体如何塑造人类行为 - UGA Today",
-      "source": "Google News Academic",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "陷入困境的借款人的中介市场力量成本——作者：Winston Wei Dou、Wei Wang、Wenyu Wang",
-      "source": "NBER",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "我们的研究发现，单剂量的裸盖菇素可以缓解抑郁症状数月",
-      "source": "The Conversation",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "研究成果产生中的意识形态偏见美国科学促进会",
-      "source": "Google News Academic",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "行为金融：偏见、情绪和财务行为- Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "陷入困境的借款人的中介市场力量成本——作者：Winston Wei Dou、Wei Wang、Wenyu Wang",
-      "source": "NBER",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "研究成果产生中的意识形态偏见美国科学促进会",
-      "source": "Google News Academic",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "副教授研究视觉媒体如何塑造人类行为 - UGA Today",
-      "source": "Google News Academic",
-      "date": "2026-05-21"
     },
     {
       "title": "棒球正在学会以较短的注意力生活-英国《金融时报》",
@@ -104,18 +69,8 @@
       "date": "2026-05-19"
     },
     {
-      "title": "陷入困境的借款人的中介市场力量成本——作者：Winston Wei Dou、Wei Wang、Wenyu Wang",
-      "source": "NBER",
-      "date": "2026-05-19"
-    },
-    {
       "title": "不仅仅是一种有趣的爱好：棋盘游戏可以帮助建立联系并减轻压力",
       "source": "The Conversation",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "研究成果产生中的意识形态偏见美国科学促进会",
-      "source": "Google News Academic",
       "date": "2026-05-19"
     },
     {
@@ -134,11 +89,6 @@
       "date": "2026-05-19"
     },
     {
-      "title": "行为金融：偏见、情绪和财务行为- Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-17"
-    },
-    {
       "title": "大萧条：概述、原因和影响- Investopedia",
       "source": "Reuters",
       "date": "2026-05-17"
@@ -154,26 +104,6 @@
       "date": "2026-05-17"
     },
     {
-      "title": "研究成果产生中的意识形态偏见美国科学促进会",
-      "source": "Google News Academic",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "友谊为何能让我们保持健康的科学 - 美国心理学会 (APA)",
-      "source": "Google News Academic",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "科学记者如何决定一项心理学研究是否值得报道？ - 记者的资源",
-      "source": "Google News Academic",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "行为金融：偏见、情绪和财务行为- Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-15"
-    },
-    {
       "title": "《音乐是黑色的：一个英国故事》——难怪这个情感丰富的展览花了四年多的时间才完成",
       "source": "The Conversation",
       "date": "2026-05-15"
@@ -182,76 +112,6 @@
       "title": "对于缓解慢性压力对健康的影响，睡眠和饮食可能比运动更重要",
       "source": "The Conversation",
       "date": "2026-05-15"
-    },
-    {
-      "title": "研究成果产生中的意识形态偏见美国科学促进会",
-      "source": "Google News Academic",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "行为金融：偏见、情绪和财务行为- Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "拉里·芬克指出，随着贝莱德资金流入放缓，客户对市场感到焦虑 - 英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "你可以改变你的情绪 - 但这是一个需要付出一些努力的两步过程",
-      "source": "The Conversation",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "研究成果产生中的意识形态偏见美国科学促进会",
-      "source": "Google News Academic",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "友谊为何能让我们保持健康的科学 - 美国心理学会 (APA)",
-      "source": "Google News Academic",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "心理学是一门科学吗？ - 南新罕布什尔大学",
-      "source": "Google News Academic",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "科学记者如何决定一项心理学研究是否值得报道？ - 记者的资源",
-      "source": "Google News Academic",
-      "date": "2026-05-13"
-    },
-    {
-      "title": "行为金融：偏见、情绪和财务行为- Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "拉里·芬克指出，随着贝莱德资金流入放缓，客户对市场感到焦虑 - 英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "轻推理论完全是关于承担责任–但它允许大企业采取其他方式",
-      "source": "The Conversation",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "研究成果产生中的意识形态偏见美国科学促进会",
-      "source": "Google News Academic",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "友谊为何能让我们保持健康的科学 - 美国心理学会 (APA)",
-      "source": "Google News Academic",
-      "date": "2026-05-12"
-    },
-    {
-      "title": "心理学是一门科学吗？ - 南新罕布什尔大学",
-      "source": "Google News Academic",
-      "date": "2026-05-12"
     }
   ]
 }

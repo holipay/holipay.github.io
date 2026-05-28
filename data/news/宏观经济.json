@@ -1,8 +1,78 @@
 {
   "icon": "💰",
   "title": "宏观经济",
-  "updatedAt": "2026-05-26T08:56:12.734Z",
+  "updatedAt": "2026-05-28T04:48:17.059Z",
   "items": [
+    {
+      "title": "战争压力迫使印尼和泰国依赖短期债务",
+      "source": "Bloomberg",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "交易员认为美伊协议信号相互矛盾",
+      "source": "Bloomberg",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "投资者认为Pemex应进入全球债务市场",
+      "source": "Bloomberg",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "欧盟将扩大对华进口配额和关税",
+      "source": "Financial Times",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "亚马逊健康业务高管将离职，由Amwell联合创始人接任",
+      "source": "CNBC",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "交易员对伊朗关于霍尔木兹海峡重新开放的时间表持怀疑态度",
+      "source": "CNBC",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "高盛称尽管美国制裁俄罗斯原油出口仍相对稳定",
+      "source": "WSJ",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "贸易战与机票飙升正重塑加拿大人今夏旅行方式",
+      "source": "The Conversation",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "美国老年人常被迫继续工作——随后因不肯让位而受批评",
+      "source": "The Conversation",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "中国打击网络外汇交易将加剧资本外流",
+      "source": "ZeroHedge",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "消费者信心为何跌至历史低点？",
+      "source": "ZeroHedge",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "能源饮料成为最新受害者，燃料危机改变消费者行为",
+      "source": "ZeroHedge",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "Kunal Sangani的廉价通货膨胀周期",
+      "source": "NBER",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "分销成本--作者： Cian Ruane、Alessandra Peter",
+      "source": "NBER",
+      "date": "2026-05-28"
+    },
     {
       "title": "经济衰退期间的7大最佳投资|财务顾问|美国新闻-美国新闻财经",
       "source": "Reuters",
@@ -354,58 +424,8 @@
       "date": "2026-05-26"
     },
     {
-      "title": "经济衰退期间的7大最佳投资|财务顾问|美国新闻-美国新闻财经",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
       "title": "以色列的下一个使命：经济复苏--《耶路撒冷邮报》",
       "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "经济衰退指标：财务顾问的备忘单-晨星",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "为什么贸易紧张局势是金融市场的“风暴云” -世界经济论坛",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "经济衰退期间最好的投资策略是什么？ - Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "9/11如何影响美国商业和经济复苏- Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "描绘全球经济：通货膨胀导致工厂活动下滑- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "观看通胀担忧拖累经济数据，黄金下跌|彭博市场2026年5月21日- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "随着伊朗战争消耗海湾财富，世界失去了石油美元刺激计划- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "Rapidan表示，霍尔木兹关闭威胁2008年经济衰退的竞争对手- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "丹麦经济部因制药销售而提高GDP预测- Bloomberg.com",
-      "source": "Bloomberg",
       "date": "2026-05-25"
     },
     {
@@ -414,37 +434,7 @@
       "date": "2026-05-25"
     },
     {
-      "title": "2026年初美国GDP增长2% ，标志着经济的韧性- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "即使石油企稳，亚洲经济增长仍将放缓，亚行发出警告-彭博社",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "伊朗战争石油冲击威胁引发全球通货膨胀浪潮- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
       "title": "香港提高出口本地生产总值预测，零售业复苏-彭博社",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "您感觉不到的恢复是真实的- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "美国没有经济衰退，但感觉很悲惨- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "中国缩减伊朗战争第一个月的财政刺激计划-彭博社",
       "source": "Bloomberg",
       "date": "2026-05-25"
     },
@@ -464,11 +454,6 @@
       "date": "2026-05-25"
     },
     {
-      "title": "法国表示，对开发更多石油储备持谨慎态度的国家--英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-25"
-    },
-    {
       "title": "没有政治意愿，欧洲的贸易武器毫无用处--英国《金融时报》",
       "source": "Financial Times",
       "date": "2026-05-25"
@@ -479,47 +464,12 @@
       "date": "2026-05-25"
     },
     {
-      "title": "来自亚太经合组织的三个迹象表明，美国和中国在贸易方面仍然存在很大分歧- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "英国首次在G7峰会上宣布与海湾国家达成“历史性”贸易协议- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "由于伊朗战争引发通胀担忧，消费者信心在5月创下历史新低- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "美国人在假期周末感受到了通货膨胀的冲击。这是价格上涨最多的地方- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "巴林工业部长告诉CNBC - CNBC ，英国-海湾贸易协议是一项“巨大成就”",
-      "source": "CNBC",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "通货膨胀的担忧正在工业金属中蔓延。以下是价格的下一步走势- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-25"
-    },
-    {
       "title": "4月份日本出口增长14.8% ，超出预期，半导体出货量飙升- CNBC",
       "source": "CNBC",
       "date": "2026-05-25"
     },
     {
       "title": "在特朗普推迟计划中的伊朗罢工后，亚洲市场贸易好坏参半，因为石油供应放缓- CN",
-      "source": "CNBC",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "随着投资者评估美伊和平协议外交，亚太市场交易量增加- CNBC",
       "source": "CNBC",
       "date": "2026-05-25"
     },
@@ -534,21 +484,6 @@
       "date": "2026-05-25"
     },
     {
-      "title": "密歇根大学调查发现消费者信心跌至新低 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "世界贸易在年初因人工智能热潮而强劲增长-《华尔街日报》",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "英国央行泰勒表示，延长持有利率可能足以遏制通胀 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-25"
-    },
-    {
       "title": "拥有硕士学位的年轻工人的失业率很少更高-《华尔街日报》",
       "source": "WSJ",
       "date": "2026-05-25"
@@ -574,99 +509,9 @@
       "date": "2026-05-25"
     },
     {
-      "title": "印度是一个“国家之国” --新西兰企业需要一个区域战略来使贸易协议发挥作用",
-      "source": "The Conversation",
-      "date": "2026-05-25"
-    },
-    {
       "title": "底特律的高额财产税正在引发住房负担能力危机——城市领导人如何降低成本？",
       "source": "The Conversation",
       "date": "2026-05-25"
-    },
-    {
-      "title": "美国人的工资跟得上通货膨胀吗？这取决于",
-      "source": "Pew Research",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "美国人认为怎样才能成为好新闻消费者",
-      "source": "Pew Research",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "美国人将医疗保健成本、赤字和通货膨胀视为国家面临的重大问题",
-      "source": "Pew Research",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "民主党人和共和党人更重视推进自己的政策，而不是寻找共同点",
-      "source": "Pew Research",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "美国人如何看待特朗普对贸易和关税的处理",
-      "source": "Pew Research",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "通过人机协作加强网络欺凌的社会科学研究 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "SciSciGPT：推进科学领域的人类与人工智能合作 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "跨学科研究合作的文化障碍：来自澳大利亚的证据 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "经济衰退期间的7大最佳投资|财务顾问|美国新闻-美国新闻财经",
-      "source": "Reuters",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "经济衰退指标：财务顾问的备忘单-晨星",
-      "source": "Reuters",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "为什么贸易紧张局势是金融市场的“风暴云” -世界经济论坛",
-      "source": "Reuters",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "经济衰退期间最好的投资策略是什么？ - Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "9/11如何影响美国商业和经济复苏- Investopedia",
-      "source": "Reuters",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "观看通胀担忧拖累经济数据，黄金下跌|彭博市场2026年5月21日- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "描绘全球经济：通货膨胀导致工厂活动下滑- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "Rapidan表示，霍尔木兹关闭威胁2008年经济衰退的竞争对手- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "欧元区大型经济体正在承受持续的通货膨胀冲击- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
     },
     {
       "title": "年度对冲基金交易：押注阿根廷挥舞链锯的总裁-《华尔街日报》",
@@ -674,32 +519,7 @@
       "date": "2026-05-24"
     },
     {
-      "title": "随着伊朗战争消耗海湾财富，世界失去了石油美元刺激计划- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "2026年初美国GDP增长2% ，标志着经济的韧性- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "南美最终享受“正常衰退”意味着什么- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "丹麦经济部因制药销售而提高GDP预测- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
       "title": "全球商品贸易今年将放缓至2025年的一半- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "中国缩减伊朗战争第一个月的财政刺激计划-彭博社",
       "source": "Bloomberg",
       "date": "2026-05-24"
     },
@@ -709,43 +529,8 @@
       "date": "2026-05-24"
     },
     {
-      "title": "伊朗战争石油冲击威胁引发全球通货膨胀浪潮- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "美国没有经济衰退，但感觉很悲惨- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "美国消费者信心指数通胀创历史新低- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "通货膨胀可能已经降温，但负担能力仍然是一个热点问题- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "您感觉不到的恢复是真实的- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "随着伊朗战争推高通胀，欧盟下调增长预测--英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-24"
-    },
-    {
       "title": "如果特朗普的伊朗战争拖延下去，中国最大的贸易博览会暴露了经济风险- Bloomberg.com",
       "source": "Bloomberg",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "法国表示，对开发更多石油储备持谨慎态度的国家--英国《金融时报》",
-      "source": "Financial Times",
       "date": "2026-05-24"
     },
     {
@@ -754,152 +539,12 @@
       "date": "2026-05-24"
     },
     {
-      "title": "航运交易所辩称霍尔木兹海峡没有在诉讼辩护中关闭-英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "没有政治意愿，欧洲的贸易武器毫无用处--英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "英国首次在G7峰会上宣布与海湾国家达成“历史性”贸易协议- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "由于伊朗战争引发通胀担忧，消费者信心在5月创下历史新低- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "通货膨胀的担忧正在工业金属中蔓延。以下是价格的下一步走势- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "巴林工业部长告诉CNBC - CNBC ，英国-海湾贸易协议是一项“巨大成就”",
-      "source": "CNBC",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "4月份日本出口增长14.8% ，超出预期，半导体出货量飙升- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "随着投资者评估美伊和平协议外交，亚太市场交易量增加- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "来自亚太经合组织的三个迹象表明，美国和中国在贸易方面仍然存在很大分歧- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "美国人在假期周末感受到了通货膨胀的冲击。这是价格上涨最多的地方- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "密歇根大学调查发现消费者信心跌至新低 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "英国央行泰勒表示，延长持有利率可能足以遏制通胀 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-24"
-    },
-    {
       "title": "涉及能源和基础设施的人工智能交易使您的资金翻了一番，超过了英伟达- CNBC",
       "source": "CNBC",
       "date": "2026-05-24"
     },
     {
-      "title": "世界贸易在年初因人工智能热潮而强劲增长-《华尔街日报》",
-      "source": "WSJ",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "拥有硕士学位的年轻工人的失业率很少更高-《华尔街日报》",
-      "source": "WSJ",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "在数据不完善的情况下理解劳动力市场指标——作者：Scott A. Brave、Erin E. Crust、Stefano Eusepi、Bart Hobijn、Ayşegül Şahin",
-      "source": "NBER",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "GLP-1 使用对心理健康、自我评价健康、就业和婚姻的影响 -- 作者：Robert Kaestner、Cuiping Schiman",
-      "source": "NBER",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "财政政策和转型风险——作者：Stefano Carattini、Garth Heutel、Givi Melkadze、Inès Mourelon",
-      "source": "NBER",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "美国的洪水风险、保险和住房 -- 作者：Suvyqin、John L. Voorheis",
-      "source": "NBER",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "底特律的高额财产税正在引发住房负担能力危机——城市领导人如何降低成本？",
-      "source": "The Conversation",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "美国人的工资跟得上通货膨胀吗？这取决于",
-      "source": "Pew Research",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "美国人认为怎样才能成为好新闻消费者",
-      "source": "Pew Research",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "美国人将医疗保健成本、赤字和通货膨胀视为国家面临的重大问题",
-      "source": "Pew Research",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "民主党人和共和党人更重视推进自己的政策，而不是寻找共同点",
-      "source": "Pew Research",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "美国人如何看待特朗普对贸易和关税的处理",
-      "source": "Pew Research",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "通过人机协作加强网络欺凌的社会科学研究 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "SciSciGPT：推进科学领域的人类与人工智能合作 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "跨学科研究合作的文化障碍：来自澳大利亚的证据 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-24"
-    },
-    {
       "title": "经济衰退期间的7大最佳投资|财务顾问-美国新闻财经",
-      "source": "Reuters",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "9/11如何影响美国商业和经济复苏- Investopedia",
       "source": "Reuters",
       "date": "2026-05-23"
     },
@@ -909,72 +554,12 @@
       "date": "2026-05-23"
     },
     {
-      "title": "观看通胀担忧拖累经济数据，黄金下跌|彭博市场2026年5月21日- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "欧元区大型经济体正在承受持续的通货膨胀冲击- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "2026年初美国GDP增长2% ，标志着经济的韧性- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "Rapidan表示，霍尔木兹关闭威胁2008年经济衰退的竞争对手- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "南美最终享受“正常衰退”意味着什么- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "全球商品贸易今年将放缓至2025年的一半- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "美国消费者信心指数通胀创历史新低- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
       "title": "也许投资者对通胀风险过于自满- Bloomberg.com",
       "source": "Bloomberg",
       "date": "2026-05-23"
     },
     {
       "title": "随着特朗普发出战争扩大的信号，滞胀交易席卷市场- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "伊朗战争石油冲击威胁引发全球通货膨胀浪潮- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "中国缩减伊朗战争第一个月的财政刺激计划-彭博社",
-      "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "随着贸易抑制增长，受国内需求驱动的德国反弹-彭博社",
-      "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "通货膨胀可能已经降温，但负担能力仍然是一个热点问题- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "美国没有经济衰退，但感觉很悲惨- Bloomberg.com",
       "source": "Bloomberg",
       "date": "2026-05-23"
     },
@@ -991,16 +576,6 @@
     {
       "title": "美国消费者信心因就业前景更强劲而上升- Bloomberg.com",
       "source": "Bloomberg",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "随着伊朗战争推高通胀，欧盟下调增长预测--英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "法国表示，对开发更多石油储备持谨慎态度的国家--英国《金融时报》",
-      "source": "Financial Times",
       "date": "2026-05-23"
     }
   ]
