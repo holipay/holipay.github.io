@@ -243,12 +243,19 @@
                 );
             }
 
+            let _metaCache = null;
+            async function loadMetaOnce() {
+                if (_metaCache) return _metaCache;
+                _metaCache = await loadMeta();
+                return _metaCache;
+            }
+
             async function loadView() {
                 if (S.loading) return;
                 S.loading = true;
                 main.innerHTML =
                     '<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
-                const meta = await loadMeta();
+                const meta = await loadMetaOnce();
                 const cat = meta.categories.find((c) => c.file === S.cat);
                 if (!cat) {
                     main.innerHTML = '<div class="empty">分类未找到</div>';
@@ -267,7 +274,7 @@
                 btn.textContent = "加载中...";
                 const cat = btn.dataset.cat;
                 S.newsPage[cat] = (S.newsPage[cat] || 1) + 1;
-                const meta = await loadMeta();
+                const meta = await loadMetaOnce();
                 const catObj = meta.categories.find((c) => c.file === cat);
                 if (!catObj) return;
                 const items = await loadNewsCat(cat);
@@ -333,8 +340,9 @@
             );
 
             async function init() {
-                const meta = await loadMeta();
-                // Build sidebar
+                const meta = await loadMetaOnce();
+
+                // Build sidebar 立即渲染
                 const frag = document.createDocumentFragment();
                 for (const c of meta.categories) {
                     const el = document.createElement("div");
@@ -344,16 +352,17 @@
                     frag.appendChild(el);
                 }
                 catList.appendChild(frag);
-                // Default: first category
                 S.cat = meta.categories[0]?.file || "";
                 catList.querySelector(".cat-item")?.classList.add("active");
+
+                // 首屏：直接加载分类数据（meta 已缓存，loadView 不会再请求 meta）
                 loadView();
-                // Prefetch top categories
-                const top = meta.categories.slice(0, 5);
-                top.forEach((c, i) => {
+
+                // 预加载前 3 个分类（并行，错开 100ms）
+                meta.categories.slice(1, 4).forEach((c, i) => {
                     setTimeout(() => {
                         if (!rawCatCache.has(c.file)) loadNewsCat(c.file);
-                    }, i * 200);
+                    }, i * 100);
                 });
             }
 

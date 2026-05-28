@@ -215,7 +215,12 @@
 
             // Init
             async function init() {
-                const dates = await loadAllDates();
+                // 并行加载：日期索引 + 最新分析（不需要等索引才知道加载哪个）
+                const [dates] = await Promise.all([
+                    loadAllDates(),
+                    // 预热分析缓存（如果 service worker 已缓存则秒回）
+                    loadAnalysisForDate(new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Shanghai" })).catch(() => null)
+                ]);
                 if (!dates.length) {
                     main.innerHTML =
                         '<div class="empty"><div class="empty-icon">📭</div><p>暂无分析数据</p></div>';
@@ -231,7 +236,6 @@
                     frag.appendChild(el);
                 }
                 dateList.appendChild(frag);
-                // Default: latest date
                 currentDate = dates[0];
                 dateList.querySelector(".date-item")?.classList.add("active");
                 loadView(currentDate);
