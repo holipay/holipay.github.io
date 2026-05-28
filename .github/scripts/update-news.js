@@ -959,7 +959,7 @@ async function semanticDedup(items, existingTitles) {
   if (candidates.length === 0) return items;
 
   // 批量检查（最多检查 50 对）
-  const toCheck = candidates.slice(0, 50);
+  const toCheck = candidates.slice(0, 100);
   const pairs = toCheck
     .map(
       ([i, j], idx) =>
