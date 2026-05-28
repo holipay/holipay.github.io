@@ -2368,8 +2368,9 @@ function parseStructuredOutput(rawAnalysis) {
 // ===== 日期索引维护 + 旧数据清理 =====
 const ANALYSIS_RETENTION_DAYS = 90;
 
-function updateDateIndex(dateStr) {
-  const indexPath = path.join(ANALYSIS_DIR, "index.json");
+function updateDateIndex(dateStr, dir) {
+  dir = dir || ANALYSIS_DIR;
+  const indexPath = path.join(dir, "index.json");
   let dates = [];
   if (fs.existsSync(indexPath)) {
     try {
@@ -2984,6 +2985,8 @@ async function main() {
       console.log(
         `💾 已保存 data/news/articles.json (${snippets.length} 篇文章)`,
       );
+
+      updateDateIndex(dateStr, ARTICLES_DIR);
     }
   }
 
