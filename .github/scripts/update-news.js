@@ -1286,13 +1286,31 @@ async function processTopic(topic) {
     }));
 
     // P1-3: 增量追加 — 先对新条目去重，再追加到现有数据前面
+    // 同时用有 link 的新条目回填旧条目的 link 字段
     const existingNorms = new Set(
       existingItems.map((i) => normalizeTitle(i.title).slice(0, 80)),
     );
-    const trulyNew = newItems.filter((item) => {
+    const existingMap = new Map();
+    for (const item of existingItems) {
       const norm = normalizeTitle(item.title).slice(0, 80);
-      return norm && !existingNorms.has(norm);
-    });
+      if (norm) existingMap.set(norm, item);
+    }
+    const trulyNew = [];
+    let linkBackfilled = 0;
+    for (const item of newItems) {
+      const norm = normalizeTitle(item.title).slice(0, 80);
+      if (!norm) continue;
+      const existing = existingMap.get(norm);
+      if (!existing) {
+        trulyNew.push(item);
+      } else if (!existing.link && item.link) {
+        existing.link = item.link;
+        linkBackfilled++;
+      }
+    }
+    if (linkBackfilled > 0) {
+      console.log(`  🔗 ${sec.title}: 回填 ${linkBackfilled} 条链接`);
+    }
     if (trulyNew.length > 0) {
       console.log(`  ➕ ${sec.title}: 新增 ${trulyNew.length} 条`);
     }
