@@ -430,42 +430,12 @@ a:hover {
     font-size: 14px;
 }
 
-/* Back to top */
-#toTop {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-    z-index: 100;
-    pointer-events: none;
-}
-#toTop.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-#toTop:hover {
-    background: var(--accent-h);
-    transform: translateY(-2px);
-}
 @media (prefers-reduced-motion: reduce) {
     .sk {
         animation: none;
     }
     .nav-link,
-    .load-more,
-    #toTop {
+    .load-more {
         transition: none;
     }
 }

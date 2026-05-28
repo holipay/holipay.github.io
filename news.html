@@ -187,7 +187,6 @@
                 <div class="cat-list" id="catList"></div>
             </aside>
         </div>
-        <button id="toTop" title="回到顶部">↑</button>
         <script src="js/common.js"></script>
         <script>
             const main = $("main"),
@@ -336,21 +335,6 @@
                         if (!rawCatCache.has(c.file)) loadNewsCat(c.file);
                     }, i * 200);
                 });
-            }
-
-            // Back to top
-            const toTop = document.getElementById("toTop");
-            if (toTop) {
-                main.addEventListener(
-                    "scroll",
-                    () => {
-                        toTop.classList.toggle("visible", main.scrollTop > 300);
-                    },
-                    { passive: true },
-                );
-                toTop.addEventListener("click", () =>
-                    main.scrollTo({ top: 0, behavior: "smooth" }),
-                );
             }
 
             init();
