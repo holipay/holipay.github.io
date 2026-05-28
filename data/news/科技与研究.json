@@ -1,8 +1,20 @@
 {
   "icon": "🤖",
   "title": "科技与研究",
-  "updatedAt": "2026-05-28T04:59:31.042Z",
+  "updatedAt": "2026-05-28T05:06:23.622Z",
   "items": [
+    {
+      "title": "“Zoom疲劳”的四个原因及其解决方案 - 斯坦福报告",
+      "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNbUZDSzBRMTlzcjlOTzd5alo3NGZHaXhJNl9uZk83cF81NkFxbTFGcXFnYnpLVXBLclRvLVR6a3pkcnVTYnlyb3dtSGJ6QU5FTV84bDYzZHRubW5yWlRNWklDVnljbVR2bnFOTmdWdjN4NEw1VXk1THpKeFcxZUNRc2ZR?oc=5",
+      "source": "Google News Academic",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "病毒学入门指南",
+      "link": "https://www.zerohedge.com/medical/viruses-dummies",
+      "source": "ZeroHedge",
+      "date": "2026-05-28"
+    },
     {
       "title": "设计更具信息性的测试：将执行与识别分开-- Andrew Caplin、Leo Zhu著",
       "source": "NBER",

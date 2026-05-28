@@ -1,8 +1,134 @@
 {
-  "updatedAt": "2026-05-28T04:59:31.055Z",
+  "updatedAt": "2026-05-28T05:06:23.638Z",
   "items": [
     {
-      "title": "股市与债券齐跌，伊朗遭袭致油价上涨：市场综述",
+      "title": "美国打击推高油价，国债跌势延续",
+      "source": "Bloomberg",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "国际能源署称战争冲击导致石油投资连续第三年下降",
+      "source": "Bloomberg",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "海湾地区再遭袭击威胁脆弱停火，油价飙升",
+      "source": "Bloomberg",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "海湾袭击打击交易乐观情绪，工业金属下跌",
+      "source": "Bloomberg",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "伊朗战争暴露中国石油需求下降趋势",
+      "source": "Bloomberg",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "香港拟建新结算系统争夺亚洲黄金中心地位",
+      "source": "Bloomberg",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "伊朗称在美国新一轮空袭后打击了美军基地，油价飙升3%",
+      "source": "CNBC",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "高盛上调标普500年终预测，原因只有一个",
+      "source": "CNBC",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "鲁比奥称美国将给伊朗谈判\"一切成功机会\"后油价下跌超5%",
+      "source": "CNBC",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "纽约商品交易所黄金、白银收跌",
+      "source": "WSJ",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "天气预测变化导致天然气价格下跌",
+      "source": "WSJ",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "天然气公司Diversified Energy达成收购二叠纪盆地企业协议",
+      "source": "WSJ",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "央行应如何应对大宗商品价格冲击？商品暴露经济体的最佳货币和汇率框架- Thomas Drechsel ， Michael McLeay ， Silvana Tenreyro ， Enrico D. Turri",
+      "source": "NBER",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "健康的土壤能保护土地免受酷热侵袭，但我们的地图显示土壤正在恶化",
+      "source": "The Conversation",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "领土完整与自决仍主导福克兰群岛讨论——但石油可能改变格局",
+      "source": "The Conversation",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "许多美国人认为公用事业公司应对他们不断上涨的家庭能源账单负责",
+      "source": "Pew Research",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "美国人对能源问题看法的转变",
+      "source": "Pew Research",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "人工智能为科学家提供了动力，但代价是太多平庸的论文-康奈尔纪事报",
+      "source": "Google News Academic",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "美印签署关键矿产与稀土开采协议",
+      "source": "ZeroHedge",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "中国煤矿事故将波及钢铁、电力、化工行业",
+      "source": "Bloomberg",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "秘鲁因厄尔尼诺威胁延长凤尾鱼捕捞禁令",
+      "source": "Bloomberg",
+      "date": "2026-05-28",
+      "category": "大宗商品与能源"
+    },
+    {
+      "title": "高盛交易台将韩国杠杆ETF视为波动加速器",
       "source": "Bloomberg",
       "date": "2026-05-28",
       "category": "股市与市场"
@@ -174,132 +300,6 @@
       "source": "ScienceDirect",
       "date": "2026-05-28",
       "category": "股市与市场"
-    },
-    {
-      "title": "无风险市场中规避风险的交易商——交易台风险限额的作用",
-      "source": "ScienceDirect",
-      "date": "2026-05-28",
-      "category": "股市与市场"
-    },
-    {
-      "title": "外推者和逆向投资者：预测偏差和个人投资者股票交易",
-      "source": "ScienceDirect",
-      "date": "2026-05-28",
-      "category": "股市与市场"
-    },
-    {
-      "title": "法院在佛罗里达州选区重划之争中给民主党带来惨败",
-      "source": "ZeroHedge",
-      "date": "2026-05-28",
-      "category": "股市与市场"
-    },
-    {
-      "title": "高盛交易台将韩国杠杆ETF视为波动加速器",
-      "source": "Bloomberg",
-      "date": "2026-05-28",
-      "category": "股市与市场"
-    },
-    {
-      "title": "金融服务综述：市场观点",
-      "source": "WSJ",
-      "date": "2026-05-28",
-      "category": "股市与市场"
-    },
-    {
-      "title": "开市钟：26年9月4日",
-      "source": "Dealbreaker",
-      "date": "2026-05-28",
-      "category": "股市与市场"
-    },
-    {
-      "title": "为何市场未能成为特朗普的护栏",
-      "source": "Bloomberg",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "oasis称日本股东提案损害散户投资者利益",
-      "source": "Bloomberg",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "乌克兰正在扭转局势",
-      "source": "Financial Times",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "英伟达CEO黄仁勋将加入北京某知名学府董事会",
-      "source": "Financial Times",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "凯易律所斥资5亿美元开发自有AI技术",
-      "source": "Financial Times",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "科威特启动防空系统应对\"导弹和无人机威胁\"；美国对伊朗实施新打击",
-      "source": "CNBC",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "抵押贷款利率升至8月以来最高水平，再融资需求骤降18%",
-      "source": "CNBC",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "Meta将开始测试AI订阅服务，最低套餐每月7.99美元",
-      "source": "CNBC",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "印度内幕通讯：伊朗战争干扰、莫迪呼吁提振印度酒店业",
-      "source": "CNBC",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "马克·扎克伯格称Meta云计算业务\"绝对在考虑之中\"",
-      "source": "CNBC",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "赛富时的业绩未能说服市场软件能抵御人工智能冲击",
-      "source": "CNBC",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "Zscaler暴跌31%创史上最差单日表现，因\"谨慎\"指引和销售团队重组",
-      "source": "CNBC",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "白宫关注CFTC提出的预测市场监管提案",
-      "source": "CNBC",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "DeepSeek不会击沉美国AI巨头",
-      "source": "WSJ",
-      "date": "2026-05-28",
-      "category": "科技与企业"
-    },
-    {
-      "title": "特朗普为大型银行歧视保守派的说法火上浇油",
-      "source": "WSJ",
-      "date": "2026-05-28",
-      "category": "科技与企业"
     }
   ]
 }

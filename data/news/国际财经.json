@@ -1,8 +1,14 @@
 {
   "icon": "🌍",
   "title": "国际财经",
-  "updatedAt": "2026-05-28T04:59:31.038Z",
+  "updatedAt": "2026-05-28T05:06:23.619Z",
   "items": [
+    {
+      "title": "不那么安静的美国人",
+      "link": "https://www.foreignaffairs.com/united-states/not-so-quiet-american-pope-leo",
+      "source": "Foreign Affairs",
+      "date": "2026-05-28"
+    },
     {
       "title": "数据侦探称记者应关注研究数据监管松懈 - 记者资源",
       "source": "Google News Academic",

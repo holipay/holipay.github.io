@@ -1,8 +1,20 @@
 {
   "icon": "💰",
   "title": "宏观经济",
-  "updatedAt": "2026-05-28T04:59:31.042Z",
+  "updatedAt": "2026-05-28T05:06:23.622Z",
   "items": [
+    {
+      "title": "71%的美国房主表示，他们的房屋保险费用上涨了",
+      "link": "https://www.pewresearch.org/short-reads/2026/05/06/71-of-u-s-homeowners-say-their-home-insurance-costs-have-gone-up/",
+      "source": "Pew Research",
+      "date": "2026-05-28"
+    },
+    {
+      "title": "共同定价因素动物园",
+      "link": "https://www.sciencedirect.com/science/article/pii/S0304405X26000668?dgcid=rss_sd_all",
+      "source": "ScienceDirect",
+      "date": "2026-05-28"
+    },
     {
       "title": "天哪，24 个较大市场的公寓价格已经下降了 15% 至 33%，有些回到了 20 年前的水平",
       "source": "Wolf Street",
