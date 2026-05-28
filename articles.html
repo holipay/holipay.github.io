@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <title>精选文章 - nase.me</title>
+        <meta
+            name="description"
+            content="nase.me 精选金融、科技、社科资讯文章"
+        />
+        <link rel="stylesheet" href="common.css" />
+        <style>
+            .layout {
+                max-width: 960px;
+                margin: 0 auto;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+            .main {
+                overflow-y: auto;
+                padding: 24px 28px 40px;
+                flex: 1;
+                contain: layout style;
+            }
+            .date-group {
+                margin-bottom: 24px;
+            }
+            .date-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 12px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid var(--bdr);
+            }
+            .date-header-text {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--text);
+            }
+            .date-header-meta {
+                font-size: 11px;
+                color: var(--text3);
+                margin-left: auto;
+            }
+            .dash-card {
+                background: var(--card);
+                border-radius: var(--r);
+                padding: 16px 20px;
+                box-shadow: var(--sh);
+                border: 1px solid var(--bdr);
+                margin-bottom: 20px;
+            }
+            .dash-title {
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--text);
+                margin-bottom: 8px;
+            }
+            @media (max-width: 860px) {
+                .nav-bar {
+                    padding: 8px 10px;
+                    gap: 4px;
+                }
+                .nav-title {
+                    font-size: 13px;
+                }
+                .nav-link {
+                    font-size: 11px;
+                    padding: 4px 8px;
+                }
+                .main {
+                    padding: 16px 14px 32px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <nav class="nav-bar">
+                <span class="nav-title">⭐ nase.me</span>
+                <a class="nav-link" href="index.html"
+                    ><span class="nav-link-icon">🤖</span>AI 分析</a
+                >
+                <a class="nav-link" href="news.html"
+                    ><span class="nav-link-icon">📰</span>新闻列表</a
+                >
+                <a class="nav-link active" href="articles.html"
+                    ><span class="nav-link-icon">⭐</span>精选文章</a
+                >
+            </nav>
+            <div class="main" id="main">
+                <div class="sk-card sk">
+                    <div class="sk-line w45"></div>
+                    <div class="sk-line"></div>
+                    <div class="sk-line w80"></div>
+                </div>
+            </div>
+        </div>
+        <button id="toTop" title="回到顶部">↑</button>
+        <script src="common.js"></script>
+        <script>
+            const main = $("main");
+
+            async function init() {
+                // Load latest articles and dashboard in parallel
+                const [latest, dash] = await Promise.all([
+                    fetchT("data/news/latest.json")
+                        .then((r) => r.json())
+                        .catch(() => null),
+                    fetchT("data/news/dashboard.json")
+                        .then((r) => r.json())
+                        .catch(() => null),
+                ]);
+
+                if (!latest || !latest.items || !latest.items.length) {
+                    main.innerHTML =
+                        '<div class="empty"><div class="empty-icon">📭</div><p>暂无精选文章</p></div>';
+                    return;
+                }
+
+                const items = latest.items;
+
+                // Dashboard summary (most recent day's signals)
+                let dashHtml = "";
+                if (dash && dash.days && dash.days.length) {
+                    const today = dash.days[0];
+                    const smI =
+                        { 看涨: "📈", 看跌: "📉", 分化: "🔀" }[
+                            today.sentiment
+                        ] || "➡️";
+                    const rkI =
+                        { 高: "🔴", 中: "🟡", 低: "🟢" }[today.riskLevel] ||
+                        "🟡";
+                    const themes = (today.keyThemes || [])
+                        .slice(0, 4)
+                        .map((t) => `<span class="tag">${esc(t)}</span>`)
+                        .join("");
+                    dashHtml = `<div class="dash-card">
+      <div class="dash-title">📊 ${today.date} 市场信号</div>
+      <div class="a-tags"><span class="badge badge-${{ 看涨: "up", 看跌: "down", 分化: "mix" }[today.sentiment] || "flat"}">${smI} ${today.sentiment}</span><span class="badge badge-risk-${{ 高: "h", 中: "m", 低: "l" }[today.riskLevel] || "m"}">${rkI} 风险${today.riskLevel}</span>${themes}</div>
+    </div>`;
+                }
+
+                // Group articles by date
+                const groups = new Map();
+                for (const it of items) {
+                    const d = it.date || "";
+                    if (!groups.has(d)) groups.set(d, []);
+                    groups.get(d).push(it);
+                }
+
+                // Render date groups
+                let listHtml = "";
+                for (const [date, groupItems] of groups) {
+                    listHtml += `<div class="date-group">
+      <div class="date-header">
+        <span class="date-header-text">${esc(date)}</span>
+        <span class="date-header-meta">${groupItems.length} 篇</span>
+      </div>`;
+                    for (const it of groupItems) {
+                        listHtml += renderNewsItem(it);
+                    }
+                    listHtml += "</div>";
+                }
+
+                main.innerHTML = dashHtml + listHtml;
+            }
+
+            // Back to top
+            const toTop = document.getElementById("toTop");
+            if (toTop) {
+                main.addEventListener(
+                    "scroll",
+                    () => {
+                        toTop.classList.toggle("visible", main.scrollTop > 300);
+                    },
+                    { passive: true },
+                );
+                toTop.addEventListener("click", () =>
+                    main.scrollTo({ top: 0, behavior: "smooth" }),
+                );
+            }
+
+            init();
+            if ("serviceWorker" in navigator)
+                navigator.serviceWorker.register("sw.js").catch(() => {});
+        </script>
+    </body>
+</html>
