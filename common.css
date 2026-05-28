@@ -309,8 +309,13 @@ a:hover {
     display: flex;
     align-items: baseline;
     gap: 8px;
-    padding: 8px 0;
+    padding: 8px;
     border-bottom: 1px solid var(--bdr);
+    border-radius: var(--rs);
+    transition: background var(--tr);
+}
+.news-item:hover {
+    background: var(--accent-l);
 }
 .news-item:last-child {
     border-bottom: none;
