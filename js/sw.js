@@ -1,10 +1,24 @@
-const CACHE_NAME = "nase-20260528";
-const STATIC_ASSETS = ["/", "/index.html"];
+const CACHE_NAME = "nase-20260528-v2";
+const STATIC_ASSETS = ["/", "/index.html", "/common.css", "/js/common.js"];
+const PREFETCH_DATA = [
+  "/data/news/meta.json",
+  "/data/news/latest.json",
+  "/data/news/analysis/index.json",
+];
 const MAX_CACHE_ENTRIES = 50; // Limit cached JSON responses
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS)),
+    caches.open(CACHE_NAME).then(async (cache) => {
+      await cache.addAll(STATIC_ASSETS);
+      // 预缓存关键数据（不阻塞安装）
+      for (const url of PREFETCH_DATA) {
+        try {
+          const res = await fetch(url);
+          if (res.ok) await cache.put(url, res);
+        } catch {}
+      }
+    }),
   );
   self.skipWaiting();
 });

@@ -9,6 +9,7 @@
             content="nase.me 全球金融、科技、社科新闻资讯列表"
         />
         <link rel="stylesheet" href="common.css" />
+        <link rel="preload" href="js/common.js" as="script" />
         <style>
             .layout {
                 display: grid;
@@ -212,11 +213,30 @@
                 }
                 const page = S.newsPage[catFile] || 1;
                 const show = items.slice(0, page * PAGE_SIZE);
-                const list = show.map(renderNewsItem).join("");
                 const hasMore = items.length > show.length;
+
+                // 分批渲染：先渲染首屏 20 条，剩余用 rAF 空闲渲染
+                const FIRST_BATCH = 20;
+                const firstBatch = show.slice(0, FIRST_BATCH);
+                const restBatch = show.slice(FIRST_BATCH);
+                const headHtml = renderNewsHead(catIcon, catTitle, items.length);
+                const listHtml = firstBatch.map(renderNewsItem).join("");
+
+                if (restBatch.length > 0) {
+                    // 异步渲染剩余条目，不阻塞主线程
+                    requestAnimationFrame(() => {
+                        const listEl = document.getElementById("newsList");
+                        if (listEl) {
+                            const frag = document.createElement("div");
+                            frag.innerHTML = restBatch.map(renderNewsItem).join("");
+                            while (frag.firstChild) listEl.appendChild(frag.firstChild);
+                        }
+                    });
+                }
+
                 return (
-                    renderNewsHead(catIcon, catTitle, items.length) +
-                    `<div id="newsList">${list}</div>` +
+                    headHtml +
+                    `<div id="newsList">${listHtml}</div>` +
                     (hasMore
                         ? `<button class="load-more" data-cat="${esc(catFile)}">加载更多 (${items.length - show.length} 条)</button>`
                         : "")

@@ -9,6 +9,7 @@
             content="nase.me 精选金融、科技、社科资讯文章"
         />
         <link rel="stylesheet" href="common.css" />
+        <link rel="preload" href="js/common.js" as="script" />
         <style>
             .layout {
                 display: grid;
@@ -363,42 +364,14 @@
             }
 
             async function init() {
-                const dates = await fetchT("data/news/articles/index.json")
+                // 直接加载（跳过不存在的 index.json，避免双请求）
+                const articles = await fetchT("data/news/articles.json")
                     .then((r) => r.json())
                     .catch(() => null);
-
-                // Build sidebar dates
-                if (dates && dates.length) {
-                    const frag = document.createDocumentFragment();
-                    for (const d of dates) {
-                        const el = document.createElement("div");
-                        el.className = "date-item";
-                        el.dataset.date = d;
-                        el.innerHTML = `<span class="date-icon">📅</span><span class="date-name">${esc(d)}</span>`;
-                        frag.appendChild(el);
-                    }
-                    dateList.appendChild(frag);
-                    // Default: latest date
-                    S.date = dates[0];
-                    dateList
-                        .querySelector(".date-item")
-                        ?.classList.add("active");
-                    // Load articles for latest date
-                    const articles = await fetchT(
-                        `data/news/articles/${S.date}.json`,
-                    )
-                        .then((r) => r.json())
-                        .catch(() => null);
-                    renderPage(articles);
-                } else {
-                    // Fallback: load from articles.json
-                    const articles = await fetchT("data/news/articles.json")
-                        .then((r) => r.json())
-                        .catch(() => null);
-                    renderPage(articles);
-                }
+                renderPage(articles);
             }
 
+            // 日期侧栏（归档后启用）
             dateList.onclick = (e) => {
                 const item = e.target.closest(".date-item");
                 if (!item || item.dataset.date === S.date) return;
