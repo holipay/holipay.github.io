@@ -1739,7 +1739,7 @@ function extractKeywordsFromTitle(title) {
     } else {
       for (const dk of DOMAIN_KEYWORDS) {
         if (dk.length >= 2 && word.includes(dk)) {
-          keywords.push(word);
+          keywords.push(dk);
           break;
         }
       }
@@ -1755,7 +1755,7 @@ function extractKeywordsFromTitle(title) {
     } else {
       for (const dk of DOMAIN_KEYWORDS) {
         if (dk.length >= 3 && word.includes(dk)) {
-          keywords.push(word);
+          keywords.push(dk);
           break;
         }
       }
