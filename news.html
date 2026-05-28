@@ -1,162 +1,361 @@
-<!doctype html><html lang="zh-CN">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>新闻列表 - nase.me</title>
-  <meta name="description" content="nase.me 全球金融、科技、社科新闻资讯列表"/>
-  <link rel="stylesheet" href="common.css"/>
-  <style>
-    .layout{display:grid;grid-template-columns:1fr 260px;grid-template-rows:auto 1fr;height:100vh}
-    .main{overflow-y:auto;padding:24px 28px 40px;min-width:0;contain:layout style}
-    .sidebar{border-left:1px solid var(--bdr);background:var(--card);overflow-y:auto;padding:0}
-    .side-section{padding:14px 16px;border-bottom:1px solid var(--bdr)}
-    .side-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-    .cat-list{padding:8px 0}
-    .cat-item{display:flex;align-items:center;gap:8px;padding:9px 16px;cursor:pointer;transition:background var(--tr);user-select:none;font-size:13px;color:var(--text)}
-    .cat-item:hover{</title>background:var(--accent-l)}
-    .cat-item.active{background:var(--accent-l);color:var(--accent);font-weight:700}
-    .cat-icon{font-size:15px;flex-shrink:0;width:20px;text-align:center}
-    .cat-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .cat-count{font-size:10px;color:var(--text3);background:var(--bg);padding:1px 6px;border-radius:100px;flex-shrink:0}
-    @media(max-width:860px){
-      .layout{display:flex;flex-direction:column;height:100vh;grid-template-columns:unset;grid-template-rows:unset}
-      .sidebar{border-left:none;border-bottom:1px solid var(--bdr);display:flex;flex-direction:row;align-items:center;overflow:visible;padding:0;gap:0;flex-shrink:0;background:var(--card);box-shadow:0 2px 8px rgba(0,0,0,.06)}
-      .side-section{padding:8px 10px;border-bottom:none;display:flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0;border-right:1px solid var(--bdr)}
-      .side-label{display:none}
-      .cat-list{display:flex;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:6px 8px;flex:1;min-width:0;scrollbar-width:none}
-      .cat-list::-webkit-scrollbar{display:none}
-      .cat-item{padding:5px 10px;font-size:12px;white-space:nowrap;flex-shrink:0;border-radius:var(--rs);gap:4px;color:var(--text2)}
-      .cat-count{display:none}
-      .main{padding:12px 10px 24px}
-      .nav-bar{padding:8px 10px;gap:4px}.nav-title{font-size:13px}.nav-link{font-size:11px;padding:4px 8px}
-    }
-  </style>
-</head>
-<body>
-<div class="layout">
-  <nav class="nav-bar">
-    <span class="nav-title">📰 nase.me</span>
-    <a class="nav-link" href="index.html"><span class="nav-link-icon">🤖</span>AI 分析</a>
-    <a class="nav-link active" href="news.html"><span class="nav-link-icon">📰</span>新闻列表</a>
-    <a class="nav-link" href="articles.html"><span class="nav-link-icon">⭐</span>精选文章</a>
-  </nav>
-  <div class="main" id="main">
-    <div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>
-  </div>
-  <aside class="sidebar" id="sidebar">
-    <div class="side-section" style="padding-bottom:0">
-      <div class="side-label">频道</div>
-    </div>
-    <div class="cat-list" id="catList"></div>
-  </aside>
-</div>
-<button id="toTop" title="回到顶部">↑</button>
-<script src="common.js"></script>
-<script>
-const main=$("main"),catList=$("catList");
-const PAGE_SIZE=40;
-const S={cat:"",newsPage:{},loading:false};
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <title>新闻列表 - nase.me</title>
+        <meta
+            name="description"
+            content="nase.me 全球金融、科技、社科新闻资讯列表"
+        />
+        <link rel="stylesheet" href="common.css" />
+        <style>
+            .layout {
+                display: grid;
+                grid-template-columns: 1fr 260px;
+                grid-template-rows: auto 1fr;
+                height: 100vh;
+            }
+            .main {
+                overflow-y: auto;
+                padding: 24px 28px 40px;
+                min-width: 0;
+                contain: layout style;
+            }
+            .sidebar {
+                border-left: 1px solid var(--bdr);
+                background: var(--card);
+                overflow-y: auto;
+                padding: 0;
+            }
+            .side-section {
+                padding: 14px 16px;
+                border-bottom: 1px solid var(--bdr);
+            }
+            .side-label {
+                font-size: 11px;
+                font-weight: 700;
+                color: var(--text3);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 10px;
+            }
+            .cat-list {
+                padding: 8px 0;
+            }
+            .cat-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 9px 16px;
+                cursor: pointer;
+                transition: background var(--tr);
+                user-select: none;
+                font-size: 13px;
+                color: var(--text);
+            }
+            .cat-item:hover {
+                background: var(--accent-l);
+            }
+            .cat-item.active {
+                background: var(--accent-l);
+                color: var(--accent);
+                font-weight: 700;
+            }
+            .cat-icon {
+                font-size: 15px;
+                flex-shrink: 0;
+                width: 20px;
+                text-align: center;
+            }
+            .cat-name {
+                flex: 1;
+                min-width: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .cat-count {
+                font-size: 10px;
+                color: var(--text3);
+                background: var(--bg);
+                padding: 1px 6px;
+                border-radius: 100px;
+                flex-shrink: 0;
+            }
+            @media (max-width: 860px) {
+                .layout {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100vh;
+                    grid-template-columns: unset;
+                    grid-template-rows: unset;
+                }
+                .sidebar {
+                    border-left: none;
+                    border-bottom: 1px solid var(--bdr);
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    overflow: visible;
+                    padding: 0;
+                    gap: 0;
+                    flex-shrink: 0;
+                    background: var(--card);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+                }
+                .side-section {
+                    padding: 8px 10px;
+                    border-bottom: none;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    white-space: nowrap;
+                    flex-shrink: 0;
+                    border-right: 1px solid var(--bdr);
+                }
+                .side-label {
+                    display: none;
+                }
+                .cat-list {
+                    display: flex;
+                    gap: 4px;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                    padding: 6px 8px;
+                    flex: 1;
+                    min-width: 0;
+                    scrollbar-width: none;
+                }
+                .cat-list::-webkit-scrollbar {
+                    display: none;
+                }
+                .cat-item {
+                    padding: 5px 10px;
+                    font-size: 12px;
+                    white-space: nowrap;
+                    flex-shrink: 0;
+                    border-radius: var(--rs);
+                    gap: 4px;
+                    color: var(--text2);
+                }
+                .cat-count {
+                    display: none;
+                }
+                .main {
+                    padding: 12px 10px 24px;
+                }
+                .nav-bar {
+                    padding: 8px 10px;
+                    gap: 4px;
+                }
+                .nav-title {
+                    font-size: 13px;
+                }
+                .nav-link {
+                    font-size: 11px;
+                    padding: 4px 8px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <nav class="nav-bar">
+                <span class="nav-title">📰 nase.me</span>
+                <a class="nav-link" href="index.html"
+                    ><span class="nav-link-icon">🤖</span>AI 分析</a
+                >
+                <a class="nav-link active" href="news.html"
+                    ><span class="nav-link-icon">📰</span>新闻列表</a
+                >
+                <a class="nav-link" href="articles.html"
+                    ><span class="nav-link-icon">⭐</span>精选文章</a
+                >
+            </nav>
+            <div class="main" id="main">
+                <div class="sk-card sk">
+                    <div class="sk-line w45"></div>
+                    <div class="sk-line"></div>
+                    <div class="sk-line w80"></div>
+                </div>
+            </div>
+            <aside class="sidebar" id="sidebar">
+                <div class="side-section" style="padding-bottom: 0">
+                    <div class="side-label">频道</div>
+                </div>
+                <div class="cat-list" id="catList"></div>
+            </aside>
+        </div>
+        <button id="toTop" title="回到顶部">↑</button>
+        <script src="common.js"></script>
+        <script>
+            const main = $("main"),
+                catList = $("catList");
+            const PAGE_SIZE = 40;
+            const S = { cat: "", newsPage: {}, loading: false };
 
-function renderNews(items,catFile,catIcon,catTitle,appendMode){
-  if(!items||items.length===0)return `<div class="news-head"><span class="news-head-icon">${catIcon}</span><span class="news-head-title">${esc(catTitle)}</span></div><div class="empty"><div class="empty-icon">📭</div><p>暂无新闻</p></div>`;
-  if(appendMode){
-    const page=S.newsPage[catFile]||1;
-    const show=items.slice(0,page*PAGE_SIZE);
-    const prevCount=(page-1)*PAGE_SIZE;
-    const newItems=show.slice(prevCount);
-    const hasMore=items.length>show.length;
-    return{newHtml:newItems.map(renderNewsItem).join(""),hasMore,total:items.length,shown:show.length};
-  }
-  const page=S.newsPage[catFile]||1;
-  const show=items.slice(0,page*PAGE_SIZE);
-  const list=show.map(renderNewsItem).join("");
-  const hasMore=items.length>show.length;
-  return renderNewsHead(catIcon,catTitle,items.length)+`<div id="newsList">${list}</div>`+(hasMore?`<button class="load-more" data-cat="${esc(catFile)}">加载更多 (${items.length-show.length} 条)</button>`:"");
-}
+            function renderNews(items, catFile, catIcon, catTitle, appendMode) {
+                if (!items || items.length === 0)
+                    return `<div class="news-head"><span class="news-head-icon">${catIcon}</span><span class="news-head-title">${esc(catTitle)}</span></div><div class="empty"><div class="empty-icon">📭</div><p>暂无新闻</p></div>`;
+                if (appendMode) {
+                    const page = S.newsPage[catFile] || 1;
+                    const show = items.slice(0, page * PAGE_SIZE);
+                    const prevCount = (page - 1) * PAGE_SIZE;
+                    const newItems = show.slice(prevCount);
+                    const hasMore = items.length > show.length;
+                    return {
+                        newHtml: newItems.map(renderNewsItem).join(""),
+                        hasMore,
+                        total: items.length,
+                        shown: show.length,
+                    };
+                }
+                const page = S.newsPage[catFile] || 1;
+                const show = items.slice(0, page * PAGE_SIZE);
+                const list = show.map(renderNewsItem).join("");
+                const hasMore = items.length > show.length;
+                return (
+                    renderNewsHead(catIcon, catTitle, items.length) +
+                    `<div id="newsList">${list}</div>` +
+                    (hasMore
+                        ? `<button class="load-more" data-cat="${esc(catFile)}">加载更多 (${items.length - show.length} 条)</button>`
+                        : "")
+                );
+            }
 
-async function loadView(){
-  if(S.loading)return;S.loading=true;
-  main.innerHTML='<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
-  const meta=await loadMeta();
-  const cat=meta.categories.find(c=>c.file===S.cat);
-  if(!cat){main.innerHTML='<div class="empty">分类未找到</div>';S.loading=false;return}
-  const items=await loadNewsCat(S.cat);
-  main.innerHTML=renderNews(items,S.cat,cat.icon,cat.title);
-  S.loading=false;
-}
+            async function loadView() {
+                if (S.loading) return;
+                S.loading = true;
+                main.innerHTML =
+                    '<div class="sk-card sk"><div class="sk-line w45"></div><div class="sk-line"></div><div class="sk-line w80"></div></div>';
+                const meta = await loadMeta();
+                const cat = meta.categories.find((c) => c.file === S.cat);
+                if (!cat) {
+                    main.innerHTML = '<div class="empty">分类未找到</div>';
+                    S.loading = false;
+                    return;
+                }
+                const items = await loadNewsCat(S.cat);
+                main.innerHTML = renderNews(items, S.cat, cat.icon, cat.title);
+                S.loading = false;
+            }
 
-main.onclick=async e=>{
-  const btn=e.target.closest(".load-more");
-  if(!btn)return;
-  btn.disabled=true;btn.textContent="加载中...";
-  const cat=btn.dataset.cat;
-  S.newsPage[cat]=(S.newsPage[cat]||1)+1;
-  const meta=await loadMeta();
-  const catObj=meta.categories.find(c=>c.file===cat);
-  if(!catObj)return;
-  const items=await loadNewsCat(cat);
-  const result=renderNews(items,cat,catObj.icon,catObj.title,true);
-  const listEl=main.querySelector("#newsList");
-  if(listEl){const frag=document.createElement("div");frag.innerHTML=result.newHtml;while(frag.firstChild)listEl.appendChild(frag.firstChild)}
-  btn.remove();
-  if(result.hasMore){
-    const newBtn=document.createElement("button");
-    newBtn.className="load-more";newBtn.dataset.cat=cat;
-    newBtn.textContent=`加载更多 (${result.total-result.shown} 条)`;
-    main.appendChild(newBtn);
-  }
-};
+            main.onclick = async (e) => {
+                const btn = e.target.closest(".load-more");
+                if (!btn) return;
+                btn.disabled = true;
+                btn.textContent = "加载中...";
+                const cat = btn.dataset.cat;
+                S.newsPage[cat] = (S.newsPage[cat] || 1) + 1;
+                const meta = await loadMeta();
+                const catObj = meta.categories.find((c) => c.file === cat);
+                if (!catObj) return;
+                const items = await loadNewsCat(cat);
+                const result = renderNews(
+                    items,
+                    cat,
+                    catObj.icon,
+                    catObj.title,
+                    true,
+                );
+                const listEl = main.querySelector("#newsList");
+                if (listEl) {
+                    const frag = document.createElement("div");
+                    frag.innerHTML = result.newHtml;
+                    while (frag.firstChild) listEl.appendChild(frag.firstChild);
+                }
+                btn.remove();
+                if (result.hasMore) {
+                    const newBtn = document.createElement("button");
+                    newBtn.className = "load-more";
+                    newBtn.dataset.cat = cat;
+                    newBtn.textContent = `加载更多 (${result.total - result.shown} 条)`;
+                    main.appendChild(newBtn);
+                }
+            };
 
-catList.onclick=e=>{
-  const item=e.target.closest(".cat-item");
-  if(!item||item.dataset.cat===S.cat)return;
-  S.cat=item.dataset.cat;
-  S.newsPage={};
-  catList.querySelectorAll(".cat-item").forEach(el=>el.classList.toggle("active",el.dataset.cat===S.cat));
-  loadView();
-};
+            catList.onclick = (e) => {
+                const item = e.target.closest(".cat-item");
+                if (!item || item.dataset.cat === S.cat) return;
+                S.cat = item.dataset.cat;
+                S.newsPage = {};
+                catList
+                    .querySelectorAll(".cat-item")
+                    .forEach((el) =>
+                        el.classList.toggle("active", el.dataset.cat === S.cat),
+                    );
+                loadView();
+            };
 
-catList.addEventListener("mouseenter",e=>{
-  const item=e.target.closest(".cat-item");
-  if(!item)return;
-  const file=item.dataset.cat;
-  if(!rawCatCache.has(file)){
-    fetchT(`data/news/${encodeURIComponent(file)}.json`).then(r=>r.json()).then(d=>{
-      const items=(d.items||[]).slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
-      rawCatCache.set(file,items);
-    }).catch(()=>{});
-  }
-},true);
+            catList.addEventListener(
+                "mouseenter",
+                (e) => {
+                    const item = e.target.closest(".cat-item");
+                    if (!item) return;
+                    const file = item.dataset.cat;
+                    if (!rawCatCache.has(file)) {
+                        fetchT(`data/news/${encodeURIComponent(file)}.json`)
+                            .then((r) => r.json())
+                            .then((d) => {
+                                const items = (d.items || [])
+                                    .slice()
+                                    .sort((a, b) =>
+                                        (b.date || "").localeCompare(
+                                            a.date || "",
+                                        ),
+                                    );
+                                rawCatCache.set(file, items);
+                            })
+                            .catch(() => {});
+                    }
+                },
+                true,
+            );
 
-async function init(){
-  const meta=await loadMeta();
-  // Build sidebar
-  const frag=document.createDocumentFragment();
-  for(const c of meta.categories){
-    const el=document.createElement("div");
-    el.className="cat-item";
-    el.dataset.cat=c.file;
-    el.innerHTML=`<span class="cat-icon">${c.icon}</span><span class="cat-name">${esc(c.title)}</span><span class="cat-count">${c.count}</span>`;
-    frag.appendChild(el);
-  }
-  catList.appendChild(frag);
-  // Default: first category
-  S.cat=meta.categories[0]?.file||"";
-  catList.querySelector('.cat-item')?.classList.add('active');
-  loadView();
-  // Prefetch top categories
-  const top=meta.categories.slice(0,5);
-  top.forEach((c,i)=>{setTimeout(()=>{if(!rawCatCache.has(c.file))loadNewsCat(c.file)},i*200)});
-}
+            async function init() {
+                const meta = await loadMeta();
+                // Build sidebar
+                const frag = document.createDocumentFragment();
+                for (const c of meta.categories) {
+                    const el = document.createElement("div");
+                    el.className = "cat-item";
+                    el.dataset.cat = c.file;
+                    el.innerHTML = `<span class="cat-icon">${c.icon}</span><span class="cat-name">${esc(c.title)}</span><span class="cat-count">${c.count}</span>`;
+                    frag.appendChild(el);
+                }
+                catList.appendChild(frag);
+                // Default: first category
+                S.cat = meta.categories[0]?.file || "";
+                catList.querySelector(".cat-item")?.classList.add("active");
+                loadView();
+                // Prefetch top categories
+                const top = meta.categories.slice(0, 5);
+                top.forEach((c, i) => {
+                    setTimeout(() => {
+                        if (!rawCatCache.has(c.file)) loadNewsCat(c.file);
+                    }, i * 200);
+                });
+            }
 
-// Back to top
-const toTop=document.getElementById("toTop");
-if(toTop){
-  main.addEventListener("scroll",()=>{toTop.classList.toggle("visible",main.scrollTop>300)},{passive:true});
-  toTop.addEventListener("click",()=>main.scrollTo({top:0,behavior:"smooth"}));
-}
+            // Back to top
+            const toTop = document.getElementById("toTop");
+            if (toTop) {
+                main.addEventListener(
+                    "scroll",
+                    () => {
+                        toTop.classList.toggle("visible", main.scrollTop > 300);
+                    },
+                    { passive: true },
+                );
+                toTop.addEventListener("click", () =>
+                    main.scrollTo({ top: 0, behavior: "smooth" }),
+                );
+            }
 
-init();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
-</script>
-</body></html>
+            init();
+            if ("serviceWorker" in navigator)
+                navigator.serviceWorker.register("sw.js").catch(() => {});
+        </script>
+    </body>
+</html>
