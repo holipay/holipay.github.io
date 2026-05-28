@@ -34,6 +34,7 @@ const DATA_DIR = path.join(ROOT, "data/news");
 const ANALYSIS_DIR = path.join(DATA_DIR, "analysis");
 const CACHE_FILE = path.join(__dirname, "translations-cache.json");
 const SNIPPET_BATCH_SIZE = 3; // 摘要翻译批次大小（摘要较长，批次小些）
+const ARTICLES_DIR = path.join(DATA_DIR, "articles"); // 精品文章归档目录
 
 // ===== 每日视角配置 =====
 const DAILY_PERSPECTIVES = [
@@ -2839,6 +2840,9 @@ async function main() {
   if (!fs.existsSync(ANALYSIS_DIR)) {
     fs.mkdirSync(ANALYSIS_DIR, { recursive: true });
   }
+  if (!fs.existsSync(ARTICLES_DIR)) {
+    fs.mkdirSync(ARTICLES_DIR, { recursive: true });
+  }
 
   // 加载翻译缓存
   loadTranslationCache();
@@ -2957,6 +2961,19 @@ async function main() {
         updatedAt: now.toISOString(),
         items: snippets,
       };
+
+      // 按日期归档
+      const archivePath = path.join(ARTICLES_DIR, `${dateStr}.json`);
+      const archiveTmp = archivePath + ".tmp";
+      fs.writeFileSync(
+        archiveTmp,
+        JSON.stringify(articlesData, null, 2),
+        "utf-8",
+      );
+      fs.renameSync(archiveTmp, archivePath);
+      console.log(`💾 已归档 data/news/articles/${dateStr}.json`);
+
+      // 保存最新指针（前端兼容）
       const articlesTmp = articlesPath + ".tmp";
       fs.writeFileSync(
         articlesTmp,
