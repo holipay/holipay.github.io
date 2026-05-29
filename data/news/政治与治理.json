@@ -1,8 +1,212 @@
 {
   "icon": "🏛️",
   "title": "政治与治理",
-  "updatedAt": "2026-05-28T05:33:22.799Z",
+  "updatedAt": "2026-05-29T08:23:48.422Z",
   "items": [
+    {
+      "title": "中国如何分裂一个民族及其文化",
+      "link": "https://www.ft.com/content/119d8c3a-e10f-4bf7-a198-90507293054b",
+      "source": "Financial Times",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "别指望特朗普会限制预测市场",
+      "link": "https://www.ft.com/content/e4f9ec07-5964-45f7-ad07-af48f3790f63",
+      "source": "Financial Times",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "韩国Kospi指数与日本东证指数无视伊朗紧张局势创历史新高",
+      "link": "https://www.cnbc.com/2026/05/29/asia-markets-today-live-updates-nikkei-225-hang-seng-index-kospi-nifty-50-csi-300.html",
+      "source": "CNBC",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "唐纳德·特朗普最新和平计划为何注定失败",
+      "link": "https://theconversation.com/why-donald-trumps-latest-plan-for-peace-is-a-non-starter-284008",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "左翼政党主张赋予在德居住满五年的所有外国人投票权",
+      "link": "https://www.zerohedge.com/political/leftist-party-wants-voting-rights-all-foreigners-whove-lived-germany-5-years",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "2030年代月球战争威胁促使NASA与马斯克竞相建设大型月球基地",
+      "link": "https://www.zerohedge.com/geopolitical/threat-2030s-lunar-war-has-nasa-elon-musk-racing-build-major-moon-base",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "人事观察｜政治学博士卢春龙升任中国政法大学校长",
+      "link": "https://china.caixin.com/2026-05-29/102448881.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "人事观察｜主政反腐重灾区辽阳三年 北大出身白英升任辽宁副省长",
+      "link": "https://china.caixin.com/2026-05-29/102448870.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "中央网信办：开展“清朗·优化营商网络环境 整治恶意炒作涉企信息”专项行动",
+      "link": "https://wallstreetcn.com/livenews/3111268",
+      "source": "华尔街见闻",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "G-2 现实",
+      "link": "https://www.foreignaffairs.com/united-states/g-2-reality",
+      "source": "Foreign Affairs",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "日本的不归路",
+      "link": "https://www.foreignaffairs.com/japan/japans-point-no-return",
+      "source": "Foreign Affairs",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "古巴的唯一选择",
+      "link": "https://www.foreignaffairs.com/cuba/cubas-only-option",
+      "source": "Foreign Affairs",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "美伊同意延长停火协议待特朗普批准",
+      "link": "https://www.bloomberg.com/news/videos/2026-05-28/us-iran-agree-to-truce-renewal-pending-trump-signoff-video",
+      "source": "Bloomberg",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "比特币跌破7.3万美元 尽管特朗普推动加密资本",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/bitcoin-falls-below-73-000-despite-trump-s-crypto-capital-push",
+      "source": "Bloomberg",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "就这样，软件末日结束了",
+      "link": "https://www.ft.com/content/689ffcf5-e593-4cd1-ad99-dc0595696495",
+      "source": "Financial Times",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "美国官员称华盛顿接近达成延长伊朗停火协议",
+      "link": "https://www.ft.com/content/89c43161-27c3-4e4d-a5f6-49d895cde3da",
+      "source": "Financial Times",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "内塔尼亚胡命令以色列军队控制加沙70%区域",
+      "link": "https://www.ft.com/content/a05555e9-a6ba-4162-976c-faac6840716a",
+      "source": "Financial Times",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "迈克尔·戴尔早期讨好特朗普，其公司已获回报",
+      "link": "https://www.cnbc.com/2026/05/28/michael-dell-trump-accounts-dod.html",
+      "source": "CNBC",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "伊朗据报发射导弹，特朗普考虑达成暂停战争两个月的协议",
+      "link": "https://www.cnbc.com/2026/05/28/trump-bessent-iran-war-sanctions-hormuz-strait-kuwait.html",
+      "source": "CNBC",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "Costco季度业绩平淡，但关键指标表现亮眼",
+      "link": "https://www.cnbc.com/2026/05/28/costco-issues-a-lukewarm-quarter-but-delivers-on-the-metric-that-matters-most.html",
+      "source": "CNBC",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "周五随笔：《如何贩卖种族灭绝》揭露了加沙报道的双重标准",
+      "link": "https://theconversation.com/friday-essay-how-to-sell-a-genocide-exposes-the-double-standards-of-reporting-on-gaza-281223",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "纽森在全州初选前签署新选举法",
+      "link": "https://www.zerohedge.com/political/newsom-signs-new-election-codes-law-ahead-statewide-primary",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "密苏里州最高法院驳回对有利于共和党的新国会选区地图的挑战",
+      "link": "https://www.zerohedge.com/political/missouri-supreme-court-rejects-challenge-new-congressional-map-boosts-republicans",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "万斯称特朗普尚未准备批准伊朗协议，指核问题存在分歧",
+      "link": "https://www.zerohedge.com/geopolitical/iran-targets-us-base-kuwait-missile-drones-gulf-allies-denounce-terrorist-attacks",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "七年期国债拍卖表现亮眼，外国投标量创历史第三高",
+      "link": "https://www.zerohedge.com/markets/stellar-7-year-auction-sees-3rd-highest-foreign-demand-record",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "大西洋观察｜英国政坛变数对中英关系的影响",
+      "link": "https://international.caixin.com/2026-05-29/102448719.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "人事观察｜警官跨省履新 江西公安厅“二把手”肖铁军升任湖北公安厅长",
+      "link": "https://china.caixin.com/2026-05-28/102448671.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "伊朗最高领袖强调维护民族团结，称敌对势力在军事、经济及宣传领域持续施压",
+      "link": "https://wallstreetcn.com/articles/3773390",
+      "source": "华尔街见闻",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "业界看好 DoC 新型太空活动许可证流程草案",
+      "link": "https://dealbreaker.com/2026/04/industry-bullish-on-doc-draft-license-process-for-novel-space-activities",
+      "source": "Dealbreaker",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "新西兰2026年预算速览：资金流向追踪",
+      "link": "https://theconversation.com/nz-budget-2026-at-a-glance-follow-the-money-here-282966",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "英国脱欧十年后的右翼民粹主义",
+      "link": "https://www.pewresearch.org/global/2026/05/28/right-wing-populism-in-the-decade-since-brexit/",
+      "source": "Pew Research",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "斯宾塞·普拉特支持率飙升，凯伦·巴斯选情在洛杉矶市长初选最后几天摇摆不定",
+      "link": "https://www.zerohedge.com/political/spencer-pratt-surges-karen-bass-odds-wobble-final-days-la-mayor-primary",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "得州当局逮捕6名身着迷彩服的中国\"特殊利益外国人\"",
+      "link": "https://www.zerohedge.com/political/texas-authorities-arrest-6-chinese-special-interest-aliens-camouflage",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "佛罗里达州长呼吁召开特别会议取消房主财产税",
+      "link": "https://www.zerohedge.com/personal-finance/florida-governor-calls-special-session-eliminate-property-tax-homeowners",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
     {
       "title": "伊朗战争导致运费飙升，美国天然气买家取消货物",
       "source": "Bloomberg",
@@ -118,7 +322,8 @@
     {
       "title": "中等强国错觉",
       "source": "Foreign Affairs",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.foreignaffairs.com/united-states/middle-power-delusion"
     },
     {
       "title": "为什么墨西哥的卡特尔如此难以击败",
@@ -129,7 +334,8 @@
     {
       "title": "美国的霸权荣光面临威胁",
       "source": "Financial Times",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.ft.com/content/1f088eae-d116-4eca-93b8-283a4695ce71"
     },
     {
       "title": "领导者的任期是否正变得\"污秽、野蛮而短暂\"？",

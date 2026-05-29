@@ -1,12 +1,19 @@
 {
   "icon": "🧠",
   "title": "心理学与认知",
-  "updatedAt": "2026-05-28T05:33:22.803Z",
+  "updatedAt": "2026-05-29T08:23:48.427Z",
   "items": [
+    {
+      "title": "精神病态：部分专家如今称其并不存在——我们可能完全看错了方向",
+      "link": "https://theconversation.com/psychopathy-some-experts-now-say-it-doesnt-exist-heres-why-we-may-be-looking-at-it-all-wrong-279791",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
     {
       "title": "“Zoom疲劳”的四个原因及其解决方案 - 斯坦福报告",
       "source": "Google News Academic",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNbUZDSzBRMTlzcjlOTzd5alo3NGZHaXhJNl9uZk83cF81NkFxbTFGcXFnYnpLVXBLclRvLVR6a3pkcnVTYnlyb3dtSGJ6QU5FTV84bDYzZHRubW5yWlRNWklDVnljbVR2bnFOTmdWdjN4NEw1VXk1THpKeFcxZUNRc2ZR?oc=5"
     },
     {
       "title": "我们发现仅三分之一发表的心理学研究可靠——接下来怎么办？ - 《对话》",
@@ -17,7 +24,8 @@
     {
       "title": "设计更具信息性的测试：将执行与识别分开-- Andrew Caplin、Leo Zhu著",
       "source": "NBER",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.nber.org/papers/w35232#fromrss"
     },
     {
       "title": "互惠的幻觉",

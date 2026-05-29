@@ -152,5 +152,60 @@
         "count": 2
       }
     ]
+  },
+  {
+    "date": "2026-05-29",
+    "keywords": [
+      {
+        "keyword": "战争",
+        "score": 3208.27,
+        "count": 72
+      },
+      {
+        "keyword": "收购",
+        "score": 1151.65,
+        "count": 21
+      },
+      {
+        "keyword": "黄金",
+        "score": 824.53,
+        "count": 91
+      },
+      {
+        "keyword": "央行",
+        "score": 826.88,
+        "count": 31
+      },
+      {
+        "keyword": "利率",
+        "score": 737.92,
+        "count": 22
+      },
+      {
+        "keyword": "人工智能",
+        "score": 561.4,
+        "count": 34
+      },
+      {
+        "keyword": "通胀",
+        "score": 406.66,
+        "count": 35
+      },
+      {
+        "keyword": "融资",
+        "score": 327.48,
+        "count": 19
+      },
+      {
+        "keyword": "美联储",
+        "score": 271.75,
+        "count": 30
+      },
+      {
+        "keyword": "加息",
+        "score": 237.78,
+        "count": 25
+      }
+    ]
   }
 ]

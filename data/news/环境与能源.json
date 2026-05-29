@@ -1,8 +1,38 @@
 {
   "icon": "🌍",
   "title": "环境与能源",
-  "updatedAt": "2026-05-28T05:33:22.802Z",
+  "updatedAt": "2026-05-29T08:23:48.425Z",
   "items": [
+    {
+      "title": "蝙蝠飞进屋里？以下是如何安全移除它的方法",
+      "link": "https://theconversation.com/bat-in-the-house-heres-how-to-remove-it-safely-283456",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "加拿大必须重新思考其对国际气候融资的贡献方式",
+      "link": "https://theconversation.com/canada-must-rethink-how-it-contributes-to-international-climate-finance-283044",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "美国人如何看待气候变化成因：人类活动还是自然规律？",
+      "link": "https://www.pewresearch.org/science/2026/05/28/americans-on-what-causes-climate-change-human-activity-or-natural-patterns/",
+      "source": "Pew Research",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "当局试图规划海岸撤退时往往迅速招致反弹，存在更优方案",
+      "link": "https://theconversation.com/backlash-is-often-swift-when-authorities-try-to-plan-retreat-from-the-coast-theres-a-better-way-275790",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "美国人是否认为极端天气比过去更严重？",
+      "link": "https://www.pewresearch.org/science/2026/05/28/do-americans-think-extreme-weather-is-worse-today-than-in-the-past/",
+      "source": "Pew Research",
+      "date": "2026-05-29"
+    },
     {
       "title": "你的哪些气候行动能产生最大影响？以下方法可助你找到答案",
       "source": "The Conversation",

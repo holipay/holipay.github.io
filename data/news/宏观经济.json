@@ -1,8 +1,218 @@
 {
   "icon": "💰",
   "title": "宏观经济",
-  "updatedAt": "2026-05-28T05:33:22.798Z",
+  "updatedAt": "2026-05-29T08:23:48.418Z",
   "items": [
+    {
+      "title": "【数据图解】平价韩妆转身欧美 进口品牌在中国市场还有何机会？",
+      "link": "https://database.caixin.com/2026-05-29/102448975.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "沃尔沃汽车获得美国网联汽车首个出口和销售专项授权",
+      "link": "https://www.caixin.com/2026-05-29/102448890.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "能源内参｜商务部回应欧盟拟对进口钢铁加税；欧洲六国联合发声 反对欧盟碳排放标准",
+      "link": "https://www.caixin.com/2026-05-29/102448857.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "欧盟对Temu罚款2亿欧元 因未排查平台违规商品｜出海·消费",
+      "link": "https://www.caixin.com/2026-05-29/102448849.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "战争与人工智能需求打破中国出口价格下跌纪录",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-29/china-export-prices-climb-most-in-three-years-on-oil-shock",
+      "source": "Bloomberg",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "战争冲击下燃料价格推动肯尼亚通胀大幅上升",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-29/fuel-prices-push-kenya-inflation-sharply-higher-on-war-shock",
+      "source": "Bloomberg",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "油价5月料暴跌19%，交易员押注停火协议续签",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/oil-edges-lower-at-open-on-tentative-deal-to-extend-iran-truce",
+      "source": "Bloomberg",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "广州“十五五”规划纲要：培育壮大具身智能产业",
+      "link": "<![CDATA[https://36kr.com/newsflashes/3830085811545731?f=rss]]>",
+      "source": "36氪",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "七部门：鼓励各地推出一批具有地域和行业特色的优质工业旅游线路和品牌",
+      "link": "<![CDATA[https://36kr.com/newsflashes/3830065756759687?f=rss]]>",
+      "source": "36氪",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "印度将季风展望下调至正常水平的90%，农作物面临风险",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-29/india-cuts-monsoon-forecast-to-90-of-normal-in-risk-to-crops",
+      "source": "Bloomberg",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "养娃要花多少钱？生育成本为人均GDP6倍｜《中国生育成本报告2026》",
+      "link": "https://opinion.caixin.com/2026-05-29/102448794.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "分析｜美国下修GDP增速，如何理解AI时代的美国经济",
+      "link": "https://international.caixin.com/2026-05-29/102448700.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "美国GDP&quot;空心增长&quot;：软着陆的最后一程还是滞胀已经开启？",
+      "link": "https://wallstreetcn.com/member/articles/3773392",
+      "source": "华尔街见闻",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "阿波罗推销360亿美元债务融资，旨在为Anthropic购买谷歌芯片",
+      "link": "https://wallstreetcn.com/livenews/3110939",
+      "source": "华尔街见闻",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "中国出口价格因石油冲击创三年最大涨幅",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-29/china-export-prices-climb-most-in-three-years-on-oil-shock",
+      "source": "Bloomberg",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "金价持稳，美伊停火希望缓解通胀担忧",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/gold-holds-gain-as-us-iran-truce-hopes-calm-inflation-fears",
+      "source": "Bloomberg",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "科技热潮引发中国困境消费基金重组",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/tech-frenzy-sparks-shake-up-at-china-s-troubled-consumer-funds",
+      "source": "Bloomberg",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "LVMH前主席布朗谈奢侈品行业K型复苏",
+      "link": "https://www.bloomberg.com/news/videos/2026-05-28/former-lvmh-chair-brown-discusses-luxury-sector-video",
+      "source": "Bloomberg",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "通胀增速超过薪资，美国人储蓄率降至2022年以来最低水平",
+      "link": "https://www.cnbc.com/2026/05/28/savings-inflation-americans-financial-stress.html",
+      "source": "CNBC",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "最富有的投资者正通过\"去美元化\"交易将资金撤出美国",
+      "link": "https://www.cnbc.com/2026/05/28/wealthiest-investors-de-dollarization-trade.html",
+      "source": "CNBC",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "尽管有潜在停火协议报道，交易商对今年美伊核协议希望渐淡",
+      "link": "https://www.cnbc.com/2026/05/28/hope-fades-for-us-iran-nuclear-deal-after-ceasefire-report.html",
+      "source": "CNBC",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "新研究揭示为何小费让更多加拿大人感到不适",
+      "link": "https://theconversation.com/new-research-shows-why-tipping-is-making-more-canadians-uncomfortable-277812",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "霍尔木兹海峡：打破世界的供应链闭环",
+      "link": "https://theconversation.com/the-strait-of-hormuz-the-supply-chain-loop-that-broke-the-world-283664",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "评级机构惠誉修改暂停债务偿还的标准：为何此事至关重要",
+      "link": "https://theconversation.com/rating-agency-fitch-changes-its-criteria-on-pausing-debt-repayments-why-it-matters-283098",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "不仅仅是高油价——通胀正蔓延至美国经济各个领域",
+      "link": "https://theconversation.com/its-not-just-high-gas-prices-inflation-is-now-spreading-through-the-us-economy-283564",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "泰勒·斯威夫特为其声音和肖像注册商标，标志着对抗人工智能深度伪造的新法律前沿",
+      "link": "https://theconversation.com/taylor-swift-trademarking-her-voice-and-likeness-points-to-a-new-legal-frontier-in-combating-ai-deepfakes-282558",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "菲律宾大规模杀戮事件引发对反叛乱暴力的罕见审视——但未触及更广泛的反思",
+      "link": "https://theconversation.com/a-mass-killing-in-the-philippines-sparks-rare-scrutiny-over-counterinsurgency-violence-but-no-wider-reckoning-283041",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "工党求职者津贴改革值得欢迎——但尚未实现根本性重建",
+      "link": "https://theconversation.com/labors-jobseeker-reforms-are-a-welcome-step-but-so-far-fall-short-of-a-radical-rebuild-283966",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "下一场无人机战争：隐藏集装箱发射自杀式蜂群",
+      "link": "https://www.zerohedge.com/military/next-drone-war-hidden-shipping-containers-launching-kamikaze-swarms",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "美国将与墨西哥启动新一轮贸易谈判",
+      "link": "https://www.zerohedge.com/geopolitical/us-start-new-trade-talks-mexico",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "NANO核能公司展示近期收购所覆盖的关键供应链角色",
+      "link": "https://www.zerohedge.com/energy/nano-nuclear-demonstrates-critical-nuclear-supply-chain-role-covered-recent-acquisition",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "欧盟欲获危机权力以掌控芯片供应，并寻求限制中国进口",
+      "link": "https://www.zerohedge.com/markets/eu-wants-crisis-powers-seize-control-chip-supplies-seeks-restrictions-chinese-imports",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "韧性增长、结构优化，今年前4个月我国社会物流总额超120万亿元",
+      "link": "<![CDATA[https://36kr.com/newsflashes/3829673964151943?f=rss]]>",
+      "source": "36氪",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "5月29日会员早报：美伊重燃战火 美国4月PCE创两年半新高",
+      "link": "https://wallstreetcn.com/member/articles/3773391",
+      "source": "华尔街见闻",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "购房者何时才会要求\"灾害折扣\"？",
+      "link": "https://www.wsj.com/articles/what-will-it-take-for-home-buyers-to-start-asking-for-a-disaster-discount-c662cb96?mod=rss_markets_main",
+      "source": "WSJ",
+      "date": "2026-05-29"
+    },
     {
       "title": "飙升1700%后，散户宠儿Sivers成为做空目标",
       "link": "https://www.bloomberg.com/news/articles/2026-05-28/a-1-700-jump-turns-retail-trader-favorite-sivers-into-short-bet",
@@ -117,7 +327,8 @@
     {
       "title": "分销成本--作者： Cian Ruane、Alessandra Peter",
       "source": "NBER",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.nber.org/papers/w35252#fromrss"
     },
     {
       "title": "经济衰退期间的7大最佳投资|财务顾问|美国新闻-美国新闻财经",

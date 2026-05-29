@@ -1,8 +1,26 @@
 {
   "icon": "🤖",
   "title": "科技与研究",
-  "updatedAt": "2026-05-28T05:33:22.798Z",
+  "updatedAt": "2026-05-29T08:23:48.426Z",
   "items": [
+    {
+      "title": "新研究：蚊子学会将避蚊胺气味与血餐关联",
+      "link": "https://theconversation.com/mosquitoes-learn-to-link-the-smell-of-deet-with-a-blood-meal-new-study-283695",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "海龟终于有了生命树中的位置：南非化石的X射线研究成为关键",
+      "link": "https://theconversation.com/turtles-finally-have-a-place-in-the-tree-of-life-x-ray-study-of-south-african-fossils-was-a-decider-282871",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "5亿年前化石填补地球生命记录中的奇特空白",
+      "link": "https://theconversation.com/500-million-year-old-fossil-helps-fill-a-strange-gap-in-our-record-of-life-on-earth-282730",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
     {
       "title": "然而它仍在运动 - City Journal",
       "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1iNEpLSER6a0tNWk41ZVVaOEZjemNzejY2Ri1sTUN1RmRRUVpiQzhkNkkyM203Um11a21SOVdzR2FiWUx4cXhYSnhZMEE4a2w1TjRFVms1aXUyVllNaWFSblAxbw?oc=5",

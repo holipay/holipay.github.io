@@ -1,8 +1,38 @@
 {
   "icon": "🏥",
   "title": "健康与公共卫生",
-  "updatedAt": "2026-05-28T05:33:22.802Z",
+  "updatedAt": "2026-05-29T08:23:48.427Z",
   "items": [
+    {
+      "title": "新研究：蚊子学会将避蚊胺气味与血餐关联",
+      "link": "https://theconversation.com/mosquitoes-learn-to-link-the-smell-of-deet-with-a-blood-meal-new-study-283695",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "商业健康险支付创新药不足10% 为何？",
+      "link": "https://www.caixin.com/2026-05-29/102448744.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "大湾区联合倡议“无烟湾区” 深圳未来四年内要减少逾20万“烟民”",
+      "link": "https://www.caixin.com/2026-05-28/102448690.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "热浪：老年人更少遵循安全建议",
+      "link": "https://theconversation.com/heatwaves-older-people-less-likely-to-follow-safety-advice-283931",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "为何安全空间对年轻人的体育活动至关重要",
+      "link": "https://theconversation.com/why-safer-spaces-matter-for-young-peoples-physical-activity-283898",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
     {
       "title": "默里谷脑炎可能致命。无疫苗情况下，如何保持安全",
       "source": "The Conversation",
