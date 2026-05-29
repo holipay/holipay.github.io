@@ -130,21 +130,28 @@ function mergeHotKeywords(hotKeywords) {
   const used = new Set();
   for (let i = 0; i < hotKeywords.length; i++) {
     if (used.has(i)) continue;
-    let { keyword, score, count, categories, domain, sourceWeight } = hotKeywords[i];
+    let { keyword, score, count, categories, domain, sourceWeight } =
+      hotKeywords[i];
     // 合并：当前关键词是其他更短关键词的子串，或反过来
     for (let j = i + 1; j < hotKeywords.length; j++) {
       if (used.has(j)) continue;
       const other = hotKeywords[j];
-      const shorter = keyword.length <= other.keyword.length ? keyword : other.keyword;
-      const longer = keyword.length <= other.keyword.length ? other.keyword : keyword;
+      const shorter =
+        keyword.length <= other.keyword.length ? keyword : other.keyword;
+      const longer =
+        keyword.length <= other.keyword.length ? other.keyword : keyword;
       if (longer.includes(shorter) && shorter.length >= 2) {
         // 合并到更短的那个（更通用）
         keyword = shorter;
         score += other.score;
         count += other.count;
         if (!domain && other.domain) domain = true;
-        if (other.sourceWeight > sourceWeight) sourceWeight = other.sourceWeight;
-        const catSet = new Set([...(categories || []), ...(other.categories || [])]);
+        if (other.sourceWeight > sourceWeight)
+          sourceWeight = other.sourceWeight;
+        const catSet = new Set([
+          ...(categories || []),
+          ...(other.categories || []),
+        ]);
         categories = [...catSet];
         used.add(j);
       }
@@ -235,9 +242,12 @@ async function loadNewsCat(file) {
   } catch (e) {
     data = { items: [] };
   }
-  const items = (data.items || [])
-    .slice()
-    .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  const items = data.items || [];
+  // 写入时已按日期倒序排列，读取时跳过排序以减少 CPU 开销
+  // 如果数据未排序（如旧格式），则进行排序
+  if (items.length > 1 && (items[0].date || "") < (items[1].date || "")) {
+    items.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  }
   rawCatCache.set(file, items);
   return items;
 }

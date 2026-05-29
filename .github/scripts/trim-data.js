@@ -49,6 +49,9 @@ function trimFile(filePath) {
   const oldestKept = data.items[MAX_ITEMS - 1]?.date || "?";
   data.items = data.items.slice(0, MAX_ITEMS);
 
+  // P3: 确保裁剪后按日期倒序排列
+  data.items.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+
   if (!dryRun) {
     const tmp = filePath + ".tmp";
     fs.writeFileSync(tmp, JSON.stringify(data), "utf-8");

@@ -440,7 +440,7 @@
                     return;
                 }
 
-                const meta = await loadMetaOnce();
+                const meta = __INLINE_META; // 直接使用内联数据，避免异步开销
                 const cat = meta.categories.find((c) => c.file === S.cat);
                 if (!cat) {
                     main.innerHTML = '<div class="empty">分类未找到</div>';
@@ -468,7 +468,7 @@
                     icon = "🔥";
                     title = "最新资讯";
                 } else {
-                    const meta = await loadMetaOnce();
+                    const meta = __INLINE_META; // 直接使用内联数据
                     const catObj = meta.categories.find((c) => c.file === cat);
                     if (!catObj) return;
                     items = await loadNewsCat(cat);

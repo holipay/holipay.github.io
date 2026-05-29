@@ -32,7 +32,7 @@ const SCRIPTS_DIR = __dirname;
 const CACHE_FILE = path.join(SCRIPTS_DIR, "translations-cache.json");
 const TOPICS_FILE = path.join(SCRIPTS_DIR, "topics.json");
 const RETENTION_DAYS = 90; // 数据保留天数（3个月）
-const MAX_ITEMS_PER_CATEGORY = 1500; // 每个分类最大记录数（默认）
+const MAX_ITEMS_PER_CATEGORY = 200; // 每个分类最大记录数（与 trim-data.js 保持一致）
 
 // 社科类分类条数限制（降低权重）
 const CATEGORY_ITEM_LIMITS = {
@@ -42,7 +42,7 @@ const CATEGORY_ITEM_LIMITS = {
   法律与伦理: 20,
 };
 
-const RECENT_DAYS = 14; // recent.json 保留天数
+const RECENT_DAYS = 7; // recent.json 保留天数（从14天缩短到7天，减少文件大小）
 const SIMILARITY_THRESHOLD = 0.75; // 标题相似度阈值（75% 以上视为重复）
 const TRANSLATE_CONCURRENCY = 8;
 const MAX_RETRIES = 1;
@@ -459,7 +459,7 @@ async function translateItems(items) {
 
     // 批次间延迟（避免 DeepSeek 限流）
     if (i + BATCH_SIZE < texts.length) {
-      await new Promise((r) => setTimeout(r, 1000));
+      await new Promise((r) => setTimeout(r, 200));
     }
   }
 
@@ -1340,6 +1340,10 @@ async function processTopic(topic) {
     const archiveItems = finalItems.filter(
       (item) => (item.date || today) < recentCutoff,
     );
+
+    // P3: 按日期倒序排列，确保前端读取时无需重新排序
+    recentItems.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+    archiveItems.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
 
     // 写入 recent（前端默认加载，小文件）
     atomicWrite(
