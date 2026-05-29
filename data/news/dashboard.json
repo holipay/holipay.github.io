@@ -207,31 +207,28 @@
     },
     {
       "date": "2026-05-29",
-      "sentiment": "分化",
-      "riskLevel": "高",
+      "sentiment": "中性",
+      "riskLevel": "中",
       "keyThemes": [
-        "伊朗战争冲击的精细行业数据化",
-        "全球滞胀从宏观信号变为微观现实",
-        "AI热潮与地缘冲突的资本定价分裂",
-        "战争不确定性的短期合约化"
+        "地缘冲突",
+        "通胀飙升",
+        "央行加息"
       ],
       "sectors": [
         "能源",
-        "科技",
-        "金融",
-        "航运"
+        "金融"
       ],
-      "outlook": "市场将在‘地缘暂停窗口’与‘消费数据恶化’的对立信号中剧烈震荡，AI 继续作为地缘风险的唯一牛市对冲叙事。",
+      "outlook": "战争引发通胀与增长担忧，全球央行紧缩预期升温，市场风险加剧。",
       "topKeywords": [
         {
           "keyword": "战争",
-          "score": 3465.22,
-          "count": 77
+          "score": 3208.27,
+          "count": 72
         },
         {
           "keyword": "收购",
-          "score": 836.94,
-          "count": 20
+          "score": 1151.65,
+          "count": 21
         },
         {
           "keyword": "黄金",
@@ -239,29 +236,29 @@
           "count": 91
         },
         {
-          "keyword": "人工智能",
-          "score": 818.7,
-          "count": 46
-        },
-        {
           "keyword": "央行",
-          "score": 709.54,
-          "count": 26
+          "score": 826.88,
+          "count": 31
         },
         {
           "keyword": "利率",
-          "score": 662.62,
-          "count": 20
+          "score": 737.92,
+          "count": 22
+        },
+        {
+          "keyword": "人工智能",
+          "score": 561.4,
+          "count": 34
         },
         {
           "keyword": "通胀",
-          "score": 379.64,
-          "count": 33
+          "score": 406.66,
+          "count": 35
         },
         {
           "keyword": "融资",
-          "score": 310.77,
-          "count": 18
+          "score": 327.48,
+          "count": 19
         },
         {
           "keyword": "美联储",
@@ -269,9 +266,9 @@
           "count": 30
         },
         {
-          "keyword": "气候",
-          "score": 242.83,
-          "count": 16
+          "keyword": "加息",
+          "score": 237.78,
+          "count": 25
         }
       ]
     }
@@ -279,32 +276,32 @@
   "keywordTrends": [
     {
       "keyword": "战争",
-      "avgScore7d": 3465.22,
-      "avgScore30d": 3465.22,
+      "avgScore7d": 3208.27,
+      "avgScore30d": 3208.27,
       "trend": 0,
       "frequency7d": 1,
       "frequency30d": 1
     },
     {
       "keyword": "收购",
-      "avgScore7d": 836.94,
-      "avgScore30d": 836.94,
-      "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
-    },
-    {
-      "keyword": "人工智能",
-      "avgScore7d": 818.7,
-      "avgScore30d": 818.7,
+      "avgScore7d": 1151.65,
+      "avgScore30d": 1151.65,
       "trend": 0,
       "frequency7d": 1,
       "frequency30d": 1
     },
     {
       "keyword": "央行",
-      "avgScore7d": 709.54,
-      "avgScore30d": 709.54,
+      "avgScore7d": 826.88,
+      "avgScore30d": 826.88,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "人工智能",
+      "avgScore7d": 561.4,
+      "avgScore30d": 561.4,
       "trend": 0,
       "frequency7d": 1,
       "frequency30d": 1
@@ -319,16 +316,16 @@
     },
     {
       "keyword": "利率",
-      "avgScore7d": 337.44,
-      "avgScore30d": 337.44,
+      "avgScore7d": 375.09,
+      "avgScore30d": 375.09,
       "trend": 0,
       "frequency7d": 2,
       "frequency30d": 2
     },
     {
       "keyword": "融资",
-      "avgScore7d": 310.77,
-      "avgScore30d": 310.77,
+      "avgScore7d": 327.48,
+      "avgScore30d": 327.48,
       "trend": 0,
       "frequency7d": 1,
       "frequency30d": 1
@@ -342,17 +339,9 @@
       "frequency30d": 1
     },
     {
-      "keyword": "气候",
-      "avgScore7d": 242.83,
-      "avgScore30d": 242.83,
-      "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
-    },
-    {
       "keyword": "通胀",
-      "avgScore7d": 197.99,
-      "avgScore30d": 197.99,
+      "avgScore7d": 211.5,
+      "avgScore30d": 211.5,
       "trend": 0,
       "frequency7d": 2,
       "frequency30d": 2
@@ -369,6 +358,14 @@
       "keyword": "雅虎财经",
       "avgScore7d": 137,
       "avgScore30d": 137,
+      "trend": 0,
+      "frequency7d": 2,
+      "frequency30d": 2
+    },
+    {
+      "keyword": "加息",
+      "avgScore7d": 127.01,
+      "avgScore30d": 127.01,
       "trend": 0,
       "frequency7d": 2,
       "frequency30d": 2
@@ -401,14 +398,6 @@
       "keyword": "抵押贷款利率",
       "avgScore7d": 21.68,
       "avgScore30d": 21.68,
-      "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
-    },
-    {
-      "keyword": "加息",
-      "avgScore7d": 16.24,
-      "avgScore30d": 16.24,
       "trend": 0,
       "frequency7d": 1,
       "frequency30d": 1
@@ -529,8 +518,8 @@
     },
     {
       "date": "2026-05-29",
-      "sentiment": "分化",
-      "riskLevel": "高",
+      "sentiment": "中性",
+      "riskLevel": "中",
       "keywordCount": 10
     }
   ]

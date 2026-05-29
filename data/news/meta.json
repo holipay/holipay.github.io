@@ -2,20 +2,13 @@
   "topic": "news",
   "name": "全球资讯",
   "icon": "📰",
-  "updatedAt": "2026-05-29T02:11:13.551Z",
+  "updatedAt": "2026-05-29T08:23:48.430Z",
   "categories": [
     {
       "icon": "📰",
       "title": "其他资讯",
       "file": "其他资讯",
-      "count": 161,
-      "archiveCount": 0
-    },
-    {
-      "icon": "📈",
-      "title": "股市与市场",
-      "file": "股市与市场",
-      "count": 200,
+      "count": 164,
       "archiveCount": 0
     },
     {
@@ -26,59 +19,73 @@
       "archiveCount": 0
     },
     {
-      "icon": "🏦",
-      "title": "央行与利率",
-      "file": "央行与利率",
-      "count": 128,
+      "icon": "📈",
+      "title": "股市与市场",
+      "file": "股市与市场",
+      "count": 200,
       "archiveCount": 0
-    },
-    {
-      "icon": "🌍",
-      "title": "国际财经",
-      "file": "国际财经",
-      "count": 122,
-      "archiveCount": 18
     },
     {
       "icon": "🛢️",
       "title": "大宗商品与能源",
       "file": "大宗商品与能源",
-      "count": 181,
+      "count": 194,
       "archiveCount": 0
     },
     {
       "icon": "💰",
       "title": "宏观经济",
       "file": "宏观经济",
-      "count": 146,
+      "count": 156,
       "archiveCount": 0
+    },
+    {
+      "icon": "🏦",
+      "title": "央行与利率",
+      "file": "央行与利率",
+      "count": 137,
+      "archiveCount": 0
+    },
+    {
+      "icon": "🌍",
+      "title": "国际财经",
+      "file": "国际财经",
+      "count": 130,
+      "archiveCount": 18
     },
     {
       "icon": "🏛️",
       "title": "政治与治理",
       "file": "政治与治理",
-      "count": 168,
+      "count": 180,
       "archiveCount": 0
     },
     {
       "icon": "👥",
       "title": "社会与人口",
       "file": "社会与人口",
-      "count": 187,
+      "count": 199,
       "archiveCount": 0
     },
     {
       "icon": "⚖️",
       "title": "法律与伦理",
       "file": "法律与伦理",
-      "count": 13,
+      "count": 14,
       "archiveCount": 2
+    },
+    {
+      "icon": "🌍",
+      "title": "环境与能源",
+      "file": "环境与能源",
+      "count": 25,
+      "archiveCount": 5
     },
     {
       "icon": "📚",
       "title": "教育与媒体",
       "file": "教育与媒体",
-      "count": 47,
+      "count": 51,
       "archiveCount": 7
     },
     {
@@ -92,7 +99,7 @@
       "icon": "🏥",
       "title": "健康与公共卫生",
       "file": "健康与公共卫生",
-      "count": 35,
+      "count": 36,
       "archiveCount": 5
     },
     {
@@ -101,13 +108,6 @@
       "file": "心理学与认知",
       "count": 24,
       "archiveCount": 4
-    },
-    {
-      "icon": "🌍",
-      "title": "环境与能源",
-      "file": "环境与能源",
-      "count": 24,
-      "archiveCount": 5
     }
   ]
 }

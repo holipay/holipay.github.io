@@ -1,8 +1,80 @@
 {
   "icon": "🏛️",
   "title": "政治与治理",
-  "updatedAt": "2026-05-29T02:11:13.543Z",
+  "updatedAt": "2026-05-29T08:23:48.422Z",
   "items": [
+    {
+      "title": "中国如何分裂一个民族及其文化",
+      "link": "https://www.ft.com/content/119d8c3a-e10f-4bf7-a198-90507293054b",
+      "source": "Financial Times",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "别指望特朗普会限制预测市场",
+      "link": "https://www.ft.com/content/e4f9ec07-5964-45f7-ad07-af48f3790f63",
+      "source": "Financial Times",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "韩国Kospi指数与日本东证指数无视伊朗紧张局势创历史新高",
+      "link": "https://www.cnbc.com/2026/05/29/asia-markets-today-live-updates-nikkei-225-hang-seng-index-kospi-nifty-50-csi-300.html",
+      "source": "CNBC",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "唐纳德·特朗普最新和平计划为何注定失败",
+      "link": "https://theconversation.com/why-donald-trumps-latest-plan-for-peace-is-a-non-starter-284008",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "左翼政党主张赋予在德居住满五年的所有外国人投票权",
+      "link": "https://www.zerohedge.com/political/leftist-party-wants-voting-rights-all-foreigners-whove-lived-germany-5-years",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "2030年代月球战争威胁促使NASA与马斯克竞相建设大型月球基地",
+      "link": "https://www.zerohedge.com/geopolitical/threat-2030s-lunar-war-has-nasa-elon-musk-racing-build-major-moon-base",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "人事观察｜政治学博士卢春龙升任中国政法大学校长",
+      "link": "https://china.caixin.com/2026-05-29/102448881.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "人事观察｜主政反腐重灾区辽阳三年 北大出身白英升任辽宁副省长",
+      "link": "https://china.caixin.com/2026-05-29/102448870.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "中央网信办：开展“清朗·优化营商网络环境 整治恶意炒作涉企信息”专项行动",
+      "link": "https://wallstreetcn.com/livenews/3111268",
+      "source": "华尔街见闻",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "G-2 现实",
+      "link": "https://www.foreignaffairs.com/united-states/g-2-reality",
+      "source": "Foreign Affairs",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "日本的不归路",
+      "link": "https://www.foreignaffairs.com/japan/japans-point-no-return",
+      "source": "Foreign Affairs",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "古巴的唯一选择",
+      "link": "https://www.foreignaffairs.com/cuba/cubas-only-option",
+      "source": "Foreign Affairs",
+      "date": "2026-05-29"
+    },
     {
       "title": "美伊同意延长停火协议待特朗普批准",
       "link": "https://www.bloomberg.com/news/videos/2026-05-28/us-iran-agree-to-truce-renewal-pending-trump-signoff-video",
