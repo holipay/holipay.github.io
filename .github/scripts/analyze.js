@@ -16,7 +16,7 @@ const https = require("https");
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
-const { isEnglish, charBigrams, similarity } = require("./shared.js");
+const { isEnglish, similarity } = require("./shared.js");
 
 const ROOT = path.resolve(__dirname, "../..");
 const API_KEY = process.env.DEEPSEEK_API_KEY;
@@ -670,11 +670,14 @@ function loadActiveEvents() {
 
 function buildEventChainSection(events) {
   if (events.length === 0) return "";
-  const lines = events.map((e) => {
-    const last = e.timeline[e.timeline.length - 1];
-    const days = Math.round((new Date() - new Date(e.firstSeen)) / 86400000);
-    return `  - **${e.title}**（${days}天前起始，${e.timeline.length}条动态）→ 最新: ${last.summary}`;
-  });
+  const lines = events
+    .filter((e) => Array.isArray(e.timeline) && e.timeline.length > 0)
+    .map((e) => {
+      const last = e.timeline[e.timeline.length - 1];
+      const days = Math.round((new Date() - new Date(e.firstSeen)) / 86400000);
+      return `  - **${e.title}**（${days}天前起始，${e.timeline.length}条动态）→ 最新: ${last.summary}`;
+    });
+  if (lines.length === 0) return "";
   return `
 
 ━━━ 🔗 活跃事件链（跟踪中的持续性事件）━━━
@@ -1629,7 +1632,6 @@ const CN_KEYWORD_PREFIXES = [
   "竟然",
   "居然",
   "终于",
-  "终于",
   "不断",
   "持续",
   "逐渐",
@@ -1791,8 +1793,10 @@ const CN_DOMAIN_SORTED = [...DOMAIN_KEYWORDS]
   .filter((k) => /[\u4e00-\u9fff]/.test(k))
   .sort((a, b) => b.length - a.length);
 const EN_DOMAIN_SORTED = [...DOMAIN_KEYWORDS]
-  .filter((k) => /^[a-z\s]+$/.test(k))
+  .filter((k) => /^[a-zA-Z\s]+$/.test(k))
+  .map((k) => k.toLowerCase())
   .sort((a, b) => b.length - a.length);
+const DOMAIN_KEYWORDS_LOWER = new Set([...DOMAIN_KEYWORDS].map((k) => k.toLowerCase()));
 
 function extractKeywordsFromTitle(title) {
   const keywords = [];
@@ -1900,7 +1904,7 @@ function extractHotKeywords(items, topN = 15) {
           weightedCount: 0,
           categories: new Set(),
           sources: new Set(),
-          isDomain: DOMAIN_KEYWORDS.has(kw),
+          isDomain: DOMAIN_KEYWORDS_LOWER.has(kw),
           totalSourceWeight: 0,
         });
       }

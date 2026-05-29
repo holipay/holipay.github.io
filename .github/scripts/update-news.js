@@ -27,7 +27,7 @@ const zlib = require("zlib");
 const fs = require("fs");
 const path = require("path");
 const fsPromises = fs.promises;
-const { isEnglish, charBigrams, similarity } = require("./shared.js");
+const { isEnglish, similarity } = require("./shared.js");
 
 // 复用 TCP 连接（keep-alive），避免 RSS 批量抓取时反复建连
 const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 32 });
@@ -725,6 +725,9 @@ function isCategoryFormat(dataDir) {
         f !== "meta.json" &&
         f !== "data.json" &&
         f !== "index.json" &&
+        f !== "titles-index.json" &&
+        f !== "latest.json" &&
+        !f.endsWith("_archive.json") &&
         !/^\d{4}-\d{2}-\d{2}\.json$/.test(f),
     );
   return catFiles.length > 0;
@@ -1380,9 +1383,6 @@ async function processTopic(topic) {
 
     // P1-3: 增量追加 — 先对新条目去重，再追加到现有数据前面
     // 同时用有 link 的新条目回填旧条目的 link 字段
-    const existingNorms = new Set(
-      existingItems.map((i) => normalizeTitle(i.title).slice(0, 80)),
-    );
     const existingMap = new Map();
     for (const item of existingItems) {
       const norm = normalizeTitle(item.title).slice(0, 80);
@@ -1419,7 +1419,8 @@ async function processTopic(topic) {
       seenTitles.add(norm);
       return true;
     });
-    const finalItems = filteredItems.slice(0, MAX_ITEMS_PER_CATEGORY);
+    const catLimit = CATEGORY_ITEM_LIMITS[sec.title] || MAX_ITEMS_PER_CATEGORY;
+    const finalItems = filteredItems.slice(0, catLimit);
     const dedupeRemoved =
       mergedItems.filter((i) => (i.date || today) >= cutoff).length -
       filteredItems.length;
@@ -1490,6 +1491,8 @@ async function processTopic(topic) {
         f !== "meta.json" &&
         f !== "data.json" &&
         f !== "index.json" &&
+        f !== "titles-index.json" &&
+        f !== "latest.json" &&
         !f.endsWith("_archive.json") &&
         !/^\d{4}-\d{2}-\d{2}\.json$/.test(f),
     );
@@ -1542,17 +1545,22 @@ async function processTopic(topic) {
   );
 
   // 10.5 生成 latest.json（首页快速加载用）
+  // 从已写入的分类文件读取合并后的数据，而非预合并的 sections
   const LATEST_ITEMS = 50;
   const latestAll = [];
-  for (const sec of sections) {
-    for (const item of sec.items) {
-      latestAll.push({
-        title: item.title,
-        source: item.source || "",
-        date: item.date || today,
-        category: sec.title,
-      });
-    }
+  for (const cat of categoryMeta) {
+    try {
+      const catPath = path.join(dataDir, `${cat.file}.json`);
+      const catData = JSON.parse(fs.readFileSync(catPath, "utf-8"));
+      for (const item of catData.items || []) {
+        latestAll.push({
+          title: item.title,
+          source: item.source || "",
+          date: item.date || today,
+          category: cat.title,
+        });
+      }
+    } catch {}
   }
   // 按日期倒序，取最新 N 条
   latestAll.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
@@ -1590,7 +1598,7 @@ async function processTopic(topic) {
       const catPath = path.join(dataDir, `${cat.file}.json`);
       const catData = JSON.parse(fs.readFileSync(catPath, "utf-8"));
       for (const item of catData.items || []) {
-        const norm = normalizeTitle(item.title);
+        const norm = normalizeTitle(item.title).slice(0, 80);
         if (norm) allTitles.add(norm);
       }
     } catch {}
@@ -1599,7 +1607,7 @@ async function processTopic(topic) {
         const archPath = path.join(dataDir, `${cat.file}_archive.json`);
         const archData = JSON.parse(fs.readFileSync(archPath, "utf-8"));
         for (const item of archData.items || []) {
-          const norm = normalizeTitle(item.title);
+          const norm = normalizeTitle(item.title).slice(0, 80);
           if (norm) allTitles.add(norm);
         }
       } catch {}
@@ -1633,7 +1641,6 @@ async function main() {
 
   // 按 --topic 参数过滤
   if (FILTER_TOPIC) {
-    const before = topics.length;
     topics = topics.filter((t) => t.id === FILTER_TOPIC);
     if (topics.length === 0) {
       console.error(
