@@ -202,7 +202,119 @@
         <script src="js/common.js"></script>
         <script>
             // 内联 meta 数据（消除首次加载的 meta.json 请求）
-            const __INLINE_META = {"topic":"news","name":"全球资讯","icon":"📰","updatedAt":"2026-05-28T05:33:22.806Z","categories":[{"icon":"📈","title":"股市与市场","file":"股市与市场","count":200,"archiveCount":0},{"icon":"📰","title":"其他资讯","file":"其他资讯","count":157,"archiveCount":0},{"icon":"🖥️","title":"科技与企业","file":"科技与企业","count":200,"archiveCount":0},{"icon":"🌍","title":"国际财经","file":"国际财经","count":108,"archiveCount":18},{"icon":"🛢️","title":"大宗商品与能源","file":"大宗商品与能源","count":174,"archiveCount":0},{"icon":"🏦","title":"央行与利率","file":"央行与利率","count":116,"archiveCount":0},{"icon":"💰","title":"宏观经济","file":"宏观经济","count":121,"archiveCount":0},{"icon":"🤖","title":"科技与研究","file":"科技与研究","count":30,"archiveCount":5},{"icon":"🏛️","title":"政治与治理","file":"政治与治理","count":146,"archiveCount":0},{"icon":"👥","title":"社会与人口","file":"社会与人口","count":174,"archiveCount":0},{"icon":"⚖️","title":"法律与伦理","file":"法律与伦理","count":11,"archiveCount":2},{"icon":"🏥","title":"健康与公共卫生","file":"健康与公共卫生","count":31,"archiveCount":5},{"icon":"🌍","title":"环境与能源","file":"环境与能源","count":20,"archiveCount":5},{"icon":"📚","title":"教育与媒体","file":"教育与媒体","count":44,"archiveCount":7},{"icon":"🧠","title":"心理学与认知","file":"心理学与认知","count":23,"archiveCount":4}]};
+            const __INLINE_META = {
+                topic: "news",
+                name: "全球资讯",
+                icon: "📰",
+                updatedAt: "2026-05-28T05:33:22.806Z",
+                categories: [
+                    {
+                        icon: "📈",
+                        title: "股市与市场",
+                        file: "股市与市场",
+                        count: 200,
+                        archiveCount: 0,
+                    },
+                    {
+                        icon: "📰",
+                        title: "其他资讯",
+                        file: "其他资讯",
+                        count: 157,
+                        archiveCount: 0,
+                    },
+                    {
+                        icon: "🖥️",
+                        title: "科技与企业",
+                        file: "科技与企业",
+                        count: 200,
+                        archiveCount: 0,
+                    },
+                    {
+                        icon: "🌍",
+                        title: "国际财经",
+                        file: "国际财经",
+                        count: 108,
+                        archiveCount: 18,
+                    },
+                    {
+                        icon: "🛢️",
+                        title: "大宗商品与能源",
+                        file: "大宗商品与能源",
+                        count: 174,
+                        archiveCount: 0,
+                    },
+                    {
+                        icon: "🏦",
+                        title: "央行与利率",
+                        file: "央行与利率",
+                        count: 116,
+                        archiveCount: 0,
+                    },
+                    {
+                        icon: "💰",
+                        title: "宏观经济",
+                        file: "宏观经济",
+                        count: 121,
+                        archiveCount: 0,
+                    },
+                    {
+                        icon: "🤖",
+                        title: "科技与研究",
+                        file: "科技与研究",
+                        count: 30,
+                        archiveCount: 5,
+                    },
+                    {
+                        icon: "🏛️",
+                        title: "政治与治理",
+                        file: "政治与治理",
+                        count: 146,
+                        archiveCount: 0,
+                    },
+                    {
+                        icon: "👥",
+                        title: "社会与人口",
+                        file: "社会与人口",
+                        count: 174,
+                        archiveCount: 0,
+                    },
+                    {
+                        icon: "⚖️",
+                        title: "法律与伦理",
+                        file: "法律与伦理",
+                        count: 11,
+                        archiveCount: 2,
+                    },
+                    {
+                        icon: "🏥",
+                        title: "健康与公共卫生",
+                        file: "健康与公共卫生",
+                        count: 31,
+                        archiveCount: 5,
+                    },
+                    {
+                        icon: "🌍",
+                        title: "环境与能源",
+                        file: "环境与能源",
+                        count: 20,
+                        archiveCount: 5,
+                    },
+                    {
+                        icon: "📚",
+                        title: "教育与媒体",
+                        file: "教育与媒体",
+                        count: 44,
+                        archiveCount: 7,
+                    },
+                    {
+                        icon: "🧠",
+                        title: "心理学与认知",
+                        file: "心理学与认知",
+                        count: 23,
+                        archiveCount: 4,
+                    },
+                ],
+            };
 
             const main = $("main"),
                 catList = $("catList");
@@ -215,15 +327,23 @@
                 const t = href
                     ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(it.title)}</a>`
                     : esc(it.title);
-                const s = it.source ? `<span class="news-src">${esc(it.source)}</span>` : "";
-                const d = it.date ? `<span class="news-date">${esc(it.date)}</span>` : "";
-                const catBadge = it.category ? `<span class="news-cat">${esc(it.category)}</span>` : "";
+                const s = it.source
+                    ? `<span class="news-src">${esc(it.source)}</span>`
+                    : "";
+                const d = it.date
+                    ? `<span class="news-date">${esc(it.date)}</span>`
+                    : "";
+                const catBadge = it.category
+                    ? `<span class="news-cat">${esc(it.category)}</span>`
+                    : "";
                 return `<div class="news-item">${catBadge}<span class="news-title">${t}</span>${d}${s}</div>`;
             }
 
             function renderNews(items, catFile, catIcon, catTitle, appendMode) {
                 const isLatest = catFile === "__latest__";
-                const itemRenderer = isLatest ? renderLatestItem : renderNewsItem;
+                const itemRenderer = isLatest
+                    ? renderLatestItem
+                    : renderNewsItem;
 
                 if (!items || items.length === 0)
                     return `<div class="news-head"><span class="news-head-icon">${catIcon}</span><span class="news-head-title">${esc(catTitle)}</span></div><div class="empty"><div class="empty-icon">📭</div><p>暂无新闻</p></div>`;
@@ -248,7 +368,11 @@
                 const FIRST_BATCH = 20;
                 const firstBatch = show.slice(0, FIRST_BATCH);
                 const restBatch = show.slice(FIRST_BATCH);
-                const headHtml = renderNewsHead(catIcon, catTitle, items.length);
+                const headHtml = renderNewsHead(
+                    catIcon,
+                    catTitle,
+                    items.length,
+                );
                 const listHtml = firstBatch.map(itemRenderer).join("");
 
                 if (restBatch.length > 0) {
@@ -256,8 +380,11 @@
                         const listEl = document.getElementById("newsList");
                         if (listEl) {
                             const frag = document.createElement("div");
-                            frag.innerHTML = restBatch.map(itemRenderer).join("");
-                            while (frag.firstChild) listEl.appendChild(frag.firstChild);
+                            frag.innerHTML = restBatch
+                                .map(itemRenderer)
+                                .join("");
+                            while (frag.firstChild)
+                                listEl.appendChild(frag.firstChild);
                         }
                     });
                 }
@@ -300,8 +427,15 @@
                 if (S.cat === "__latest__") {
                     // 最新视图：加载 latest.json（更小，更快）
                     const data = await loadLatest();
-                    const items = (data.items || []).sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-                    main.innerHTML = renderNews(items, "__latest__", "🔥", "最新资讯");
+                    const items = (data.items || []).sort((a, b) =>
+                        (b.date || "").localeCompare(a.date || ""),
+                    );
+                    main.innerHTML = renderNews(
+                        items,
+                        "__latest__",
+                        "🔥",
+                        "最新资讯",
+                    );
                     S.loading = false;
                     return;
                 }
@@ -325,17 +459,23 @@
                 btn.textContent = "加载中...";
                 const cat = btn.dataset.cat;
                 S.newsPage[cat] = (S.newsPage[cat] || 1) + 1;
-                const meta = await loadMetaOnce();
-                const catObj = meta.categories.find((c) => c.file === cat);
-                if (!catObj) return;
-                const items = await loadNewsCat(cat);
-                const result = renderNews(
-                    items,
-                    cat,
-                    catObj.icon,
-                    catObj.title,
-                    true,
-                );
+                let items, icon, title;
+                if (cat === "__latest__") {
+                    const data = await loadLatest();
+                    items = (data.items || []).sort((a, b) =>
+                        (b.date || "").localeCompare(a.date || ""),
+                    );
+                    icon = "🔥";
+                    title = "最新资讯";
+                } else {
+                    const meta = await loadMetaOnce();
+                    const catObj = meta.categories.find((c) => c.file === cat);
+                    if (!catObj) return;
+                    items = await loadNewsCat(cat);
+                    icon = catObj.icon;
+                    title = catObj.title;
+                }
+                const result = renderNews(items, cat, icon, title, true);
                 const listEl = main.querySelector("#newsList");
                 if (listEl) {
                     const frag = document.createElement("div");
