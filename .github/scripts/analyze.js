@@ -16,6 +16,7 @@ const https = require("https");
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const { isEnglish, charBigrams, similarity } = require("./shared.js");
 
 const ROOT = path.resolve(__dirname, "../..");
 const API_KEY = process.env.DEEPSEEK_API_KEY;
@@ -123,16 +124,6 @@ function trCacheKey(text) {
   const t = text.trim();
   if (t.length <= 80) return t.toLowerCase();
   return (t.slice(0, 80) + t.slice(-20)).toLowerCase();
-}
-
-function isEnglish(text) {
-  const letters = text.replace(
-    /[\s\d.,!?@#$%^&*()\-+='";:/<>[\]{}|\\`~\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]/g,
-    "",
-  );
-  if (!letters.length) return false;
-  const ascii = letters.replace(/[^\x00-\x7F]/g, "");
-  return ascii.length / letters.length > 0.7;
 }
 
 async function translateSnippet(text) {
@@ -2090,22 +2081,6 @@ function saveCandidateLog(newCandidates) {
 function dedupHotItems(hotItems) {
   const SIMILARITY_THRESHOLD = 0.7;
 
-  function charBigrams(text) {
-    const bigrams = new Set();
-    for (let i = 0; i < text.length - 1; i++) bigrams.add(text.slice(i, i + 2));
-    return bigrams;
-  }
-
-  function similarity(a, b) {
-    if (!a || !b) return 0;
-    if (a === b) return 1;
-    const aBg = charBigrams(a);
-    const bBg = charBigrams(b);
-    let intersection = 0;
-    for (const bg of aBg) if (bBg.has(bg)) intersection++;
-    return intersection / (aBg.size + bBg.size - intersection);
-  }
-
   function normTitle(title) {
     return (title || "")
       .replace(/^[\s\-\u2013\u2014\u00B7\uFF5C\uFF1A:]+/, "")
@@ -2208,16 +2183,13 @@ function buildPrompt(
   newsData,
   previousAnalyses,
   perspective,
+  hotKeywords,
   snippets = [],
   trendSection = "",
 ) {
   const today = new Date().toLocaleDateString("zh-CN", {
     timeZone: "Asia/Shanghai",
   });
-
-  // 计算热点关键词（与AI分析使用相同的新闻集合）
-  const allItems = newsData.items;
-  const hotKeywords = extractHotKeywords(allItems, 15);
 
   // 输出热点关键词日志
   if (hotKeywords.length > 0) {
@@ -3152,6 +3124,7 @@ async function main() {
     newsData,
     previousAnalyses,
     perspective,
+    hotKeywords,
     snippets,
     trendSection,
   );

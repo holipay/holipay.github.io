@@ -26,6 +26,12 @@ const http = require("http");
 const zlib = require("zlib");
 const fs = require("fs");
 const path = require("path");
+const fsPromises = fs.promises;
+const { isEnglish, charBigrams, similarity } = require("./shared.js");
+
+// 复用 TCP 连接（keep-alive），避免 RSS 批量抓取时反复建连
+const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 32 });
+const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 32 });
 
 const ROOT = path.resolve(__dirname, "../..");
 const SCRIPTS_DIR = __dirname;
@@ -45,7 +51,7 @@ const CATEGORY_ITEM_LIMITS = {
 const RECENT_DAYS = 7; // recent.json 保留天数（从14天缩短到7天，减少文件大小）
 const SIMILARITY_THRESHOLD = 0.75; // 标题相似度阈值（75% 以上视为重复）
 const TRANSLATE_CONCURRENCY = 8;
-const MAX_RETRIES = 1;
+const MAX_RETRIES = 2; // 增加重试次数，提升网络抖动容错
 
 // ==================== 命令行参数 ====================
 const FILTER_TOPIC =
@@ -64,9 +70,11 @@ function fetchUrl(url, maxRedirects = 3, _visited = new Set()) {
     _visited.add(url);
 
     const mod = url.startsWith("https") ? https : http;
+    const agent = url.startsWith("https") ? httpsAgent : httpAgent;
     const req = mod.get(
       url,
       {
+        agent,
         headers: {
           "User-Agent": "Mozilla/5.0 (compatible; NewsAggregatorBot/3.0)",
           Accept:
@@ -121,10 +129,17 @@ async function fetchWithRetry(url, retries = MAX_RETRIES) {
     try {
       return await fetchUrl(url);
     } catch (e) {
+      const msg = e.message || "";
       const retryable =
-        e.message.includes("HTTP 5") || e.message.includes("Timeout");
+        msg.includes("HTTP 5") ||
+        msg.includes("Timeout") ||
+        msg.includes("ECONNRESET") ||
+        msg.includes("ETIMEDOUT") ||
+        msg.includes("ENOTFOUND") ||
+        msg.includes("socket hang up");
       if (i < retries && retryable) {
-        await new Promise((r) => setTimeout(r, 2000));
+        const delay = 2000 * (i + 1); // 指数退避: 2s, 4s
+        await new Promise((r) => setTimeout(r, delay));
         continue;
       }
       throw e;
@@ -134,6 +149,7 @@ async function fetchWithRetry(url, retries = MAX_RETRIES) {
 
 // ==================== 翻译缓存 ====================
 let translationCache = {};
+let _cacheDirty = false; // 脏标记：仅在有新翻译时写盘
 
 function loadCache() {
   try {
@@ -145,18 +161,25 @@ function loadCache() {
   } catch {
     translationCache = {};
   }
+  _cacheDirty = false;
 }
 
 function saveCache() {
+  if (!_cacheDirty) {
+    console.log(`📦 翻译缓存未变更，跳过保存`);
+    return;
+  }
   try {
     const cutoff = Date.now() - RETENTION_DAYS * 24 * 60 * 60 * 1000;
     for (const [key, entry] of Object.entries(translationCache)) {
       if (entry.ts && entry.ts < cutoff) delete translationCache[key];
     }
     const tmp = CACHE_FILE + ".tmp";
-    fs.writeFileSync(tmp, JSON.stringify(translationCache, null, 2), "utf-8");
+    // 紧凑序列化（无缩进），减少文件体积 ~60%
+    fs.writeFileSync(tmp, JSON.stringify(translationCache), "utf-8");
     fs.renameSync(tmp, CACHE_FILE);
     console.log(`💾 保存翻译缓存: ${Object.keys(translationCache).length} 条`);
+    _cacheDirty = false;
   } catch (e) {
     console.error("⚠️ 缓存保存失败:", e.message);
   }
@@ -169,16 +192,6 @@ function cacheKey(text) {
 }
 
 // ==================== 翻译工具 ====================
-function isEnglish(text) {
-  const letters = text.replace(
-    /[\s\d.,!?@#$%^&*()\-+='";:/<>[\]{}|\\`~\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]/g,
-    "",
-  );
-  if (!letters.length) return false;
-  const ascii = letters.replace(/[^\x00-\x7F]/g, "");
-  return ascii.length / letters.length > 0.7;
-}
-
 async function translateMyMemory(text) {
   const encoded = encodeURIComponent(text.slice(0, 450));
   const url = `https://api.mymemory.translated.net/get?q=${encoded}&langpair=en|zh-CN`;
@@ -298,6 +311,7 @@ async function translateENtoZH(text) {
 
   if (translated) {
     translationCache[key] = { zh: translated, ts: Date.now() };
+    _cacheDirty = true;
     return translated;
   }
   return text;
@@ -360,6 +374,7 @@ async function translateBatchDeepSeek(texts) {
                   zh: translated,
                   ts: Date.now(),
                 };
+                _cacheDirty = true;
               }
             }
             resolve(result);
@@ -470,48 +485,67 @@ async function translateItems(items) {
 }
 
 // ==================== RSS/Atom 解析 ====================
+/**
+ * 从 XML 块中提取 <title> 内容（优先 CDATA，支持属性）
+ */
+function extractTitle(block) {
+  const cdataMatch = block.match(/<title[^>]*><!\[CDATA\[(.*?)\]\]><\/title>/);
+  if (cdataMatch) return cdataMatch[1].trim();
+  const plainMatch = block.match(/<title[^>]*>(.*?)<\/title>/);
+  if (plainMatch) return plainMatch[1].replace(/<!\[CDATA\[(.*?)\]\]>/, "$1").trim();
+  return "";
+}
+
+/**
+ * 从 XML 块中提取 <link> 内容（支持 href 属性或包裹内容）
+ */
+function extractLink(block) {
+  const hrefMatch = block.match(/<link[^>]*href="([^"]+)"/);
+  if (hrefMatch) return hrefMatch[1].trim();
+  const contentMatch = block.match(/<link[^>]*>(.*?)<\/link>/);
+  if (contentMatch) return contentMatch[1].trim();
+  return "";
+}
+
+/**
+ * 用 indexOf 循环遍历 XML 中所有 <tag>...</tag> 块，避免正则回溯
+ */
+function extractBlocks(xml, openTag, closeTag) {
+  const blocks = [];
+  let pos = 0;
+  let start = xml.indexOf(openTag, pos);
+  while (start !== -1) {
+    const end = xml.indexOf(closeTag, start);
+    if (end === -1) break;
+    blocks.push(xml.slice(start, end + closeTag.length));
+    pos = end + closeTag.length;
+    start = xml.indexOf(openTag, pos);
+  }
+  return blocks;
+}
+
 function parseRssItems(xml, filterRegex) {
   const items = [];
 
-  const rssMatches = xml.matchAll(/<item>[\s\S]*?<\/item>/g);
-  for (const m of rssMatches) {
-    const block = m[0];
-    const title =
-      block.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/)?.[1]?.trim() ||
-      block
-        .match(/<title>(.*?)<\/title>/)?.[1]
-        ?.replace(/<!\[CDATA\[(.*?)\]\]>/, "$1")
-        .trim();
-    const link =
-      block.match(/<link>(.*?)<\/link>/)?.[1]?.trim() ||
-      block.match(/<link[^>]*>(.*?)<\/link>/)?.[1]?.trim();
-    if (title) {
-      if (!filterRegex || filterRegex.test(title)) {
-        items.push({ title, link: link || "" });
-      }
-    }
+  // 优先 RSS 格式：<item>...</item>
+  const rssBlocks = extractBlocks(xml, "<item>", "</item>");
+  for (const block of rssBlocks) {
+    const title = extractTitle(block);
+    if (!title) continue;
+    if (filterRegex && !filterRegex.test(title)) continue;
+    const link = extractLink(block);
+    items.push({ title, link: link || "" });
   }
 
+  // 无 RSS 命中则尝试 Atom 格式：<entry>...</entry>
   if (items.length === 0) {
-    const atomMatches = xml.matchAll(/<entry>[\s\S]*?<\/entry>/g);
-    for (const m of atomMatches) {
-      const block = m[0];
-      const title =
-        block
-          .match(/<title[^>]*><!\[CDATA\[(.*?)\]\]><\/title>/)?.[1]
-          ?.trim() ||
-        block
-          .match(/<title[^>]*>(.*?)<\/title>/)?.[1]
-          ?.replace(/<!\[CDATA\[(.*?)\]\]>/, "$1")
-          .trim();
-      const link =
-        block.match(/<link[^>]*href="([^"]+)"/)?.[1]?.trim() ||
-        block.match(/<link[^>]*>(.*?)<\/link>/)?.[1]?.trim();
-      if (title) {
-        if (!filterRegex || filterRegex.test(title)) {
-          items.push({ title, link: link || "" });
-        }
-      }
+    const atomBlocks = extractBlocks(xml, "<entry>", "</entry>");
+    for (const block of atomBlocks) {
+      const title = extractTitle(block);
+      if (!title) continue;
+      if (filterRegex && !filterRegex.test(title)) continue;
+      const link = extractLink(block);
+      items.push({ title, link: link || "" });
     }
   }
 
@@ -609,50 +643,33 @@ function normalizeTitle(title) {
     .toLowerCase();
 }
 
-// ==================== \u6A21\u7CCA\u76F8\u4F3C\u5EA6 ====================
 /**
- * \u63D0\u53D6\u5B57\u7B26\u4E32\u7684\u5B57\u7B26\u4E8C\u5143\u7EC4 (bigrams)
- * @param {string} text
- * @returns {Set<string>}
- */
-function charBigrams(text) {
-  const bigrams = new Set();
-  for (let i = 0; i < text.length - 1; i++) {
-    bigrams.add(text.slice(i, i + 2));
-  }
-  return bigrams;
-}
-
-/**
- * \u8BA1\u7B97\u4E24\u4E2A\u5B57\u7B26\u4E32\u7684 Jaccard \u76F8\u4F3C\u5EA6 (0~1)
- * @param {string} a
- * @param {string} b
- * @returns {number}
- */
-function similarity(a, b) {
-  if (!a || !b) return 0;
-  if (a === b) return 1;
-  const aBg = charBigrams(a);
-  const bBg = charBigrams(b);
-  let intersection = 0;
-  for (const bg of aBg) {
-    if (bBg.has(bg)) intersection++;
-  }
-  return intersection / (aBg.size + bBg.size - intersection);
-}
-
-/**
- * \u4ECE\u5386\u53F2\u6570\u636E\u6587\u4EF6\u4E2D\u52A0\u8F7D\u5DF2\u6709\u6761\u76EE\u7684\u6807\u51C6\u5316\u6807\u9898\uFF08\u7528\u4E8E\u6A21\u7CCA\u53BB\u91CD\uFF09
+ * 从历史数据文件中加载已有条目的标准化标题（用于模糊去重）
+ *
+ * v2: 优先读取 titles-index.json（单文件），
+ *     仅在不存�?时回退到遍历所有分类文件
  * @param {string} dataDir
- * @param {number} daysToScan
  * @returns {string[]}
  */
 function loadExistingTitles(dataDir) {
+  const indexPath = path.join(dataDir, "titles-index.json");
+
+  // 尝试从索引文件读取（单文�? IO）
+  try {
+    if (fs.existsSync(indexPath)) {
+      const index = JSON.parse(fs.readFileSync(indexPath, "utf-8"));
+      if (Array.isArray(index.titles)) {
+        console.log(`  📦 从 titles-index 加载 ${index.titles.length} 条历史标题`);
+        return index.titles;
+      }
+    }
+  } catch {}
+
+  // 回退：读取所有分类文件
   const titles = [];
   try {
     if (!fs.existsSync(dataDir)) return titles;
 
-    // 读取按分类存储的文件（data.json 和旧日期文件已被 migrateToCategoryFiles 清理）
     const catFiles = fs
       .readdirSync(dataDir)
       .filter(
@@ -661,6 +678,7 @@ function loadExistingTitles(dataDir) {
           f !== "meta.json" &&
           f !== "data.json" &&
           f !== "index.json" &&
+          f !== "titles-index.json" &&
           !/^\d{4}-\d{2}-\d{2}\.json$/.test(f),
       );
     for (const file of catFiles) {
@@ -678,6 +696,20 @@ function loadExistingTitles(dataDir) {
     }
   } catch {}
   return titles;
+}
+
+/**
+ * 保存标题索引文件（供下次运行时快速加�?
+ */
+function saveTitlesIndex(dataDir, titles) {
+  const indexPath = path.join(dataDir, "titles-index.json");
+  const tmp = indexPath + ".tmp";
+  fs.writeFileSync(
+    tmp,
+    JSON.stringify({ updatedAt: new Date().toISOString(), titles }),
+    "utf-8",
+  );
+  fs.renameSync(tmp, indexPath);
 }
 
 /**
@@ -857,6 +889,37 @@ function migrateToCategoryFiles(dataDir, topic) {
 }
 
 /**
+ * 将标题按长度分桶，用于加速模糊去重
+ * 核心思路：相似度阈值 SIMILARITY_THRESHOLD=0.75 下，
+ * 若标题A长度L与标题B长度之比 < 0.75，相似度必然 < 阈值，可直接跳过
+ */
+function buildLengthBuckets(titles) {
+  const buckets = new Map();
+  for (const t of titles) {
+    const len = t.length;
+    if (!buckets.has(len)) buckets.set(len, []);
+    buckets.get(len).push(t);
+  }
+  return buckets;
+}
+
+/**
+ * 获取给定长度下可能匹配的候选标题（长度在 [L*T, L/T] 范围内）
+ */
+function getCandidates(buckets, normLen, threshold) {
+  const candidates = [];
+  const minLen = Math.max(1, Math.floor(normLen * threshold));
+  const maxLen = Math.ceil(normLen / threshold);
+  for (let len = minLen; len <= maxLen; len++) {
+    const bucket = buckets.get(len);
+    if (bucket) {
+      for (const t of bucket) candidates.push(t);
+    }
+  }
+  return candidates;
+}
+
+/**
  * 对当前批次进行去重（URL精确匹配 + 标题精确匹配 + 模糊匹配）
  * @param {Array} items
  * @param {string[]} existingTitles - 历史标题
@@ -865,8 +928,12 @@ function migrateToCategoryFiles(dataDir, topic) {
 function dedup(items, existingTitles = []) {
   const seenUrls = new Set();
   const seenNormsSet = new Set(); // O(1) 精确匹配
-  const seenNormsArr = []; // 用于模糊匹配
   const existingTitlesSet = new Set(existingTitles); // O(1) 历史精确匹配
+
+  // 长度分桶：将历史标题按长度分组，避免 O(n²) 全量遍历
+  const existingBuckets = buildLengthBuckets(existingTitles);
+  // 当前批次的长度分桶（动态增长）
+  const batchBuckets = new Map();
 
   return items.filter((item) => {
     // 1. URL 精确匹配（URL 相同一定重复）
@@ -884,27 +951,23 @@ function dedup(items, existingTitles = []) {
     if (seenNormsSet.has(norm)) return false;
     if (existingTitlesSet.has(norm)) return false;
 
-    // 4. 模糊匹配——历史数据（带长度预过滤）
+    // 4. 模糊匹配——历史数据（仅比较长度相近的候选）
     const nLen = norm.length;
-    for (const et of existingTitles) {
-      const minLen = Math.min(nLen, et.length);
-      const maxLen = Math.max(nLen, et.length);
-      if (maxLen === 0) continue;
-      if (minLen / maxLen < SIMILARITY_THRESHOLD) continue;
+    const histCandidates = getCandidates(existingBuckets, nLen, SIMILARITY_THRESHOLD);
+    for (const et of histCandidates) {
       if (similarity(norm, et) >= SIMILARITY_THRESHOLD) return false;
     }
 
-    // 5. 模糊匹配——当前批次（带长度预过滤）
-    for (const sn of seenNormsArr) {
-      const minLen = Math.min(nLen, sn.length);
-      const maxLen = Math.max(nLen, sn.length);
-      if (maxLen === 0) continue;
-      if (minLen / maxLen < SIMILARITY_THRESHOLD) continue;
+    // 5. 模糊匹配——当前批次（仅比较长度相近的候选）
+    const batchCandidates = getCandidates(batchBuckets, nLen, SIMILARITY_THRESHOLD);
+    for (const sn of batchCandidates) {
       if (similarity(norm, sn) >= SIMILARITY_THRESHOLD) return false;
     }
 
+    // 6. 通过去重，加入当前批次分桶
     seenNormsSet.add(norm);
-    seenNormsArr.push(norm);
+    if (!batchBuckets.has(nLen)) batchBuckets.set(nLen, []);
+    batchBuckets.get(nLen).push(norm);
     return true;
   });
 }
@@ -940,25 +1003,42 @@ function atomicWrite(filePath, data) {
 async function semanticDedup(items, existingTitles) {
   if (items.length < 5 || !process.env.DEEPSEEK_API_KEY) return items;
 
-  // 只对热词命中多的条目做语义去重（减少 API 调用）
-  // 选出标题长度接近、可能重复的候选对
-  const candidates = [];
+  // v2：长度分桶生成候选对，避免 O(n²) 全量遍历
   const norms = items.map((i) => normalizeTitle(i.title).slice(0, 80));
+  const SIM_DUP_THRESHOLD = 0.5;
+
+  // 按长度分桶
+  const lengthBuckets = new Map();
   for (let i = 0; i < items.length; i++) {
-    for (let j = i + 1; j < items.length; j++) {
-      // 长度差异超过 50% 的直接跳过
-      const li = norms[i].length,
-        lj = norms[j].length;
-      if (Math.min(li, lj) / Math.max(li, lj) < 0.5) continue;
-      // 已经被精确去重跳过的也跳过
-      if (!norms[i] || !norms[j]) continue;
-      candidates.push([i, j]);
+    const len = norms[i].length;
+    if (!len) continue;
+    if (!lengthBuckets.has(len)) lengthBuckets.set(len, []);
+    lengthBuckets.get(len).push(i);
+  }
+
+  // 仅在同一长度范围内生成候选对
+  const candidates = [];
+  for (let i = 0; i < items.length; i++) {
+    const len = norms[i].length;
+    if (!len) continue;
+    const minLen = Math.max(1, Math.floor(len * SIM_DUP_THRESHOLD));
+    const maxLen = Math.ceil(len / SIM_DUP_THRESHOLD);
+    for (let l = minLen; l <= maxLen; l++) {
+      const bucket = lengthBuckets.get(l);
+      if (!bucket) continue;
+      for (const j of bucket) {
+        if (j <= i) continue;
+        candidates.push([i, j]);
+        if (candidates.length >= 200) break; // 足够多了就停止
+      }
+      if (candidates.length >= 200) break;
     }
+    if (candidates.length >= 200) break;
   }
 
   if (candidates.length === 0) return items;
 
-  // 批量检查（最多检查 50 对）
+  // 批量检查（取前 100 对）
   const toCheck = candidates.slice(0, 100);
   const pairs = toCheck
     .map(
@@ -1263,21 +1343,34 @@ async function processTopic(topic) {
 
   const categoryMeta = [];
 
+  // #4: 并行读取所有分类的现有数据（16个分类 × 2文件 = 32次IO → 1次并发）
+  // #11: 预计算 safeName map，避免循环内重复调用 sanitizeFilename
+  const safeNameMap = new Map(sections.map((s) => [s.title, sanitizeFilename(s.title)]));
+  const existingDataMap = new Map();
+  const readTasks = sections.map(async (sec) => {
+    const safeName = safeNameMap.get(sec.title);
+    const catFile = path.join(dataDir, `${safeName}.json`);
+    const archiveFile = path.join(dataDir, `${safeName}_archive.json`);
+    let items = [];
+    try {
+      const existing = JSON.parse(await fsPromises.readFile(catFile, "utf-8"));
+      items = existing.items || [];
+    } catch {}
+    try {
+      const arch = JSON.parse(await fsPromises.readFile(archiveFile, "utf-8"));
+      items = [...items, ...(arch.items || [])];
+    } catch {}
+    existingDataMap.set(safeName, items);
+  });
+  await Promise.all(readTasks);
+
   for (const sec of sections) {
-    const safeName = sanitizeFilename(sec.title);
+    const safeName = safeNameMap.get(sec.title);
     const catFile = path.join(dataDir, `${safeName}.json`);
     const archiveFile = path.join(dataDir, `${safeName}_archive.json`);
 
-    // 读取现有分类数据
-    let existingItems = [];
-    try {
-      const existing = JSON.parse(fs.readFileSync(catFile, "utf-8"));
-      existingItems = existing.items || [];
-    } catch {}
-    try {
-      const arch = JSON.parse(fs.readFileSync(archiveFile, "utf-8"));
-      existingItems = [...existingItems, ...(arch.items || [])];
-    } catch {}
+    // 从预读缓存中取，不再同步读盘
+    const existingItems = existingDataMap.get(safeName) || [];
 
     // 准备新条目
     const newItems = sec.items.map(({ titleEN, ...rest }) => ({
@@ -1489,6 +1582,31 @@ async function processTopic(topic) {
   for (const old of oldDayFiles) {
     fs.unlinkSync(path.join(dataDir, old));
   }
+
+  // 12. 保存标题索引（下次运行无需遍历所有分类文件）
+  const allTitles = new Set();
+  for (const cat of categoryMeta) {
+    try {
+      const catPath = path.join(dataDir, `${cat.file}.json`);
+      const catData = JSON.parse(fs.readFileSync(catPath, "utf-8"));
+      for (const item of catData.items || []) {
+        const norm = normalizeTitle(item.title);
+        if (norm) allTitles.add(norm);
+      }
+    } catch {}
+    if (cat.archiveCount > 0) {
+      try {
+        const archPath = path.join(dataDir, `${cat.file}_archive.json`);
+        const archData = JSON.parse(fs.readFileSync(archPath, "utf-8"));
+        for (const item of archData.items || []) {
+          const norm = normalizeTitle(item.title);
+          if (norm) allTitles.add(norm);
+        }
+      } catch {}
+    }
+  }
+  saveTitlesIndex(dataDir, [...allTitles]);
+  console.log(`  📦 已保存 titles-index: ${allTitles.size} 条`);
 
   const totalItems = categoryMeta.reduce((sum, cat) => sum + cat.count, 0);
   console.log(
