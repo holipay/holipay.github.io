@@ -1,8 +1,86 @@
 {
   "icon": "👥",
   "title": "社会与人口",
-  "updatedAt": "2026-05-28T05:33:22.801Z",
+  "updatedAt": "2026-05-29T02:11:13.545Z",
   "items": [
+    {
+      "title": "澳大利亚公众对警方的信任度正在下降。新冠疫情是导火索——但故事远不止于此",
+      "link": "https://theconversation.com/public-trust-in-australian-police-is-declining-covid-sparked-it-but-theres-more-to-the-story-283768",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "大以色列：如今威胁吞并约旦河西岸的定居者运动起源",
+      "link": "https://theconversation.com/greater-israel-the-origins-of-the-settler-movement-now-threatening-to-annexe-the-west-bank-283175",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "教育部正在调查史密斯学院的招生是否违反《教育法修正案第九条》——但该法律实际上不适用于此案",
+      "link": "https://theconversation.com/education-department-is-investigating-whether-smith-colleges-admissions-violate-title-ix-but-this-law-doesnt-actually-apply-to-the-case-282829",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "无法重复的社会科学研究（视频）",
+      "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOWW9vLVNRVjZNZEFFbzRQSXZDZHgzNlNvN3U3QmNvdkNYNm1Jd3g1UWt6NFl5REJISmJraWhvemJteDctaFNyT2NiblZsMlRJdldVTkdQTC1LczBvclJlZncwNFE1SFgtVzhISVhQLXN4Uk5zNXNvYWozdnYyd0pnclFFOHVaWGo3eW1hcFhUdDlZZzItVnZOaEI3UEo?oc=5",
+      "source": "Google News Academic",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "视频：好莱坞女星揭露选角中系统性反白人歧视",
+      "link": "https://www.zerohedge.com/political/watch-hollywood-actress-blows-whistle-systemic-anti-white-discrimination-casting",
+      "source": "ZeroHedge",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "深圳常住人口首破1800万，何为增长密码？",
+      "link": "https://www.caixin.com/2026-05-29/102448733.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "美国一移民拘留中心约300人绝食 场外爆发抗议多人被捕",
+      "link": "https://photos.caixin.com/2026-05-28/102448680.html",
+      "source": "财新网",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "非纪念品：托尼·阿尔伯特展览将种族主义原住民纪念品转化为有力的真相讲述",
+      "link": "https://theconversation.com/not-a-souvenir-tony-albert-exhibit-turns-racist-aboriginalia-into-a-powerful-act-of-truth-telling-283757",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "通过法医考古发掘纳米比亚被遗忘的种族灭绝",
+      "link": "https://theconversation.com/unearthing-namibias-forgotten-genocide-through-forensic-archaeology-284002",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "“增强版奥运会”旨在“变革体育”，但结果却出人意料地平淡无奇",
+      "link": "https://theconversation.com/the-enhanced-games-set-out-to-transform-sport-but-the-results-looked-surprisingly-ordinary-283813",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "壁画、神话与归属感：艺术如何重塑南格陵兰",
+      "link": "https://theconversation.com/murals-myths-and-belonging-how-art-is-reshaping-south-greenland-283312",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "玛丽莲·梦露的最后一处居所——以及她在此想象的生活",
+      "link": "https://theconversation.com/marilyn-monroes-final-home-and-the-life-she-imagined-within-it-281919",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
+    {
+      "title": "澳大利亚诈骗受害者可快速获得3000澳元退款，而在英国这一数字接近16万英镑",
+      "link": "https://theconversation.com/australian-scam-victims-could-get-rapid-3-000-refunds-yet-in-the-uk-its-more-like-160-000-283965",
+      "source": "The Conversation",
+      "date": "2026-05-29"
+    },
     {
       "title": "社会研究中的身体、性别、种族与肥胖：差距与未来 - Frontiers",
       "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNSC1DSGc2cDBuOGdQaUpDRXQxVEo2U0R2WE5xX2dCM2FLNnF6b0QzRGhieEY1SDRtMVZ2Ync4Q3d4b3liaEFjalVpSWwySVdvZm00VlA0NnFWODRxX3JUSzFoS0RuVmo5MnlES0puV1VnT2RXRUhUVW0tOVd6TGs5ZTdoeGFTZ3VUMGY1Z0JfSQ?oc=5",
@@ -42,7 +120,8 @@
     {
       "title": "社会科学中的编码代理 - Anthropic",
       "source": "Google News Academic",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBZOVA5Z3pKZ1JzSHJXaFl0LWdSQlZfZWhGb3AtY1R3MExZRm9KS2dfRmNzTE1XR2VXdjlPMVh6U25SU2JmcXBZQjlnSWRreHM2SGZmTnpQVzRLQVFmVFQyOExiR2o5dFhSb3A2WVBmV2RzQQ?oc=5"
     },
     {
       "title": "尼日利亚需要更多社会科学研究：如何提高产出 - 对话",
@@ -208,7 +287,8 @@
     {
       "title": "71%的美国房主表示，他们的房屋保险费用上涨了",
       "source": "Pew Research",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.pewresearch.org/short-reads/2026/05/06/71-of-u-s-homeowners-say-their-home-insurance-costs-have-gone-up/"
     },
     {
       "title": "不那么安静的美国人",
@@ -242,7 +322,8 @@
     {
       "title": "一房三主：美国梦成本膨胀",
       "source": "WSJ",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://www.wsj.com/articles/rising-house-mortgage-costs-north-carolina-home-468a46e5?mod=rss_markets_main"
     },
     {
       "title": "持弱国护照旅行是什么体验：\"毫无尊严\"",

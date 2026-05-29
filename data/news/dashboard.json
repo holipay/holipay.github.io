@@ -204,9 +204,159 @@
           "count": 2
         }
       ]
+    },
+    {
+      "date": "2026-05-29",
+      "sentiment": "分化",
+      "riskLevel": "高",
+      "keyThemes": [
+        "伊朗战争冲击的精细行业数据化",
+        "全球滞胀从宏观信号变为微观现实",
+        "AI热潮与地缘冲突的资本定价分裂",
+        "战争不确定性的短期合约化"
+      ],
+      "sectors": [
+        "能源",
+        "科技",
+        "金融",
+        "航运"
+      ],
+      "outlook": "市场将在‘地缘暂停窗口’与‘消费数据恶化’的对立信号中剧烈震荡，AI 继续作为地缘风险的唯一牛市对冲叙事。",
+      "topKeywords": [
+        {
+          "keyword": "战争",
+          "score": 3465.22,
+          "count": 77
+        },
+        {
+          "keyword": "收购",
+          "score": 836.94,
+          "count": 20
+        },
+        {
+          "keyword": "黄金",
+          "score": 824.53,
+          "count": 91
+        },
+        {
+          "keyword": "人工智能",
+          "score": 818.7,
+          "count": 46
+        },
+        {
+          "keyword": "央行",
+          "score": 709.54,
+          "count": 26
+        },
+        {
+          "keyword": "利率",
+          "score": 662.62,
+          "count": 20
+        },
+        {
+          "keyword": "通胀",
+          "score": 379.64,
+          "count": 33
+        },
+        {
+          "keyword": "融资",
+          "score": 310.77,
+          "count": 18
+        },
+        {
+          "keyword": "美联储",
+          "score": 271.75,
+          "count": 30
+        },
+        {
+          "keyword": "气候",
+          "score": 242.83,
+          "count": 16
+        }
+      ]
     }
   ],
   "keywordTrends": [
+    {
+      "keyword": "战争",
+      "avgScore7d": 3465.22,
+      "avgScore30d": 3465.22,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "收购",
+      "avgScore7d": 836.94,
+      "avgScore30d": 836.94,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "人工智能",
+      "avgScore7d": 818.7,
+      "avgScore30d": 818.7,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "央行",
+      "avgScore7d": 709.54,
+      "avgScore30d": 709.54,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "黄金",
+      "avgScore7d": 420.2,
+      "avgScore30d": 420.2,
+      "trend": 0,
+      "frequency7d": 2,
+      "frequency30d": 2
+    },
+    {
+      "keyword": "利率",
+      "avgScore7d": 337.44,
+      "avgScore30d": 337.44,
+      "trend": 0,
+      "frequency7d": 2,
+      "frequency30d": 2
+    },
+    {
+      "keyword": "融资",
+      "avgScore7d": 310.77,
+      "avgScore30d": 310.77,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "美联储",
+      "avgScore7d": 271.75,
+      "avgScore30d": 271.75,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "气候",
+      "avgScore7d": 242.83,
+      "avgScore30d": 242.83,
+      "trend": 0,
+      "frequency7d": 1,
+      "frequency30d": 1
+    },
+    {
+      "keyword": "通胀",
+      "avgScore7d": 197.99,
+      "avgScore30d": 197.99,
+      "trend": 0,
+      "frequency7d": 2,
+      "frequency30d": 2
+    },
     {
       "keyword": "随着伊朗战争",
       "avgScore7d": 169.66,
@@ -251,14 +401,6 @@
       "keyword": "抵押贷款利率",
       "avgScore7d": 21.68,
       "avgScore30d": 21.68,
-      "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
-    },
-    {
-      "keyword": "通胀",
-      "avgScore7d": 16.33,
-      "avgScore30d": 16.33,
       "trend": 0,
       "frequency7d": 1,
       "frequency30d": 1
@@ -320,14 +462,6 @@
       "frequency30d": 1
     },
     {
-      "keyword": "黄金",
-      "avgScore7d": 15.87,
-      "avgScore30d": 15.87,
-      "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
-    },
-    {
       "keyword": "亿美元收购",
       "avgScore7d": 15.36,
       "avgScore30d": 15.36,
@@ -342,14 +476,6 @@
       "trend": 0,
       "frequency7d": 2,
       "frequency30d": 2
-    },
-    {
-      "keyword": "利率",
-      "avgScore7d": 12.25,
-      "avgScore30d": 12.25,
-      "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
     },
     {
       "keyword": "为什么华尔街",
@@ -398,6 +524,12 @@
     {
       "date": "2026-05-28",
       "sentiment": "看跌",
+      "riskLevel": "高",
+      "keywordCount": 10
+    },
+    {
+      "date": "2026-05-29",
+      "sentiment": "分化",
       "riskLevel": "高",
       "keywordCount": 10
     }

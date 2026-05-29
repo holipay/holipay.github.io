@@ -2,20 +2,20 @@
   "topic": "news",
   "name": "全球资讯",
   "icon": "📰",
-  "updatedAt": "2026-05-28T05:33:22.806Z",
+  "updatedAt": "2026-05-29T02:11:13.551Z",
   "categories": [
+    {
+      "icon": "📰",
+      "title": "其他资讯",
+      "file": "其他资讯",
+      "count": 161,
+      "archiveCount": 0
+    },
     {
       "icon": "📈",
       "title": "股市与市场",
       "file": "股市与市场",
       "count": 200,
-      "archiveCount": 0
-    },
-    {
-      "icon": "📰",
-      "title": "其他资讯",
-      "file": "其他资讯",
-      "count": 157,
       "archiveCount": 0
     },
     {
@@ -26,88 +26,88 @@
       "archiveCount": 0
     },
     {
+      "icon": "🏦",
+      "title": "央行与利率",
+      "file": "央行与利率",
+      "count": 128,
+      "archiveCount": 0
+    },
+    {
       "icon": "🌍",
       "title": "国际财经",
       "file": "国际财经",
-      "count": 108,
+      "count": 122,
       "archiveCount": 18
     },
     {
       "icon": "🛢️",
       "title": "大宗商品与能源",
       "file": "大宗商品与能源",
-      "count": 174,
-      "archiveCount": 0
-    },
-    {
-      "icon": "🏦",
-      "title": "央行与利率",
-      "file": "央行与利率",
-      "count": 116,
+      "count": 181,
       "archiveCount": 0
     },
     {
       "icon": "💰",
       "title": "宏观经济",
       "file": "宏观经济",
-      "count": 121,
+      "count": 146,
       "archiveCount": 0
-    },
-    {
-      "icon": "🤖",
-      "title": "科技与研究",
-      "file": "科技与研究",
-      "count": 30,
-      "archiveCount": 5
     },
     {
       "icon": "🏛️",
       "title": "政治与治理",
       "file": "政治与治理",
-      "count": 146,
+      "count": 168,
       "archiveCount": 0
     },
     {
       "icon": "👥",
       "title": "社会与人口",
       "file": "社会与人口",
-      "count": 174,
+      "count": 187,
       "archiveCount": 0
     },
     {
       "icon": "⚖️",
       "title": "法律与伦理",
       "file": "法律与伦理",
-      "count": 11,
+      "count": 13,
       "archiveCount": 2
-    },
-    {
-      "icon": "🏥",
-      "title": "健康与公共卫生",
-      "file": "健康与公共卫生",
-      "count": 31,
-      "archiveCount": 5
-    },
-    {
-      "icon": "🌍",
-      "title": "环境与能源",
-      "file": "环境与能源",
-      "count": 20,
-      "archiveCount": 5
     },
     {
       "icon": "📚",
       "title": "教育与媒体",
       "file": "教育与媒体",
-      "count": 44,
+      "count": 47,
       "archiveCount": 7
+    },
+    {
+      "icon": "🤖",
+      "title": "科技与研究",
+      "file": "科技与研究",
+      "count": 33,
+      "archiveCount": 5
+    },
+    {
+      "icon": "🏥",
+      "title": "健康与公共卫生",
+      "file": "健康与公共卫生",
+      "count": 35,
+      "archiveCount": 5
     },
     {
       "icon": "🧠",
       "title": "心理学与认知",
       "file": "心理学与认知",
-      "count": 23,
+      "count": 24,
       "archiveCount": 4
+    },
+    {
+      "icon": "🌍",
+      "title": "环境与能源",
+      "file": "环境与能源",
+      "count": 24,
+      "archiveCount": 5
     }
   ]
 }
