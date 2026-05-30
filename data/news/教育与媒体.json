@@ -1,8 +1,26 @@
 {
   "icon": "📚",
   "title": "教育与媒体",
-  "updatedAt": "2026-05-29T08:23:48.425Z",
+  "updatedAt": "2026-05-30T02:06:42.649Z",
   "items": [
+    {
+      "title": "美国和乌干达阻止埃博拉传播的计划存在哪些问题",
+      "link": "https://theconversation.com/whats-wrong-with-how-us-and-uganda-plan-to-stop-ebola-spreading-284015",
+      "source": "The Conversation",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "孤独疏离、混乱失控，当代艺术如何呈现人的处境？｜观展",
+      "link": "https://mini.caixin.com/2026-05-30/102449375.html",
+      "source": "财新网",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "成为乔治·桑｜猎读",
+      "link": "https://mini.caixin.com/2026-05-30/102449368.html",
+      "source": "财新网",
+      "date": "2026-05-30"
+    },
     {
       "title": "早间新闻：2026年5月28日",
       "link": "https://www.crossingwallstreet.com/archives/2026/05/morning-news-may-28-2026.html",
@@ -151,127 +169,6 @@
       "title": "这项就业市场研究合乎道德吗？ - 黑斯廷斯生物伦理学中心",
       "source": "Google News Academic",
       "date": "2026-05-26"
-    },
-    {
-      "title": "金融知识和金融犯罪：断点回归方法",
-      "source": "ScienceDirect",
-      "date": "2026-05-26",
-      "link": "https://www.sciencedirect.com/science/article/pii/S0304405X26000632?dgcid=rss_sd_all"
-    },
-    {
-      "title": "生命周期人力资本积累的地理——作者：Ben Sprung-Keyser、Sonya Porter",
-      "source": "NBER",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "为什么我们会感到时间匮乏？新研究提供答案 - 科学新闻",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "雅虎财经图表： 44张图表讲述了2025年开始的市场和经济故事-雅虎财经",
-      "source": "Reuters",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "用我们新的“低价值人力资本”会员礼物--英国《金融时报》庆祝您即将过时",
-      "source": "Financial Times",
-      "date": "2026-05-23"
-    },
-    {
-      "title": "正如哥伦比亚广播公司广播新闻一样，新闻媒体应该服务于公众利益的理念也如此",
-      "source": "The Conversation",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "让孩子们出门上学让我抓狂。我们怎样才能让早晨更平静？",
-      "source": "The Conversation",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "科学史教学如何帮助学生面对两极分化的时代",
-      "source": "The Conversation",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "美国人首先在哪里获取有关突发新闻的信息？",
-      "source": "Pew Research",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "年轻人与新闻的未来 - 皮尤研究中心",
-      "source": "Google News Academic",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "我们的宠物真的能说“我爱你”吗？科学正在寻找答案——加州大学",
-      "source": "Google News Academic",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "2025-08 - 新指南将社区置于研究的核心 - Wits 大学",
-      "source": "Google News Academic",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "谁知道“Slick” Gavin Newsom是这样一位经济大师？ -彭博社",
-      "source": "Bloomberg",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "FTAV的进一步阅读-金融时报",
-      "source": "Financial Times",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "美国最受欢迎的喜剧演员希望成为下一个华特迪士尼，而且他不是在开玩笑 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "没人关心你的 GPA，以及为应届毕业生提供的更多职业建议 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "《建筑机遇：智利学校建设的代际影响》，作者： Adrienne Lucas、Patrick McEwan",
-      "source": "NBER",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "打破早期钟声：第一个全州开学时间授权的教训-由Jialu （ Gloria ） Dou ， Rania Gihleb ， Osea Giuntella ， Jakub Lonsky撰写",
-      "source": "NBER",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "一名男子因传播生殖器疱疹而被定罪。这就是为什么这可能会适得其反",
-      "source": "The Conversation",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "大学值得吗？ - 皮尤研究中心",
-      "source": "Google News Academic",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "国际：热门新闻与分析- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "如何理解这个奇怪的就业市场 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "应届大学毕业生，请向我们询问有关就业市场的问题 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "就业市场开始出现好消息 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-15"
     }
   ]
 }

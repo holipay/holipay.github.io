@@ -1,8 +1,20 @@
 {
   "icon": "⚖️",
   "title": "法律与伦理",
-  "updatedAt": "2026-05-29T08:23:48.424Z",
+  "updatedAt": "2026-05-30T02:06:42.648Z",
   "items": [
+    {
+      "title": "【周刊提前读】侵权者不断换壳 凯赛生物16年维权换来了什么？",
+      "link": "https://database.caixin.com/2026-05-30/102449319.html",
+      "source": "财新网",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "让醉酒司机重新上路的漏洞",
+      "link": "https://www.zerohedge.com/political/loophole-put-drunk-truckers-back-road",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
     {
       "title": "如何看待网民滥用“网络举报”行为",
       "link": "https://opinion.caixin.com/2026-05-29/102448990.html",
@@ -58,26 +70,6 @@
       "title": "土耳其资产在反对派受到法庭打击后反弹- Bloomberg.com",
       "source": "Bloomberg",
       "date": "2026-05-24"
-    },
-    {
-      "title": "Anthropic向全球金融监督机构简要介绍Mythos揭露的网络漏洞-英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "法院裁决后对三星罢工的担忧缓解-英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "解决多市场纠纷的神秘加密货币法官 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "网络上的黑暗模式是为了操纵你而设计的——为什么它们不都是非法的呢？",
-      "source": "The Conversation",
-      "date": "2026-05-19"
     }
   ]
 }

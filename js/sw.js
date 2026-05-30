@@ -1,4 +1,4 @@
-const CACHE_NAME = "nase-20260529";
+const CACHE_NAME = "nase-20260530";
 const STATIC_ASSETS = ["/", "/index.html", "/common.css", "/js/common.js"];
 const PREFETCH_DATA = [
   "/data/news/meta.json",

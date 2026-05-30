@@ -1,8 +1,62 @@
 {
   "icon": "👥",
   "title": "社会与人口",
-  "updatedAt": "2026-05-29T08:23:48.424Z",
+  "updatedAt": "2026-05-30T02:06:42.647Z",
   "items": [
+    {
+      "title": "蒂尔举家迁往米莱的自由主义阿根廷",
+      "link": "https://www.ft.com/content/3d7ab893-1842-4c6c-a3d9-26871d79dde4",
+      "source": "Financial Times",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "学生贷款借款人7月1日起将有两种新还款方案，如何选择",
+      "link": "https://www.cnbc.com/2026/05/29/student-loan-borrowers-new-repayment-plans.html",
+      "source": "CNBC",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "华裔青少年抑郁焦虑比例高于同龄人——父母为何可能忽视预警信号",
+      "link": "https://theconversation.com/chinese-american-teens-experience-depression-anxiety-at-higher-rates-than-peers-heres-why-their-parents-may-miss-the-warning-signs-283941",
+      "source": "The Conversation",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "什么算作酷儿艺术？新书拓展了身份与表达的边界",
+      "link": "https://theconversation.com/what-counts-as-queer-art-new-book-expands-the-boundaries-of-identity-and-expression-282312",
+      "source": "The Conversation",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "探访美国最大的末日地堡社区",
+      "link": "https://www.zerohedge.com/markets/meet-americas-largest-doomsday-bunker-community",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "每三名美国男性中就有一人不再工作",
+      "link": "https://www.zerohedge.com/personal-finance/one-three-american-men-no-longer-working",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "文化返乡：出去的人，拿什么归来？",
+      "link": "https://mini.caixin.com/2026-05-30/102449360.html",
+      "source": "财新网",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "财新闻｜中国佛教协会：释永信被判二十四年，完全是咎由自取",
+      "link": "https://mini.caixin.com/2026-05-30/102449303.html",
+      "source": "财新网",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "爵士乐时代最后一位巨匠桑尼·罗林斯逝世",
+      "link": "https://theconversation.com/sonny-rollins-the-last-great-of-the-jazz-era-dies-284036",
+      "source": "The Conversation",
+      "date": "2026-05-30"
+    },
     {
       "title": "调查显示亚洲富豪担忧家族财富流失——但多数人仍无继承计划",
       "link": "https://www.cnbc.com/2026/05/29/asias-rich-fear-losing-family-fortune-but-have-no-succession-plans.html",
@@ -371,7 +425,8 @@
     {
       "title": "天哪，24 个较大市场的公寓价格已经下降了 15% 至 33%，有些回到了 20 年前的水平",
       "source": "Wolf Street",
-      "date": "2026-05-28"
+      "date": "2026-05-28",
+      "link": "https://wolfstreet.com/2026/05/25/oh-dear-condo-prices-already-dropped-by-15-to-33-in-24-bigger-markets-some-back-to-where-theyd-been-20-years-ago/"
     },
     {
       "title": "你的信用卡可能帮你降低暑假旅行成本",
@@ -1063,48 +1118,6 @@
       "title": "减少医院分娩的健康保险费用对绝育率的影响比纠正不公正更大",
       "source": "The Conversation",
       "date": "2026-05-25"
-    },
-    {
-      "title": "“复制游戏”测试社会科学研究的稳健性 - Nature",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "评估科学研究结果可信度的框架1 - PNAS",
-      "source": "Google News Academic",
-      "date": "2026-05-25",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1IU3piV0FrYWhaNFVaN1cteUktdElWR1Y4QXhJTnNlQjg4UkNRQnA3VkNiMlFHVmZ5X2lUNFZERXVVR2d4ZmJ1Q2dvcmM0VVJMYVNuMi1yNGpvaE5E?oc=5"
-    },
-    {
-      "title": "为什么其他人对我们影响这么大？ - 今日心理学",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "种族研究本来应该从加州的学校开始。发生了什么？ - 加州事务",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "巴基斯坦选民投票率下降：为什么2024年女性登记人数增加，但投票人数减少",
-      "source": "The Conversation",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "[封面科学] 研究发现社会科学研究的重复性仅为 54% - 동아사і언스",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "欺诈性研究正在“破坏对科学的信任” - DW.com",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "研究发现 Bluesky 上的科学研究比 X 上的参与度更高 - 《卫报》",
-      "source": "Google News Academic",
-      "date": "2026-05-25",
-      "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOZXRYeEFXei15cHk5dGt0MktRMlBiZVpxaTVZX1RvRlNScEt6cWRrMWlfc1prMXVKT094Uks4eDVUZ2pxQlZsSlVmT1hkUExIRElxbVQzSjNDZXRpQjBydDIyd29tQjd2dUczTWlYMW5td0xhQmpUZHhrcXBnTGJRQXFTR1l6UGg2WVFEMG1nVFRKU1VqX0pDUWJDa1ZJWFBWR3pFSndBMENlZ2ZXMUZpeENSX3FDUkhrMGc?oc=5"
     }
   ]
 }

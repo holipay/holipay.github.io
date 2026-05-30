@@ -1,8 +1,33 @@
 {
   "icon": "🤖",
   "title": "科技与研究",
-  "updatedAt": "2026-05-29T08:23:48.426Z",
+  "updatedAt": "2026-05-30T02:06:42.650Z",
   "items": [
+    {
+      "title": "非洲的汉坦病毒：为什么气候变化、老鼠和薄弱的监测令科学家们担忧",
+      "source": "The Conversation",
+      "date": "2026-05-19"
+    },
+    {
+      "title": "关于研究代码质量和执行的大规模研究 - Nature",
+      "source": "Google News Academic",
+      "date": "2026-05-17"
+    },
+    {
+      "title": "哈格里夫斯·兰斯当（ Hargreaves Lansdown ）裁员以对抗数字竞争对手-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-15"
+    },
+    {
+      "title": "电视广告市场正在被流媒体平台接管-《华尔街日报》",
+      "source": "WSJ",
+      "date": "2026-05-15"
+    },
+    {
+      "title": "TikTok 流行的微剧将电视缩小为一口大小的块",
+      "source": "The Conversation",
+      "date": "2026-05-15"
+    },
     {
       "title": "科学家发现遗传适应可以帮助生活在干燥气候下的人们 - 亚利桑那州立大学新闻",
       "source": "Google News Academic",

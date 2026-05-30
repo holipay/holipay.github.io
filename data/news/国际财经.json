@@ -1,8 +1,92 @@
 {
   "icon": "🌍",
   "title": "国际财经",
-  "updatedAt": "2026-05-29T08:23:48.421Z",
+  "updatedAt": "2026-05-30T02:06:42.644Z",
   "items": [
+    {
+      "title": "讨论对华新限制措施，内部多国持谨慎态度，欧盟这次会议暴露深层次焦虑",
+      "link": "https://wallstreetcn.com/articles/3773484",
+      "source": "华尔街见闻",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "Anthropic七位联创身家均达80亿美元，单日上榜人数创彭博富豪榜纪录",
+      "link": "https://wallstreetcn.com/articles/3773477",
+      "source": "华尔街见闻",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "全球铝市场拉响警报！日本基准铝升水单季暴涨超100美元",
+      "link": "https://wallstreetcn.com/articles/3773473",
+      "source": "华尔街见闻",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "普京：有理由认为俄乌冲突临近收尾",
+      "link": "https://wallstreetcn.com/livenews/3111572",
+      "source": "华尔街见闻",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "城堡证券第一季度交易收入4.3亿美元创历史新高",
+      "link": "https://wallstreetcn.com/articles/3773474",
+      "source": "华尔街见闻",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "气候变化：火灾与洪水如何使欧洲部分地区变得无法投保",
+      "link": "https://theconversation.com/climate-change-how-fires-and-floods-are-creating-uninsurable-areas-across-europe-283181",
+      "source": "The Conversation",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "Antares与Urenco签署全球首份多年期商业HALEU供应协议",
+      "link": "https://www.zerohedge.com/energy/antares-signs-worlds-first-multi-year-commercial-haleu-supply-deal-urenco",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "北约谴责俄罗斯无人机撞击罗马尼亚公寓楼：\"严重升级\"",
+      "link": "https://www.zerohedge.com/geopolitical/nato-condemns-russia-after-drone-smashes-romanian-apartments-grave-escalation",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "【周刊提前读】中国电车多路径涌入欧洲 政策窗口正在收紧",
+      "link": "https://database.caixin.com/2026-05-30/102449349.html",
+      "source": "财新网",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "【周刊提前读】跨境炒股“灰洞”全面封堵 合规渠道如何打开？",
+      "link": "https://database.caixin.com/2026-05-30/102449322.html",
+      "source": "财新网",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "美媒：特朗普推迟就伊朗相关协议作最终决定",
+      "link": "https://wallstreetcn.com/articles/3773478",
+      "source": "华尔街见闻",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "丹麦养老基金“拉黑”SpaceX，批评其灾难性的公司治理结构",
+      "link": "https://wallstreetcn.com/livenews/3111557",
+      "source": "华尔街见闻",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "特朗普称对伊朗的海上封锁“即将被解除”",
+      "link": "https://wallstreetcn.com/livenews/3111549",
+      "source": "华尔街见闻",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "特朗普就结束伊朗战事提出条件",
+      "link": "https://wallstreetcn.com/articles/3773469",
+      "source": "华尔街见闻",
+      "date": "2026-05-30"
+    },
     {
       "title": "独家披露：欧盟若执意推动“产能过剩工具”，中方必将反制",
       "link": "https://wallstreetcn.com/articles/3773426",
@@ -452,251 +536,6 @@
       "title": "由于中东冲突扩大，联合国下调增长预测 - 华尔街日报",
       "source": "WSJ",
       "date": "2026-05-23"
-    },
-    {
-      "title": "尽管伊朗发生战争，但大多数首席财务官仍提高了美国的经济前景，关税- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "中东冲突导致抵押贷款成本急剧上升--英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "自2022年以来欧洲最大的办公楼交易崩溃-英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "花旗与贝莱德就欧洲私人贷款达成150亿欧元的合作伙伴关系--英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "欧盟计划迫使企业从非中国供应商处购买零部件--英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "欧盟考虑将安格拉·默克尔或马里奥·德拉吉作为可能的弗拉基米尔·普京低语者-金融时报",
-      "source": "Financial Times",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "这位出生于俄罗斯的企业家动摇了欧洲的重整军备--英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "美国将削减在欧洲的部队-英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "北约盟国向美国施压，要求澄清欧洲的裁员情况--英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "关于美国-伊朗制裁协议报道的美元撤退- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "普京在北京：俄罗斯需要中国提供的3样东西- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "家得宝是一个错误，但现在出售它会使情况变得更加复杂。为什么我们坚持不懈 - CNBC",
-      "source": "CNBC",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "德意志银行表示，投资者为何应继续逢低买入 - CNBC",
-      "source": "CNBC",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "华尔街日报美元指数上涨 0.35% 至 95.99 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "Stellantis 与东风计划成立新合资公司在欧洲销售 Voyah 品牌汽车 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "欧洲国家就人权达成新协议——这对英国移民辩论意味着什么",
-      "source": "The Conversation",
-      "date": "2026-05-21"
-    },
-    {
-      "title": "投资者对欧元区经济的信心跌至一年低点- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "白宫在特朗普-习近平峰会后吹捧大豆和稀土交易，而中国则在谈论削减关税- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "长达十年的押注为 Cerebras 早期风险投资带来了数十亿美元 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "随着美国加息前景的增强，美元还有上涨空间 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "中东战争推动煤炭卷土重来 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "为什么伊朗战争正在打破美欧战略联盟",
-      "source": "The Conversation",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "2026 年欧洲歌唱大赛：保加利亚获胜，澳大利亚获得第四名，但广播公司的争议持续不断",
-      "source": "The Conversation",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "这不是俄罗斯想要的世界",
-      "source": "Foreign Affairs",
-      "date": "2026-05-19"
-    },
-    {
-      "title": "俄罗斯战时经济自2023年以来首次萎缩-彭博社",
-      "source": "Bloomberg",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "跟踪特朗普在全球经济中的关税-彭博社",
-      "source": "Bloomberg",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "国际货币基金组织成员表示，伊朗冲突对全球经济构成风险-彭博社",
-      "source": "Bloomberg",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "市场准备好在地缘政治中定价了吗？ -彭博社",
-      "source": "Bloomberg",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "随着中东供应步履蹒跚，阿布扎比支持130 $十亿美国天然气厂-英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "伊朗冲突将欧洲化工行业推向突破点--英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "沙特阿拉伯与伊朗签署中东互不侵犯条约--英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "商学院学者取消美国会议并切换到欧洲-金融时报",
-      "source": "Financial Times",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "CNBC英国交易所通讯： Starmer的欧盟推动面临严峻的政治现实- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "随着政治主导新闻议程，欧洲市场收盘走高- CNBC",
-      "source": "CNBC",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "竞争曝光和创业实验--Joshua S. Gans",
-      "source": "NBER",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "预期贬值的因果效应--Martha Elena Delgado Rojas、Juan Herreño、Marc Hofstetter、Mathieu Pedemonte著",
-      "source": "NBER",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "当整个北欧的森林得到恢复时，驯鹿群、自然和萨米文化如何蓬勃发展",
-      "source": "The Conversation",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "帕特里克·拉登·基夫通过一名青少年的可疑死亡调查俄罗斯在伦敦的资金",
-      "source": "The Conversation",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "公众投票如何将欧洲歌唱大赛从歌曲比赛转变为政治平台",
-      "source": "The Conversation",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "在一个需要三者兼备的时代，社会研究改革的重点是广度、深度和公民意识 - newtonbeacon.org",
-      "source": "Google News Academic",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "大学与中东研究：批判性探究与制度要求之间的紧张关系 - 美国艺术与科学学院",
-      "source": "Google News Academic",
-      "date": "2026-05-17"
-    },
-    {
-      "title": "欧洲经济可以摆脱伊朗战争—如果在一个月内结束- Bloomberg.com",
-      "source": "Bloomberg",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "世界银行警告，伊朗战争将使非洲经济付出高昂代价-彭博社",
-      "source": "Bloomberg",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "由于普京的战争经济势头减弱，俄罗斯下调增长预测--英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "英国制造商警告钢铁关税变化带来的“重大问题” --英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "小鹏与大众就收购欧洲工厂进行谈判-英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "EDF ：欧洲的核希望-金融时报",
-      "source": "Financial Times",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "欧元区 3 月份工业生产小幅上升 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-15"
-    },
-    {
-      "title": "今年的威尼斯双年展标志着欧洲文化政治的重大转变",
-      "source": "The Conversation",
-      "date": "2026-05-15"
     }
   ]
 }

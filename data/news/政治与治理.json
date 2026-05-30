@@ -1,8 +1,152 @@
 {
   "icon": "🏛️",
   "title": "政治与治理",
-  "updatedAt": "2026-05-29T08:23:48.422Z",
+  "updatedAt": "2026-05-30T02:06:42.646Z",
   "items": [
+    {
+      "title": "亚洲大米5月飙升20%，战争与天气威胁产量",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-29/asia-rice-surges-20-in-may-as-war-and-weather-threaten-output",
+      "source": "Bloomberg",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "标普500因美伊押注创历史连涨周：市场综述",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/asian-stocks-to-rise-on-firming-us-iran-sentiment-markets-wrap",
+      "source": "Bloomberg",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "特朗普承诺对伊朗协议做出\"最终决定\"以延长停火",
+      "link": "https://www.ft.com/content/84c15446-c6d6-47ad-93ee-80963ab3e4d4",
+      "source": "Financial Times",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "特朗普结束伊朗会晤未宣布协议\"最终决定\"",
+      "link": "https://www.cnbc.com/2026/05/29/trump-iran-deal-hormuz-nuclear-war.html",
+      "source": "CNBC",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "法官暂时阻止特朗普18亿美元\"武器化\"基金",
+      "link": "https://www.cnbc.com/2026/05/29/judge-temporarily-blocks-trumps-1point8-billion-weaponization-fund.html",
+      "source": "CNBC",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "法官裁定特朗普名字必须从肯尼迪中心移除",
+      "link": "https://www.cnbc.com/2026/05/29/trump-kennedy-center-judge-beatty.html",
+      "source": "CNBC",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "彼得·穆雷尔挪用苏格兰民族党捐款——为何仍有众多选民忠于该党？",
+      "link": "https://theconversation.com/peter-murrell-embezzled-snp-donations-why-do-so-many-voters-stay-loyal-to-the-party-284026",
+      "source": "The Conversation",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "自由党新党首阿博特宣称：在\"生存危机\"时刻必须扩大党员规模",
+      "link": "https://theconversation.com/new-liberal-president-abbott-tells-party-it-must-build-bigger-membership-in-time-of-existential-crisis-283681",
+      "source": "The Conversation",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "\"我们直接抢走了钱包\"：贝森特宣称迄今已扣押10亿美元伊朗国家加密货币",
+      "link": "https://www.zerohedge.com/crypto/we-outright-grabbed-wallets-bessent-boasts-1bn-iran-state-crypto-seized-date",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "五角大楼告知参议员：美国军人通过商业位置数据被锁定",
+      "link": "https://www.zerohedge.com/military/us-service-members-targeted-commercial-location-data-pentagon-tells-senators",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "奥巴马任命法官下令将特朗普名字从肯尼迪中心建筑移除",
+      "link": "https://www.zerohedge.com/political/obama-nominated-judge-orders-trumps-name-removed-kennedy-center-building",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "\"闭合核燃料循环\"——Newcleo的7.8亿美元资金储备与Oklo合作推动24亿美元SPAC首秀",
+      "link": "https://www.zerohedge.com/markets/closing-nuclear-fuel-cycle-newcleos-780m-war-chest-and-oklo-partnership-fuel-24b-spac-debut",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "双方均称伊朗核协议\"接近\"但未敲定，特朗普承诺将很快做出\"最终决定\"",
+      "link": "https://www.zerohedge.com/geopolitical/iran-makes-clear-deal-not-finalized-amid-lack-trust-warns-us-gulf-utter-ruin-if-war",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "唐山官场“震复震” 首任监委主任刘德明落马",
+      "link": "https://china.caixin.com/2026-05-30/102449435.html",
+      "source": "财新网",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "人事观察｜56岁关志鸥主政湖北 成最年轻省级党委书记",
+      "link": "https://china.caixin.com/2026-05-30/102449414.html",
+      "source": "财新网",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "昔日“带帽”厅官曹清尧 仕途终局定性“结交政治骗子”被“双开”",
+      "link": "https://china.caixin.com/2026-05-30/102449408.html",
+      "source": "财新网",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "人事观察｜64岁国务院国资委主任张玉卓转岗中国工程院",
+      "link": "https://china.caixin.com/2026-05-30/102449393.html",
+      "source": "财新网",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "近期“最忙”部长张成中：上任两个月 屡屡迎“大考”",
+      "link": "https://china.caixin.com/2026-05-29/102449177.html",
+      "source": "财新网",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "德桑蒂斯提议取消佛罗里达州主要住宅房产税",
+      "link": "https://www.bloomberg.com/news/videos/2026-05-29/desantis-proposes-axing-taxes-on-homes-in-florida-video",
+      "source": "Bloomberg",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "从ESPN到白宫？",
+      "link": "https://www.ft.com/content/38a5f803-0e5a-4abf-8881-667240414099",
+      "source": "Financial Times",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "米莱将私有化阿根廷每晚10美元的工人旅馆",
+      "link": "https://www.ft.com/content/2d1e8cb1-9a04-49e5-bfa3-c19f84e3fd8a",
+      "source": "Financial Times",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "苏格兰选举制度产生了迄今最不成比例的结果",
+      "link": "https://theconversation.com/the-scottish-electoral-system-has-delivered-its-most-disproportional-result-yet-284007",
+      "source": "The Conversation",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "这就像裸体皇帝游街的深层政府",
+      "link": "https://www.zerohedge.com/political/deep-state-parade-naked-emperor",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "贝森特信号：未来数周至数月内打击黑钱资助的非政府组织",
+      "link": "https://www.zerohedge.com/political/bessent-signals-crackdown-dark-money-funded-ngos-weeks-months-ahead",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
     {
       "title": "中国如何分裂一个民族及其文化",
       "link": "https://www.ft.com/content/119d8c3a-e10f-4bf7-a198-90507293054b",
@@ -963,26 +1107,6 @@
       "title": "全球媒体网络简化了埃塞俄比亚的冲突：来自5年数据的见解",
       "source": "The Conversation",
       "date": "2026-05-25"
-    },
-    {
-      "title": "高尔夫课程：研究表明政治两极分化会损害工作表现-加州大学伯克利分校",
-      "source": "Google News Academic",
-      "date": "2026-05-25"
-    },
-    {
-      "title": "伊朗的最高领导人在哪里？ -金融时报",
-      "source": "Financial Times",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "藤壶和水母侵扰被困在海湾的船只-英国《金融时报》",
-      "source": "Financial Times",
-      "date": "2026-05-24"
-    },
-    {
-      "title": "安进药物在日本因患者死亡而收到新警告 - 华尔街日报",
-      "source": "WSJ",
-      "date": "2026-05-24"
     }
   ]
 }

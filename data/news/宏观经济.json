@@ -1,8 +1,104 @@
 {
   "icon": "💰",
   "title": "宏观经济",
-  "updatedAt": "2026-05-29T08:23:48.418Z",
+  "updatedAt": "2026-05-30T02:06:42.643Z",
   "items": [
+    {
+      "title": "硅基通胀与碳基崩溃：一头灰犀牛正在被养成",
+      "link": "https://wallstreetcn.com/member/articles/3773350",
+      "source": "华尔街见闻",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "美国将对法官要求广泛退还特朗普关税的裁决提出上诉。 美国在向贸易法院提交的文件中披露了对退税裁决提出上诉的计划。 比特币目前涨0.1%",
+      "link": "https://wallstreetcn.com/articles/3773480",
+      "source": "华尔街见闻",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "退税兴奋感消退，美国消费者面临财政悬崖",
+      "link": "https://wallstreetcn.com/articles/3773472",
+      "source": "华尔街见闻",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "美国商品期货交易委员会为加密货币万亿美元离岸交易铺路",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-29/us-paves-way-for-onshore-crypto-linked-perpetual-futures",
+      "source": "Bloomberg",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "黄金涨幅收窄，交易员权衡美伊协议信号",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-28/gold-holds-gain-as-us-iran-truce-hopes-calm-inflation-fears",
+      "source": "Bloomberg",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "代币还是人类？企业的新权衡",
+      "link": "https://www.cnbc.com/2026/05/29/-tokens-or-humans-the-new-corporate-trade-off.html",
+      "source": "CNBC",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "科罗拉多州2018年投票废除强迫监狱劳动——为何在押人员时薪仍不足2美元？",
+      "link": "https://theconversation.com/colorado-voted-to-end-forced-prison-labor-in-2018-so-why-are-incarcerated-people-in-the-state-still-working-for-less-than-2-an-hour-282661",
+      "source": "The Conversation",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "罕见的两党住房法案面临更大难题——美国人仍无力承担住房成本",
+      "link": "https://theconversation.com/a-rare-bipartisan-housing-victory-faces-a-bigger-problem-americans-still-cant-afford-housing-283733",
+      "source": "The Conversation",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "报道：伊朗反对派新闻机构获8亿美元债务减免",
+      "link": "https://www.zerohedge.com/geopolitical/iranian-opposition-news-site-got-800bn-debt-relief-report",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "6620亿个担忧理由：穆迪警告AI数据中心融资风险，阿波罗洽谈巨额Anthropic债务交易",
+      "link": "https://www.zerohedge.com/markets/662-billion-reasons-worry-moodys-raises-ai-data-center-fears-apollo-shops-big-anthropic",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "日本原油进口量下降66%创历史新低",
+      "link": "https://www.zerohedge.com/markets/japan-crude-imports-fall-66-record-low",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "【周刊提前读】不良攀升竞争蚕食 如何拯救银行信用卡？",
+      "link": "https://database.caixin.com/2026-05-30/102449323.html",
+      "source": "财新网",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "乘联会崔东树：中国车市出现了三个失衡",
+      "link": "https://wallstreetcn.com/articles/3773466",
+      "source": "华尔街见闻",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "美国就业报告将于下周五公布",
+      "link": "https://www.bloomberg.com/news/videos/2026-05-29/us-jobs-report-due-next-friday-video",
+      "source": "Bloomberg",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "关注实际消费数据：普里亚·米斯拉",
+      "link": "https://www.bloomberg.com/news/videos/2026-05-29/watching-real-consumption-priya-misra-video",
+      "source": "Bloomberg",
+      "date": "2026-05-30"
+    },
+    {
+      "title": "美国经济如今面临的两条丑陋路径",
+      "link": "https://www.zerohedge.com/markets/two-ugly-paths-now-facing-us-economy",
+      "source": "ZeroHedge",
+      "date": "2026-05-30"
+    },
     {
       "title": "【数据图解】平价韩妆转身欧美 进口品牌在中国市场还有何机会？",
       "link": "https://database.caixin.com/2026-05-29/102448975.html",

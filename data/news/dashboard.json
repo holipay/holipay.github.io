@@ -271,64 +271,149 @@
           "count": 25
         }
       ]
+    },
+    {
+      "date": "2026-05-30",
+      "sentiment": "中性",
+      "riskLevel": "中",
+      "keyThemes": [
+        "地缘冲突与油价扰动",
+        "AI热潮持续发酵",
+        "通胀与货币政策不确定性"
+      ],
+      "sectors": [
+        "能源",
+        "科技",
+        "国防",
+        "航运"
+      ],
+      "outlook": "战争风险与AI乐观情绪拉锯，市场短期震荡加剧。",
+      "topKeywords": [
+        {
+          "keyword": "战争",
+          "score": 2806.93,
+          "count": 63
+        },
+        {
+          "keyword": "收购",
+          "score": 1046.66,
+          "count": 19
+        },
+        {
+          "keyword": "ai",
+          "score": 1019.2,
+          "count": 55
+        },
+        {
+          "keyword": "黄金",
+          "score": 837.72,
+          "count": 92
+        },
+        {
+          "keyword": "央行",
+          "score": 609.23,
+          "count": 30
+        },
+        {
+          "keyword": "利率",
+          "score": 431.52,
+          "count": 17
+        },
+        {
+          "keyword": "通胀",
+          "score": 392.82,
+          "count": 34
+        },
+        {
+          "keyword": "融资",
+          "score": 307.43,
+          "count": 18
+        },
+        {
+          "keyword": "天然气",
+          "score": 237.26,
+          "count": 11
+        },
+        {
+          "keyword": "人工智能",
+          "score": 222.78,
+          "count": 17
+        }
+      ]
     }
   ],
   "keywordTrends": [
     {
       "keyword": "战争",
-      "avgScore7d": 3208.27,
-      "avgScore30d": 3208.27,
+      "avgScore7d": 3007.6,
+      "avgScore30d": 3007.6,
       "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
+      "frequency7d": 2,
+      "frequency30d": 2
     },
     {
       "keyword": "收购",
-      "avgScore7d": 1151.65,
-      "avgScore30d": 1151.65,
+      "avgScore7d": 1099.16,
+      "avgScore30d": 1099.16,
+      "trend": 0,
+      "frequency7d": 2,
+      "frequency30d": 2
+    },
+    {
+      "keyword": "ai",
+      "avgScore7d": 1019.2,
+      "avgScore30d": 1019.2,
       "trend": 0,
       "frequency7d": 1,
       "frequency30d": 1
     },
     {
       "keyword": "央行",
-      "avgScore7d": 826.88,
-      "avgScore30d": 826.88,
-      "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
-    },
-    {
-      "keyword": "人工智能",
-      "avgScore7d": 561.4,
-      "avgScore30d": 561.4,
-      "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
-    },
-    {
-      "keyword": "黄金",
-      "avgScore7d": 420.2,
-      "avgScore30d": 420.2,
+      "avgScore7d": 718.06,
+      "avgScore30d": 718.06,
       "trend": 0,
       "frequency7d": 2,
       "frequency30d": 2
     },
     {
+      "keyword": "黄金",
+      "avgScore7d": 559.37,
+      "avgScore30d": 559.37,
+      "trend": 0,
+      "frequency7d": 3,
+      "frequency30d": 3
+    },
+    {
       "keyword": "利率",
-      "avgScore7d": 375.09,
-      "avgScore30d": 375.09,
+      "avgScore7d": 393.9,
+      "avgScore30d": 393.9,
+      "trend": 0,
+      "frequency7d": 3,
+      "frequency30d": 3
+    },
+    {
+      "keyword": "人工智能",
+      "avgScore7d": 392.09,
+      "avgScore30d": 392.09,
       "trend": 0,
       "frequency7d": 2,
       "frequency30d": 2
     },
     {
       "keyword": "融资",
-      "avgScore7d": 327.48,
-      "avgScore30d": 327.48,
+      "avgScore7d": 317.46,
+      "avgScore30d": 317.46,
       "trend": 0,
-      "frequency7d": 1,
-      "frequency30d": 1
+      "frequency7d": 2,
+      "frequency30d": 2
+    },
+    {
+      "keyword": "通胀",
+      "avgScore7d": 271.94,
+      "avgScore30d": 271.94,
+      "trend": 0,
+      "frequency7d": 3,
+      "frequency30d": 3
     },
     {
       "keyword": "美联储",
@@ -339,12 +424,12 @@
       "frequency30d": 1
     },
     {
-      "keyword": "通胀",
-      "avgScore7d": 211.5,
-      "avgScore30d": 211.5,
+      "keyword": "天然气",
+      "avgScore7d": 237.26,
+      "avgScore30d": 237.26,
       "trend": 0,
-      "frequency7d": 2,
-      "frequency30d": 2
+      "frequency7d": 1,
+      "frequency30d": 1
     },
     {
       "keyword": "随着伊朗战争",
@@ -518,6 +603,12 @@
     },
     {
       "date": "2026-05-29",
+      "sentiment": "中性",
+      "riskLevel": "中",
+      "keywordCount": 10
+    },
+    {
+      "date": "2026-05-30",
       "sentiment": "中性",
       "riskLevel": "中",
       "keywordCount": 10

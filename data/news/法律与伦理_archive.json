@@ -1,8 +1,28 @@
 {
   "icon": "⚖️",
   "title": "法律与伦理",
-  "updatedAt": "2026-05-29T08:23:48.424Z",
+  "updatedAt": "2026-05-30T02:06:42.648Z",
   "items": [
+    {
+      "title": "Anthropic向全球金融监督机构简要介绍Mythos揭露的网络漏洞-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-21"
+    },
+    {
+      "title": "法院裁决后对三星罢工的担忧缓解-英国《金融时报》",
+      "source": "Financial Times",
+      "date": "2026-05-19"
+    },
+    {
+      "title": "解决多市场纠纷的神秘加密货币法官 - 华尔街日报",
+      "source": "WSJ",
+      "date": "2026-05-19"
+    },
+    {
+      "title": "网络上的黑暗模式是为了操纵你而设计的——为什么它们不都是非法的呢？",
+      "source": "The Conversation",
+      "date": "2026-05-19"
+    },
     {
       "title": "新西兰人与否：公民身份测试能否真正衡量成为新西兰人意味着什么？",
       "source": "The Conversation",
