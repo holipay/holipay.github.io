@@ -1,0 +1,32 @@
+{
+  "_comment": "领域关键词白名单 — 这些关键词直接通过热点筛选（count≥1即可）",
+  "finance": [
+    "关税", "贸易战", "贸易摩擦", "制裁", "脱钩", "供应链",
+    "降息", "加息", "利率", "通胀", "通缩", "CPI", "PPI", "GDP",
+    "美联储", "央行", "人民银行", "欧央行", "日央行",
+    "A股", "美股", "港股", "纳斯达克", "标普", "道琼斯", "上证", "深证",
+    "原油", "黄金", "白银", "铜", "天然气",
+    "比特币", "以太坊", "IPO", "融资", "并购", "收购", "估值"
+  ],
+  "technology": [
+    "芯片", "半导体", "AI", "人工智能", "大模型", "量子",
+    "电动车", "新能源", "光伏", "风电", "储能", "锂电"
+  ],
+  "macro": [
+    "房地产", "楼市", "房价", "土地", "城投",
+    "就业", "失业率", "非农", "PMI", "制造业",
+    "地缘", "冲突", "战争", "选举",
+    "气候", "碳排放", "ESG", "绿色",
+    "疫情", "疫苗", "病毒", "公共卫生"
+  ],
+  "english": [
+    "tariff", "inflation", "deflation", "recession", "stimulus",
+    "rate cut", "rate hike", "federal reserve", "fed", "ecb", "pboc",
+    "stock", "bond", "yield", "treasury", "equity",
+    "crypto", "bitcoin", "ethereum", "blockchain",
+    "semiconductor", "chip", "artificial intelligence", "LLM",
+    "EV", "electric vehicle", "renewable", "solar", "battery",
+    "trade war", "sanctions", "geopolitics", "conflict",
+    "IPO", "merger", "acquisition", "valuation", "funding"
+  ]
+}

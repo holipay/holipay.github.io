@@ -1,0 +1,26 @@
+{
+  "_comment": "噪音关键词黑名单 — 这些关键词会从热点排行中排除",
+  "entertainment": [
+    "电影", "票房", "明星", "演员", "导演", "综艺", "选秀", "偶像",
+    "演唱会", "歌曲", "音乐", "专辑", "歌手", "网红", "直播带货",
+    "八卦", "绯闻", "出轨", "离婚", "结婚", "恋情", "分手",
+    "奥斯卡", "格莱美", "艾美奖", "金球奖",
+    "movie", "film", "actor", "actress", "director", "celebrity",
+    "grammy", "oscar", "emmy", "album", "concert", "song",
+    "tiktok", "instagram", "youtube", "twitch"
+  ],
+  "sports": [
+    "足球", "篮球", "世界杯", "NBA", "欧冠", "英超", "西甲", "奥运",
+    "金牌", "运动员", "教练", "比赛",
+    "football", "soccer", "basketball", "world cup", "championship",
+    "tournament", "athlete", "coach", "match"
+  ],
+  "lifestyle": [
+    "美食", "旅游", "穿搭", "化妆", "护肤", "减肥", "星座", "塔罗",
+    "运势", "风水", "recipe", "fashion", "makeup", "skincare", "travel"
+  ],
+  "gossip": [
+    "出轨", "小三", "家暴", "打人", "骂人", "互撕", "撕逼",
+    "热搜", "上热搜", "霸榜", "刷屏"
+  ]
+}
