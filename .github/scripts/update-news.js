@@ -1917,7 +1917,7 @@ async function processTopic(topic) {
 
   // 10.5 生成 latest.json（首页快速加载用）
   // 从已写入的分类文件读取合并后的数据，而非预合并的 sections
-  const LATEST_ITEMS = 50;
+  const LATEST_ITEMS = 100;
   const latestAll = [];
   for (const cat of categoryMeta) {
     try {

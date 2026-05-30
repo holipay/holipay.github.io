@@ -10,7 +10,7 @@ const DATA_DIR = path.join(__dirname, "..", "..", "data", "news");
 const args = process.argv.slice(2);
 const dryRun = args.includes("--dry-run");
 const maxArg = args.find((a) => a.startsWith("--max="));
-const MAX_ITEMS = maxArg ? parseInt(maxArg.split("=")[1], 10) : 200;
+const MAX_ITEMS = maxArg ? parseInt(maxArg.split("=")[1], 10) : 40;
 
 // 跳过的文件
 const SKIP = new Set([
