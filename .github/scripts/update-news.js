@@ -39,6 +39,7 @@ const CACHE_FILE = path.join(SCRIPTS_DIR, "translations-cache.json");
 const TOPICS_FILE = path.join(SCRIPTS_DIR, "topics.json");
 const HEALTH_FILE = path.join(SCRIPTS_DIR, "source-health.json");
 const METRICS_FILE = path.join(SCRIPTS_DIR, "run-metrics.json");
+const ETAG_FILE = path.join(SCRIPTS_DIR, "source-etag.json");
 const RETENTION_DAYS = 30; // 数据保留天数（1个月）
 const MAX_ITEMS_PER_CATEGORY = 40; // 每个分类最大记录数（与 trim-data.js 保持一致）
 const MAX_CONSECUTIVE_FAILURES = 3; // 连续失败告警阈值
@@ -86,7 +87,7 @@ function sanitizeFilename(name) {
 }
 
 // ==================== HTTP 请求 ====================
-function fetchUrl(url, maxRedirects = 3, _visited = new Set(), timeout = TIMEOUT_CONFIG.default) {
+function fetchUrl(url, maxRedirects = 3, _visited = new Set(), timeout = TIMEOUT_CONFIG.default, options = {}) {
   return new Promise((resolve, reject) => {
     if (_visited.has(url))
       return reject(new Error(`Circular redirect: ${url}`));
@@ -103,10 +104,17 @@ function fetchUrl(url, maxRedirects = 3, _visited = new Set(), timeout = TIMEOUT
           Accept:
             "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
           "Accept-Encoding": "gzip, deflate",
+          ...(options.conditionalHeaders || {}),
         },
         timeout,
       },
       (res) => {
+        // 304 Not Modified — 源无更新
+        if (res.statusCode === 304) {
+          res.resume();
+          resolve({ notModified: true });
+          return;
+        }
         if (
           res.statusCode >= 300 &&
           res.statusCode < 400 &&
@@ -115,7 +123,7 @@ function fetchUrl(url, maxRedirects = 3, _visited = new Set(), timeout = TIMEOUT
         ) {
           const redirectUrl = new URL(res.headers.location, url).href;
           res.resume();
-          return fetchUrl(redirectUrl, maxRedirects - 1, _visited, timeout)
+          return fetchUrl(redirectUrl, maxRedirects - 1, _visited, timeout, options)
             .then(resolve)
             .catch(reject);
         }
@@ -133,9 +141,18 @@ function fetchUrl(url, maxRedirects = 3, _visited = new Set(), timeout = TIMEOUT
 
         const chunks = [];
         stream.on("data", (c) => chunks.push(c));
-        stream.on("end", () =>
-          resolve(Buffer.concat(chunks).toString("utf-8")),
-        );
+        stream.on("end", () => {
+          const body = Buffer.concat(chunks).toString("utf-8");
+          if (options.conditionalHeaders) {
+            resolve({
+              body,
+              etag: res.headers.etag,
+              lastModified: res.headers["last-modified"],
+            });
+          } else {
+            resolve(body);
+          }
+        });
         stream.on("error", reject);
       },
     );
@@ -147,10 +164,10 @@ function fetchUrl(url, maxRedirects = 3, _visited = new Set(), timeout = TIMEOUT
   });
 }
 
-async function fetchWithRetry(url, retries = MAX_RETRIES, timeout = TIMEOUT_CONFIG.default) {
+async function fetchWithRetry(url, retries = MAX_RETRIES, timeout = TIMEOUT_CONFIG.default, options = {}) {
   for (let i = 0; i <= retries; i++) {
     try {
-      return await fetchUrl(url, 3, new Set(), timeout);
+      return await fetchUrl(url, 3, new Set(), timeout, options);
     } catch (e) {
       const msg = e.message || "";
       const isRateLimited = msg.includes("HTTP 429");
@@ -307,6 +324,42 @@ function checkSourceHealthAlerts() {
   return alerts;
 }
 
+// ==================== 源 ETag 缓存（增量抓取） ====================
+let etagData = {};
+
+function loadEtagData() {
+  try {
+    if (fs.existsSync(ETAG_FILE)) {
+      etagData = JSON.parse(fs.readFileSync(ETAG_FILE, "utf-8"));
+      const count = Object.keys(etagData).length;
+      if (count > 0) console.log(`🔖 加载 ETag 缓存: ${count} 个源`);
+    }
+  } catch {
+    etagData = {};
+  }
+}
+
+function saveEtagData() {
+  try {
+    const tmp = ETAG_FILE + ".tmp";
+    fs.writeFileSync(tmp, JSON.stringify(etagData), "utf-8");
+    fs.renameSync(tmp, ETAG_FILE);
+    console.log(`💾 保存 ETag 缓存: ${Object.keys(etagData).length} 个源`);
+  } catch (e) {
+    console.error("⚠️ ETag 数据保存失败:", e.message);
+  }
+}
+
+function updateEtag(sourceName, responseHeaders) {
+  const entry = {};
+  if (responseHeaders.etag) entry.etag = responseHeaders.etag;
+  if (responseHeaders["last-modified"]) entry.lastModified = responseHeaders["last-modified"];
+  if (entry.etag || entry.lastModified) {
+    entry.lastCheck = new Date().toISOString();
+    etagData[sourceName] = entry;
+  }
+}
+
 // ==================== 运行指标收集 ====================
 const metrics = {
   startTime: null,
@@ -317,6 +370,7 @@ const metrics = {
     sourcesAttempted: 0,
     sourcesSucceeded: 0,
     sourcesFailed: 0,
+    sourcesSkipped: 0,
     itemsFetched: 0,
     itemsDeduped: 0,
     itemsFinal: 0,
@@ -334,6 +388,7 @@ function startMetrics() {
     sourcesAttempted: 0,
     sourcesSucceeded: 0,
     sourcesFailed: 0,
+    sourcesSkipped: 0,
     itemsFetched: 0,
     itemsDeduped: 0,
     itemsFinal: 0,
@@ -353,6 +408,7 @@ function recordTopicMetrics(topicName, data) {
   metrics.totals.sourcesAttempted += data.sourcesAttempted || 0;
   metrics.totals.sourcesSucceeded += data.sourcesSucceeded || 0;
   metrics.totals.sourcesFailed += data.sourcesFailed || 0;
+  metrics.totals.sourcesSkipped += data.sourcesSkipped || 0;
   metrics.totals.itemsFetched += data.itemsFetched || 0;
   metrics.totals.itemsDeduped += data.itemsDeduped || 0;
   metrics.totals.itemsFinal += data.itemsFinal || 0;
@@ -794,7 +850,30 @@ async function fetchSource(source) {
 
   try {
     if (source.type === "rss") {
-      const xml = await fetchWithRetry(source.url, MAX_RETRIES, timeout);
+      // 增量抓取：发送条件请求头
+      const cached = etagData[source.name];
+      const options = cached
+        ? {
+            conditionalHeaders: {
+              ...(cached.etag ? { "If-None-Match": cached.etag } : {}),
+              ...(cached.lastModified ? { "If-Modified-Since": cached.lastModified } : {}),
+            },
+          }
+        : {};
+
+      const result = await fetchWithRetry(source.url, MAX_RETRIES, timeout, options);
+
+      // 304 Not Modified — 源无更新，跳过
+      if (result && result.notModified) {
+        return { items: [], skipped: true };
+      }
+
+      // 有更新 — 保存新的 etag
+      if (result && typeof result === "object" && result.etag !== undefined) {
+        updateEtag(source.name, { etag: result.etag, "last-modified": result.lastModified });
+      }
+
+      const xml = typeof result === "string" ? result : result.body;
       const filter = source.filter ? new RegExp(source.filter, "i") : null;
       const parsed = parseRssItems(xml, filter);
       parsed.forEach((item) => items.push({ ...item, source: source.name }));
@@ -838,7 +917,7 @@ async function fetchSource(source) {
     }
   }
 
-  return items;
+  return { items, skipped: false };
 }
 
 // ==================== 分类 ====================
@@ -1540,17 +1619,26 @@ async function processTopic(topic) {
   for (const s of topic.sources) sourceLangMap[s.name] = s.lang;
 
   let allRaw = [];
+  let skippedCount = 0;
   results.forEach((r, i) => {
     const name = topic.sources[i].name;
     if (r.status === "fulfilled") {
-      console.log(`  ✅ ${name}: ${r.value.length} 条`);
-      allRaw.push(...r.value);
-      updateSourceHealth(name, true, r.value.length);
+      if (r.value.skipped) {
+        skippedCount++;
+        return;
+      }
+      console.log(`  ✅ ${name}: ${r.value.items.length} 条`);
+      allRaw.push(...r.value.items);
+      updateSourceHealth(name, true, r.value.items.length);
     } else {
       console.error(`  ❌ ${name}: ${r.reason.message}`);
       updateSourceHealth(name, false, 0, r.reason.message);
     }
   });
+
+  if (skippedCount > 0) {
+    console.log(`\n⏭️ 跳过 ${skippedCount}/${topic.sources.length} 个无更新的源`);
+  }
 
   // 源健康报告
   const failedSources = results
@@ -1993,12 +2081,13 @@ async function processTopic(topic) {
   );
 
   // 记录主题指标
-  const succeededSources = results.filter((r) => r.status === "fulfilled").length;
+  const succeededSources = results.filter((r) => r.status === "fulfilled" && !r.value.skipped).length;
   const failedSourcesCount = results.filter((r) => r.status === "rejected").length;
   recordTopicMetrics(topic.name, {
     sourcesAttempted: topic.sources.length,
     sourcesSucceeded: succeededSources,
     sourcesFailed: failedSourcesCount,
+    sourcesSkipped: skippedCount,
     itemsFetched: allRaw.length,
     itemsDeduped: allRaw.length - allItems.length,
     itemsFinal: totalItems,
@@ -2018,6 +2107,7 @@ async function main() {
 
   loadCache();
   loadSourceHealth();
+  loadEtagData();
   startMetrics();
 
   let topics;
@@ -2050,6 +2140,7 @@ async function main() {
 
   saveCache();
   saveSourceHealth();
+  saveEtagData();
   finishMetrics();
   saveMetrics();
   console.log("\n✅ 全部完成！");

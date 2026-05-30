@@ -78,6 +78,7 @@ jobs:
             ':!data/news/*_archive.json' \
             .github/scripts/translations-cache.json \
             .github/scripts/source-health.json \
+            .github/scripts/source-etag.json \
             .github/scripts/run-metrics.json \
             js/sw.js \
             .github/scripts/trim-data.js
