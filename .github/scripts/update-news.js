@@ -39,10 +39,10 @@ const CACHE_FILE = path.join(SCRIPTS_DIR, "translations-cache.json");
 const TOPICS_FILE = path.join(SCRIPTS_DIR, "topics.json");
 const HEALTH_FILE = path.join(SCRIPTS_DIR, "source-health.json");
 const METRICS_FILE = path.join(SCRIPTS_DIR, "run-metrics.json");
-const RETENTION_DAYS = 90; // 数据保留天数（3个月）
-const MAX_ITEMS_PER_CATEGORY = 200; // 每个分类最大记录数（与 trim-data.js 保持一致）
+const RETENTION_DAYS = 30; // 数据保留天数（1个月）
+const MAX_ITEMS_PER_CATEGORY = 40; // 每个分类最大记录数（与 trim-data.js 保持一致）
 const MAX_CONSECUTIVE_FAILURES = 3; // 连续失败告警阈值
-const MAX_CACHE_SIZE = 50000; // 翻译缓存最大条目数
+const MAX_CACHE_SIZE = 3000; // 翻译缓存最大条目数
 const MAX_METRICS_HISTORY = 30; // 保留最近30次运行的指标
 
 // 社科类分类条数限制（降低权重）

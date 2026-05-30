@@ -36,7 +36,7 @@ const ANALYSIS_DIR = path.join(DATA_DIR, "analysis");
 const CACHE_FILE = path.join(__dirname, "translations-cache.json");
 const SNIPPET_BATCH_SIZE = 3; // 摘要翻译批次大小（摘要较长，批次小些）
 const ARTICLES_DIR = path.join(DATA_DIR, "articles"); // 精品文章归档目录
-const MAX_CACHE_SIZE = 50000; // 翻译缓存最大条目数
+const MAX_CACHE_SIZE = 3000; // 翻译缓存最大条目数
 
 // ===== 每日视角配置 =====
 const DAILY_PERSPECTIVES = [
