@@ -14,42 +14,49 @@
         "type": "rss",
         "lang": "en",
         "url": "https://www.reutersagency.com/feed/?taxonomy=best-sectors&post_type=best",
-        "filter": null
+        "filter": null,
+        "weight": 2
       },
       {
         "name": "Bloomberg",
         "type": "rss",
         "lang": "en",
         "url": "https://feeds.bloomberg.com/markets/news.rss",
-        "filter": null
+        "filter": null,
+        "weight": 2
       },
       {
         "name": "Financial Times",
         "type": "rss",
         "lang": "en",
         "url": "https://www.ft.com/rss/home",
-        "filter": null
+        "filter": null,
+        "weight": 2
       },
       {
         "name": "CNBC",
         "type": "rss",
         "lang": "en",
         "url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114",
-        "filter": null
+        "filter": null,
+        "weight": 1.8
       },
       {
         "name": "WSJ",
         "type": "rss",
         "lang": "en",
         "url": "https://feeds.a.dj.com/rss/RSSMarketsMain.xml",
-        "filter": null
+        "filter": null,
+        "weight": 2
       },
       {
         "name": "NBER",
         "type": "rss",
         "lang": "en",
         "url": "https://www.nber.org/rss/new.xml",
-        "filter": null
+        "filter": null,
+        "timeout": 30000,
+        "weight": 1.5
       },
       {
         "name": "The Conversation",
@@ -57,7 +64,8 @@
         "lang": "en",
         "url": "https://theconversation.com/articles.atom",
         "filter": null,
-        "exclude": "review:|recipe|workout|exercise slayer|EMS workout|yoga|gym|fitness|cricket|football|soccer|tennis|basketball|baseball|hockey|premier league|world cup|super bowl|movie review|film review|tv series|netflix|album review|concert|cooking|bake|restaurant|travel guide|hotel review|horoscope|fashion week|skincare|coolcation|vacation|holiday travel|negative time|quantum physics|particle physics|gothic chiller|horror trope|Irish hotel|gallon of gas|KitKat|super campaign|big bash|Nepalese village|distill|Buffy"
+        "exclude": "review:|recipe|workout|exercise slayer|EMS workout|yoga|gym|fitness|cricket|football|soccer|tennis|basketball|baseball|hockey|premier league|world cup|super bowl|movie review|film review|tv series|netflix|album review|concert|cooking|bake|restaurant|travel guide|hotel review|horoscope|fashion week|skincare|coolcation|vacation|holiday travel|negative time|quantum physics|particle physics|gothic chiller|horror trope|Irish hotel|gallon of gas|KitKat|super campaign|big bash|Nepalese village|distill|Buffy",
+        "weight": 1.2
       },
       {
         "name": "Pew Research",
@@ -65,119 +73,142 @@
         "lang": "en",
         "url": "https://www.pewresearch.org/feed/",
         "filter": null,
-        "exclude": "Acknowledgments|Methodology|Appendix|Detailed Tables|Detailed Table"
+        "exclude": "Acknowledgments|Methodology|Appendix|Detailed Tables|Detailed Table",
+        "weight": 1.3
       },
       {
         "name": "Brookings",
         "type": "rss",
         "lang": "en",
         "url": "https://www.brookings.edu/feed/",
-        "filter": null
+        "filter": null,
+        "timeout": 25000,
+        "weight": 1.5
       },
       {
         "name": "Aeon",
         "type": "rss",
         "lang": "en",
         "url": "https://aeon.co/feed.xml",
-        "filter": null
+        "filter": null,
+        "weight": 1.1
       },
       {
         "name": "Foreign Affairs",
         "type": "rss",
         "lang": "en",
         "url": "https://www.foreignaffairs.com/rss.xml",
-        "filter": null
+        "filter": null,
+        "timeout": 25000,
+        "weight": 1.5
       },
       {
         "name": "VoxEU",
         "type": "rss",
         "lang": "en",
         "url": "https://cepr.org/rss/voxeu.xml",
-        "filter": null
+        "filter": null,
+        "weight": 1.5
       },
       {
         "name": "Google News Academic",
         "type": "rss",
         "lang": "en",
         "url": "https://news.google.com/rss/search?q=social+science+research+study+peer-reviewed&hl=en&gl=US&ceid=US:en",
-        "filter": null
+        "filter": null,
+        "timeout": 25000,
+        "weight": 1.2
       },
       {
         "name": "Nature Human Behaviour",
         "type": "rss",
         "lang": "en",
         "url": "https://www.nature.com/nathumbehav.rss",
-        "filter": null
+        "filter": null,
+        "timeout": 25000,
+        "weight": 1.3
       },
       {
         "name": "PNAS Social Science",
         "type": "rss",
         "lang": "en",
         "url": "https://www.pnas.org/action/showFeed?type=etoc&feed=rss&jc=pnas",
-        "filter": "social|behavior|behaviour|psychology|economic|political|society|demograph|cultural|inequality|governance|policy|migration|gender|race|religion|education|health policy|public health|law|ethics|climate|environment|trust|cooperation|network|institution|election|vote|discrimination|poverty|welfare|labor|employment"
+        "filter": "social|behavior|behaviour|psychology|economic|political|society|demograph|cultural|inequality|governance|policy|migration|gender|race|religion|education|health policy|public health|law|ethics|climate|environment|trust|cooperation|network|institution|election|vote|discrimination|poverty|welfare|labor|employment",
+        "timeout": 30000,
+        "weight": 1.3
       },
       {
         "name": "Dealbreaker",
         "type": "rss",
         "lang": "en",
         "url": "https://dealbreaker.com/.rss/teaser/",
-        "filter": null
+        "filter": null,
+        "weight": 1.4
       },
       {
         "name": "Crossing Wall Street",
         "type": "rss",
         "lang": "en",
         "url": "https://crossingwallstreet.com/feed/",
-        "filter": null
+        "filter": null,
+        "weight": 1.4
       },
       {
         "name": "Goldmoney",
         "type": "rss",
         "lang": "en",
         "url": "https://www.goldmoney.com/research/feed",
-        "filter": null
+        "filter": null,
+        "weight": 1.3
       },
       {
         "name": "ScienceDirect",
         "type": "rss",
         "lang": "en",
         "url": "https://rss.sciencedirect.com/publication/science/0304405X",
-        "filter": null
+        "filter": null,
+        "timeout": 25000,
+        "weight": 1.5
       },
       {
         "name": "ZeroHedge",
         "type": "rss",
         "lang": "en",
         "url": "https://feeds.feedburner.com/zerohedge/feed",
-        "filter": null
+        "filter": null,
+        "weight": 1.3
       },
       {
         "name": "Wolf Street",
         "type": "rss",
         "lang": "en",
         "url": "https://wolfstreet.com/feed/",
-        "filter": null
+        "filter": null,
+        "weight": 1.3
       },
       {
         "name": "36氪",
         "type": "rss",
         "lang": "zh",
         "url": "https://36kr.com/feed",
-        "filter": null
+        "filter": null,
+        "weight": 1.5
       },
       {
         "name": "财新网",
         "type": "rss",
         "lang": "zh",
         "url": "https://rsshub.rssforever.com/caixin/latest",
-        "filter": null
+        "filter": null,
+        "weight": 1.5
       },
       {
         "name": "华尔街见闻",
         "type": "rss",
         "lang": "zh",
         "url": "https://rsshub.rssforever.com/wallstreetcn/news/global",
-        "filter": null
+        "filter": null,
+        "weight": 1.5
       }
     ],
     "categories": [

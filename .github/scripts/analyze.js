@@ -17,6 +17,8 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const { isEnglish, similarity } = require("./shared.js");
+const { apiCall } = require("./lib/http.js");
+const { loadCache: loadTranslationCache, saveCache: saveTranslationCache, translateSnippet, translateSnippets, cacheKey: trCacheKey, getTranslation } = require("./lib/translation.js");
 
 const ROOT = path.resolve(__dirname, "../..");
 const API_KEY = process.env.DEEPSEEK_API_KEY;
@@ -33,10 +35,7 @@ if (!API_KEY) {
 
 const DATA_DIR = path.join(ROOT, "data/news");
 const ANALYSIS_DIR = path.join(DATA_DIR, "analysis");
-const CACHE_FILE = path.join(__dirname, "translations-cache.json");
-const SNIPPET_BATCH_SIZE = 3; // 摘要翻译批次大小（摘要较长，批次小些）
-const ARTICLES_DIR = path.join(DATA_DIR, "articles"); // 精品文章归档目录
-const MAX_CACHE_SIZE = 3000; // 翻译缓存最大条目数
+const ARTICLES_DIR = path.join(DATA_DIR, "articles");
 
 // ===== 每日视角配置 =====
 const DAILY_PERSPECTIVES = [
@@ -91,171 +90,7 @@ const DAILY_PERSPECTIVES = [
   },
 ];
 
-// ===== 翻译工具 =====
-let translationCache = {};
-
-function loadTranslationCache() {
-  try {
-    if (fs.existsSync(CACHE_FILE)) {
-      translationCache = JSON.parse(fs.readFileSync(CACHE_FILE, "utf-8"));
-      const count = Object.keys(translationCache).length;
-      if (count > 0) console.log(`📦 加载翻译缓存: ${count} 条`);
-    }
-  } catch {
-    translationCache = {};
-  }
-}
-
-function saveTranslationCache() {
-  try {
-    const cutoff = Date.now() - 90 * 24 * 60 * 60 * 1000;
-    for (const [key, entry] of Object.entries(translationCache)) {
-      if (entry.ts && entry.ts < cutoff) delete translationCache[key];
-    }
-
-    // 容量限制：超过上限时淘汰最旧的条目（LRU策略）
-    const entries = Object.entries(translationCache);
-    if (entries.length > MAX_CACHE_SIZE) {
-      entries.sort((a, b) => (b[1].ts || 0) - (a[1].ts || 0));
-      const evictCount = entries.length - MAX_CACHE_SIZE;
-      const toKeep = entries.slice(0, MAX_CACHE_SIZE);
-      translationCache = Object.fromEntries(toKeep);
-      console.log(`🗑️ 翻译缓存淘汰 ${evictCount} 条旧数据，保留 ${MAX_CACHE_SIZE} 条`);
-    }
-
-    const tmp = CACHE_FILE + ".tmp";
-    fs.writeFileSync(tmp, JSON.stringify(translationCache, null, 2), "utf-8");
-    fs.renameSync(tmp, CACHE_FILE);
-    console.log(`💾 保存翻译缓存: ${Object.keys(translationCache).length} 条`);
-  } catch (e) {
-    console.error("⚠️ 缓存保存失败:", e.message);
-  }
-}
-
-function trCacheKey(text) {
-  const t = text.trim();
-  if (t.length <= 80) return t.toLowerCase();
-  return (t.slice(0, 80) + t.slice(-20)).toLowerCase();
-}
-
-async function translateSnippet(text) {
-  if (!text) return null;
-  try {
-    const res = await apiCall("POST", API_URL + "/v1/chat/completions", {
-      model: "deepseek-chat",
-      messages: [
-        {
-          role: "system",
-          content:
-            "你是翻译引擎。将用户输入的英文新闻摘要翻译为流畅的中文。保持原文段落结构，只输出翻译结果，不加编号、引号或解释。如果已是中文，原样输出。",
-        },
-        { role: "user", content: text },
-      ],
-      temperature: 0.1,
-      max_tokens: Math.max(800, Math.ceil(text.length * 1.5)),
-    });
-    const translated = res?.choices?.[0]?.message?.content?.trim();
-    if (translated && translated !== text) return translated;
-    return null;
-  } catch (e) {
-    console.error(`⚠️ 摘要翻译失败: ${e.message}`);
-    return null;
-  }
-}
-
-async function translateSnippets(items) {
-  const enItems = items.filter(
-    (item) => item.snippet && isEnglish(item.snippet),
-  );
-  if (enItems.length === 0) {
-    console.log("📊 摘要翻译: 无需翻译（全部为中文或无内容）");
-    return;
-  }
-
-  console.log(`🌐 翻译 ${enItems.length} 篇英文摘要...`);
-  let cached = 0;
-  let translated = 0;
-  let failed = 0;
-
-  for (let i = 0; i < enItems.length; i += SNIPPET_BATCH_SIZE) {
-    const batch = enItems.slice(i, i + SNIPPET_BATCH_SIZE);
-    const batchNum = Math.floor(i / SNIPPET_BATCH_SIZE) + 1;
-    const totalBatches = Math.ceil(enItems.length / SNIPPET_BATCH_SIZE);
-    console.log(
-      `  📦 批次 ${batchNum}/${totalBatches} (${batch.length} 篇)...`,
-    );
-
-    for (const item of batch) {
-      const key = trCacheKey(item.snippet);
-      if (translationCache[key] && translationCache[key].zh) {
-        item.snippetEN = item.snippet;
-        item.snippet = translationCache[key].zh;
-        cached++;
-        continue;
-      }
-
-      const zh = await translateSnippet(item.snippet);
-      if (zh) {
-        item.snippetEN = item.snippet;
-        item.snippet = zh;
-        translationCache[key] = { zh, ts: Date.now() };
-        translated++;
-      } else {
-        failed++;
-      }
-    }
-
-    if (i + SNIPPET_BATCH_SIZE < enItems.length) {
-      await new Promise((r) => setTimeout(r, 1000));
-    }
-  }
-
-  console.log(
-    `📊 摘要翻译统计: ${cached} 缓存, ${translated} 新翻译, ${failed} 失败`,
-  );
-}
-
 // ===== HTTP 请求 =====
-function apiCall(method, urlPath, body) {
-  return new Promise((resolve, reject) => {
-    const data = body ? JSON.stringify(body) : null;
-    const url = new URL(urlPath);
-    const opts = {
-      hostname: url.hostname,
-      port: url.port || 443,
-      path: url.pathname + url.search,
-      method,
-      headers: {
-        Authorization: `Bearer ${API_KEY}`,
-        "Content-Type": "application/json",
-        "User-Agent": "NASE-Bot/1.0",
-      },
-      timeout: 120000,
-    };
-    if (data) opts.headers["Content-Length"] = Buffer.byteLength(data);
-
-    const req = https.request(opts, (res) => {
-      const chunks = [];
-      res.on("data", (c) => chunks.push(c));
-      res.on("end", () => {
-        const raw = Buffer.concat(chunks).toString("utf-8");
-        try {
-          resolve(JSON.parse(raw));
-        } catch {
-          resolve({ error: raw, status: res.statusCode });
-        }
-      });
-    });
-    req.on("error", reject);
-    req.on("timeout", () => {
-      req.destroy();
-      reject(new Error("API timeout"));
-    });
-    if (data) req.write(data);
-    req.end();
-  });
-}
-
 async function callDeepSeek(prompt, customSystemPrompt, maxTokens) {
   let lastError = null;
 
@@ -270,18 +105,25 @@ async function callDeepSeek(prompt, customSystemPrompt, maxTokens) {
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
-      const res = await apiCall("POST", `${API_URL}/v1/chat/completions`, {
-        model: MODEL,
-        messages: [
-          {
-            role: "system",
-            content: systemContent,
-          },
-          { role: "user", content: prompt },
-        ],
-        temperature: 0.8,
-        max_tokens: maxTokens || (customSystemPrompt ? 5000 : 2500),
-      });
+      const res = await apiCall(
+        `${API_URL}/v1/chat/completions`,
+        {
+          model: MODEL,
+          messages: [
+            {
+              role: "system",
+              content: systemContent,
+            },
+            { role: "user", content: prompt },
+          ],
+          temperature: 0.8,
+          max_tokens: maxTokens || (customSystemPrompt ? 5000 : 2500),
+        },
+        {
+          headers: { Authorization: `Bearer ${API_KEY}` },
+          timeout: 120000,
+        },
+      );
 
       if (res.error) {
         const errStr =
@@ -1154,50 +996,37 @@ function selectRelevantAnalyses(
 
 // ===== 热点关键词提取 =====
 
-// 信源权威度权重（侧重金融经济类）
-const SOURCE_WEIGHTS = {
-  // Tier 1: 权威财经媒体 — 2.0x
-  Reuters: 2.0,
-  Bloomberg: 2.0,
-  "Financial Times": 2.0,
-  WSJ: 2.0,
-  CNBC: 1.8,
+// 从 topics.json 加载信源权重，未配置的源使用默认值 1.0
+const SOURCE_WEIGHTS_FALLBACK = {
   华尔街日报: 2.0,
-  // Tier 2: 研究/政策机构 — 1.5x
-  NBER: 1.5,
-  Brookings: 1.5,
-  VoxEU: 1.5,
-  "Foreign Affairs": 1.5,
-  "Pew Research": 1.3,
-  // Tier 3: 学术/深度分析 — 1.3x
-  "Nature Human Behaviour": 1.3,
-  "PNAS Social Science": 1.3,
-  "The Conversation": 1.2,
-  Aeon: 1.1,
-  // Tier 4: 中文财经 — 1.5x
-  "36氪": 1.5,
   "36kr": 1.5,
-  财新网: 1.5,
-  华尔街见闻: 1.5,
   新浪财经: 1.5,
   东方财富: 1.5,
   第一财经: 1.5,
   投资者商业日报: 1.5,
   观察者: 1.3,
   凤凰科技: 1.2,
-  // Google News 聚合
-  "Google News Academic": 1.2,
-  // Tier 2.5: 独立财经分析/专业媒体 — 1.3~1.5x
-  "Crossing Wall Street": 1.4,
-  Dealbreaker: 1.4,
-  Goldmoney: 1.3,
-  ScienceDirect: 1.5,
   "Journal of Financial Economics": 1.5,
-  ZeroHedge: 1.3,
-  "Wolf Street": 1.3,
-  // 默认
   default: 1.0,
 };
+
+function loadSourceWeights() {
+  const weights = { ...SOURCE_WEIGHTS_FALLBACK };
+  try {
+    const topicsFile = path.join(__dirname, "topics.json");
+    const topics = JSON.parse(fs.readFileSync(topicsFile, "utf-8"));
+    for (const topic of topics) {
+      for (const source of topic.sources || []) {
+        if (source.weight) weights[source.name] = source.weight;
+      }
+    }
+  } catch (e) {
+    console.warn(`⚠️ 无法从 topics.json 加载信源权重: ${e.message}`);
+  }
+  return weights;
+}
+
+const SOURCE_WEIGHTS = loadSourceWeights();
 
 // 娱乐/社会噪音关键词黑名单（直接从热点中排除）
 const NOISE_KEYWORDS = new Set([
@@ -3011,7 +2840,7 @@ async function main() {
   }
 
   // 加载翻译缓存
-  loadTranslationCache();
+  loadTranslationCache(90);
 
   // 清理过期分析文件
   cleanupOldAnalyses();
@@ -3274,7 +3103,7 @@ async function main() {
     console.log(`📊 已更新信号仪表盘（${dashboard.days.length} 天数据）`);
 
     // 保存翻译缓存
-    saveTranslationCache();
+    saveTranslationCache(90, { compact: false });
   } catch (e) {
     console.error(`❌ 分析失败: ${e.message}`);
     process.exit(1);

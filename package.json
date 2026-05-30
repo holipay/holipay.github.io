@@ -1,0 +1,7 @@
+{
+  "name": "holipay-news",
+  "private": true,
+  "scripts": {
+    "test": "node --test .github/scripts/lib/*.test.js"
+  }
+}
