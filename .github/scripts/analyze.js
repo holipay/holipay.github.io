@@ -36,6 +36,7 @@ const ANALYSIS_DIR = path.join(DATA_DIR, "analysis");
 const CACHE_FILE = path.join(__dirname, "translations-cache.json");
 const SNIPPET_BATCH_SIZE = 3; // 摘要翻译批次大小（摘要较长，批次小些）
 const ARTICLES_DIR = path.join(DATA_DIR, "articles"); // 精品文章归档目录
+const MAX_CACHE_SIZE = 50000; // 翻译缓存最大条目数
 
 // ===== 每日视角配置 =====
 const DAILY_PERSPECTIVES = [
@@ -111,6 +112,17 @@ function saveTranslationCache() {
     for (const [key, entry] of Object.entries(translationCache)) {
       if (entry.ts && entry.ts < cutoff) delete translationCache[key];
     }
+
+    // 容量限制：超过上限时淘汰最旧的条目（LRU策略）
+    const entries = Object.entries(translationCache);
+    if (entries.length > MAX_CACHE_SIZE) {
+      entries.sort((a, b) => (b[1].ts || 0) - (a[1].ts || 0));
+      const evictCount = entries.length - MAX_CACHE_SIZE;
+      const toKeep = entries.slice(0, MAX_CACHE_SIZE);
+      translationCache = Object.fromEntries(toKeep);
+      console.log(`🗑️ 翻译缓存淘汰 ${evictCount} 条旧数据，保留 ${MAX_CACHE_SIZE} 条`);
+    }
+
     const tmp = CACHE_FILE + ".tmp";
     fs.writeFileSync(tmp, JSON.stringify(translationCache, null, 2), "utf-8");
     fs.renameSync(tmp, CACHE_FILE);

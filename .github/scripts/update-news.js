@@ -27,7 +27,7 @@ const zlib = require("zlib");
 const fs = require("fs");
 const path = require("path");
 const fsPromises = fs.promises;
-const { isEnglish, similarity } = require("./shared.js");
+const { isEnglish, similarity, SHORT_TITLE_LENGTH } = require("./shared.js");
 
 // 复用 TCP 连接（keep-alive），避免 RSS 批量抓取时反复建连
 const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 32 });
@@ -37,8 +37,13 @@ const ROOT = path.resolve(__dirname, "../..");
 const SCRIPTS_DIR = __dirname;
 const CACHE_FILE = path.join(SCRIPTS_DIR, "translations-cache.json");
 const TOPICS_FILE = path.join(SCRIPTS_DIR, "topics.json");
+const HEALTH_FILE = path.join(SCRIPTS_DIR, "source-health.json");
+const METRICS_FILE = path.join(SCRIPTS_DIR, "run-metrics.json");
 const RETENTION_DAYS = 90; // 数据保留天数（3个月）
 const MAX_ITEMS_PER_CATEGORY = 200; // 每个分类最大记录数（与 trim-data.js 保持一致）
+const MAX_CONSECUTIVE_FAILURES = 3; // 连续失败告警阈值
+const MAX_CACHE_SIZE = 50000; // 翻译缓存最大条目数
+const MAX_METRICS_HISTORY = 30; // 保留最近30次运行的指标
 
 // 社科类分类条数限制（降低权重）
 const CATEGORY_ITEM_LIMITS = {
@@ -53,6 +58,24 @@ const SIMILARITY_THRESHOLD = 0.75; // 标题相似度阈值（75% 以上视为�
 const TRANSLATE_CONCURRENCY = 8;
 const MAX_RETRIES = 2; // 增加重试次数，提升网络抖动容错
 
+// 超时配置（按源类型）
+const TIMEOUT_CONFIG = {
+  rss: 20000,    // RSS源：20秒（部分学术RSS较慢）
+  api: 15000,    // API源：15秒
+  default: 15000 // 默认：15秒
+};
+
+// 特定源的超时覆盖（源名称 -> 超时毫秒数）
+const SOURCE_TIMEOUT_OVERRIDES = {
+  "NBER": 30000,           // 学术机构，响应较慢
+  "PNAS Social Science": 30000,
+  "Nature Human Behaviour": 25000,
+  "ScienceDirect": 25000,
+  "Google News Academic": 25000,
+  "Brookings": 25000,
+  "Foreign Affairs": 25000,
+};
+
 // ==================== 命令行参数 ====================
 const FILTER_TOPIC =
   process.argv.find((a) => a.startsWith("--topic="))?.split("=")[1] || null;
@@ -63,7 +86,7 @@ function sanitizeFilename(name) {
 }
 
 // ==================== HTTP 请求 ====================
-function fetchUrl(url, maxRedirects = 3, _visited = new Set()) {
+function fetchUrl(url, maxRedirects = 3, _visited = new Set(), timeout = TIMEOUT_CONFIG.default) {
   return new Promise((resolve, reject) => {
     if (_visited.has(url))
       return reject(new Error(`Circular redirect: ${url}`));
@@ -81,7 +104,7 @@ function fetchUrl(url, maxRedirects = 3, _visited = new Set()) {
             "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
           "Accept-Encoding": "gzip, deflate",
         },
-        timeout: 15000,
+        timeout,
       },
       (res) => {
         if (
@@ -92,7 +115,7 @@ function fetchUrl(url, maxRedirects = 3, _visited = new Set()) {
         ) {
           const redirectUrl = new URL(res.headers.location, url).href;
           res.resume();
-          return fetchUrl(redirectUrl, maxRedirects - 1, _visited)
+          return fetchUrl(redirectUrl, maxRedirects - 1, _visited, timeout)
             .then(resolve)
             .catch(reject);
         }
@@ -124,21 +147,32 @@ function fetchUrl(url, maxRedirects = 3, _visited = new Set()) {
   });
 }
 
-async function fetchWithRetry(url, retries = MAX_RETRIES) {
+async function fetchWithRetry(url, retries = MAX_RETRIES, timeout = TIMEOUT_CONFIG.default) {
   for (let i = 0; i <= retries; i++) {
     try {
-      return await fetchUrl(url);
+      return await fetchUrl(url, 3, new Set(), timeout);
     } catch (e) {
       const msg = e.message || "";
+      const isRateLimited = msg.includes("HTTP 429");
+      const isTimeout = msg.includes("Timeout");
       const retryable =
+        isRateLimited ||
+        isTimeout ||
         msg.includes("HTTP 5") ||
-        msg.includes("Timeout") ||
         msg.includes("ECONNRESET") ||
         msg.includes("ETIMEDOUT") ||
         msg.includes("ENOTFOUND") ||
         msg.includes("socket hang up");
+
+      // 检测429限流，调整延迟
+      if (isRateLimited) {
+        if (url.includes("mymemory")) adjustRateLimit("myMemory", false, true);
+        else if (url.includes("googleapis")) adjustRateLimit("google", false, true);
+      }
+
       if (i < retries && retryable) {
-        const delay = 2000 * (i + 1); // 指数退避: 2s, 4s
+        const baseDelay = isRateLimited ? getRateLimitDelay("google") : 2000;
+        const delay = baseDelay * (i + 1);
         await new Promise((r) => setTimeout(r, delay));
         continue;
       }
@@ -174,6 +208,18 @@ function saveCache() {
     for (const [key, entry] of Object.entries(translationCache)) {
       if (entry.ts && entry.ts < cutoff) delete translationCache[key];
     }
+
+    // 容量限制：超过上限时淘汰最旧的条目（LRU策略）
+    const entries = Object.entries(translationCache);
+    if (entries.length > MAX_CACHE_SIZE) {
+      // 按时间戳排序，淘汰最旧的
+      entries.sort((a, b) => (b[1].ts || 0) - (a[1].ts || 0));
+      const evictCount = entries.length - MAX_CACHE_SIZE;
+      const toKeep = entries.slice(0, MAX_CACHE_SIZE);
+      translationCache = Object.fromEntries(toKeep);
+      console.log(`🗑️ 翻译缓存淘汰 ${evictCount} 条旧数据，保留 ${MAX_CACHE_SIZE} 条`);
+    }
+
     const tmp = CACHE_FILE + ".tmp";
     // 紧凑序列化（无缩进），减少文件体积 ~60%
     fs.writeFileSync(tmp, JSON.stringify(translationCache), "utf-8");
@@ -191,7 +237,190 @@ function cacheKey(text) {
   return (t.slice(0, 80) + t.slice(-20)).toLowerCase();
 }
 
+// ==================== 源健康监控 ====================
+let sourceHealthData = {};
+
+function loadSourceHealth() {
+  try {
+    if (fs.existsSync(HEALTH_FILE)) {
+      sourceHealthData = JSON.parse(fs.readFileSync(HEALTH_FILE, "utf-8"));
+      const count = Object.keys(sourceHealthData).length;
+      if (count > 0) console.log(`📊 加载源健康数据: ${count} 个源`);
+    }
+  } catch {
+    sourceHealthData = {};
+  }
+}
+
+function saveSourceHealth() {
+  try {
+    const tmp = HEALTH_FILE + ".tmp";
+    fs.writeFileSync(tmp, JSON.stringify(sourceHealthData, null, 2), "utf-8");
+    fs.renameSync(tmp, HEALTH_FILE);
+    console.log(`💾 保存源健康数据: ${Object.keys(sourceHealthData).length} 个源`);
+  } catch (e) {
+    console.error("⚠️ 源健康数据保存失败:", e.message);
+  }
+}
+
+function updateSourceHealth(name, success, itemCount, errorMsg) {
+  if (!sourceHealthData[name]) {
+    sourceHealthData[name] = {
+      firstSeen: new Date().toISOString(),
+      totalChecks: 0,
+      totalSuccess: 0,
+      totalFailure: 0,
+      consecutiveFailures: 0,
+      lastItems: 0,
+    };
+  }
+  const entry = sourceHealthData[name];
+  entry.totalChecks++;
+  entry.lastCheck = new Date().toISOString();
+
+  if (success) {
+    entry.totalSuccess++;
+    entry.consecutiveFailures = 0;
+    entry.lastItems = itemCount;
+    entry.lastSuccess = entry.lastCheck;
+  } else {
+    entry.totalFailure++;
+    entry.consecutiveFailures++;
+    entry.lastError = errorMsg || "Unknown error";
+    entry.lastFailure = entry.lastCheck;
+  }
+
+  entry.successRate = Math.round((entry.totalSuccess / entry.totalChecks) * 100);
+}
+
+function checkSourceHealthAlerts() {
+  const alerts = [];
+  for (const [name, entry] of Object.entries(sourceHealthData)) {
+    if (entry.consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+      alerts.push({
+        name,
+        failures: entry.consecutiveFailures,
+        lastError: entry.lastError,
+      });
+    }
+  }
+  return alerts;
+}
+
+// ==================== 运行指标收集 ====================
+const metrics = {
+  startTime: null,
+  endTime: null,
+  duration: 0,
+  topics: [],
+  totals: {
+    sourcesAttempted: 0,
+    sourcesSucceeded: 0,
+    sourcesFailed: 0,
+    itemsFetched: 0,
+    itemsDeduped: 0,
+    itemsFinal: 0,
+    translateCached: 0,
+    translateNew: 0,
+    translateFailed: 0,
+    categories: 0,
+  },
+};
+
+function startMetrics() {
+  metrics.startTime = new Date().toISOString();
+  metrics.topics = [];
+  metrics.totals = {
+    sourcesAttempted: 0,
+    sourcesSucceeded: 0,
+    sourcesFailed: 0,
+    itemsFetched: 0,
+    itemsDeduped: 0,
+    itemsFinal: 0,
+    translateCached: 0,
+    translateNew: 0,
+    translateFailed: 0,
+    categories: 0,
+  };
+}
+
+function recordTopicMetrics(topicName, data) {
+  metrics.topics.push({
+    name: topicName,
+    ...data,
+  });
+  // 累加到总计
+  metrics.totals.sourcesAttempted += data.sourcesAttempted || 0;
+  metrics.totals.sourcesSucceeded += data.sourcesSucceeded || 0;
+  metrics.totals.sourcesFailed += data.sourcesFailed || 0;
+  metrics.totals.itemsFetched += data.itemsFetched || 0;
+  metrics.totals.itemsDeduped += data.itemsDeduped || 0;
+  metrics.totals.itemsFinal += data.itemsFinal || 0;
+  metrics.totals.translateCached += data.translateCached || 0;
+  metrics.totals.translateNew += data.translateNew || 0;
+  metrics.totals.translateFailed += data.translateFailed || 0;
+  metrics.totals.categories += data.categories || 0;
+}
+
+function finishMetrics() {
+  metrics.endTime = new Date().toISOString();
+  metrics.duration = new Date(metrics.endTime) - new Date(metrics.startTime);
+}
+
+function saveMetrics() {
+  try {
+    let history = [];
+    if (fs.existsSync(METRICS_FILE)) {
+      try {
+        history = JSON.parse(fs.readFileSync(METRICS_FILE, "utf-8"));
+      } catch {
+        history = [];
+      }
+    }
+
+    history.push(metrics);
+
+    // 保留最近 N 次运行
+    if (history.length > MAX_METRICS_HISTORY) {
+      history = history.slice(-MAX_METRICS_HISTORY);
+    }
+
+    const tmp = METRICS_FILE + ".tmp";
+    fs.writeFileSync(tmp, JSON.stringify(history, null, 2), "utf-8");
+    fs.renameSync(tmp, METRICS_FILE);
+    console.log(`📊 保存运行指标: 第 ${history.length} 次记录`);
+  } catch (e) {
+    console.error("⚠️ 指标保存失败:", e.message);
+  }
+}
+
 // ==================== 翻译工具 ====================
+// 自适应限流配置
+const RATE_LIMIT_CONFIG = {
+  myMemory: { base: 300, current: 300, min: 200, max: 2000, step: 100 },
+  google: { base: 300, current: 300, min: 200, max: 2000, step: 100 },
+  deepseek: { base: 500, current: 500, min: 300, max: 5000, step: 200 },
+  batch: { base: 200, current: 200, min: 100, max: 2000, step: 100 },
+};
+
+function adjustRateLimit(provider, success, isRateLimited = false) {
+  const config = RATE_LIMIT_CONFIG[provider];
+  if (!config) return;
+
+  if (isRateLimited) {
+    // 被限流时，增加延迟
+    config.current = Math.min(config.current + config.step * 2, config.max);
+    console.log(`    ⚠️ ${provider} 被限流，延迟调整为 ${config.current}ms`);
+  } else if (success) {
+    // 成功时，逐步减少延迟（但不低于基础值）
+    config.current = Math.max(config.current - config.step, config.base);
+  }
+}
+
+function getRateLimitDelay(provider) {
+  return RATE_LIMIT_CONFIG[provider]?.current || 200;
+}
+
 async function translateMyMemory(text) {
   const encoded = encodeURIComponent(text.slice(0, 450));
   const url = `https://api.mymemory.translated.net/get?q=${encoded}&langpair=en|zh-CN`;
@@ -203,6 +432,7 @@ async function translateMyMemory(text) {
     translated.toLowerCase() !== text.toLowerCase() &&
     !translated.includes("MYMEMORY")
   ) {
+    adjustRateLimit("myMemory", true);
     return translated;
   }
   return null;
@@ -294,7 +524,7 @@ async function translateENtoZH(text) {
   // 2. Google Translate（免费，作为备选）
   if (!translated) {
     try {
-      await new Promise((r) => setTimeout(r, 300));
+      await new Promise((r) => setTimeout(r, getRateLimitDelay("google")));
       translated = await translateGoogle(text);
     } catch {}
   }
@@ -302,7 +532,7 @@ async function translateENtoZH(text) {
   // 3. DeepSeek（付费 API，最后兜底）
   if (!translated) {
     try {
-      await new Promise((r) => setTimeout(r, 500));
+      await new Promise((r) => setTimeout(r, getRateLimitDelay("deepseek")));
       translated = await translateDeepSeek(text);
       if (translated)
         console.log(`    🤖 DeepSeek 翻译兜底: "${text.slice(0, 40)}..."`);
@@ -424,7 +654,7 @@ async function translateItems(items) {
 
   if (enItems.length === 0) {
     console.log(`📊 翻译统计: ${cached} 缓存, 0 新翻译, 0 失败`);
-    return results;
+    return { items: results, stats: { cached, newTranslated, failed } };
   }
 
   // 批量翻译（DeepSeek 单次翻译多条）
@@ -472,16 +702,16 @@ async function translateItems(items) {
       }
     }
 
-    // 批次间延迟（避免 DeepSeek 限流）
+    // 批次间延迟（自适应限流）
     if (i + BATCH_SIZE < texts.length) {
-      await new Promise((r) => setTimeout(r, 200));
+      await new Promise((r) => setTimeout(r, getRateLimitDelay("batch")));
     }
   }
 
   console.log(
     `📊 翻译统计: ${cached} 缓存, ${newTranslated} 新翻译, ${failed} 失败`,
   );
-  return results;
+  return { items: results, stats: { cached, newTranslated, failed } };
 }
 
 // ==================== RSS/Atom 解析 ====================
@@ -556,14 +786,20 @@ function parseRssItems(xml, filterRegex) {
 async function fetchSource(source) {
   let items = [];
 
+  // 确定超时时间：源特定配置 > 源类型默认 > 全局默认
+  const timeout = source.timeout 
+    || SOURCE_TIMEOUT_OVERRIDES[source.name] 
+    || TIMEOUT_CONFIG[source.type] 
+    || TIMEOUT_CONFIG.default;
+
   try {
     if (source.type === "rss") {
-      const xml = await fetchWithRetry(source.url);
+      const xml = await fetchWithRetry(source.url, MAX_RETRIES, timeout);
       const filter = source.filter ? new RegExp(source.filter, "i") : null;
       const parsed = parseRssItems(xml, filter);
       parsed.forEach((item) => items.push({ ...item, source: source.name }));
     } else if (source.type === "api") {
-      const json = await fetchWithRetry(source.url);
+      const json = await fetchWithRetry(source.url, MAX_RETRIES, timeout);
       const data = JSON.parse(json);
 
       if (source.parse === "36kr") {
@@ -625,6 +861,39 @@ function classify(item, processedCats, defaultCat) {
     if (cat._kwLower.some((kw) => matchTarget.includes(kw))) return cat;
   }
   return defaultCat;
+}
+
+/**
+ * 带置信度的分类
+ * 返回 { category, matchCount, matchedKeywords }
+ */
+function classifyWithConfidence(item, processedCats, defaultCat) {
+  const titleEN = (
+    typeof item === "string" ? "" : item.titleEN || ""
+  ).toLowerCase();
+  const title = (
+    typeof item === "string" ? item : item.title || ""
+  ).toLowerCase();
+  const matchTarget = titleEN || title;
+
+  let bestCat = defaultCat;
+  let bestMatchCount = 0;
+  let bestMatchedKws = [];
+
+  for (const cat of processedCats) {
+    const matchedKws = cat._kwLower.filter((kw) => matchTarget.includes(kw));
+    if (matchedKws.length > bestMatchCount) {
+      bestMatchCount = matchedKws.length;
+      bestCat = cat;
+      bestMatchedKws = matchedKws;
+    }
+  }
+
+  return {
+    category: bestCat,
+    matchCount: bestMatchCount,
+    matchedKeywords: bestMatchedKws,
+  };
 }
 
 function normalizeTitle(title) {
@@ -924,6 +1193,7 @@ function getCandidates(buckets, normLen, threshold) {
 
 /**
  * 对当前批次进行去重（URL精确匹配 + 标题精确匹配 + 模糊匹配）
+ * v2: 短标题（<10字符）使用更严格的匹配策略
  * @param {Array} items
  * @param {string[]} existingTitles - 历史标题
  * @returns {Array}
@@ -954,20 +1224,25 @@ function dedup(items, existingTitles = []) {
     if (seenNormsSet.has(norm)) return false;
     if (existingTitlesSet.has(norm)) return false;
 
-    // 4. 模糊匹配——历史数据（仅比较长度相近的候选）
+    // 4. 短标题优化：对短标题使用更严格的匹配
+    const isShortTitle = norm.length < SHORT_TITLE_LENGTH;
+
+    // 5. 模糊匹配——历史数据（仅比较长度相近的候选）
     const nLen = norm.length;
     const histCandidates = getCandidates(existingBuckets, nLen, SIMILARITY_THRESHOLD);
     for (const et of histCandidates) {
-      if (similarity(norm, et) >= SIMILARITY_THRESHOLD) return false;
+      // 短标题使用严格模式
+      if (similarity(norm, et, isShortTitle) >= SIMILARITY_THRESHOLD) return false;
     }
 
-    // 5. 模糊匹配——当前批次（仅比较长度相近的候选）
+    // 6. 模糊匹配——当前批次（仅比较长度相近的候选）
     const batchCandidates = getCandidates(batchBuckets, nLen, SIMILARITY_THRESHOLD);
     for (const sn of batchCandidates) {
-      if (similarity(norm, sn) >= SIMILARITY_THRESHOLD) return false;
+      // 短标题使用严格模式
+      if (similarity(norm, sn, isShortTitle) >= SIMILARITY_THRESHOLD) return false;
     }
 
-    // 6. 通过去重，加入当前批次分桶
+    // 7. 通过去重，加入当前批次分桶
     seenNormsSet.add(norm);
     if (!batchBuckets.has(nLen)) batchBuckets.set(nLen, []);
     batchBuckets.get(nLen).push(norm);
@@ -991,6 +1266,48 @@ function groupByCategory(items, categories, defaultCat) {
     });
   }
   return Object.values(groups);
+}
+
+/**
+ * 带置信度的分类分组
+ * 返回 { sections, lowConfidenceItems }
+ * lowConfidenceItems: 匹配关键词数 <=1 的条目，需要LLM二次验证
+ */
+function groupByCategoryWithConfidence(items, categories, defaultCat) {
+  const processedCats = preprocessCategories(categories);
+  const groups = {};
+  const lowConfidenceItems = [];
+  const LOW_CONFIDENCE_THRESHOLD = 1; // 匹配关键词数 <=1 视为低置信度
+
+  for (const item of items) {
+    const { category: cat, matchCount } = classifyWithConfidence(item, processedCats, defaultCat);
+    const key = cat.title;
+    if (!groups[key])
+      groups[key] = { icon: cat.icon, title: cat.title, items: [] };
+
+    const itemData = {
+      title: item.title,
+      link: item.link || "",
+      source: item.source || "",
+      ...(item.titleEN ? { titleEN: item.titleEN } : {}),
+    };
+
+    groups[key].items.push(itemData);
+
+    // 低置信度条目（非默认分类，但匹配关键词很少）
+    if (cat.title !== defaultCat.title && matchCount <= LOW_CONFIDENCE_THRESHOLD) {
+      lowConfidenceItems.push({
+        ...itemData,
+        currentCategory: cat.title,
+        matchCount,
+      });
+    }
+  }
+
+  return {
+    sections: Object.values(groups),
+    lowConfidenceItems,
+  };
 }
 
 // ==================== 原子写入 ====================
@@ -1220,7 +1537,6 @@ async function processTopic(topic) {
   );
 
   const sourceLangMap = {};
-  const sourceHealth = {};
   for (const s of topic.sources) sourceLangMap[s.name] = s.lang;
 
   let allRaw = [];
@@ -1229,21 +1545,32 @@ async function processTopic(topic) {
     if (r.status === "fulfilled") {
       console.log(`  ✅ ${name}: ${r.value.length} 条`);
       allRaw.push(...r.value);
-      sourceHealth[name] = { ok: true, count: r.value.length };
+      updateSourceHealth(name, true, r.value.length);
     } else {
       console.error(`  ❌ ${name}: ${r.reason.message}`);
-      sourceHealth[name] = { ok: false, count: 0, error: r.reason.message };
+      updateSourceHealth(name, false, 0, r.reason.message);
     }
   });
 
   // 源健康报告
-  const failedSources = Object.entries(sourceHealth).filter(([, h]) => !h.ok);
+  const failedSources = results
+    .map((r, i) => ({ name: topic.sources[i].name, result: r }))
+    .filter(({ result }) => result.status === "rejected");
   if (failedSources.length > 0) {
     console.log(
       `\n⚠️ 源健康报告: ${failedSources.length}/${topic.sources.length} 个源失败:`,
     );
-    failedSources.forEach(([name, h]) =>
-      console.log(`  ❌ ${name}: ${h.error}`),
+    failedSources.forEach(({ name, result }) =>
+      console.log(`  ❌ ${name}: ${result.reason.message}`),
+    );
+  }
+
+  // 连续失败告警
+  const healthAlerts = checkSourceHealthAlerts();
+  if (healthAlerts.length > 0) {
+    console.log(`\n🚨 源连续失败告警 (>=${MAX_CONSECUTIVE_FAILURES}次):`);
+    healthAlerts.forEach((a) =>
+      console.log(`  ⚠️ ${a.name}: 连续失败 ${a.failures} 次, 最后错误: ${a.lastError}`),
     );
   }
 
@@ -1256,6 +1583,9 @@ async function processTopic(topic) {
   const enItems = allRaw.filter((item) => sourceLangMap[item.source] === "en");
   const cnItems = allRaw.filter((item) => sourceLangMap[item.source] !== "en");
 
+  // 指标：翻译统计
+  let translateStats = { cached: 0, newTranslated: 0, failed: 0 };
+
   // 4. 中文条目：先去重（无需翻译）
   console.log(`📝 中文条目 ${cnItems.length} 条，进行模糊去重...`);
   const cnDeduped = dedup(cnItems, existingTitles);
@@ -1267,9 +1597,10 @@ async function processTopic(topic) {
     console.log(
       `🌐 翻译 ${enItems.length} 条英文新闻 (并发 ${TRANSLATE_CONCURRENCY})...`,
     );
-    const translated = await translateItems(enItems);
+    const translateResult = await translateItems(enItems);
+    translateStats = translateResult.stats;
     console.log("📝 翻译完成，进行模糊去重...");
-    enDeduped = dedup(translated, existingTitles);
+    enDeduped = dedup(translateResult.items, existingTitles);
     console.log(`  ✅ 英文去重后 ${enDeduped.length} 条`);
   }
 
@@ -1288,46 +1619,86 @@ async function processTopic(topic) {
   }
   console.log(`✅ 去重后共 ${allItems.length} 条新闻`);
 
-  // 7. 分类
-  let sections = groupByCategory(
-    allItems,
-    topic.categories,
-    topic.defaultCategory,
-  );
-
-  // P2-1: LLM 辅助分类 — 对"其他资讯"中的条目做二次分类
-  const defaultCatTitle = topic.defaultCategory?.title || "其他资讯";
-  const otherSection = sections.find((s) => s.title === defaultCatTitle);
-  if (
-    otherSection &&
-    otherSection.items.length > 5 &&
-    process.env.DEEPSEEK_API_KEY
-  ) {
-    console.log(
-      `\n🤖 LLM 辅助分类: ${otherSection.items.length} 条"${defaultCatTitle}"条目...`,
+  // 7. 分类（带置信度检测）
+  let sections;
+  let lowConfidenceItems = [];
+  if (process.env.DEEPSEEK_API_KEY) {
+    // 使用带置信度的分类
+    const result = groupByCategoryWithConfidence(
+      allItems,
+      topic.categories,
+      topic.defaultCategory,
     );
-    const catTitles = topic.categories
-      .map((c) => c.title)
-      .filter((t) => t !== defaultCatTitle);
-    const reclassified = await llmClassify(otherSection.items, catTitles);
+    sections = result.sections;
+    lowConfidenceItems = result.lowConfidenceItems;
+  } else {
+    // 无API Key时使用普通分类
+    sections = groupByCategory(
+      allItems,
+      topic.categories,
+      topic.defaultCategory,
+    );
+  }
+
+  // P2-2: LLM 辅助分类 — 对"其他资讯"和低置信度条目做二次分类
+  const defaultCatTitle = topic.defaultCategory?.title || "其他资讯";
+  const allCatTitles = topic.categories.map((c) => c.title);
+
+  // 收集需要LLM验证的条目
+  const itemsToReclassify = [];
+
+  // 1. "其他资讯"中的条目
+  const otherSection = sections.find((s) => s.title === defaultCatTitle);
+  if (otherSection && otherSection.items.length > 5) {
+    itemsToReclassify.push(...otherSection.items.map((item) => ({
+      ...item,
+      sourceCategory: defaultCatTitle,
+      reason: "default_category",
+    })));
+  }
+
+  // 2. 低置信度条目（匹配关键词数 <=1）
+  if (lowConfidenceItems.length > 0) {
+    console.log(`  🔍 发现 ${lowConfidenceItems.length} 条低置信度分类条目`);
+    itemsToReclassify.push(...lowConfidenceItems.map((item) => ({
+      ...item,
+      reason: "low_confidence",
+    })));
+  }
+
+  // 执行LLM二次分类
+  if (itemsToReclassify.length > 0 && process.env.DEEPSEEK_API_KEY) {
+    console.log(
+      `\n🤖 LLM 辅助分类: ${itemsToReclassify.length} 条待验证条目...`,
+    );
+    const reclassified = await llmClassify(itemsToReclassify, allCatTitles);
     if (reclassified.size > 0) {
-      // 将重新分类的条目从"其他资讯"移到正确分类
-      const moved = [];
-      const remaining = [];
-      for (const item of otherSection.items) {
+      let movedCount = 0;
+      // 处理重新分类结果
+      for (const item of itemsToReclassify) {
         const newCat = reclassified.get(item.title);
-        if (newCat) {
-          const target = sections.find((s) => s.title === newCat);
-          if (target) {
-            target.items.push(item);
-            moved.push(item);
-            continue;
+        if (newCat && newCat !== item.sourceCategory) {
+          // 从原分类移除
+          if (item.sourceCategory) {
+            const sourceSection = sections.find((s) => s.title === item.sourceCategory);
+            if (sourceSection) {
+              sourceSection.items = sourceSection.items.filter((i) => i.title !== item.title);
+            }
+          }
+          // 添加到新分类
+          const targetSection = sections.find((s) => s.title === newCat);
+          if (targetSection) {
+            targetSection.items.push({
+              title: item.title,
+              link: item.link || "",
+              source: item.source || "",
+              ...(item.titleEN ? { titleEN: item.titleEN } : {}),
+            });
+            movedCount++;
           }
         }
-        remaining.push(item);
       }
-      otherSection.items = remaining;
-      console.log(`  ✅ 已将 ${moved.length} 条重新分类`);
+      console.log(`  ✅ 已将 ${movedCount} 条重新分类`);
     }
   }
 
@@ -1620,6 +1991,22 @@ async function processTopic(topic) {
   console.log(
     `📂 已更新 ${topic.dataDir}/ (${categoryMeta.length} 个分类, ${totalItems} 条)`,
   );
+
+  // 记录主题指标
+  const succeededSources = results.filter((r) => r.status === "fulfilled").length;
+  const failedSourcesCount = results.filter((r) => r.status === "rejected").length;
+  recordTopicMetrics(topic.name, {
+    sourcesAttempted: topic.sources.length,
+    sourcesSucceeded: succeededSources,
+    sourcesFailed: failedSourcesCount,
+    itemsFetched: allRaw.length,
+    itemsDeduped: allRaw.length - allItems.length,
+    itemsFinal: totalItems,
+    translateCached: translateStats.cached,
+    translateNew: translateStats.newTranslated,
+    translateFailed: translateStats.failed,
+    categories: categoryMeta.length,
+  });
 }
 
 // ==================== 主逻辑 ====================
@@ -1630,6 +2017,8 @@ async function main() {
   );
 
   loadCache();
+  loadSourceHealth();
+  startMetrics();
 
   let topics;
   try {
@@ -1660,6 +2049,9 @@ async function main() {
   }
 
   saveCache();
+  saveSourceHealth();
+  finishMetrics();
+  saveMetrics();
   console.log("\n✅ 全部完成！");
 }
 
