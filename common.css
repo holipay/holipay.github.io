@@ -443,3 +443,32 @@ a:hover {
         transition: none;
     }
 }
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--bdr);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text3);
+}
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--bdr) transparent;
+}
+@media (max-width: 860px) {
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+    * {
+        scrollbar-width: none;
+    }
+}
