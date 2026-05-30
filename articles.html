@@ -364,10 +364,26 @@
             }
 
             async function init() {
-                // 直接加载（跳过不存在的 index.json，避免双请求）
-                const articles = await fetchT("data/news/articles.json")
-                    .then((r) => r.json())
-                    .catch(() => null);
+                const [dates, articles] = await Promise.all([
+                    fetchT("data/news/articles/index.json")
+                        .then((r) => r.json())
+                        .catch(() => []),
+                    fetchT("data/news/articles.json")
+                        .then((r) => r.json())
+                        .catch(() => null),
+                ]);
+                if (dates.length) {
+                    const frag = document.createDocumentFragment();
+                    for (const d of dates) {
+                        const el = document.createElement("div");
+                        el.className = "date-item";
+                        el.dataset.date = d;
+                        el.innerHTML = `<span class="date-icon">📅</span><span class="date-name">${esc(d)}</span>`;
+                        frag.appendChild(el);
+                    }
+                    dateList.appendChild(frag);
+                    dateList.querySelector(".date-item")?.classList.add("active");
+                }
                 renderPage(articles);
             }
 

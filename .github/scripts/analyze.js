@@ -495,15 +495,36 @@ async function fetchWeightedArticles(hotKeywords, items) {
 
     for (const hk of tierKws) {
       if (usedBudget >= TOTAL_BUDGET) break;
+      const kwLower = hk.keyword.toLowerCase();
+      const totalMatched = items.filter((i) =>
+        (i.title || "").toLowerCase().includes(kwLower),
+      ).length;
+      const withLink = items.filter(
+        (i) =>
+          (i.title || "").toLowerCase().includes(kwLower) && i.link,
+      ).length;
       const candidates = items.filter((i) => {
         const lower = (i.title || "").toLowerCase();
-        return (
-          lower.includes(hk.keyword.toLowerCase()) &&
-          i.link &&
-          !fetchedUrls.has(i.link)
-        );
+        if (
+          !lower.includes(kwLower) ||
+          !i.link ||
+          fetchedUrls.has(i.link)
+        )
+          return false;
+        for (const noise of NOISE_KEYWORDS) {
+          if (lower.includes(noise.toLowerCase())) return false;
+        }
+        return true;
       });
-      if (candidates.length === 0) continue;
+      if (candidates.length === 0) {
+        console.log(
+          `  ⚠️ [Tier ${tierIdx + 1}] ${hk.keyword} → 0 候选 (标题匹配:${totalMatched}, 有链接:${withLink})`,
+        );
+        continue;
+      }
+      console.log(
+        `  🔍 [Tier ${tierIdx + 1}] ${hk.keyword} → ${candidates.length} 候选 (标题匹配:${totalMatched})`,
+      );
       candidates.sort(
         (a, b) => scoreArticle(b, hk.score) - scoreArticle(a, hk.score),
       );
@@ -869,9 +890,14 @@ function loadTodayNews() {
     try {
       const catData = JSON.parse(fs.readFileSync(catPath, "utf-8"));
       for (const item of catData.items || []) {
+        let link = item.link || "";
+        const cdataMatch = link.match(
+          /<!\[CDATA\[([^\]]+)\]\]>/,
+        );
+        if (cdataMatch) link = cdataMatch[1];
         allItems.push({
           title: item.title,
-          link: item.link || "",
+          link,
           source: item.source || "",
           date: item.date || "",
           category: cat.title,
