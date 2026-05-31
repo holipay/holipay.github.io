@@ -3,13 +3,13 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-        <title>新闻列表 - nase.me</title>
+        <title>新闻列表 - holipay</title>
         <meta
             name="description"
-            content="nase.me 全球金融、科技、社科新闻资讯列表"
+            content="holipay 全球金融、科技、社科新闻资讯列表"
         />
         <link rel="stylesheet" href="common.css" />
-        <link rel="preload" href="js/common.js" as="script" />
+
         <style>
             .layout {
                 display: grid;
@@ -175,7 +175,7 @@
     <body>
         <div class="layout">
             <nav class="nav-bar">
-                <span class="nav-title">📰 nase.me</span>
+                <span class="nav-title">📰 holipay</span>
                 <a class="nav-link" href="index.html"
                     ><span class="nav-link-icon">🤖</span>AI 分析</a
                 >
@@ -506,30 +506,7 @@
                 loadView();
             };
 
-            catList.addEventListener(
-                "mouseenter",
-                (e) => {
-                    const item = e.target.closest(".cat-item");
-                    if (!item) return;
-                    const file = item.dataset.cat;
-                    if (!rawCatCache.has(file)) {
-                        fetchT(`data/news/${encodeURIComponent(file)}.json`)
-                            .then((r) => r.json())
-                            .then((d) => {
-                                const items = (d.items || [])
-                                    .slice()
-                                    .sort((a, b) =>
-                                        (b.date || "").localeCompare(
-                                            a.date || "",
-                                        ),
-                                    );
-                                rawCatCache.set(file, items);
-                            })
-                            .catch(() => {});
-                    }
-                },
-                true,
-            );
+
 
             async function init() {
                 const meta = await loadMetaOnce();
@@ -554,17 +531,10 @@
                 // 默认加载最新视图（latest.json，12KB，比任何分类文件都小）
                 loadView();
 
-                // 预加载前 3 个分类（后台，并行）
-                meta.categories.slice(0, 3).forEach((c, i) => {
-                    setTimeout(() => {
-                        if (!rawCatCache.has(c.file)) loadNewsCat(c.file);
-                    }, i * 100);
-                });
+
             }
 
             init();
-            if ("serviceWorker" in navigator)
-                navigator.serviceWorker.register("js/sw.js").catch(() => {});
         </script>
     </body>
 </html>

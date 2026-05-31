@@ -1,8 +1,8 @@
-# nase.me
+# holipay
 
 自动聚合全球金融、科技、社科资讯，并通过 AI 深度分析提供多元思考视角。
 
-🔗 在线访问：[https://nase.me](https://nase.me)
+🔗 在线访问：[https://holipay.github.io](https://holipay.github.io)
 
 ## 功能
 

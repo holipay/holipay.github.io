@@ -1,32 +1,9 @@
-// ===== nase.me 公共工具库 =====
+// ===== holipay 公共工具库 =====
 
 // DOM 快捷选择
 const $ = (id) => document.getElementById(id);
 
-// LRU 缓存
-class LRU {
-  constructor(max) {
-    this._m = new Map();
-    this._max = max;
-  }
-  get(k) {
-    const m = this._m;
-    if (!m.has(k)) return null;
-    const v = m.get(k);
-    m.delete(k);
-    m.set(k, v);
-    return v;
-  }
-  set(k, v) {
-    const m = this._m;
-    if (m.has(k)) m.delete(k);
-    else if (m.size >= this._max) m.delete(m.keys().next().value);
-    m.set(k, v);
-  }
-  has(k) {
-    return this._m.has(k);
-  }
-}
+
 
 // HTML 转义
 const _escEl = document.createElement("div");
@@ -231,10 +208,8 @@ function renderNewsHead(catIcon, catTitle, count) {
 }
 
 // ===== 新闻分类加载（所有日期，倒序）=====
-const rawCatCache = new LRU(16);
+
 async function loadNewsCat(file) {
-  const cached = rawCatCache.get(file);
-  if (cached) return cached;
   let data;
   try {
     const r = await fetchT(`data/news/${encodeURIComponent(file)}.json`);
@@ -248,19 +223,15 @@ async function loadNewsCat(file) {
   if (items.length > 1 && (items[0].date || "") < (items[1].date || "")) {
     items.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
   }
-  rawCatCache.set(file, items);
   return items;
 }
 
 // ===== 分析数据加载 =====
-const analysisFullCache = new LRU(16);
+
 async function loadAnalysisForDate(date) {
-  const cached = analysisFullCache.get(date);
-  if (cached) return cached;
   try {
     const r = await fetchT(`data/news/analysis/${date}.json`);
     const d = await r.json();
-    analysisFullCache.set(date, d);
     return d;
   } catch (e) {
     return null;
